@@ -14,24 +14,24 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "userName")
+    @Column(name = "userName", unique = true, nullable = false)
     private String userName;
 
-    @Column(name = "emailAddress")
+    @Column(name = "emailAddress", unique = true, nullable = false)
     private String emailAddress;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "favGenreId")
     private long favGenreId;
 
-    @Column(name = "fullName")
+    @Column(name = "fullName", nullable = false)
     private String fullName;
 
-    @Column(name = "iconPath")
+    @Column(name = "iconPath", nullable = false)
     private String iconPath;
 }

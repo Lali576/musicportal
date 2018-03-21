@@ -8,9 +8,9 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "GENRES")
+@Table(name = "PLAYLISTS")
 @AllArgsConstructor
-public class Genre {
+public class Playlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

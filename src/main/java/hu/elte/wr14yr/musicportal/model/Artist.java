@@ -10,17 +10,16 @@ import javax.persistence.*;
 @Data
 @Table(name = "ARTISTS")
 @AllArgsConstructor
-@NoArgsConstructor
 public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "artistName")
+    @Column(name = "artistName", unique = true, nullable = false)
     private String artistName;
 
-    @Column(name = "emailAddress")
+    @Column(name = "emailAddress", unique = true, nullable = false)
     private String emailAddress;
 }

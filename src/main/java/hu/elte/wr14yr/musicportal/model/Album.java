@@ -11,20 +11,19 @@ import java.time.Year;
 @Data
 @Table(name = "ALBUMS")
 @AllArgsConstructor
-@NoArgsConstructor
 public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "year")
+    @Column(name = "year", nullable = false)
     private Year year;
 
-    @Column(name = "coverPath")
+    @Column(name = "coverPath", unique = true, nullable = false)
     private String coverPath;
 }

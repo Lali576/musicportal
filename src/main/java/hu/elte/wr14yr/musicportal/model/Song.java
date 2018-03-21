@@ -11,19 +11,22 @@ import java.time.Year;
 @Data
 @Table(name = "SONGS")
 @AllArgsConstructor
-@NoArgsConstructor
 public class Song {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true, nullable = false)
     private String title;
 
-    @Column(name = "year")
+    @Column(name = "year", nullable = false)
     private Year year;
 
-    @Column(name = "audioPath")
+    @Column(name = "audioPath", unique = true, nullable = false)
     private String audioPath;
+
+    @Column(name = "lyrics", columnDefinition = "default 'instrumental song'")
+    private String lyrics;
 }
