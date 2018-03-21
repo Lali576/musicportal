@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Year;
+import java.util.List;
 
 @Entity
 @Data
@@ -27,6 +28,15 @@ public class Song {
     @Column(name = "audioPath", unique = true, nullable = false)
     private String audioPath;
 
-    @Column(name = "lyrics", columnDefinition = "default 'instrumental song'")
+    @Column(name = "lyrics")
     private String lyrics;
+
+    @OneToMany(targetEntity = SongCounter.class, mappedBy = "song")
+    private List<SongCounter> songCounters;
+
+    @OneToMany(targetEntity = SongComment.class, mappedBy = "song")
+    private List<SongComment> songComments;
+
+    @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
+    private List<SongLike> songLikes;
 }

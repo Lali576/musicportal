@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,4 +35,16 @@ public class User {
 
     @Column(name = "iconPath", nullable = false)
     private String iconPath;
+
+    @OneToMany(targetEntity = UserMessage.class, mappedBy = "userTo")
+    private List<UserMessage> messages;
+
+    @OneToMany(targetEntity = SongCounter.class, mappedBy = "user")
+    private List<SongCounter> songCounters;
+
+    @OneToMany(targetEntity = SongComment.class, mappedBy = "user")
+    private List<SongComment> songComments;
+
+    @OneToMany(targetEntity = SongLike.class, mappedBy = "user")
+    private List<SongLike> songLikes;
 }
