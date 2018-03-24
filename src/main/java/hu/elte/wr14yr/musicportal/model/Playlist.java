@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,4 +20,10 @@ public class Playlist {
 
     @Column(name = "name", unique = true, nullable = false)
     private String name;
+
+    @ManyToMany(mappedBy = "playlists")
+    private Set<Keyword> keywords;
+
+    @ManyToMany(targetEntity = Song.class)
+    private Set<Song> songs;
 }

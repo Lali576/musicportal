@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.Year;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -31,6 +32,22 @@ public class Song {
     @Column(name = "lyrics")
     private String lyrics;
 
+    @ManyToOne(targetEntity = Album.class)
+    @JoinTable(name="SONGALBUM",
+            joinColumns = @JoinColumn(name = "songId",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "albumId",
+                    referencedColumnName = "id"))
+    private Album album;
+
+    @ManyToOne(targetEntity = Album.class)
+    @JoinTable(name="SONGARTIST",
+            joinColumns = @JoinColumn(name = "songId",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "artistId",
+                    referencedColumnName = "id"))
+    private Artist artist;
+
     @OneToMany(targetEntity = SongCounter.class, mappedBy = "song")
     private List<SongCounter> songCounters;
 
@@ -39,4 +56,12 @@ public class Song {
 
     @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
     private List<SongLike> songLikes;
+
+    @ManyToMany(targetEntity = Keyword.class, mappedBy = "songs")
+    @Column(name = "keywordId")
+    private Set<Keyword> keywords;
+
+    @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
+    @Column(name = "playlistId")
+    private Set<Playlist> playlists;
 }

@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Year;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -26,4 +28,10 @@ public class Album {
 
     @Column(name = "coverPath", unique = true, nullable = false)
     private String coverPath;
+
+    @ManyToMany(mappedBy = "albums")
+    private Set<Keyword> keywords;
+
+    @OneToMany(targetEntity = Song.class, mappedBy = "album")
+    private Set<Song> songs;
 }

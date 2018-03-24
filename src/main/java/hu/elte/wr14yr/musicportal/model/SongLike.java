@@ -26,6 +26,7 @@ public class SongLike {
     private User user;
 
     @Column(name = "role")
+    @Enumerated(value = EnumType.STRING)
     private Role role;
 
     public enum Role {

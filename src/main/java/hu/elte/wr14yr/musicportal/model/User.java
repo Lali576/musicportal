@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -37,14 +38,14 @@ public class User {
     private String iconPath;
 
     @OneToMany(targetEntity = UserMessage.class, mappedBy = "userTo")
-    private List<UserMessage> messages;
+    private Set<UserMessage> messages;
 
     @OneToMany(targetEntity = SongCounter.class, mappedBy = "user")
-    private List<SongCounter> songCounters;
+    private Set<SongCounter> songCounters;
 
     @OneToMany(targetEntity = SongComment.class, mappedBy = "user")
-    private List<SongComment> songComments;
+    private Set<SongComment> songComments;
 
     @OneToMany(targetEntity = SongLike.class, mappedBy = "user")
-    private List<SongLike> songLikes;
+    private Set<SongLike> songLikes;
 }

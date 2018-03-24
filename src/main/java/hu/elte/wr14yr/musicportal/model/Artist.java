@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -22,4 +23,10 @@ public class Artist {
 
     @Column(name = "emailAddress", unique = true, nullable = false)
     private String emailAddress;
+
+    @OneToMany(targetEntity = Song.class, mappedBy = "artist")
+    private Set<Song> songs;
+
+    @ManyToMany(mappedBy = "artists")
+    private Set<Keyword> keywords;
 }
