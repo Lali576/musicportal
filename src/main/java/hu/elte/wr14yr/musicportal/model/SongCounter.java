@@ -21,8 +21,8 @@ public class SongCounter {
     @ManyToOne(targetEntity = Song.class, optional = false)
     private Song song;
 
-    @JoinColumn(name = "userId", nullable = false)
-    @ManyToOne(targetEntity = User.class, optional = false)
+    @JoinColumn(name = "userId")
+    @ManyToOne(targetEntity = User.class)
     private User user;
 
     @Column(name = "ipAddress", nullable = false)

@@ -31,21 +31,27 @@ public class User {
     @Column(name = "favGenreId")
     private long favGenreId;
 
-    @Column(name = "fullName", nullable = false)
+    @Column(name = "fullName")
     private String fullName;
 
     @Column(name = "iconPath", nullable = false)
     private String iconPath;
 
-    @OneToMany(targetEntity = UserMessage.class, mappedBy = "userTo")
-    private Set<UserMessage> messages;
+    @OneToMany(targetEntity = SongComment.class, mappedBy = "user")
+    private Set<SongComment> songComments;
 
     @OneToMany(targetEntity = SongCounter.class, mappedBy = "user")
     private Set<SongCounter> songCounters;
 
-    @OneToMany(targetEntity = SongComment.class, mappedBy = "user")
-    private Set<SongComment> songComments;
-
     @OneToMany(targetEntity = SongLike.class, mappedBy = "user")
     private Set<SongLike> songLikes;
+
+    @OneToMany(targetEntity = UserMessage.class, mappedBy = "userTo")
+    private Set<UserMessage> userToMessages;
+
+    @OneToMany(targetEntity = UserMessage.class, mappedBy = "userFrom")
+    private Set<UserMessage> userFromMessages;
+
+    @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
+    private Set<Playlist> playlists;
 }

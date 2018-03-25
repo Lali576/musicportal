@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,4 +20,9 @@ public class Genre {
 
     @Column(name = "name", unique = true, nullable = false)
     private String name;
+
+    @JoinTable(name = "SONGGENRE")
+    @ManyToMany(targetEntity = Song.class)
+    @Column(name = "songId")
+    private Set<Song> songs;
 }

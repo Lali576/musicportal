@@ -29,9 +29,9 @@ public class Album {
     @Column(name = "coverPath", unique = true, nullable = false)
     private String coverPath;
 
-    @ManyToMany(mappedBy = "albums")
-    private Set<Keyword> keywords;
-
     @OneToMany(targetEntity = Song.class, mappedBy = "album")
     private Set<Song> songs;
+
+    @ManyToMany(targetEntity = Keyword.class, mappedBy = "albums")
+    private Set<Keyword> keywords;
 }

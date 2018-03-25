@@ -25,8 +25,8 @@ public class SongComment {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @Column(name = "text", nullable = false)
-    private String text;
+    @Column(name = "textMessage", nullable = false)
+    private String textMessage;
 
     @Column(name = "dateTime", nullable = false)
     private LocalDateTime dateTime;

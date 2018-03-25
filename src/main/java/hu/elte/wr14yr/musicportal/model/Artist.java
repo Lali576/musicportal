@@ -27,6 +27,6 @@ public class Artist {
     @OneToMany(targetEntity = Song.class, mappedBy = "artist")
     private Set<Song> songs;
 
-    @ManyToMany(mappedBy = "artists")
+    @ManyToMany(targetEntity = Keyword.class, mappedBy = "artists")
     private Set<Keyword> keywords;
 }
