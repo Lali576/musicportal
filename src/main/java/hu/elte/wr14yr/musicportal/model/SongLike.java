@@ -30,6 +30,6 @@ public class SongLike {
     private Role role;
 
     public enum Role {
-        LIKE, DISLIKE
+        like, dislike
     }
 }
