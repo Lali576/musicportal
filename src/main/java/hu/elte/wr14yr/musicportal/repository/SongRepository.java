@@ -10,17 +10,17 @@ public interface SongRepository extends CrudRepository<Song, Long>{
     @Override
     Song save(Song song);
 
-    Optional<Set<Song>> findAllByTitleContaining(String title);
+    Iterable<Song> findAllByTitleContaining(String title);
 
-    Optional<Set<Song>> findAllByAlbumIn(Album album);
+    Iterable<Song> findAllByAlbumIn(Album album);
 
-    Optional<Set<Song>> findAllByArtist(Artist artist);
+    Iterable<Song> findAllByArtist(Artist artist);
 
-    Optional<Set<Song>> findAllByKeywordsContaining(String keyword);
+    Iterable<Song> findAllByKeywordsContaining(String keyword);
 
-    Optional<Set<Song>> findAllByPlaylists(Playlist playlist);
+    Iterable<Song> findAllByPlaylists(Playlist playlist);
 
-    Optional<Set<Song>> findAllByGenres(Genre genre);
+    Iterable<Song> findAllByGenres(Genre genre);
 
     @Override
     void deleteById(Long id);

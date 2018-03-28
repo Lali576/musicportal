@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "SONGCOUNTER",
+@Table(name = "SONGCOUNTERS",
         uniqueConstraints = @UniqueConstraint(columnNames = {"songId", "userId", "ipAddress"}))
 @AllArgsConstructor
 public class SongCounter {
