@@ -9,9 +9,9 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     Iterable<Album> findAllById(Long iterable);
 
-    Iterable<Album> findAllByNameContaining(String name);
+    Iterable<Album> findAllByNameContainsAllIgnoreCase(String name);
 
-    Iterable<Album> findAllByKeywordsContaining(String keyword);
+    Iterable<Album> findAllByKeywordsContainsAllIgnoreCase(String keyword);
 
     Album findAlbumById(Long id);
 

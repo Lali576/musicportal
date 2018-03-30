@@ -12,4 +12,6 @@ public interface SongCounterRepository extends CrudRepository<SongCounter, Long>
 
     @Override
     void deleteById(Long id);
+
+    void deleteAllBySong(Song song);
 }

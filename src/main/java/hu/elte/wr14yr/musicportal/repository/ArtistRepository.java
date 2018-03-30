@@ -7,9 +7,9 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
     @Override
     Artist save(Artist album);
 
-    Iterable<Artist> findByArtistNameContaining(String artistName);
+    Iterable<Artist> findAllByArtistNameContainsAllIgnoreCase(String artistName);
 
-    Iterable<Artist> findByKeywordsContaining(String keyword);
+    Iterable<Artist> findAllByKeywordsContainsAllIgnoreCase(String keyword);
 
     Artist findArtistById(Long id);
 

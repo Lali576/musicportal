@@ -62,7 +62,6 @@ public class Song {
     private Set<Playlist> playlists;
 
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
-    @Column(name = "genreId")
     private Set<Genre> genres;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "songs")
