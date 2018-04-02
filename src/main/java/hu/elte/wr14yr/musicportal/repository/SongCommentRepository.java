@@ -2,6 +2,7 @@ package hu.elte.wr14yr.musicportal.repository;
 
 import hu.elte.wr14yr.musicportal.model.Song;
 import hu.elte.wr14yr.musicportal.model.SongComment;
+import hu.elte.wr14yr.musicportal.model.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface SongCommentRepository extends CrudRepository<SongComment, Long> {
@@ -14,4 +15,6 @@ public interface SongCommentRepository extends CrudRepository<SongComment, Long>
     void deleteById(Long id);
 
     void deleteAllBySong(Song song);
+
+    void deleteAllByUser(User user);
 }

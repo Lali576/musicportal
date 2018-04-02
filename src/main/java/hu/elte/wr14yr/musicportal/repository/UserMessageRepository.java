@@ -14,4 +14,6 @@ public interface UserMessageRepository extends CrudRepository<UserMessage, Long>
 
     @Override
     void deleteById(Long id);
+
+    void deleteByUserFrom(User userFrom);
 }
