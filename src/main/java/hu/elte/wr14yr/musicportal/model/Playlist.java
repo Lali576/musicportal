@@ -15,25 +15,22 @@ public class Playlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @ManyToOne(targetEntity = User.class, optional = false)
-    @JoinTable(name = "USERPLAYLIST",
-            joinColumns = @JoinColumn(name = "playlistId",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "userId",
-                    referencedColumnName = "id"))
+    @JoinTable(name = "USER_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),
+                                inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
     private User user;
 
-    @ManyToMany(mappedBy = "playlists")
-    @Column(name = "keywordId")
+    @ManyToMany(targetEntity = Keyword.class, mappedBy = "playlists")
     private Set<Keyword> keywords;
 
+    @JoinTable(name = "SONG_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),
+                                inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
-    @Column(name = "songId")
     private Set<Song> songs;
 }

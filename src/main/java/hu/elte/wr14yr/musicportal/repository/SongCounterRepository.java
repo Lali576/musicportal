@@ -17,6 +17,6 @@ public interface SongCounterRepository extends CrudRepository<SongCounter, Long>
 
     void deleteAllBySong(Song song);
 
-    @Query(value = "UPDATE SONGCOUNTER SET userId = null WHERE userId = :userId", nativeQuery = true)
-    void deleteUserId(@Param("userId") int userId);
+    @Query(value = "UPDATE SONG_COUNTER SET userId = null WHERE USER_ID = :USER_ID", nativeQuery = true)
+    void deleteUserId(@Param("USER_ID") int userId);
 }

@@ -12,17 +12,17 @@ public interface SongRepository extends CrudRepository<Song, Long>{
     @Override
     Song save(Song song);
 
-    @Query(value = "INSERT INTO SONGALBUM (songId, albumId) VALUES (:songId,:albumId)", nativeQuery = true)
-    void saveSongAlbum(@Param("songId") int songId, @Param("albumId") int albumId);
+    @Query(value = "INSERT INTO SONG_ALBUM (SONG_ID, ALBUM_ID) VALUES (:SONG_ID,:ALBUM_ID)", nativeQuery = true)
+    void saveSongAlbum(@Param("SONG_ID") int songId, @Param("ALBUM_ID") int albumId);
 
-    @Query(value = "INSERT INTO SONGGENRE (songId, genreId) VALUES (:songId, :genreId)", nativeQuery = true)
-    void saveSongGenre(@Param("songId") int songId, @Param("genreId") int genreId);
+    @Query(value = "INSERT INTO SONG_GENRE (SONG_ID, GENRE_ID) VALUES (:SONG_ID, :GENRE_ID)", nativeQuery = true)
+    void saveSongGenre(@Param("SONG_ID") int songId, @Param("GENRE_ID") int genreId);
 
-    @Query(value = "INSERT INTO SONGKEYWORD (songId, keywordId) VALUES (:songId, :keywordId)", nativeQuery = true)
-    void saveSongKeyword(@Param("songId") int songId, @Param("keywordId") int keywordId);
+    @Query(value = "INSERT INTO SONG_KEYWORD (SONG_ID, KEYWORD_ID) VALUES (:SONG_ID, :KEYWORD_ID)", nativeQuery = true)
+    void saveSongKeyword(@Param("SONG_ID") int songId, @Param("KEYWORD_ID") int keywordId);
 
-    @Query(value = "INSERT INTO SONGPLAYLIST (songId, playlistId) VALUES (:songId, :playlistId)", nativeQuery = true)
-    void saveSongPlaylist(@Param("songId") int songId, @Param("playlistId") int playlistId);
+    @Query(value = "INSERT INTO SONG_PLAYLIST (SONG_ID, PLAYLIST_ID) VALUES (:SONG_ID, :PLAYLIST_ID)", nativeQuery = true)
+    void saveSongPlaylist(@Param("SONG_ID") int songId, @Param("PLAYLIST_ID") int playlistId);
 
     Iterable<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
@@ -43,15 +43,15 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     void deleteAllByAlbum(Album album);
 
-    @Query(value = "DELETE FROM SONGALBUM WHERE songId = :songId", nativeQuery = true)
-    void deleteSongAlbum(@Param("songId") int songId);
+    @Query(value = "DELETE FROM SONG_ALBUM WHERE SONG_ID = :SONG_ID", nativeQuery = true)
+    void deleteSongAlbum(@Param("SONG_ID") int songId);
 
-    @Query(value = "DELETE FROM SONGGENRE WHERE songId = :songId", nativeQuery = true)
-    void deleteSongGenre(@Param("songId") int songId);
+    @Query(value = "DELETE FROM SONG_GENRE WHERE SONG_ID = :SONG_ID", nativeQuery = true)
+    void deleteSongGenre(@Param("SONG_ID") int songId);
 
-    @Query(value = "DELETE FROM SONGGENRE WHERE songId = :songId", nativeQuery = true)
-    void deleteSongKeyword(@Param("songId") int songId);
+    @Query(value = "DELETE FROM SONG_KEYWORD WHERE SONG_ID = :SONG_ID", nativeQuery = true)
+    void deleteSongKeyword(@Param("SONG_ID") int songId);
 
-    @Query(value = "DELETE FROM SONGPLAYLIST WHERE songId = :songId", nativeQuery = true)
-    void deleteSongPlaylist(@Param("songId") int songId);
+    @Query(value = "DELETE FROM SONG_PLAYLIST WHERE SONG_ID = :SONG_ID", nativeQuery = true)
+    void deleteSongPlaylist(@Param("SONG_ID") int songId);
 }

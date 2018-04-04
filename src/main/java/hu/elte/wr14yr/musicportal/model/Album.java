@@ -17,16 +17,16 @@ public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "year", nullable = false)
+    @Column(name = "YEAR", nullable = false)
     private Year year;
 
-    @Column(name = "coverPath", unique = true, nullable = false)
+    @Column(name = "COVER_PATH", unique = true, nullable = false)
     private String coverPath;
 
     @OneToMany(targetEntity = Song.class, mappedBy = "album")

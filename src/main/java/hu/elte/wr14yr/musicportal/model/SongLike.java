@@ -7,25 +7,25 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "SONGLIKES",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"songId", "userId"}))
+@Table(name = "SONG_LIKES",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"SONG_ID", "USER_ID"}))
 @AllArgsConstructor
 public class SongLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @JoinColumn(name = "songId", nullable = false)
+    @JoinColumn(name = "SONG_ID", nullable = false)
     @ManyToOne(targetEntity = Song.class, optional = false)
     private Song song;
 
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @Column(name = "role")
+    @Column(name = "ROLE")
     @Enumerated(value = EnumType.STRING)
     private Role role;
 

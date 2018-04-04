@@ -15,13 +15,17 @@ public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
-    @JoinTable(name = "SONGGENRE", joinColumns = @JoinColumn(name = "genreId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "songId", referencedColumnName = "id"))
+    @OneToMany(targetEntity = User.class, mappedBy = "favGenreId")
+    private Set<User> users;
+
+    @JoinTable(name = "SONG_GENRE", joinColumns = @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID"),
+                             inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
     private Set<Song> songs;
 }

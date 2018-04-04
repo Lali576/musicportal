@@ -9,8 +9,8 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
     @Override
     Artist save(Artist album);
 
-    @Query(value = "INSERT INTO ARTISTKEYWORD (artistId, keywordId) VALUES (:artistId, :keywordId)", nativeQuery = true)
-    void saveArtistKeyword(@Param("artistId") int artistId, @Param("keywordId") int keywordId);
+    @Query(value = "INSERT INTO ARTIST_KEYWORD (artistId, KEYWORD_ID) VALUES (:ARTIST_ID, :KEYWORD_ID)", nativeQuery = true)
+    void saveArtistKeyword(@Param("ARTIST_ID") int artistId, @Param("KEYWORD_ID") int keywordId);
 
     Iterable<Artist> findAllByArtistNameContainsAllIgnoreCase(String artistName);
 
@@ -21,6 +21,6 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
     @Override
     void deleteById(Long id);
 
-    @Query(value = "DELETE FROM ARTISTKEYWORD WHERE artistId = :artistId", nativeQuery = true)
-    void deleteArtistKeyword(@Param("artistId") int artistId);
+    @Query(value = "DELETE FROM ARTIST_KEYWORD WHERE ARTIST_ID = :ARTIST_ID", nativeQuery = true)
+    void deleteArtistKeyword(@Param("ARTIST_ID") int artistId);
 }

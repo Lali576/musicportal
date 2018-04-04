@@ -17,19 +17,19 @@ public class Song {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "title", unique = true, nullable = false)
+    @Column(name = "TITLE", unique = true, nullable = false)
     private String title;
 
-    @Column(name = "year", nullable = false)
+    @Column(name = "YEAR", nullable = false)
     private Year year;
 
-    @Column(name = "lyrics")
+    @Column(name = "LYRICS")
     private String lyrics;
 
-    @Column(name = "audioPath", unique = true, nullable = false)
+    @Column(name = "AUDIO_PATH", unique = true, nullable = false)
     private String audioPath;
 
     @OneToMany(targetEntity = SongComment.class, mappedBy = "song")
@@ -42,29 +42,21 @@ public class Song {
     private Set<SongLike> songLikes;
 
     @ManyToOne(targetEntity = Album.class, optional = false)
-    @JoinTable(name="SONGALBUM",
-            joinColumns = @JoinColumn(name = "songId",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "albumId",
-                    referencedColumnName = "id"))
+    @JoinTable(name="SONG_ALBUM", joinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"),
+                           inverseJoinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"))
     private Album album;
 
     @ManyToOne(targetEntity = Artist.class, optional = false)
-    @JoinTable(name="SONGARTIST",
-            joinColumns = @JoinColumn(name = "songId",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "artistId",
-                    referencedColumnName = "id"))
+    @JoinTable(name="SONG_ARTIST", joinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"),
+                            inverseJoinColumns = @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ID"))
     private Artist artist;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
-    @Column(name = "playlistId")
     private Set<Playlist> playlists;
 
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
     private Set<Genre> genres;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "songs")
-    @Column(name = "keywordId")
     private Set<Keyword> keywords;
 }

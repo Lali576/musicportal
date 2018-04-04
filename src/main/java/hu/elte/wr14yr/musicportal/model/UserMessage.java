@@ -9,27 +9,27 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "USERMESSAGES")
+@Table(name = "USER_MESSAGES")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @JoinColumn(name = "userToId", nullable = false)
+    @JoinColumn(name = "USER_TO_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
     private User userTo;
 
-    @JoinColumn(name = "userFromId", nullable = false)
+    @JoinColumn(name = "USER_FROM_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
     private User userFrom;
 
-    @Column(name = "text", nullable = false)
+    @Column(name = "TEXT", nullable = false)
     private String text;
 
-    @Column(name = "dateTime", nullable = false)
+    @Column(name = "DATE_TIME", nullable = false)
     private LocalDateTime dateTime;
 }

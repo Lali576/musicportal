@@ -8,26 +8,26 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "SONGCOMMENTS")
+@Table(name = "SONG_COMMENTS")
 @AllArgsConstructor
 public class SongComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @JoinColumn(name = "songId", nullable = false)
+    @JoinColumn(name = "SONG_ID", nullable = false)
     @ManyToOne(targetEntity = Song.class, optional = false)
     private Song song;
 
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @Column(name = "textMessage", nullable = false)
+    @Column(name = "TEXT_MESSAGE", nullable = false)
     private String textMessage;
 
-    @Column(name = "dateTime", nullable = false)
+    @Column(name = "DATE_TIME", nullable = false)
     private LocalDateTime dateTime;
 }

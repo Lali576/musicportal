@@ -2,29 +2,28 @@ package hu.elte.wr14yr.musicportal.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "SONGCOUNTERS",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"songId", "userId", "ipAddress"}))
+@Table(name = "SONG_COUNTERS",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"SONG_ID", "USER_ID", "IP_ADDRESS"}))
 @AllArgsConstructor
 public class SongCounter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @JoinColumn(name = "songId", nullable = false)
+    @JoinColumn(name = "SONG_ID", nullable = false)
     @ManyToOne(targetEntity = Song.class, optional = false)
     private Song song;
 
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "USER_ID")
     @ManyToOne(targetEntity = User.class)
     private User user;
 
-    @Column(name = "ipAddress", nullable = false)
+    @Column(name = "IP_ADDRESS", nullable = false)
     private String ipAddress;
 }

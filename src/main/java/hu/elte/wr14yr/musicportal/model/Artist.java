@@ -15,13 +15,13 @@ public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "artistName", unique = true, nullable = false)
+    @Column(name = "ARTIST_NAME", unique = true, nullable = false)
     private String artistName;
 
-    @Column(name = "emailAddress", unique = true, nullable = false)
+    @Column(name = "EMAIL_ADDRESS", unique = true, nullable = false)
     private String emailAddress;
 
     @OneToMany(targetEntity = Song.class, mappedBy = "artist")

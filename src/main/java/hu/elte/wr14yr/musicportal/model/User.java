@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,25 +15,26 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "userName", unique = true, nullable = false)
+    @Column(name = "USER_NAME", unique = true, nullable = false)
     private String userName;
 
-    @Column(name = "emailAddress", unique = true, nullable = false)
+    @Column(name = "EMAIL_ADDRESS", unique = true, nullable = false)
     private String emailAddress;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "favGenreId")
-    private long favGenreId;
-
-    @Column(name = "fullName")
+    @Column(name = "FULL_NAME")
     private String fullName;
 
-    @Column(name = "iconPath", nullable = false)
+    @ManyToOne(targetEntity = Genre.class)
+    @JoinColumn(name = "FAV_GENRE_ID", nullable = false)
+    private Genre favGenreId;
+
+    @Column(name = "ICON_PATH", nullable = false)
     private String iconPath;
 
     @OneToMany(targetEntity = SongComment.class, mappedBy = "user")
@@ -54,4 +54,11 @@ public class User {
 
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
     private Set<Playlist> playlists;
+
+    /*
+    private Role role;
+
+    public enum Role {
+        GUEST, ROLE, ARTIST
+    }*/
 }

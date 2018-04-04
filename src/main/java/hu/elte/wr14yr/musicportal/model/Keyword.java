@@ -14,29 +14,29 @@ public class Keyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "word", unique = true, nullable = false)
+    @Column(name = "WORD", unique = true, nullable = false)
     private String word;
 
-    @JoinTable(name = "SONGKEYWORD")
+    @JoinTable(name = "SONG_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
+                               inverseJoinColumns = @JoinColumn(name = "SONG_ID",referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
-    @Column(name = "songId")
     private Set<Song> songs;
 
-    @JoinTable(name = "PLAYLISTKEYWORD")
+    @JoinTable(name = "PLAYLIST_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
+                                   inverseJoinColumns = @JoinColumn(name = "PLAYLIST_ID",referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Playlist.class)
-    @Column(name = "playlistId")
     private Set<Playlist> playlists;
 
-    @JoinTable(name = "ALBUMKEYWORD")
+    @JoinTable(name = "ALBUM_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
+                                inverseJoinColumns = @JoinColumn(name = "ALBUM_ID",referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Album.class)
-    @Column(name = "albumId")
     private Set<Album> albums;
 
-    @JoinTable(name = "ARTISTKEYWORD")
+    @JoinTable(name = "ARTIST_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
+                                 inverseJoinColumns = @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Artist.class)
-    @Column(name = "artistId")
     private Set<Artist> artists;
 }
