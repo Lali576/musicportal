@@ -46,10 +46,10 @@ public class Song {
                            inverseJoinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"))
     private Album album;
 
-    @ManyToOne(targetEntity = Artist.class, optional = false)
-    @JoinTable(name="SONG_ARTIST", joinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"),
-                            inverseJoinColumns = @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ID"))
-    private Artist artist;
+    @ManyToOne(targetEntity = User.class, optional = false)
+    @JoinTable(name="SONG_USER", joinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"),
+                            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
+    private User user;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
     private Set<Playlist> playlists;

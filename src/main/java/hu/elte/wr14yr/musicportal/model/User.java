@@ -55,10 +55,9 @@ public class User {
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
     private Set<Playlist> playlists;
 
-    /*
     private Role role;
 
     public enum Role {
         GUEST, ROLE, ARTIST
-    }*/
+    }
 }

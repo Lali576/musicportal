@@ -28,7 +28,7 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     Iterable<Song> findAllByAlbum(Album album);
 
-    Iterable<Song> findAllByArtist(Artist artist);
+    Iterable<Song> findAllByUser(User user);
 
     Iterable<Song> findAllByKeywordsContainsAllIgnoreCase(String keyword);
 

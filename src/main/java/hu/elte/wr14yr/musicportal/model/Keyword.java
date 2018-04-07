@@ -35,8 +35,8 @@ public class Keyword {
     @ManyToMany(targetEntity = Album.class)
     private Set<Album> albums;
 
-    @JoinTable(name = "ARTIST_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
-                                 inverseJoinColumns = @JoinColumn(name = "ARTIST_ID", referencedColumnName = "ID"))
-    @ManyToMany(targetEntity = Artist.class)
-    private Set<Artist> artists;
+    @JoinTable(name = "USER_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
+                                 inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
+    @ManyToMany(targetEntity = User.class)
+    private Set<User> users;
 }
