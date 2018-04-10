@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import javax.annotation.security.PermitAll;
 import java.util.Optional;
 import java.util.Set;
 
@@ -12,17 +13,20 @@ public interface SongRepository extends CrudRepository<Song, Long>{
     @Override
     Song save(Song song);
 
+    @Query(value = "INSERT INTO SONG_USER (SONG_ID, USER_ID) VALUES (:SONG_ID,:USER_ID)", nativeQuery = true)
+    void saveSongUser(@Param("SONG_ID") long songId, @Param("USER_ID") long userId);
+
     @Query(value = "INSERT INTO SONG_ALBUM (SONG_ID, ALBUM_ID) VALUES (:SONG_ID,:ALBUM_ID)", nativeQuery = true)
-    void saveSongAlbum(@Param("SONG_ID") int songId, @Param("ALBUM_ID") int albumId);
+    void saveSongAlbum(@Param("SONG_ID") long songId, @Param("ALBUM_ID") long albumId);
 
     @Query(value = "INSERT INTO SONG_GENRE (SONG_ID, GENRE_ID) VALUES (:SONG_ID, :GENRE_ID)", nativeQuery = true)
-    void saveSongGenre(@Param("SONG_ID") int songId, @Param("GENRE_ID") int genreId);
+    void saveSongGenre(@Param("SONG_ID") long songId, @Param("GENRE_ID") long genreId);
 
     @Query(value = "INSERT INTO SONG_KEYWORD (SONG_ID, KEYWORD_ID) VALUES (:SONG_ID, :KEYWORD_ID)", nativeQuery = true)
-    void saveSongKeyword(@Param("SONG_ID") int songId, @Param("KEYWORD_ID") int keywordId);
+    void saveSongKeyword(@Param("SONG_ID") long songId, @Param("KEYWORD_ID") long keywordId);
 
     @Query(value = "INSERT INTO SONG_PLAYLIST (SONG_ID, PLAYLIST_ID) VALUES (:SONG_ID, :PLAYLIST_ID)", nativeQuery = true)
-    void saveSongPlaylist(@Param("SONG_ID") int songId, @Param("PLAYLIST_ID") int playlistId);
+    void saveSongPlaylist(@Param("SONG_ID") long songId, @Param("PLAYLIST_ID") long playlistId);
 
     Iterable<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
@@ -43,15 +47,18 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     void deleteAllByAlbum(Album album);
 
+    @Query(value = "DELETE FROM SONG_USER WHERE SONG_ID = :SONG_ID", nativeQuery = true)
+    void deleteSongUser(@Param("SONG_ID") long songId);
+
     @Query(value = "DELETE FROM SONG_ALBUM WHERE SONG_ID = :SONG_ID", nativeQuery = true)
-    void deleteSongAlbum(@Param("SONG_ID") int songId);
+    void deleteSongAlbum(@Param("SONG_ID") long songId);
 
     @Query(value = "DELETE FROM SONG_GENRE WHERE SONG_ID = :SONG_ID", nativeQuery = true)
-    void deleteSongGenre(@Param("SONG_ID") int songId);
+    void deleteSongGenre(@Param("SONG_ID") long songId);
 
     @Query(value = "DELETE FROM SONG_KEYWORD WHERE SONG_ID = :SONG_ID", nativeQuery = true)
-    void deleteSongKeyword(@Param("SONG_ID") int songId);
+    void deleteSongKeyword(@Param("SONG_ID") long songId);
 
     @Query(value = "DELETE FROM SONG_PLAYLIST WHERE SONG_ID = :SONG_ID", nativeQuery = true)
-    void deleteSongPlaylist(@Param("SONG_ID") int songId);
+    void deleteSongPlaylist(@Param("SONG_ID") long songId);
 }

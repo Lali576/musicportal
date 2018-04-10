@@ -23,7 +23,4 @@ public interface SongLikeRepository extends CrudRepository<SongLike, Long> {
     void deleteById(Long id);
 
     void deleteAllBySong(Song song);
-
-    void deleteAllByUser(User user);
-
 }

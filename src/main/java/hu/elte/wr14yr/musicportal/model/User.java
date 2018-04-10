@@ -37,6 +37,12 @@ public class User {
     @Column(name = "ICON_PATH", nullable = false)
     private String iconPath;
 
+    @OneToMany(targetEntity = Album.class, mappedBy = "user")
+    private Set<Album> albums;
+
+    @OneToMany(targetEntity = Song.class, mappedBy = "user")
+    private Set<Song> songs;
+
     @OneToMany(targetEntity = SongComment.class, mappedBy = "user")
     private Set<SongComment> songComments;
 

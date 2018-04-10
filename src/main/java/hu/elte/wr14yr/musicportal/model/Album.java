@@ -29,6 +29,11 @@ public class Album {
     @Column(name = "COVER_PATH", unique = true, nullable = false)
     private String coverPath;
 
+    @ManyToOne(targetEntity = User.class, optional = false)
+    @JoinTable(name="ALBUM_USER", joinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
+    private User user;
+
     @OneToMany(targetEntity = Song.class, mappedBy = "album")
     private Set<Song> songs;
 

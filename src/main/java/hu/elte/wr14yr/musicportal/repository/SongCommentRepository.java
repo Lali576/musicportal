@@ -15,6 +15,4 @@ public interface SongCommentRepository extends CrudRepository<SongComment, Long>
     void deleteById(Long id);
 
     void deleteAllBySong(Song song);
-
-    void deleteAllByUser(User user);
 }

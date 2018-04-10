@@ -15,11 +15,11 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     Iterable<Playlist> findAllByNameContainsAllIgnoreCase(String name);
 
+    Iterable<Playlist> findAllByKeywordsContainsAllIgnoreCase(String keyword);
+
     Iterable<Playlist> findAllByUser(User user);
 
     Playlist findPlaylistById(Long id);
-
-    Iterable<Playlist> findAllByKeywordsContainsAllIgnoreCase(String keyword);
 
     @Override
     void deleteById(Long id);
