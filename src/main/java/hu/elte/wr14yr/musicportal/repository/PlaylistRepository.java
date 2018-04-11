@@ -11,7 +11,7 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     Playlist save(Playlist playlist);
 
     @Query(value = "INSERT INTO PLAYLIST_KEYWORD (PLAYLIST_ID, KEYWORD_ID) VALUES (:PLAYLIST_ID, :KEYWORD_ID)", nativeQuery = true)
-    void savePlaylistKeyword(@Param("PLAYLIST_ID") int playlistId, @Param("KEYWORD_ID") int keywordId);
+    void savePlaylistKeyword(@Param("PLAYLIST_ID") long playlistId, @Param("KEYWORD_ID") long keywordId);
 
     Iterable<Playlist> findAllByNameContainsAllIgnoreCase(String name);
 
@@ -27,5 +27,5 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     void deleteAllByUser(User user);
 
     @Query(value = "DELETE FROM PLAYLIST_KEYWORD WHERE PLAYLIST_ID = :PLAYLIST_ID", nativeQuery = true)
-    void deletePlaylistKeyword(@Param("PLAYLIST_ID") int playlistId);
+    void deletePlaylistKeyword(@Param("PLAYLIST_ID") long playlistId);
 }

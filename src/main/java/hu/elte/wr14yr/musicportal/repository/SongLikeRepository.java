@@ -14,10 +14,10 @@ public interface SongLikeRepository extends CrudRepository<SongLike, Long> {
     SongLike save(SongLike songLike);
 
     @Query(value = "SELECT COUNT(id) FROM SONG_LIKES WHERE SONG_ID = :SONG_ID AND ROLE LIKE 'LIKE'", nativeQuery = true)
-    int countAllBySongAndRoleLike(@Param("SONG_ID") int songId);
+    int countAllBySongAndRoleLike(@Param("SONG_ID") long songId);
 
     @Query(value = "SELECT COUNT(id) FROM SONG_LIKES WHERE songId = :SONG_ID AND ROLE LIKE 'DISLIKE'", nativeQuery = true)
-	int countAllBySongAndRoleDislike(@Param("SONG_ID") int songId);
+	int countAllBySongAndRoleDislike(@Param("SONG_ID") long songId);
 
     @Override
     void deleteById(Long id);

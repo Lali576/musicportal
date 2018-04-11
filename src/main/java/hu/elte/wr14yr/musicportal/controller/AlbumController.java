@@ -4,6 +4,8 @@ import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +26,9 @@ public class AlbumController {
     }
 
     @PutMapping("/edit/{id}")
-    public Album update(@PathVariable long id) {
-        return null;
+    public ResponseEntity<Album> update(@PathVariable long id, @RequestBody Album album) {
+        Album updatedAlbum = null;
+        return ResponseEntity.ok(updatedAlbum);
     }
 
     @GetMapping("/{id}")

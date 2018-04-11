@@ -64,6 +64,6 @@ public class User {
     private Role role;
 
     public enum Role {
-        GUEST, ROLE, ARTIST
+        GUEST, USER, ARTIST
     }
 }
