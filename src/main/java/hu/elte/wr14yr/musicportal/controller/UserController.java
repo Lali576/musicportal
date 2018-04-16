@@ -22,8 +22,10 @@ public class UserController {
     private SongService songService;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.register(user);
+    public ResponseEntity<User> register(@RequestBody User user, @RequestBody String password) {
+        User savedUser = userService.register(user, password);
+
+        return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
@@ -43,7 +45,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> find(@PathVariable long id) {
-        User foundUser = null;
+        User foundUser = userService.getLoggedInUser();
         return ResponseEntity.ok(foundUser);
     }
 
@@ -54,8 +56,8 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id) {
-        userService.delete(id);
+    public ResponseEntity delete(@PathVariable long id, User user) {
+        userService.delete(id, user);
         return ResponseEntity.ok().build();
     }
 }

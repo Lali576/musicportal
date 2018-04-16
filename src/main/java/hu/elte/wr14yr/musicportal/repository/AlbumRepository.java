@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Set;
+
 public interface AlbumRepository extends CrudRepository<Album, Long> {
     @Override
     Album save(Album album);
@@ -19,13 +21,13 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
     void saveAlbumKeyword(@Param("ALBUM_ID") long albumId, @Param("KEYWORD_ID") long keywordId);
     */
 
-    Iterable<Album> findAllByNameContainsAllIgnoreCase(String name);
+    Set<Album> findAllByNameContainsAllIgnoreCase(String name);
 
-    Iterable<Album> findAllByUser(User user);
+    Set<Album> findAllByUser(User user);
 
-    Iterable<Album> findAllByGenres(User user);
+    Set<Album> findAllByGenres(User user);
 
-    Iterable<Album> findAllByKeywords(Keyword keyword);
+    Set<Album> findAllByKeywords(Keyword keyword);
 
     Album findAlbumById(Long id);
 

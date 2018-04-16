@@ -8,8 +8,10 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
 import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.Song;
+import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.PlaylistService;
+import hu.elte.wr14yr.musicportal.service.SearchService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +22,12 @@ import org.springframework.web.bind.annotation.*;
 public class SearchController {
 
     @Autowired
-    private SongService songService;
-
-    @Autowired
-    private AlbumService albumService;
-
-    @Autowired
-    private PlaylistService playlistService;
+    private SearchService searchService;
 
     @Role({ARTIST, GUEST, USER})
     @GetMapping("/albums/{name}")
     public ResponseEntity<Iterable<Album>> findAlbumByName(@PathVariable String name) {
-        Iterable<Album> foundAlbums = null;
+        Iterable<Album> foundAlbums = searchService.findAlbumByName(name);
         return ResponseEntity.ok(foundAlbums);
     }
 
@@ -45,7 +41,7 @@ public class SearchController {
     @Role({ARTIST, GUEST, USER})
     @GetMapping("/songs/{title}")
     public ResponseEntity<Iterable<Song>> findSongByTitle(@PathVariable String title) {
-        Iterable<Song> foundSongs = null;
+        Iterable<Song> foundSongs = searchService.findSongByTitle(title);
         return ResponseEntity.ok(foundSongs);
     }
 
@@ -59,7 +55,7 @@ public class SearchController {
     @Role({ARTIST, GUEST, USER})
     @GetMapping("/playlists/{name}")
     public ResponseEntity<Iterable<Playlist>> findPlaylistByName(@PathVariable String name) {
-        Iterable<Playlist> foundPlaylists = null;
+        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByName(name);
         return ResponseEntity.ok(foundPlaylists);
     }
 
@@ -68,5 +64,19 @@ public class SearchController {
     public ResponseEntity<Iterable<Playlist>> findPlaylistByKeyword(@PathVariable String keyword) {
         Iterable<Playlist> foundPlaylists = null;
         return ResponseEntity.ok(foundPlaylists);
+    }
+
+    @Role({ARTIST, GUEST, USER})
+    @GetMapping("/users/{username}")
+    public ResponseEntity<Iterable<User>> findUserByUsername(@PathVariable String username) {
+        Iterable<User> foundUsers = searchService.findUserByUsername(username);
+        return ResponseEntity.ok(foundUsers);
+    }
+
+    @Role({ARTIST, GUEST, USER})
+    @GetMapping("/users/{keyword}")
+    public ResponseEntity<Iterable<User>> findUserByKeyword(@PathVariable String keyword) {
+        Iterable<User> foundUsers = null;
+        return ResponseEntity.ok(foundUsers);
     }
 }

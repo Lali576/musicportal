@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.security.Key;
 import java.util.Set;
 
 @Entity
@@ -66,6 +67,9 @@ public class User {
 
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
     private Set<Playlist> playlists;
+
+    @ManyToMany(targetEntity = Keyword.class, mappedBy = "users")
+    private Set<Keyword> keywords;
 
     @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)

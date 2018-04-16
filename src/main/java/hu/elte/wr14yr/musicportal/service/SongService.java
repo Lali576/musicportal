@@ -28,22 +28,13 @@ public class SongService {
     @Autowired
     private SongLikeRepository songLikeRepository;
 
-    public Song create(Song song, File tempAudioFile, User user, Album album, Set<Genre> genres, Set<Keyword> keywords) {
+    public Song create(Song song, User user, Album album, Set<Genre> genres, Set<Keyword> keywords) {
         song.setUser(user);
         song.setAlbum(album);
         song.setGenres(genres);
         song.setKeywords(keywords);
-        //songRepository.saveSongUser(song.getId(), user.getId());
-        //songRepository.saveSongAlbum(song.getId(), album.getId());
-        for(Genre genre : genres) {
-            //songRepository.saveSongGenre(song.getId(), genre.getId());
-        }
 
-        for(Keyword keyword : keywords) {
-            //songRepository.saveSongKeyword(song.getId(), keyword.getId());
-        }
-
-        saveAudioFile(tempAudioFile);
+        saveAudioFile(new File(song.getAudioPath()));
 
         return songRepository.save(song);
     }
@@ -72,15 +63,25 @@ public class SongService {
         return songRepository.save(song);
     }
 
-    public void delete(long id) {
-        //songRepository.deleteSongAlbum(id);
-        //songRepository.deleteSongPlaylist(id);
-        //songRepository.deleteSongKeyword(id);
-        //songRepository.deleteSongGenre(id);
-        songRepository.deleteById(id);
+    public void deleteAllByAlbum(Album album) {
+        for (Song song : album.getSongs()) {
+            delete(song);
+        }
+    }
+
+    public void delete(Song song) {
+        songCommentRepository.deleteAllBySong(song);
+        songCounterRepository.deleteAllBySong(song);
+        songLikeRepository.deleteAllBySong(song);
+
+        songRepository.deleteById(song.getId());
     }
 
     private void saveAudioFile(File file) {
-        //
+
+    }
+
+    private void deleteAudioFile(File file) {
+
     }
 }

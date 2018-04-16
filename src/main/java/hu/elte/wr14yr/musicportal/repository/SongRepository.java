@@ -24,15 +24,17 @@ public interface SongRepository extends CrudRepository<Song, Long>{
     void saveSongPlaylist(@Param("SONG_ID") long songId, @Param("PLAYLIST_ID") long playlistId);
     */
 
-    Iterable<Song> findAllByTitleContainsAllIgnoreCase(String title);
+    Set<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
-    Iterable<Song> findAllByAlbum(Album album);
+    Set<Song> findAllByAlbum(Album album);
 
-    Iterable<Song> findAllByUser(User user);
+    Set<Song> findAllByUser(User user);
 
-    Iterable<Song> findAllByGenres(Genre genre);
+    Set<Song> findAllByPlaylists(Playlist playlist);
 
-    Iterable<Song> findAllByKeywords(Keyword keyword);
+    Set<Song> findAllByGenres(Genre genre);
+
+    Set<Song> findAllByKeywords(Keyword keyword);
 
     Song findSongById(long id);
 

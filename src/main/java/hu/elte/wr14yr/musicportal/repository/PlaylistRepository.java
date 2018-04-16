@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Set;
+
 public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     @Override
     Playlist save(Playlist playlist);
@@ -15,11 +17,11 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     void savePlaylistKeyword(@Param("PLAYLIST_ID") long playlistId, @Param("KEYWORD_ID") long keywordId);
     */
 
-    Iterable<Playlist> findAllByNameContainsAllIgnoreCase(String name);
+    Set<Playlist> findAllByNameContainsAllIgnoreCase(String name);
 
-    Iterable<Playlist> findAllByKeywordsContainsAllIgnoreCase(String keyword);
+    Set<Playlist> findAllByKeywordsContainsAllIgnoreCase(String keyword);
 
-    Iterable<Playlist> findAllByUser(User user);
+    Set<Playlist> findAllByUser(User user);
 
     Playlist findPlaylistById(Long id);
 

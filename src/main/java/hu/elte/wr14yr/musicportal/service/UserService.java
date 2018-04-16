@@ -1,6 +1,10 @@
 package hu.elte.wr14yr.musicportal.service;
 
+import hu.elte.wr14yr.musicportal.model.Album;
+import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.User;
+import hu.elte.wr14yr.musicportal.model.UserMessage;
+import hu.elte.wr14yr.musicportal.repository.UserMessageRepository;
 import hu.elte.wr14yr.musicportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,24 +17,39 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserMessageRepository userMessageRepository;
+
+    @Autowired
+    private AlbumService albumService;
+
+    @Autowired
+    private PlaylistService playlistService;
+
     private User user;
 
-    public User register(User user) {
+    public User register(User user, String password) {
         user.setRole(User.Role.USER);
+
+        //crypto salt + sha256
+
         return this.user = userRepository.save(user);
     }
 
     public User login(User user) throws Exception {
-        if(isValid(user)) {
-            //return this.user = userRepository.findByUsername(user.getUsername());
-        }
-        throw new Exception();
+         user = userRepository.findByUsername(user.getUsername());
+         if(isValid(user)) {
+             this.user = user;
+             return this.user;
+         }
+         throw new Exception();
     }
 
     public boolean isValid(User user) {
         String username = user.getUsername();
-        //String password = user.getPassword();
-        //return userRepository.findByUsernameAndPassword(username, password).isPresent();
+
+        //cryptosalt + sha256 passworkd checking
+
         return false;
     }
 
@@ -50,7 +69,17 @@ public class UserService {
         user = null;
     }
 
-    public void delete(long id) {
+    public void delete(long id, User user) {
+        for(Album album : user.getAlbums()) {
+            albumService.delete(album);
+        }
+
+        playlistService.deleteAllByUser(user);
+
+        for(UserMessage userMessage : user.getUserFromMessages()) {
+            userMessageRepository.deleteAllByUserFrom(user);
+        }
+
         userRepository.deleteById(id);
     }
 }

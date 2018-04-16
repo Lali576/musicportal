@@ -22,22 +22,11 @@ public class PlaylistService {
     private SongRepository songRepository;
 
     public Playlist create(Playlist playlist, User user, Set<Song> songs, Set<Keyword> keywords) {
-
-        for(Song song : songs) {
-            //songRepository.saveSongPlaylist(song.getId(), playlist.getId());
-        }
-
-        for(Keyword keyword : keywords) {
-            //playlistRepository.savePlaylistKeyword(playlist.getId(), keyword.getId());
-        }
+        playlist.setUser(user);
+        playlist.setSongs(songs);
+        playlist.setKeywords(keywords);
 
         return playlistRepository.save(playlist);
-    }
-
-    public Playlist find(long id) {
-        Playlist playlist = playlistRepository.findPlaylistById(id);
-        //playlist.getSongs(songRepository.findAllByPlaylists(playlist));
-        return null;
     }
 
     public Iterable<Playlist> list(User user) {
@@ -48,11 +37,24 @@ public class PlaylistService {
         }
     }
 
-    public Playlist update(Playlist playlist) {
-        return create(playlist, playlist.getUser(), playlist.getSongs(), playlist.getKeywords());
+    public Playlist find(long id) {
+        Playlist playlist = playlistRepository.findPlaylistById(id);
+        playlist.setSongs(songRepository.findAllByPlaylists(playlist));
+
+        return playlist;
     }
 
-    public void delete() {
+    public Playlist update(Playlist playlist) {
+        return playlistRepository.save(playlist);
+    }
 
+    public void deleteAllByUser(User user) {
+        for(Playlist playlist : user.getPlaylists()) {
+            delete(playlist.getId());
+        }
+    }
+
+    public void delete(long id) {
+        playlistRepository.deleteById(id);
     }
 }
