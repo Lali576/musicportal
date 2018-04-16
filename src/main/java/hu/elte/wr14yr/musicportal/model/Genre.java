@@ -24,6 +24,11 @@ public class Genre {
     @OneToMany(targetEntity = User.class, mappedBy = "favGenreId")
     private Set<User> users;
 
+    @JoinTable(name = "ALBUM_GENRE", joinColumns = @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID"),
+                             inverseJoinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"))
+    @ManyToMany(targetEntity = Album.class)
+    private Set<Album> albums;
+
     @JoinTable(name = "SONG_GENRE", joinColumns = @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID"),
                              inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)

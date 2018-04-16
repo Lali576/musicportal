@@ -22,8 +22,7 @@ public class Playlist {
     private String name;
 
     @ManyToOne(targetEntity = User.class, optional = false)
-    @JoinTable(name = "USER_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),
-                                inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "playlists")

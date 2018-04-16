@@ -3,14 +3,10 @@ package hu.elte.wr14yr.musicportal.controller;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.SongService;
-import hu.elte.wr14yr.musicportal.service.UserMessageService;
 import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.security.PermitAll;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,8 +16,6 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private UserMessageService userMessageService;
-
     private AlbumService albumService;
 
     @Autowired
@@ -29,31 +23,39 @@ public class UserController {
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
-        return null;
+        return userService.register(user);
     }
 
     @PostMapping("/login")
-    public User login(@PathVariable User user) {
-        return null;
+    public ResponseEntity<User> login(@PathVariable User user) {
+        try {
+            return ResponseEntity.ok(userService.login(user));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/update/{id}")
-    public void update(@PathVariable long id) {
-
+    public ResponseEntity<User> update(@PathVariable long id, User user) {
+        User updatedUser = userService.update(user);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @GetMapping("/{id}")
-    public User find(@PathVariable long id) {
-        return null;
+    public ResponseEntity<User> find(@PathVariable long id) {
+        User foundUser = null;
+        return ResponseEntity.ok(foundUser);
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestBody User user) {
-
+    public ResponseEntity logout(@RequestBody User user) {
+        userService.logout();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable long id) {
-
+    public ResponseEntity delete(@PathVariable long id) {
+        userService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

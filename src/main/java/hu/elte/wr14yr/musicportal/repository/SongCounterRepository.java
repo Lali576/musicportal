@@ -10,10 +10,7 @@ public interface SongCounterRepository extends CrudRepository<SongCounter, Long>
     @Override
     SongCounter save(SongCounter songCounter);
 
-    int countAllBySongAndIpAddress(Song song, String ipAddress);
-
-    @Override
-    void deleteById(Long id);
+    int countAllBySong(Song song);
 
     void deleteAllBySong(Song song);
 

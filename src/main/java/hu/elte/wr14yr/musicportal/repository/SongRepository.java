@@ -13,12 +13,6 @@ public interface SongRepository extends CrudRepository<Song, Long>{
     @Override
     Song save(Song song);
 
-    @Query(value = "INSERT INTO SONG_USER (SONG_ID, USER_ID) VALUES (:SONG_ID,:USER_ID)", nativeQuery = true)
-    void saveSongUser(@Param("SONG_ID") long songId, @Param("USER_ID") long userId);
-
-    @Query(value = "INSERT INTO SONG_ALBUM (SONG_ID, ALBUM_ID) VALUES (:SONG_ID,:ALBUM_ID)", nativeQuery = true)
-    void saveSongAlbum(@Param("SONG_ID") long songId, @Param("ALBUM_ID") long albumId);
-
     @Query(value = "INSERT INTO SONG_GENRE (SONG_ID, GENRE_ID) VALUES (:SONG_ID, :GENRE_ID)", nativeQuery = true)
     void saveSongGenre(@Param("SONG_ID") long songId, @Param("GENRE_ID") long genreId);
 
@@ -34,24 +28,10 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     Iterable<Song> findAllByUser(User user);
 
-    Iterable<Song> findAllByKeywordsContainsAllIgnoreCase(String keyword);
-
-    Iterable<Song> findAllByKeywords(Keyword keyword);
-
-    Iterable<Song> findAllByPlaylists(Playlist playlist);
-
-    Iterable<Song> findAllByGenres(Genre genre);
+    Song findSongById(long id);
 
     @Override
     void deleteById(Long id);
-
-    void deleteAllByAlbum(Album album);
-
-    @Query(value = "DELETE FROM SONG_USER WHERE SONG_ID = :SONG_ID", nativeQuery = true)
-    void deleteSongUser(@Param("SONG_ID") long songId);
-
-    @Query(value = "DELETE FROM SONG_ALBUM WHERE SONG_ID = :SONG_ID", nativeQuery = true)
-    void deleteSongAlbum(@Param("SONG_ID") long songId);
 
     @Query(value = "DELETE FROM SONG_GENRE WHERE SONG_ID = :SONG_ID", nativeQuery = true)
     void deleteSongGenre(@Param("SONG_ID") long songId);

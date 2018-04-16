@@ -24,8 +24,6 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     @Override
     void deleteById(Long id);
 
-    void deleteAllByUser(User user);
-
     @Query(value = "DELETE FROM PLAYLIST_KEYWORD WHERE PLAYLIST_ID = :PLAYLIST_ID", nativeQuery = true)
     void deletePlaylistKeyword(@Param("PLAYLIST_ID") long playlistId);
 }

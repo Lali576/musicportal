@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.File;
 import java.time.Year;
 import java.util.List;
 import java.util.Set;
@@ -32,24 +33,30 @@ public class Song {
     @Column(name = "AUDIO_PATH", unique = true, nullable = false)
     private String audioPath;
 
+    private File tempAudioFile;
+
+    @ManyToOne(targetEntity = Album.class, optional = false)
+    @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID")
+    private Album album;
+
+    @ManyToOne(targetEntity = User.class, optional = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    private User user;
+
     @OneToMany(targetEntity = SongComment.class, mappedBy = "song")
     private Set<SongComment> songComments;
 
     @OneToMany(targetEntity = SongCounter.class, mappedBy = "song")
     private Set<SongCounter> songCounters;
 
+    private int songCounterNumber;
+
     @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
     private Set<SongLike> songLikes;
 
-    @ManyToOne(targetEntity = Album.class, optional = false)
-    @JoinTable(name="SONG_ALBUM", joinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"),
-                           inverseJoinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"))
-    private Album album;
+    private int songLikeNumber;
 
-    @ManyToOne(targetEntity = User.class, optional = false)
-    @JoinTable(name="SONG_USER", joinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"),
-                            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
-    private User user;
+    private int songDislikeNumber;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
     private Set<Playlist> playlists;

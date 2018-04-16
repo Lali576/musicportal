@@ -18,21 +18,27 @@ public class User {
     @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "USER_NAME", unique = true, nullable = false)
-    private String userName;
+    @Column(name = "USERNAME", unique = true, nullable = false)
+    private String username;
 
     @Column(name = "EMAIL_ADDRESS", unique = true, nullable = false)
     private String emailAddress;
 
-    @Column(name = "PASSWORD", nullable = false)
-    private String password;
+    @Column(name = "SALT_CODE", unique = true, nullable = false)
+    private String saltCode;
 
-    @Column(name = "FULL_NAME")
-    private String fullName;
+    @Column(name = "HASH_PASSWORD", unique = true, nullable = false)
+    private String hashPassword;
 
     @ManyToOne(targetEntity = Genre.class)
     @JoinColumn(name = "FAV_GENRE_ID", nullable = false)
     private Genre favGenreId;
+
+    @Column(name = "FULL_NAME")
+    private String fullName;
+
+    @Column(name = "BIOGRAPHY")
+    private String biography;
 
     @Column(name = "ICON_PATH", nullable = false)
     private String iconPath;
@@ -61,6 +67,8 @@ public class User {
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
     private Set<Playlist> playlists;
 
+    @Column(name = "ROLE", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public enum Role {

@@ -1,11 +1,11 @@
 package hu.elte.wr14yr.musicportal.controller;
 
+import hu.elte.wr14yr.musicportal.annotation.Role;
+import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import hu.elte.wr14yr.musicportal.model.Song;
-import hu.elte.wr14yr.musicportal.service.SongCommentService;
-import hu.elte.wr14yr.musicportal.service.SongCounterService;
-import hu.elte.wr14yr.musicportal.service.SongLikeService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,32 +15,35 @@ public class SongController {
     @Autowired
     private SongService songService;
 
-    @Autowired
-    private SongLikeService songLikeService;
+    @Role({ARTIST})
+    @GetMapping
+    public ResponseEntity<Iterable<Song>> list() {
+        return ResponseEntity.ok(null);
+    }
 
-    @Autowired
-    private SongCommentService songCommentService;
-
-    @Autowired
-    private SongCounterService songCounterService;
-
+    @Role({ARTIST})
     @PostMapping("/new")
-    public Song create(@RequestBody Song song) {
-        return null;
+    public ResponseEntity<Song> create(@RequestBody Song song) {
+        return ResponseEntity.ok().build();
     }
 
+    @Role({ARTIST})
     @PutMapping("/edit/{id}")
-    public Song update(@PathVariable long id) {
-        return null;
+    public ResponseEntity<Song> update(@PathVariable long id) {
+        Song updatedSong = null;
+        return ResponseEntity.ok(updatedSong);
     }
 
+    @Role({ARTIST})
     @GetMapping("/{id}")
-    public Song find(@PathVariable long id) {
-        return null;
+    public ResponseEntity<Song> find(@PathVariable long id) {
+        Song foundSong  = null;
+        return ResponseEntity.ok(foundSong);
     }
 
+    @Role({ARTIST})
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
-
+    public ResponseEntity delete(@PathVariable long id) {
+        return ResponseEntity.ok().build();
     }
 }

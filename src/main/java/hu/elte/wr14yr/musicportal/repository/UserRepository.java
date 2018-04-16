@@ -10,9 +10,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     User save(User user);
 
-    Optional<User> findByUserNameAndPassword(String username, String  password);
-
-    User findByUserName(String username);
+    Optional<User> findByUsername(String username);
 
     @Override
     void deleteById(Long id);
