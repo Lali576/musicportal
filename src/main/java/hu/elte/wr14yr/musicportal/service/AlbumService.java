@@ -25,11 +25,11 @@ public class AlbumService {
         }
 
         for(Genre genre : genres) {
-            albumRepository.saveAlbumGenre(album.getId(), genre.getId());
+            //albumRepository.saveAlbumGenre(album.getId(), genre.getId());
         }
 
         for(Keyword keyword : keywords) {
-            albumRepository.saveAlbumKeyword(album.getId(), keyword.getId());
+            //albumRepository.saveAlbumKeyword(album.getId(), keyword.getId());
         }
 
         return albumRepository.save(album);

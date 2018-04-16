@@ -24,11 +24,11 @@ public class PlaylistService {
     public Playlist create(Playlist playlist, User user, Set<Song> songs, Set<Keyword> keywords) {
 
         for(Song song : songs) {
-            songRepository.saveSongPlaylist(song.getId(), playlist.getId());
+            //songRepository.saveSongPlaylist(song.getId(), playlist.getId());
         }
 
         for(Keyword keyword : keywords) {
-            playlistRepository.savePlaylistKeyword(playlist.getId(), keyword.getId());
+            //playlistRepository.savePlaylistKeyword(playlist.getId(), keyword.getId());
         }
 
         return playlistRepository.save(playlist);

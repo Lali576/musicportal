@@ -36,11 +36,11 @@ public class SongService {
         //songRepository.saveSongUser(song.getId(), user.getId());
         //songRepository.saveSongAlbum(song.getId(), album.getId());
         for(Genre genre : genres) {
-            songRepository.saveSongGenre(song.getId(), genre.getId());
+            //songRepository.saveSongGenre(song.getId(), genre.getId());
         }
 
         for(Keyword keyword : keywords) {
-            songRepository.saveSongKeyword(song.getId(), keyword.getId());
+            //songRepository.saveSongKeyword(song.getId(), keyword.getId());
         }
 
         saveAudioFile(tempAudioFile);
@@ -74,9 +74,9 @@ public class SongService {
 
     public void delete(long id) {
         //songRepository.deleteSongAlbum(id);
-        songRepository.deleteSongPlaylist(id);
-        songRepository.deleteSongKeyword(id);
-        songRepository.deleteSongGenre(id);
+        //songRepository.deleteSongPlaylist(id);
+        //songRepository.deleteSongKeyword(id);
+        //songRepository.deleteSongGenre(id);
         songRepository.deleteById(id);
     }
 
