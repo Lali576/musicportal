@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.repository;
 
+import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.User;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +20,7 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     Set<Playlist> findAllByNameContainsAllIgnoreCase(String name);
 
-    Set<Playlist> findAllByKeywordsContainsAllIgnoreCase(String keyword);
+    Set<Playlist> findAllByKeywords(Keyword keyword);
 
     Set<Playlist> findAllByUser(User user);
 

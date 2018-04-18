@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.repository;
 
 import hu.elte.wr14yr.musicportal.model.Album;
+import hu.elte.wr14yr.musicportal.model.Genre;
 import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
 import org.springframework.data.jpa.repository.Query;
@@ -25,7 +26,7 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     Set<Album> findAllByUser(User user);
 
-    Set<Album> findAllByGenres(User user);
+    Set<Album> findAllByGenres(Genre genre);
 
     Set<Album> findAllByKeywords(Keyword keyword);
 
