@@ -78,4 +78,6 @@ public class User {
     public enum Role {
         GUEST, USER, ARTIST
     }
+
+    private String tempPassword;
 }

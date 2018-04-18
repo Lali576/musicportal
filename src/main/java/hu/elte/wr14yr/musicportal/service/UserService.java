@@ -10,6 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
 @Service
 @SessionScope
 public class UserService {
@@ -28,16 +34,29 @@ public class UserService {
 
     private User user;
 
-    public User register(User user, String password) {
+    public User register(User user) throws NoSuchAlgorithmException {
         user.setRole(User.Role.USER);
 
-        //crypto salt + sha256
+        SecureRandom rand = new SecureRandom();
+        byte[] salt = new byte[24];
+        rand.nextBytes(salt);
+        String saltCode = new String(Base64.getDecoder().decode(salt));
+
+        String passSalt = user.getTempPassword() + saltCode;
+
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
+        String hashPassword = new String(Base64.getDecoder().decode(hash));
+
+        user.setSaltCode(saltCode);
+        user.setHashPassword(hashPassword);
 
         return this.user = userRepository.save(user);
     }
 
-    public User login(User user) throws Exception {
-         user = userRepository.findByUsername(user.getUsername());
+    public User login(String username, String password) throws Exception {
+         User user = userRepository.findByUsername(username);
+         user.setTempPassword(password);
          if(isValid(user)) {
              this.user = user;
              return this.user;
@@ -45,12 +64,18 @@ public class UserService {
          throw new Exception();
     }
 
-    public boolean isValid(User user) {
-        String username = user.getUsername();
+    public boolean isValid(User user) throws NoSuchAlgorithmException {
+        String passSalt = user.getTempPassword() + user.getSaltCode();
 
-        //cryptosalt + sha256 passworkd checking
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
+        String hashPassword = new String(Base64.getDecoder().decode(hash));
 
-        return false;
+        if(hashPassword.equals(user.getHashPassword())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean isLoggenIn() {
