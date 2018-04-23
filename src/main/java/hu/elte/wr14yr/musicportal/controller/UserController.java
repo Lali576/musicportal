@@ -23,15 +23,15 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user, @RequestBody String password) {
-        User savedUser = userService.register(user, password);
+        User savedUser = userService.register(user);
 
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@PathVariable User user) {
+    public ResponseEntity<User> login(@RequestBody String username, @RequestBody String password) {
         try {
-            return ResponseEntity.ok(userService.login(user));
+            return ResponseEntity.ok(userService.login(username, password));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

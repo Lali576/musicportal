@@ -34,7 +34,7 @@ public class UserService {
 
     private User user;
 
-    public User register(User user) throws NoSuchAlgorithmException {
+    public User register(User user) {
         user.setRole(User.Role.USER);
 
         SecureRandom rand = new SecureRandom();
@@ -44,14 +44,19 @@ public class UserService {
 
         String passSalt = user.getTempPassword() + saltCode;
 
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
-        String hashPassword = new String(Base64.getDecoder().decode(hash));
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
+            String hashPassword = new String(Base64.getDecoder().decode(hash));
 
-        user.setSaltCode(saltCode);
-        user.setHashPassword(hashPassword);
+            user.setSaltCode(saltCode);
+            user.setHashPassword(hashPassword);
 
-        return this.user = userRepository.save(user);
+            return this.user = userRepository.save(user);
+        } catch(NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public User login(String username, String password) throws Exception {
@@ -64,18 +69,21 @@ public class UserService {
          throw new Exception();
     }
 
-    public boolean isValid(User user) throws NoSuchAlgorithmException {
+    private boolean isValid(User user) {
         String passSalt = user.getTempPassword() + user.getSaltCode();
 
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
-        String hashPassword = new String(Base64.getDecoder().decode(hash));
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
+            String hashPassword = new String(Base64.getDecoder().decode(hash));
 
-        if(hashPassword.equals(user.getHashPassword())) {
-            return true;
-        } else {
+            return hashPassword.equals(user.getHashPassword());
+        } catch(NoSuchAlgorithmException e) {
+            e.printStackTrace();
             return false;
         }
+
+
     }
 
     public boolean isLoggenIn() {
