@@ -35,7 +35,7 @@ public class UserService {
 
     private User user;
 
-    public User register(User user) {
+    public User register(User user, String password, String tempIconPath) {
         user.setRole(User.Role.USER);
 
         SecureRandom rand = new SecureRandom();
@@ -43,7 +43,7 @@ public class UserService {
         rand.nextBytes(salt);
         String saltCode = new String(Base64.getDecoder().decode(salt));
 
-        String passSalt = user.getTempPassword() + saltCode;
+        String passSalt = password + saltCode;
 
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -58,7 +58,8 @@ public class UserService {
             return null;
         }
 
-        new File("../media/" + user.getUsername()).mkdir();
+        new File("..\\media\\" + user.getUsername() + "\\icon").mkdir();
+        new File("..\\media\\" + user.getUsername() + "\\icon\\" + tempIconPath);
 
         return this.user = userRepository.save(user);
     }

@@ -34,7 +34,9 @@ public class SongService {
         song.setGenres(genres);
         song.setKeywords(keywords);
 
-        saveAudioFile(new File(song.getAudioPath()));
+        String path = song.getTempAudioFile().getName();
+
+        new File("\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + path);
 
         return songRepository.save(song);
     }
@@ -59,7 +61,6 @@ public class SongService {
     }
 
     public Song update(Song song) {
-        saveAudioFile(song.getTempAudioFile());
         return songRepository.save(song);
     }
 
@@ -75,10 +76,6 @@ public class SongService {
         songLikeRepository.deleteAllBySong(song);
 
         songRepository.deleteById(song.getId());
-    }
-
-    private void saveAudioFile(File file) {
-
     }
 
     private void deleteAudioFile(File file) {

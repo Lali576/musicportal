@@ -7,6 +7,7 @@ import hu.elte.wr14yr.musicportal.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class AlbumService {
 
             songRepository.save(song);
         }
-
+        new File("..\\media\\" + user.getUsername() + "\\" + album.getName());
         return savedAlbum;
     }
 
