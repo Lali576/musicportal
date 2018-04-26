@@ -24,7 +24,7 @@ export class UserService {
 
   addUser(user: User): Promise<User> {
     return this.http.post<User>(
-      `api/user`,
+      `api/user/register`,
       user,
       httpOptions
     ).toPromise();
