@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -52,11 +53,14 @@ public class UserService {
             user.setSaltCode(saltCode);
             user.setHashPassword(hashPassword);
 
-            return this.user = userRepository.save(user);
         } catch(NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
         }
+
+        new File("../media/" + user.getUsername()).mkdir();
+
+        return this.user = userRepository.save(user);
     }
 
     public User login(String username, String password) throws Exception {
