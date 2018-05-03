@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class SongComment {
 
     @JoinColumn(name = "SONG_ID", nullable = false)
     @ManyToOne(targetEntity = Song.class, optional = false)
+    @JsonIgnore
     private Song song;
 
     @JoinColumn(name = "USER_ID", nullable = false)

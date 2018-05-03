@@ -1,5 +1,7 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Data
 @Table(name = "PLAYLISTS")
 @AllArgsConstructor
+@JsonIgnoreProperties({"keywords",
+                        "songs"})
 public class Playlist {
 
     @Id

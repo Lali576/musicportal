@@ -1,8 +1,9 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "USER_MESSAGES")
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserMessage {
 
     @Id
@@ -21,6 +21,8 @@ public class UserMessage {
 
     @JoinColumn(name = "USER_TO_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
+    @JsonIgnoreProperties("userToMessages")
+    @JsonIgnore
     private User userTo;
 
     @JoinColumn(name = "USER_FROM_ID", nullable = false)

@@ -1,11 +1,12 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.security.Key;
+import java.io.File;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,18 @@ import java.util.Set;
 @Table(name = "USERS")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"saltCode",
+                        "hashPassword",
+                        "iconPath",
+                        "albums",
+                        "songs",
+                        "songComments",
+                        "songCounters",
+                        "songLikes",
+                        "userToMessages",
+                        "userFromMessages",
+                        "playlists",
+                        "keywords"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,6 +56,8 @@ public class User {
 
     @Column(name = "ICON_PATH", nullable = false)
     private String iconPath;
+
+    private File iconFile;
 
     @OneToMany(targetEntity = Album.class, mappedBy = "user")
     private Set<Album> albums;
@@ -78,6 +93,4 @@ public class User {
     public enum Role {
         GUEST, USER, ARTIST
     }
-
-    private String tempPassword;
 }

@@ -1,19 +1,22 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.File;
 import java.time.Year;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "ALBUMS")
 @AllArgsConstructor
+@JsonIgnoreProperties({"coverPath",
+                        "songs",
+                        "genres",
+                        "keywords"})
 public class Album {
 
     @Id
@@ -30,11 +33,7 @@ public class Album {
     @Column(name = "COVER_PATH", unique = true, nullable = false)
     private String coverPath;
 
-    //testing
-    private File tempCoverFile;
-
-    //testing
-    private int songsNumber;
+    private File coverFile;
 
     @ManyToOne(targetEntity = User.class, optional = false)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
