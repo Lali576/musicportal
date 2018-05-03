@@ -4,6 +4,8 @@ import com.sun.scenario.effect.impl.sw.java.JSWBlend_MULTIPLYPeer;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.Playlist;
+
+import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 
@@ -47,7 +49,7 @@ public class PlaylistController {
         return ResponseEntity.ok(savedPlaylist);
     }
 
-    @Role({USER, ARTIST})
+    @Role({USER, ARTIST, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Playlist> find(@PathVariable long id) {
         Playlist foundPlaylist = playlistService.find(id);

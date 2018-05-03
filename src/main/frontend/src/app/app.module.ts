@@ -17,6 +17,11 @@ import { PlaylistDetailComponent } from './playlist-detail/playlist-detail.compo
 import { SongEditComponent } from './song-edit/song-edit.component';
 import { SongDetailComponent } from './song-detail/song-detail.component';
 import { SongListComponent } from './song-list/song-list.component';
+import {UserService} from "./service/user.service";
+import {SongService} from "./service/song.service";
+import {AlbumService} from "./service/album.service";
+import {PlaylistService} from "./service/playlist.service";
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -35,12 +40,16 @@ import { SongListComponent } from './song-list/song-list.component';
     PlaylistDetailComponent,
     SongEditComponent,
     SongDetailComponent,
-    SongListComponent
+    SongListComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [UserService,
+              SongService,
+              AlbumService,
+              PlaylistService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,6 +2,8 @@ package hu.elte.wr14yr.musicportal.controller;
 
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
+import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
+import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.*;
 import hu.elte.wr14yr.musicportal.service.SongService;
@@ -44,7 +46,7 @@ public class SongController {
         return ResponseEntity.ok(updatedSong);
     }
 
-    @Role({ARTIST})
+    @Role({ARTIST, USER, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Song> find(@PathVariable long id) {
         Song foundSong  = songService.find(id);
