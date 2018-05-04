@@ -27,6 +27,22 @@ public class SongController {
         return ResponseEntity.ok(songs);
     }
 
+    @GetMapping("/comments")
+    public ResponseEntity<Iterable<SongComment>> listSongComments(@RequestBody Song song) {
+        Iterable<SongComment> songComments = songService.listSongComments(song);
+        return ResponseEntity.ok(songComments);
+    }
+
+    @PostMapping("/comments/new")
+    public ResponseEntity<Iterable<SongComment>> createSongComment(SongComment songComment) {
+        Iterable<SongComment> songComments = songService.createSongComment(songComment);
+        return ResponseEntity.ok(songComments);
+    }
+
+    /*
+        SongLike, SongCounter
+     */
+
     @Role({ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Song> create(@RequestBody Song song,

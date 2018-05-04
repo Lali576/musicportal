@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Set;
 
@@ -39,7 +42,10 @@ public class AlbumService {
 
             songRepository.save(song);
         }
-        new File("..\\media\\" + user.getUsername() + "\\" + album.getName());
+
+        new File("..\\media\\" + user.getUsername() + "\\" + album.getName()).mkdir();
+        new File("..\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + album.getCoverFile().getName());
+
         return savedAlbum;
     }
 
@@ -59,6 +65,17 @@ public class AlbumService {
     }
 
     public Album update(Album album) {
+        String lastPath = albumRepository.findAlbumById(album.getId()).getCoverPath();
+        if(!(album.getCoverFile().getName().equals(lastPath))) {
+            try {
+                Files.delete(Paths.get(lastPath));
+                String path = album.getCoverFile().getName();
+                new File("..\\media\\" + album.getUser().getUsername() + "\\" + album.getName() + "\\" + path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
         return albumRepository.save(album);
     }
 

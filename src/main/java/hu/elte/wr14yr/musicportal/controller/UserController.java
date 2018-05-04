@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.controller;
 
 import hu.elte.wr14yr.musicportal.model.User;
+import hu.elte.wr14yr.musicportal.model.UserMessage;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -23,7 +24,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user, @RequestBody String password) {
-        User savedUser = userService.register(user);
+        User savedUser = userService.register(user, password);
 
         return ResponseEntity.ok(savedUser);
     }
@@ -35,6 +36,18 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<Iterable<UserMessage>> listUserMessages() {
+        Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
+        return ResponseEntity.ok(userMessages);
+    }
+
+    @PostMapping("/messages/new")
+    public ResponseEntity<Iterable<UserMessage>> createUserMessage(@RequestBody UserMessage userMessage) {
+        Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
+        return ResponseEntity.ok(userMessages);
     }
 
     @PutMapping("/update/{id}")

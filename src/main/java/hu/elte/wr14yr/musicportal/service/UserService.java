@@ -16,6 +16,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @SessionScope
@@ -35,7 +37,7 @@ public class UserService {
 
     private User user;
 
-    public User register(User user, String password, String tempIconPath) {
+    public User register(User user, String password) {
         user.setRole(User.Role.USER);
 
         SecureRandom rand = new SecureRandom();
@@ -59,23 +61,33 @@ public class UserService {
         }
 
         new File("..\\media\\" + user.getUsername() + "\\icon").mkdir();
-        new File("..\\media\\" + user.getUsername() + "\\icon\\" + tempIconPath);
+        new File("..\\media\\" + user.getUsername() + "\\icon\\" + user.getIconFile().getName());
 
         return this.user = userRepository.save(user);
     }
 
-    public User login(String username, String password) throws Exception {
-         User user = userRepository.findByUsername(username);
-         user.setTempPassword(password);
-         if(isValid(user)) {
-             this.user = user;
-             return this.user;
-         }
-         throw new Exception();
+    public Iterable<UserMessage> createUserMessage(UserMessage userMessage) {
+        UserMessage savedUserMessage = userMessageRepository.save(userMessage);
+        return userMessageRepository.findAllByUserTo(savedUserMessage.getUserTo());
     }
 
-    private boolean isValid(User user) {
-        String passSalt = user.getTempPassword() + user.getSaltCode();
+    public Iterable<UserMessage> listUserMessages(User user) {
+        return userMessageRepository.findAllByUserTo(user);
+    }
+
+    public User login(String username, String password) throws UserNotValidException {
+        Optional<User> loginUser = userRepository.findByUsername(username);
+         if(loginUser.isPresent()) {
+             if(isValid(loginUser.get(), password)) {
+                 user = loginUser.get();
+                 return user;
+             }
+         }
+         throw new UserNotValidException();
+    }
+
+    private boolean isValid(User user, String password) {
+        String passSalt = password + user.getSaltCode();
 
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -87,8 +99,6 @@ public class UserService {
             e.printStackTrace();
             return false;
         }
-
-
     }
 
     public boolean isLoggenIn() {

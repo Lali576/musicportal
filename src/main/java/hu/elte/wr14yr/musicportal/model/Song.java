@@ -18,7 +18,8 @@ import java.util.Set;
                         "songLikes",
                         "playlists",
                         "genres",
-                        "keywords"})
+                        "keywords",
+                        "songComments"})
 public class Song {
 
     @Id

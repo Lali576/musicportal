@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Key;
 import java.util.Collections;
 import java.util.Set;
@@ -34,20 +37,42 @@ public class SongService {
         song.setGenres(genres);
         song.setKeywords(keywords);
 
-        String path = song.getTempAudioFile().getName();
+        String path = song.getAudioFile().getName();
 
         new File("\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + path);
 
         return songRepository.save(song);
     }
 
+    public Iterable<SongComment> createSongComment(SongComment songComment) {
+        SongComment savedSongComment = songCommentRepository.save(songComment);
+        return songCommentRepository.findAllBySong(savedSongComment.getSong());
+    }
+
+    public int saveSongLike(SongLike songLike) {
+        SongLike savedSongLike = songLikeRepository.save(songLike);
+        if(savedSongLike.getRole().equals(SongLike.Role.LIKE)) {
+            return songLikeRepository.countAllBySongAndRoleLike(savedSongLike.getId());
+        } else {
+            return songLikeRepository.countAllBySongAndRoleDislike(savedSongLike.getId());
+        }
+    }
+
+    public int saveSongCounter(SongCounter songCounter) {
+        SongCounter savedSongCounter = songCounterRepository.save(songCounter);
+        return songCounterRepository.countAllBySong(songCounter.getSong());
+    }
+
+    public Iterable<SongComment> listSongComments(Song song) {
+        return songCommentRepository.findAllBySong(song);
+    }
+
     public Song find(long id) {
         Song song = songRepository.findSongById(id);
-        song.setSongComments(songCommentRepository.findAllBySong(song));
         song.setSongCounterNumber(songCounterRepository.countAllBySong(song));
         song.setSongLikeNumber(songLikeRepository.countAllBySongAndRoleLike(id));
         song.setSongDislikeNumber(songLikeRepository.countAllBySongAndRoleDislike(id));
-        song.setTempAudioFile(new File(song.getAudioPath()));
+        song.setAudioFile(new File(song.getAudioPath()));
 
         return song;
     }
@@ -61,6 +86,17 @@ public class SongService {
     }
 
     public Song update(Song song) {
+        String lastPath = songRepository.findSongById(song.getId()).getAudioPath();
+        if(!(song.getAudioFile().getName().equals(lastPath))) {
+            try {
+                Files.delete(Paths.get(lastPath));
+                String path = song.getAudioFile().getName();
+                new File("\\media\\" + song.getUser().getUsername() + "\\" + song.getAlbum().getName() + "\\" + path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         return songRepository.save(song);
     }
 
@@ -74,11 +110,12 @@ public class SongService {
         songCommentRepository.deleteAllBySong(song);
         songCounterRepository.deleteAllBySong(song);
         songLikeRepository.deleteAllBySong(song);
+        try {
+            Files.delete(Paths.get(song.getAudioPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         songRepository.deleteById(song.getId());
-    }
-
-    private void deleteAudioFile(File file) {
-
     }
 }
