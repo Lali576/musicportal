@@ -25,6 +25,8 @@ import {SongService} from "./service/song.service";
 import {AlbumService} from "./service/album.service";
 import {PlaylistService} from "./service/playlist.service";
 import { RegisterComponent } from './sites/user/register/register.component';
+import { SongCommentComponent } from './sites/song/song-comment/song-comment.component';
+import { UserMessageComponent } from './sites/user/user-message/user-message.component';
 
 
 @NgModule({
@@ -44,7 +46,9 @@ import { RegisterComponent } from './sites/user/register/register.component';
     SongEditComponent,
     SongDetailComponent,
     SongListComponent,
-    RegisterComponent
+    RegisterComponent,
+    SongCommentComponent,
+    UserMessageComponent
   ],
   imports: [
     BrowserModule
