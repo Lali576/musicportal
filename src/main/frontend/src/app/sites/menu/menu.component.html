@@ -1,3 +1,36 @@
-<p>
-  menu works!
-</p>
+<mat-toolbar color="primary">
+  <button mat-button routerLink="/">
+    <mat-icon>
+      home
+    </mat-icon>
+    Music Portal
+  </button>
+
+  <span class="fill-remaining-space" fxHide="false" fxHide.gt-sm></span>
+  <div class="w-100" fxLayout="row" fxShow="false" fxShow.gt-sm>
+    <div *ngIf="!authService.isLoggedIn">
+      <button mat-button routerLink="/login">Bejelentkezés</button>
+      <button mat-button routerLink="/register">Regisztrálás</button>
+    </div>
+    <div *ngIf=authService.isLoggedIn>
+      <button mat-button routerLink="/album">Albumok</button>
+      <button mat-button routerLink="/song">Zenék</button>
+      <button mat-button routerLink="/playlist">Playlist</button>
+      <span class="fill-remaining-space"></span>
+      <span>{{authService.user.username}}</span>
+      <button mat-button (click)="logout()">Kijelentkezés</button>
+    </div>
+  </div>
+  <button mat-icon-button [matMenuTriggerFor]="menu" fxHide="false" fxHide.gt-sm>
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-menu xPosition="before" #menu="matMenu">
+  <div *ngIf="!authService.isLoggedIn">
+    <button mat-button routerLink="/login">Bejelentkezés</button>
+    <button mat-button routerLink="/register">Regisztrálás</button>
+  </div>
+  <div *ngIf="authService.isLoggedIn">
+    <button mat-button (click)="logout()">Kijelentkezés</button>
+  </div>
+</mat-menu>

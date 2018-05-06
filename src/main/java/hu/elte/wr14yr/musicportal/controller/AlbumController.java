@@ -26,14 +26,14 @@ public class AlbumController {
     @Autowired
     private SongService songService;
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Album>> list(User user) {
         Iterable<Album> albums = albumService.list(user);
         return ResponseEntity.ok(albums);
     }
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Album> create(@RequestBody Album album,
                                         @RequestBody User user,
@@ -45,21 +45,21 @@ public class AlbumController {
         return ResponseEntity.ok(savedAlbum);
     }
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @PutMapping("/edit/{id}")
     public ResponseEntity<Album> update(@PathVariable long id, @RequestBody Album album) {
         Album updatedAlbum = albumService.update(album);
         return ResponseEntity.ok(updatedAlbum);
     }
 
-    @Role({ARTIST, USER, GUEST})
+    //@Role({ARTIST, USER, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Album> find(@PathVariable long id) {
         Album foundAlbum = albumService.find(id);
         return ResponseEntity.ok(foundAlbum);
     }
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable long id, @RequestBody Album album) {
         albumService.delete(album);

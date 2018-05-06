@@ -20,19 +20,21 @@ public class SongController {
     @Autowired
     private SongService songService;
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Song>> list(User user) {
         Iterable<Song> songs = songService.list(user);
         return ResponseEntity.ok(songs);
     }
 
+    //@Role({ARTIST, USER})
     @GetMapping("/comments")
     public ResponseEntity<Iterable<SongComment>> listSongComments(@RequestBody Song song) {
         Iterable<SongComment> songComments = songService.listSongComments(song);
         return ResponseEntity.ok(songComments);
     }
 
+    //@Role({ARTIST, USER})
     @PostMapping("/comments/new")
     public ResponseEntity<Iterable<SongComment>> createSongComment(SongComment songComment) {
         Iterable<SongComment> songComments = songService.createSongComment(songComment);
@@ -43,7 +45,7 @@ public class SongController {
         SongLike, SongCounter
      */
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Song> create(@RequestBody Song song,
                                        @RequestBody User user,
@@ -55,21 +57,21 @@ public class SongController {
         return ResponseEntity.ok(savedSong);
     }
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @PutMapping("/edit/{id}")
     public ResponseEntity<Song> update(@PathVariable long id, @RequestBody Song song) {
         Song updatedSong = songService.update(song);
         return ResponseEntity.ok(updatedSong);
     }
 
-    @Role({ARTIST, USER, GUEST})
+    //@Role({ARTIST, USER, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Song> find(@PathVariable long id) {
         Song foundSong  = songService.find(id);
         return ResponseEntity.ok(foundSong);
     }
 
-    @Role({ARTIST})
+    //@Role({ARTIST})
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable long id, @RequestBody Song song) {
         songService.delete(song);

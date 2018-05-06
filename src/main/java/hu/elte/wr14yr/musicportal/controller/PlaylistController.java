@@ -31,14 +31,14 @@ public class PlaylistController {
     @Autowired
     private SongService songService;
 
-    @Role({USER, ARTIST})
+    //@Role({USER, ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Playlist>> list(User user) {
         Iterable<Playlist> playlists = playlistService.list(user);
         return ResponseEntity.ok(playlists);
     }
 
-    @Role({USER, ARTIST})
+    //@Role({USER, ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Playlist> create(@RequestBody Playlist playlist,
                                            @RequestBody User user,
@@ -49,21 +49,21 @@ public class PlaylistController {
         return ResponseEntity.ok(savedPlaylist);
     }
 
-    @Role({USER, ARTIST, GUEST})
+    //@Role({USER, ARTIST, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Playlist> find(@PathVariable long id) {
         Playlist foundPlaylist = playlistService.find(id);
         return ResponseEntity.ok(foundPlaylist);
     }
 
-    @Role({USER, ARTIST})
+    //@Role({USER, ARTIST})
     @PutMapping("/edit/{id}")
     public ResponseEntity<Playlist> update(@PathVariable long id, @RequestBody Playlist playlist) {
         Playlist updatedPlaylist = playlistService.update(playlist);
         return ResponseEntity.ok(updatedPlaylist);
     }
 
-    @Role({USER, ARTIST})
+    //@Role({USER, ARTIST})
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable long id) {
         playlistService.delete(id);

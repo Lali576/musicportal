@@ -13,9 +13,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class AlbumService {
+
+    Logger logger = Logger.getLogger(AlbumService.class.getName());
 
     @Autowired
     private AlbumRepository albumRepository;
@@ -26,6 +30,9 @@ public class AlbumService {
     @Autowired
     private SongService songService;
 
+    public AlbumService() {
+    }
+
     public Album create(Album album, User user, Set<Song> songs, Set<Genre> genres, Set<Keyword> keywords) {
         album.setUser(user);
         album.setSongs(songs);
@@ -33,6 +40,7 @@ public class AlbumService {
         album.setKeywords(keywords);
 
         Album savedAlbum = albumRepository.save(album);
+        logger.log(Level.INFO, "Album named " + album.getName() + " was saved in database.");
 
         for(Song song : songs) {
             song.setAlbum(album);
@@ -41,10 +49,13 @@ public class AlbumService {
             song.setKeywords(keywords);
 
             songRepository.save(song);
+            logger.log(Level.INFO, "Song named " + song.getTitle() + " was saved in database.");
         }
+        logger.log(Level.INFO, "Album named " + album.getName() + "'s all songs saving in database was completed.");
 
         new File("..\\media\\" + user.getUsername() + "\\" + album.getName()).mkdir();
         new File("..\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + album.getCoverFile().getName());
+        logger.log(Level.INFO, "Album's cover file was saved in its own directory.");
 
         return savedAlbum;
     }

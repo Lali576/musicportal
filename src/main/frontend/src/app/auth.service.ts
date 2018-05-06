@@ -20,10 +20,10 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  login(user: User) {
+  login(username: string, password: string) {
     return this.http.post<User>(
       'api/user/login',
-      user,
+      {username, password},
       httpOptions
     ).pipe(
       tap((user: User) => {

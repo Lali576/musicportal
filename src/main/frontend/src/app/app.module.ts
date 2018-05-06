@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {RouteModule} from "./route/route.module";
-
+import {RoutingModule} from "./routing/routing.module";
+import {MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule,
+        MatFormFieldModule, MatInputModule, MatButtonToggleModule} from "@angular/material";
 
 import { AppComponent } from './app.component';
 import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
@@ -27,6 +28,11 @@ import {PlaylistService} from "./service/playlist.service";
 import { RegisterComponent } from './sites/user/register/register.component';
 import { SongCommentComponent } from './sites/song/song-comment/song-comment.component';
 import { UserMessageComponent } from './sites/user/user-message/user-message.component';
+import {AuthService} from "./auth.service";
+import {AuthGuard} from "./auth.guard";
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import { SearchComponent } from './sites/search/search.component';
 
 
 @NgModule({
@@ -48,15 +54,30 @@ import { UserMessageComponent } from './sites/user/user-message/user-message.com
     SongListComponent,
     RegisterComponent,
     SongCommentComponent,
-    UserMessageComponent
+    UserMessageComponent,
+    SearchComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatMenuModule,
+    MatInputModule,
+    MatIconModule,
+    MatFormFieldModule,
+    RoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [UserService,
               SongService,
               AlbumService,
-              PlaylistService],
+              PlaylistService,
+              AuthService,
+              AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
