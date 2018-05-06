@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from "../../../model/user";
 import {AuthService} from "../../../auth.service";
 import {Router} from "@angular/router";
+import {UserMessage} from "../../../model/usermessage";
 
 @Component({
   selector: 'app-login',
@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
   message: string = "";
+  userMessage: UserMessage = new UserMessage();
 
   constructor(
     private authService: AuthService,
@@ -28,12 +29,25 @@ export class LoginComponent implements OnInit {
       return;
     }
     try {
-      this.message = "Try to login";
+      this.message = "Bejelentkezés folyamatban";
       await this.authService.login(this.username, this.password);
-      console.log("success");
+      console.log("successful logging");
       this.router.navigate([this.authService.redirectUrl]);
     } catch (e) {
-      this.message = "Login failed";
+      this.message = "Sikertelen bejelentkezés";
+      console.log(e);
+    }
+  }
+
+  async send(g) {
+    if(g.invalid) {
+      return;
+    }
+    try {
+      console.log(this.userMessage);
+      await this.authService.sendMessage(this.userMessage);
+      console.log("yeah");
+    } catch (e) {
       console.log(e);
     }
   }

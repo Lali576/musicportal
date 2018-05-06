@@ -1,8 +1,8 @@
 import {User} from "./user";
 
-export class Usermessage {
+export class UserMessage {
   id: number = 0;
-  userFrom: User = null;
-  text: string = '';
-  dateTime: Date = null;
+  //userFrom: User = null;
+  text: string = "";
+  //dateTime: Date = null;
 }

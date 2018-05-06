@@ -1,3 +1,115 @@
-<p>
-  register works!
-</p>
+<h1 class="display-2">Regisztráció</h1>
+<form (submit)="submit(f)" #f="ngForm">
+  {{message}}
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="usernameText"
+        [(ngModel)]="user.username"
+        matInput type="text"
+        placeholder="Felhasználónév"
+        required
+      #usernameText="ngModel">
+      <mat-error *ngIf="usernameText.invalid && (usernameText.dirty || usernameText.touched)">
+        Adjon meg egy felhasználónevet!
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="emailAddressText"
+        [(ngModel)]="user.emailAddress"
+        matInput type="email"
+        placeholder="Email cím"
+        required
+        #emailAddressText="ngModel">
+      <mat-error *ngIf="emailAddressText.invalid && (emailAddressText.dirty || emailAddressText.touched)">
+        Adjon meg egy email címet!
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="passwordText"
+        [(ngModel)]="password"
+        matInput type="text"
+        placeholder="Jelszó"
+        required
+        #passwordText="ngModel">
+      <mat-error *ngIf="passwordText.invalid && (passwordText.dirty || passwordText.touched)">
+        Adjon meg egy minimum 8 karakteres jelszót!!
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="passwordVerifyText"
+        matInput type="text"
+        placeholder="Jelszó">
+      <mat-error>
+        Adjon meg egy minimum 8 karakteres jelszót!
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="fullNameText"
+        [(ngModel)]="user.fullName"
+        matInput type="text"
+        placeholder="Teljes név"
+        required
+        #fullNameText="ngModel">
+      <mat-error *ngIf="fullNameText.invalid && (fullNameText.dirty || fullNameText.touched)">
+        Adja meg a teljes nevét!
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <!--<div class="form-group">
+    <mat-form-field>
+      <input
+        name="iconPathFile"
+        [(ngModel)]="user.iconFile"
+        matInput type="file"
+        placeholder="Ikon kép"
+        required
+        #iconPathFile="ngModel">
+      <mat-error *ngIf="iconPathFile.invalid && (iconPathFile.dirty || iconPathFile.touched)">
+        Válasszon ki egy tetszőleges ikon képet!
+      </mat-error>
+    </mat-form-field>
+  </div>-->
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="biographyText"
+        [(ngModel)]="user.biography"
+        matInput type="text"
+        placeholder="Biográfia"
+        #biographyText="ngModel">
+      <mat-error *ngIf="biographyText.invalid && (biographyText.dirty || biographyText.touched)">
+        Adja meg biográfiáját!
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="favGenre"
+        [(ngModel)]="user.favGenreId"
+        matInput type="text"
+        placeholder="Kedvenc műfaj"
+        #favGenre="ngModel">
+      <mat-error *ngIf="favGenre.invalid && (favGenre.dirty || favGenre.touched)">
+        Adja meg kedvenc zenei műfaját!
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
+    Regisztráció
+  </button>
+</form>

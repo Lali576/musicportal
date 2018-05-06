@@ -14,7 +14,7 @@ import javax.persistence.*;
 @JsonIgnoreType
 public class SongCounter {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private long id;
 

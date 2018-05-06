@@ -2,12 +2,11 @@ import {Genre} from "./genre";
 
 export class User {
   id: number = 0;
-  username: string = '';
-  emailAddress: string = '';
-  saltCode: string = '';
-  hashPassword: string = '';
+  username: string = "";
+  emailAddress: string = "";
   favGenreId: Genre = null;
-  biography: string = '';
+  fullName: string = "";
+  biography: string = "";
   iconFile: File = null;
-  role: string = 'GUEST';
+  role: string = "GUEST";
 }

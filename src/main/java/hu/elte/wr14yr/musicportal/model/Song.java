@@ -23,7 +23,7 @@ import java.util.Set;
 public class Song {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private long id;
 
@@ -39,6 +39,7 @@ public class Song {
     @Column(name = "AUDIO_PATH", unique = true, nullable = false)
     private String audioPath;
 
+    @Transient
     private File audioFile;
 
     @ManyToOne(targetEntity = Album.class, optional = false)
@@ -60,8 +61,10 @@ public class Song {
     @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
     private Set<SongLike> songLikes;
 
+    @Transient
     private int songLikeNumber;
 
+    @Transient
     private int songDislikeNumber;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")

@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.Set;
@@ -67,6 +68,7 @@ public class UserService {
     }
 
     public Iterable<UserMessage> createUserMessage(UserMessage userMessage) {
+        userMessage.setDateTime(LocalDateTime.now());
         UserMessage savedUserMessage = userMessageRepository.save(userMessage);
         return userMessageRepository.findAllByUserTo(savedUserMessage.getUserTo());
     }
@@ -124,9 +126,9 @@ public class UserService {
 
         playlistService.deleteAllByUser(user);
 
-        for(UserMessage userMessage : user.getUserFromMessages()) {
+        /*for(UserMessage userMessage : user.getUserFromMessages()) {
             userMessageRepository.deleteAllByUserFrom(user);
-        }
+        }*/
 
         userRepository.deleteById(id);
     }

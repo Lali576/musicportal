@@ -20,7 +20,7 @@ import java.util.Set;
 public class Album {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private long id;
 
@@ -33,6 +33,7 @@ public class Album {
     @Column(name = "COVER_PATH", unique = true, nullable = false)
     private String coverPath;
 
+    @Transient
     private File coverFile;
 
     @ManyToOne(targetEntity = User.class, optional = false)

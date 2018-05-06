@@ -20,21 +20,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AlbumService albumService;
-
-    @Autowired
-    private SongService songService;
-
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user, @RequestBody String password) {
+    public ResponseEntity<User> register(@RequestParam("user") User user, @RequestParam("password") String password) {
         User savedUser = userService.register(user, password);
-
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody String username, @RequestBody String password) {
+    public ResponseEntity<User> login(@RequestParam("username") String username, @RequestParam("password") String password) {
         try {
             return ResponseEntity.ok(userService.login(username, password));
         } catch (UserNotValidException e) {

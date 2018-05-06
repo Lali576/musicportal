@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +29,7 @@ import java.util.Set;
                         "keywords"})
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private long id;
 
@@ -39,9 +40,11 @@ public class User {
     private String emailAddress;
 
     @Column(name = "SALT_CODE", unique = true, nullable = false)
+    @JsonIgnore
     private String saltCode;
 
     @Column(name = "HASH_PASSWORD", unique = true, nullable = false)
+    @JsonIgnore
     private String hashPassword;
 
     @ManyToOne(targetEntity = Genre.class)
@@ -55,35 +58,46 @@ public class User {
     private String biography;
 
     @Column(name = "ICON_PATH", nullable = false)
+    @JsonIgnore
     private String iconPath;
 
+    @Transient
     private File iconFile;
 
     @OneToMany(targetEntity = Album.class, mappedBy = "user")
+    @JsonIgnore
     private Set<Album> albums;
 
     @OneToMany(targetEntity = Song.class, mappedBy = "user")
+    @JsonIgnore
     private Set<Song> songs;
 
     @OneToMany(targetEntity = SongComment.class, mappedBy = "user")
+    @JsonIgnore
     private Set<SongComment> songComments;
 
     @OneToMany(targetEntity = SongCounter.class, mappedBy = "user")
+    @JsonIgnore
     private Set<SongCounter> songCounters;
 
     @OneToMany(targetEntity = SongLike.class, mappedBy = "user")
+    @JsonIgnore
     private Set<SongLike> songLikes;
 
-    @OneToMany(targetEntity = UserMessage.class, mappedBy = "userTo")
-    private Set<UserMessage> userToMessages;
+    /*@OneToMany(targetEntity = UserMessage.class, mappedBy = "userTo")
+    @JsonIgnore
+    private Set<UserMessage> userToMessages;*/
 
-    @OneToMany(targetEntity = UserMessage.class, mappedBy = "userFrom")
-    private Set<UserMessage> userFromMessages;
+    /*@OneToMany(targetEntity = UserMessage.class, mappedBy = "userFrom")
+    @JsonIgnore
+    private Set<UserMessage> userFromMessages;*/
 
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
+    @JsonIgnore
     private Set<Playlist> playlists;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "users")
+    @JsonIgnore
     private Set<Keyword> keywords;
 
     @Column(name = "ROLE", nullable = false)

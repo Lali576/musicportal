@@ -2,28 +2,54 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "./model/user";
 import {tap} from "rxjs/operators";
+import {UserMessage} from "./model/usermessage";
 
 const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
+  headers: new HttpHeaders(
+    {'Content-Type': 'application/json'}),
 }
 
 @Injectable()
 export class AuthService {
 
   isLoggedIn: boolean = false;
-  redirectUrl: string;
+  redirectUrl: string = "";
   user: User;
 
   constructor(
     private http: HttpClient
   ) { }
 
+  sendMessage(userMessage: UserMessage) {
+    return this.http.post<UserMessage>(
+      'api/user/messages/new',
+      userMessage,
+      httpOptions
+    ).pipe(tap((message: UserMessage) => {
+
+      })
+    ).toPromise();
+  }
+
+  register(user: User, password: string) {
+    return this.http.post<User>(
+      'api/user/register',
+      {'user': user,
+            'password': password},
+      httpOptions
+    ).pipe(
+      tap((user: User) => {
+        this.isLoggedIn = true;
+        this.user = user;
+      })
+    ).toPromise();
+  }
+
   login(username: string, password: string) {
+    console.log(username + " " + password);
     return this.http.post<User>(
       'api/user/login',
-      {username, password},
+      {'username': username, 'password': password},
       httpOptions
     ).pipe(
       tap((user: User) => {
