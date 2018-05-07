@@ -4,7 +4,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {RoutingModule} from "./routing/routing.module";
 import {MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule,
-        MatFormFieldModule, MatInputModule, MatButtonToggleModule} from "@angular/material";
+        MatFormFieldModule, MatInputModule, MatButtonToggleModule,
+        MatSelectModule, MatOptionModule} from "@angular/material";
 
 import { AppComponent } from './app.component';
 import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
@@ -68,6 +69,8 @@ import { SearchComponent } from './sites/search/search.component';
     MatInputModule,
     MatIconModule,
     MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
     RoutingModule,
     FormsModule,
     HttpClientModule

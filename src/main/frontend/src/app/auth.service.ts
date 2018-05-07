@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {User} from "./model/user";
 import {tap} from "rxjs/operators";
-import {UserMessage} from "./model/usermessage";
 
 const httpOptions = {
   headers: new HttpHeaders(
-    {'Content-Type': 'application/json'}),
+    {'Content-Type': 'application/json'})
 }
 
 @Injectable()
@@ -20,22 +19,13 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  sendMessage(userMessage: UserMessage) {
-    return this.http.post<UserMessage>(
-      'api/user/messages/new',
-      userMessage,
-      httpOptions
-    ).pipe(tap((message: UserMessage) => {
-
-      })
-    ).toPromise();
-  }
-
-  register(user: User, password: string) {
+  register(user: string, password: string) {
     return this.http.post<User>(
       'api/user/register',
-      {'user': user,
-            'password': password},
+      {
+        "user": user,
+        "password": password
+      },
       httpOptions
     ).pipe(
       tap((user: User) => {
@@ -48,8 +38,11 @@ export class AuthService {
   login(username: string, password: string) {
     console.log(username + " " + password);
     return this.http.post<User>(
-      'api/user/login',
-      {'username': username, 'password': password},
+        'api/user/login',
+      {
+        "username": username,
+        "password": password
+      },
       httpOptions
     ).pipe(
       tap((user: User) => {

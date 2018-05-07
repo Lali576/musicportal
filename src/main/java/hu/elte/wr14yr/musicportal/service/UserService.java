@@ -42,16 +42,16 @@ public class UserService {
         user.setRole(User.Role.USER);
 
         SecureRandom rand = new SecureRandom();
-        byte[] salt = new byte[24];
+        byte[] salt = new byte[64];
         rand.nextBytes(salt);
-        String saltCode = new String(Base64.getDecoder().decode(salt));
+        String saltCode = new String(Base64.getEncoder().encode(salt));
 
         String passSalt = password + saltCode;
 
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
-            String hashPassword = new String(Base64.getDecoder().decode(hash));
+            String hashPassword = Base64.getEncoder().encodeToString(hash);
 
             user.setSaltCode(saltCode);
             user.setHashPassword(hashPassword);
@@ -62,7 +62,9 @@ public class UserService {
         }
 
         new File("..\\media\\" + user.getUsername() + "\\icon").mkdir();
-        new File("..\\media\\" + user.getUsername() + "\\icon\\" + user.getIconFile().getName());
+        File file = new File("..\\media\\" + user.getUsername() + "\\icon\\" + user.getIconFile().getName());
+
+        user.setIconPath(file.getPath());
 
         return this.user = userRepository.save(user);
     }
@@ -94,7 +96,7 @@ public class UserService {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
-            String hashPassword = new String(Base64.getDecoder().decode(hash));
+            String hashPassword = Base64.getEncoder().encodeToString(hash);
 
             return hashPassword.equals(user.getHashPassword());
         } catch(NoSuchAlgorithmException e) {
@@ -126,9 +128,9 @@ public class UserService {
 
         playlistService.deleteAllByUser(user);
 
-        /*for(UserMessage userMessage : user.getUserFromMessages()) {
+        for(UserMessage userMessage : user.getUserFromMessages()) {
             userMessageRepository.deleteAllByUserFrom(user);
-        }*/
+        }
 
         userRepository.deleteById(id);
     }

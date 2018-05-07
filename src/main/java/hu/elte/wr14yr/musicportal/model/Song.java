@@ -3,6 +3,7 @@ package hu.elte.wr14yr.musicportal.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Data
 @Table(name = "SONGS")
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"audioPath",
                         "songCounters",
                         "songLikes",

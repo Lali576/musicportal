@@ -1,5 +1,5 @@
 <h1 class="display-2">Bejelentkezés</h1>
-<!--<form (submit)="submit(f)" #f="ngForm">
+<form (submit)="submit(f)" #f="ngForm">
   {{message}}
   <div class="form-group">
     <mat-form-field>
@@ -33,24 +33,5 @@
 
   <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
     Bejelentkezés
-  </button>
-</form>-->
-
-<form (submit)="send(f)" #f="ngForm">
-  <mat-form-field>
-    <input
-      name="messageText"
-      [(ngModel)]="userMessage.text"
-      matInput type="text"
-      placeholder="Üzenet"
-      required
-      #messageText="ngModel">
-    <mat-error *ngIf="messageText.invalid && (messageText.dirty || messageText.touched)">
-      Adja meg a felhasználónevét!
-    </mat-error>
-  </mat-form-field>
-
-  <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
-    Küld
   </button>
 </form>

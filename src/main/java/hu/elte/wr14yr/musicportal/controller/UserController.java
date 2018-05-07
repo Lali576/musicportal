@@ -1,17 +1,22 @@
 package hu.elte.wr14yr.musicportal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
+
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
-import hu.elte.wr14yr.musicportal.service.AlbumService;
-import hu.elte.wr14yr.musicportal.service.SongService;
 import hu.elte.wr14yr.musicportal.service.UserNotValidException;
 import hu.elte.wr14yr.musicportal.service.UserService;
+import jdk.nashorn.internal.objects.NativeJSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,14 +26,20 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestParam("user") User user, @RequestParam("password") String password) {
+    public ResponseEntity<User> register(@RequestBody Map<String, Object> params) throws IOException {
+        String password = params.get("password").toString();
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonUser = params.get("user").toString();
+        User user = mapper.readValue(jsonUser, User.class);
         User savedUser = userService.register(user, password);
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public ResponseEntity<User> login(@RequestBody Map<String, String> params) {
         try {
+            String username = params.get("username").toString();
+            String password = params.get("password").toString();
             return ResponseEntity.ok(userService.login(username, password));
         } catch (UserNotValidException e) {
             return ResponseEntity.badRequest().build();

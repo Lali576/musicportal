@@ -13,6 +13,7 @@ import java.util.Set;
 @Data
 @Table(name = "PLAYLISTS")
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"keywords",
                         "songs"})
 public class Playlist {

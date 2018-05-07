@@ -3,6 +3,7 @@ package hu.elte.wr14yr.musicportal.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "SONG_COMMENTS")
 @AllArgsConstructor
+@NoArgsConstructor
 public class SongComment {
 
     @Id

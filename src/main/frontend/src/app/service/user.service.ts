@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../model/user";
 import {Observable} from "rxjs/index";
+import {promise} from "selenium-webdriver";
+import {Genre} from "../model/genre";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -17,6 +19,10 @@ export class UserService {
   constructor(
     private http: HttpClient
   ) { }
+
+  getGenres(): Observable<Genre[]> {
+    return this.http.get<Genre[]>('/api/genre/list');
+  }
 
   getUser(id: number): Promise<User> {
     return this.http.get<User>(`api/user/${id}`).toPromise();

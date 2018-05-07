@@ -1,8 +1,10 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,10 +13,11 @@ import java.util.Set;
 @Data
 @Table(name = "KEYWORDS")
 @AllArgsConstructor
-@JsonIgnoreProperties({"users",
-                        "songs",
+@NoArgsConstructor
+@JsonIgnoreProperties({"songs",
                         "playlists",
-                        "albums"})
+                        "albums",
+                        "users"})
 public class Keyword {
 
     @Id

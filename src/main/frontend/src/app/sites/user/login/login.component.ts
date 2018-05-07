@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../auth.service";
 import {Router} from "@angular/router";
-import {UserMessage} from "../../../model/usermessage";
+import {Keyword} from "../../../model/keyword";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,8 @@ export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
   message: string = "";
-  userMessage: UserMessage = new UserMessage();
+  keyword: Keyword = new Keyword();
+  keywords: Keyword[] = [];
 
   constructor(
     private authService: AuthService,
@@ -21,8 +22,8 @@ export class LoginComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
 
   async submit(f) {
     if (f.invalid) {
@@ -35,19 +36,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate([this.authService.redirectUrl]);
     } catch (e) {
       this.message = "Sikertelen bejelentkezés";
-      console.log(e);
-    }
-  }
-
-  async send(g) {
-    if(g.invalid) {
-      return;
-    }
-    try {
-      console.log(this.userMessage);
-      await this.authService.sendMessage(this.userMessage);
-      console.log("yeah");
-    } catch (e) {
       console.log(e);
     }
   }

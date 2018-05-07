@@ -68,46 +68,20 @@
       </mat-error>
     </mat-form-field>
   </div>
-  <!--<div class="form-group">
-    <mat-form-field>
-      <input
-        name="iconPathFile"
-        [(ngModel)]="user.iconFile"
-        matInput type="file"
-        placeholder="Ikon kép"
-        required
-        #iconPathFile="ngModel">
-      <mat-error *ngIf="iconPathFile.invalid && (iconPathFile.dirty || iconPathFile.touched)">
-        Válasszon ki egy tetszőleges ikon képet!
-      </mat-error>
-    </mat-form-field>
-  </div>-->
   <div class="form-group">
-    <mat-form-field>
-      <input
-        name="biographyText"
-        [(ngModel)]="user.biography"
-        matInput type="text"
-        placeholder="Biográfia"
-        #biographyText="ngModel">
-      <mat-error *ngIf="biographyText.invalid && (biographyText.dirty || biographyText.touched)">
-        Adja meg biográfiáját!
-      </mat-error>
-    </mat-form-field>
+    <input name="iconFile" [(ngModel)]="user.iconFile" class="ng-hide" id="input-file-id" multiple type="file" />
   </div>
   <div class="form-group">
     <mat-form-field>
-      <input
-        name="favGenre"
-        [(ngModel)]="user.favGenreId"
-        matInput type="text"
-        placeholder="Kedvenc műfaj"
-        #favGenre="ngModel">
-      <mat-error *ngIf="favGenre.invalid && (favGenre.dirty || favGenre.touched)">
-        Adja meg kedvenc zenei műfaját!
-      </mat-error>
+      <mat-select name="favGenreText" [(ngModel)]="favGenre" placeholder="Kedvenc műfaj" required>
+        <mat-option *ngFor="let genre of genres" [value]="genre">
+          {{genre.name}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
   </div>
+
+
 
   <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
     Regisztráció
