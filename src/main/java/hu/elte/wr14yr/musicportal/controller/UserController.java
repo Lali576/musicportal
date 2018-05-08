@@ -84,7 +84,7 @@ public class UserController {
 
     //@Role({ARTIST, USER})s
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id, User user) {
+    public ResponseEntity delete(@PathVariable long id, User user) throws IOException, URISyntaxException {
         userService.delete(id, user);
         return ResponseEntity.ok().build();
     }

@@ -8,6 +8,5 @@ import java.util.List;
 public interface KeywordRepository extends CrudRepository<Keyword, Long> {
     @Override
     Keyword save(Keyword keyword);
-
     List<Keyword> findAllByWordContainsAllIgnoreCase(String keyword);
 }

@@ -84,6 +84,14 @@ public class SongService {
         }
     }
 
+    public Iterable<Song> listByAlbum(Album album) {
+        return songRepository.findAllByAlbum(album);
+    }
+
+    public Iterable<Song> listByPlaylist(Playlist playlist) {
+        return songRepository.findAllByPlaylists(playlist);
+    }
+
     public Song update(Song song) {
         String lastPath = songRepository.findSongById(song.getId()).getAudioPath();
         if(!(song.getAudioFile().getName().equals(lastPath))) {

@@ -128,7 +128,7 @@ public class UserService {
         user = null;
     }
 
-    public void delete(long id, User user) {
+    public void delete(long id, User user) throws IOException, URISyntaxException {
         for(Album album : user.getAlbums()) {
             albumService.delete(album);
         }

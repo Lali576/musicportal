@@ -43,14 +43,14 @@ public class SearchController {
     }
 
     //@Role({ARTIST, GUEST, USER})
-    @GetMapping("/albums/keyword/{keyword}")
+    @PostMapping("/albums/keyword/{word}")
     public ResponseEntity<Iterable<Album>> findAlbumByKeyword(@RequestBody  Keyword keyword, @PathVariable String word) {
         Iterable<Album> foundAlbums = searchService.findAlbumByKeyword(keyword);
         return ResponseEntity.ok(foundAlbums);
     }
 
     //@Role({ARTIST, GUEST, USER})
-    @GetMapping("/albums/genre/{name}")
+    @PostMapping("/albums/genre/{name}")
     public ResponseEntity<Iterable<Album>> findAlbumByGenre(@RequestBody Genre genre, @PathVariable String name) {
         Iterable<Album> foundAlbums = searchService.findAlbumByGenre(genre);
         return ResponseEntity.ok(foundAlbums);
@@ -64,9 +64,15 @@ public class SearchController {
     }
 
     //@Role({ARTIST, GUEST, USER})
-    @GetMapping("/songs/keyword/{keyword}")
+    @PostMapping("/songs/keyword/{word}")
     public ResponseEntity<Iterable<Song>> findSongByKeyword(@RequestBody Keyword keyword, @PathVariable String word) {
-        Iterable<Song> foundSongs = null;
+        Iterable<Song> foundSongs = searchService.findSongByKeyword(keyword);
+        return ResponseEntity.ok(foundSongs);
+    }
+
+    @PostMapping("/songs/genre/{name}")
+    public ResponseEntity<Iterable<Song>> findSongsByGenre(@RequestBody Genre genre, @PathVariable String name) {
+        Iterable<Song> foundSongs = searchService.findSongByGenre(genre);
         return ResponseEntity.ok(foundSongs);
     }
 
@@ -78,9 +84,9 @@ public class SearchController {
     }
 
     //@Role({ARTIST, GUEST, USER})
-    @GetMapping("/playlists/keyword/{keyword}")
-    public ResponseEntity<Iterable<Playlist>> findPlaylistByKeyword(@PathVariable String keyword) {
-        Iterable<Playlist> foundPlaylists = null;
+    @PostMapping("/playlists/keyword/{word}")
+    public ResponseEntity<Iterable<Playlist>> findPlaylistByKeyword(@RequestBody Keyword keyword, @PathVariable String word) {
+        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByKeyword(keyword);
         return ResponseEntity.ok(foundPlaylists);
     }
 
@@ -92,9 +98,9 @@ public class SearchController {
     }
 
     //@Role({ARTIST, GUEST, USER})
-    @GetMapping("/users/{keyword}")
-    public ResponseEntity<Iterable<User>> findUserByKeyword(@PathVariable String keyword) {
-        Iterable<User> foundUsers = null;
+    @PostMapping("/users/{word}")
+    public ResponseEntity<Iterable<User>> findUserByKeyword(@RequestBody Keyword keyword, @PathVariable String word) {
+        Iterable<User> foundUsers = searchService.findUserByKeyword(keyword);
         return ResponseEntity.ok(foundUsers);
     }
 }

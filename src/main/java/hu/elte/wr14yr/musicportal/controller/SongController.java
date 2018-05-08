@@ -8,6 +8,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.*;
 import hu.elte.wr14yr.musicportal.service.SongService;
+import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,15 +24,30 @@ public class SongController {
     @Autowired
     private SongService songService;
 
+    @Autowired
+    private UserService userService;
+
     //@Role({ARTIST})
     @GetMapping
-    public ResponseEntity<Iterable<Song>> list(User user) {
-        Iterable<Song> songs = songService.list(user);
+    public ResponseEntity<Iterable<Song>> list() {
+        Iterable<Song> songs = songService.list(userService.getLoggedInUser());
+        return ResponseEntity.ok(songs);
+    }
+
+    @PostMapping("/albumby")
+    public ResponseEntity<Iterable<Song>> songsByAlbum(@RequestBody Album album) {
+        Iterable<Song> songs = songService.listByAlbum(album);
+        return ResponseEntity.ok(songs);
+    }
+
+    @PostMapping("/playlistby")
+    public ResponseEntity<Iterable<Song>> songsByPlaylist(@RequestBody Playlist playlist) {
+        Iterable<Song> songs = songService.listByPlaylist(playlist);
         return ResponseEntity.ok(songs);
     }
 
     //@Role({ARTIST, USER})
-    @GetMapping("/comments")
+    @PostMapping("/comments")
     public ResponseEntity<Iterable<SongComment>> listSongComments(@RequestBody Song song) {
         Iterable<SongComment> songComments = songService.listSongComments(song);
         return ResponseEntity.ok(songComments);
@@ -39,7 +55,7 @@ public class SongController {
 
     //@Role({ARTIST, USER})
     @PostMapping("/comments/new")
-    public ResponseEntity<Iterable<SongComment>> createSongComment(SongComment songComment) {
+    public ResponseEntity<Iterable<SongComment>> createSongComment(@RequestBody SongComment songComment) {
         Iterable<SongComment> songComments = songService.createSongComment(songComment);
         return ResponseEntity.ok(songComments);
     }

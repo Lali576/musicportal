@@ -11,14 +11,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @SpringBootApplication
 public class MusicportalApplication implements WebMvcConfigurer {
-	/*
+
 	@Autowired
 	private HandlerInterceptor authInterceptor;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(authInterceptor);
-	}*/
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(MusicportalApplication.class, args);

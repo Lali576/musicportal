@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -19,8 +20,6 @@ import java.util.logging.Logger;
 
 @Service
 public class AlbumService {
-
-    Logger logger = Logger.getLogger(AlbumService.class.getName());
 
     @Autowired
     private AlbumRepository albumRepository;
@@ -34,29 +33,21 @@ public class AlbumService {
     public AlbumService() {
     }
 
-    public Album create(Album album, User user, List<Song> songs, List<Genre> genres, List<Keyword> keywords) {
+    public Album create(Album album, User user, List<Genre> genres, List<Keyword> keywords) throws URISyntaxException, IOException {
         album.setUser(user);
-        album.setSongs(songs);
         album.setGenres(genres);
         album.setKeywords(keywords);
 
-        Album savedAlbum = albumRepository.save(album);
-        logger.log(Level.INFO, "Album named " + album.getName() + " was saved in database.");
-
-        for(Song song : songs) {
-            song.setAlbum(album);
-            song.setUser(user);
-            song.setGenres(genres);
-            song.setKeywords(keywords);
-
-            songRepository.save(song);
-            logger.log(Level.INFO, "Song named " + song.getTitle() + " was saved in database.");
+        String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
+        File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
+        if(!albumDir.exists()) {
+            albumDir.mkdir();
         }
-        logger.log(Level.INFO, "Album named " + album.getName() + "'s all songs saving in database was completed.");
+        File albumCoverFile = new File(albumDir.getPath()+"\\"+album.getCoverFile().getName());
+        albumCoverFile.createNewFile();
+        album.setCoverPath(albumCoverFile.getPath());
 
-        new File("..\\media\\" + user.getUsername() + "\\" + album.getName()).mkdir();
-        new File("..\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + album.getCoverFile().getName());
-        logger.log(Level.INFO, "Album's cover file was saved in its own directory.");
+        Album savedAlbum = albumRepository.save(album);
 
         return savedAlbum;
     }
@@ -71,34 +62,41 @@ public class AlbumService {
 
     public Album find(long id) {
        Album album = albumRepository.findAlbumById(id);
-       album.setSongs(songRepository.findAllByAlbum(album));
 
        return album;
     }
 
-    public Album update(Album album) {
-        String lastPath = albumRepository.findAlbumById(album.getId()).getCoverPath();
-        if(!(album.getCoverFile().getName().equals(lastPath))) {
+    public Album update(Album album) throws URISyntaxException, IOException {
+        String lastPathName = new File(albumRepository.findAlbumById(album.getId()).getCoverPath()).getName();
+
+        if(!(album.getCoverFile().getName().equals(lastPathName))) {
             try {
-                Files.delete(Paths.get(lastPath));
-                String path = album.getCoverFile().getName();
-                new File("..\\media\\" + album.getUser().getUsername() + "\\" + album.getName() + "\\" + path);
+                Files.delete(Paths.get(lastPathName));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+            String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
+            File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
+            File albumCoverFile = new File(albumDir.getPath()+"\\"+album.getCoverFile().getName());
+            albumCoverFile.createNewFile();
+            album.setCoverPath(albumCoverFile.getPath());
         }
+
         return albumRepository.save(album);
     }
 
-    public void deleteAllByUser(User user) {
+    public void deleteAllByUser(User user) throws URISyntaxException, IOException {
         for(Album album : user.getAlbums()) {
             delete(album);
         }
     }
 
-    public void delete(Album album) {
+    public void delete(Album album) throws URISyntaxException, IOException {
         songService.deleteAllByAlbum(album);
+        String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
+        File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
+        Files.delete(Paths.get(albumDir.toString()));
 
         albumRepository.deleteById(album.getId());
     }

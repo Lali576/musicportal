@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +21,6 @@ public class AlbumController {
     @Autowired
     private AlbumService albumService;
 
-    @Autowired
-    private SongService songService;
-
     //@Role({ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Album>> list(@RequestBody User user) {
@@ -32,21 +30,20 @@ public class AlbumController {
 
     //@Role({ARTIST})
     @PostMapping("/new")
-    public ResponseEntity<Album> create(@RequestBody Map<String, Object> params) throws IOException {
+    public ResponseEntity<Album> create(@RequestBody Map<String, Object> params) throws IOException, URISyntaxException {
         ObjectMapper mapper = new ObjectMapper();
         Album album = mapper.readValue(params.get("album").toString(), Album.class);
         User user = mapper.readValue(params.get("user").toString(), User.class);
-        List<Song> songs = mapper.readValue(params.get("songs").toString(), List.class);
         List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
         List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
-        Album savedAlbum = albumService.create(album, user, songs, genres, keywords);
+        Album savedAlbum = albumService.create(album, user, genres, keywords);
 
         return ResponseEntity.ok(savedAlbum);
     }
 
     //@Role({ARTIST})
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Album> update(@PathVariable long id, @RequestBody Album album) {
+    public ResponseEntity<Album> update(@PathVariable long id, @RequestBody Album album) throws IOException, URISyntaxException {
         Album updatedAlbum = albumService.update(album);
         return ResponseEntity.ok(updatedAlbum);
     }
@@ -60,7 +57,7 @@ public class AlbumController {
 
     //@Role({ARTIST})
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable long id, @RequestBody Album album) {
+    public ResponseEntity delete(@PathVariable long id, @RequestBody Album album) throws URISyntaxException, IOException {
         albumService.delete(album);
 
         return ResponseEntity.ok().build();

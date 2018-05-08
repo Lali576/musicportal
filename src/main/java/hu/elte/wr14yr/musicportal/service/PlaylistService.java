@@ -39,7 +39,6 @@ public class PlaylistService {
 
     public Playlist find(long id) {
         Playlist playlist = playlistRepository.findPlaylistById(id);
-        playlist.setSongs(songRepository.findAllByPlaylists(playlist));
 
         return playlist;
     }
