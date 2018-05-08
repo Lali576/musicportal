@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "USER_MESSAGES")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"userTo"})
 public class UserMessage {
 
     @Id
@@ -23,18 +24,15 @@ public class UserMessage {
 
     @JoinColumn(name = "USER_TO_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
-    @JsonIgnoreProperties("userToMessages")
-    @JsonIgnore
     private User userTo;
 
     @JoinColumn(name = "USER_FROM_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
     private User userFrom;
 
-    @Column(name = "TEXT", nullable = false)
-    private String text;
+    @Column(name = "TEXT_MESSAGE", nullable = false)
+    private String textMessage;
 
     @Column(name = "DATE_TIME", nullable = true)
-    @JsonIgnore
     private LocalDateTime dateTime;
 }

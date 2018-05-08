@@ -69,8 +69,8 @@ public class SongService {
     public Song find(long id) {
         Song song = songRepository.findSongById(id);
         song.setSongCounterNumber(songCounterRepository.countAllBySong(song));
-        song.setSongLikeNumber(songLikeRepository.countAllBySongAndRoleLike(id));
-        song.setSongDislikeNumber(songLikeRepository.countAllBySongAndRoleDislike(id));
+        //song.setSongLikeNumber(songLikeRepository.countAllBySongAndRoleLike(id));
+        //song.setSongDislikeNumber(songLikeRepository.countAllBySongAndRoleDislike(id));
         song.setAudioFile(new File(song.getAudioPath()));
 
         return song;

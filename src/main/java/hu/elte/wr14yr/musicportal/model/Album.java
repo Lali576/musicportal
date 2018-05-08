@@ -17,6 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"coverPath",
+                        "user",
                         "songs",
                         "genres",
                         "keywords"})

@@ -16,12 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"audioPath",
+                        "album",
+                        "user",
+                        "songComments",
                         "songCounters",
                         "songLikes",
                         "playlists",
                         "genres",
-                        "keywords",
-                        "songComments"})
+                        "keywords"})
 public class Song {
 
     @Id
@@ -64,11 +66,11 @@ public class Song {
     @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
     private List<SongLike> songLikes;
 
-    @Transient
-    private int songLikeNumber;
+    //@Transient
+    //private int songLikeNumber;
 
-    @Transient
-    private int songDislikeNumber;
+    //@Transient
+    //private int songDislikeNumber;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
     private List<Playlist> playlists;
