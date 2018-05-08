@@ -1,3 +1,38 @@
-<p>
-  user-detail works!
-</p>
+<h1 class="display-4">Adataim:</h1>
+
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>
+            Név:
+          </th>
+          <td>
+            {{ user.username }}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            E-mail cím:
+          </th>
+          <td>
+            {{user.emailAddress}}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Teljes név:
+          </th>
+          <td>{{ user.fullName }}</td>
+        </tr>
+        <tr>
+          <th>
+            Kedvenc műfaj:
+          </th>
+          <td>
+            {{user.favGenreId.name}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+

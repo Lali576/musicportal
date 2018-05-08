@@ -4,6 +4,7 @@ import {AuthService} from "../../../auth.service";
 import {Router} from "@angular/router";
 import {Genre} from "../../../model/genre";
 import {UserService} from "../../../service/user.service";
+import {getFile} from "ts-node";
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,6 @@ export class RegisterComponent implements OnInit {
   password: string = "";
   message: string = "";
   genres: Genre[] = [];
-  favGenre: Genre = new Genre();
 
   constructor(
     private userService: UserService,
@@ -31,24 +31,17 @@ export class RegisterComponent implements OnInit {
       });
   }
 
-  write() {
-    console.log(this.user.favGenreId);
-  }
-
   async submit(f) {
     if(f.invalid) {
       return;
     }
     try {
-      this.user.favGenreId = this.favGenre;
-      this.user.biography = "";
-      console.log(this.favGenre)
       console.log(this.user);
       this.message = "Regisztráció folyamatban";
       var userString = JSON.stringify(this.user);
       await this.authService.register(userString, this.password);
       console.log("successful registration");
-      this.router.navigate([this.authService.redirectUrl]);
+      this.router.navigate(['/user', this.authService.user.id]);
     } catch (e) {
       this.message = "Sikertelen regisztráció";
       console.log(e);

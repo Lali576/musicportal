@@ -11,8 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +34,7 @@ public class AlbumService {
     public AlbumService() {
     }
 
-    public Album create(Album album, User user, Set<Song> songs, Set<Genre> genres, Set<Keyword> keywords) {
+    public Album create(Album album, User user, List<Song> songs, List<Genre> genres, List<Keyword> keywords) {
         album.setUser(user);
         album.setSongs(songs);
         album.setGenres(genres);

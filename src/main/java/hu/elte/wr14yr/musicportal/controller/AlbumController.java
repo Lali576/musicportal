@@ -1,11 +1,7 @@
 package hu.elte.wr14yr.musicportal.controller;
 
-import hu.elte.wr14yr.musicportal.annotation.Role;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.model.*;
-
-import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
-import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
-import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.SongService;
@@ -13,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Key;
-import java.util.Set;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/album")
@@ -28,18 +25,20 @@ public class AlbumController {
 
     //@Role({ARTIST})
     @GetMapping
-    public ResponseEntity<Iterable<Album>> list(User user) {
+    public ResponseEntity<Iterable<Album>> list(@RequestBody User user) {
         Iterable<Album> albums = albumService.list(user);
         return ResponseEntity.ok(albums);
     }
 
     //@Role({ARTIST})
     @PostMapping("/new")
-    public ResponseEntity<Album> create(@RequestBody Album album,
-                                        @RequestBody User user,
-                                        @RequestBody Set<Song> songs,
-                                        @RequestBody Set<Genre> genres,
-                                        @RequestBody Set<Keyword> keywords) {
+    public ResponseEntity<Album> create(@RequestBody Map<String, Object> params) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Album album = mapper.readValue(params.get("album").toString(), Album.class);
+        User user = mapper.readValue(params.get("user").toString(), User.class);
+        List<Song> songs = mapper.readValue(params.get("songs").toString(), List.class);
+        List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
+        List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
         Album savedAlbum = albumService.create(album, user, songs, genres, keywords);
 
         return ResponseEntity.ok(savedAlbum);

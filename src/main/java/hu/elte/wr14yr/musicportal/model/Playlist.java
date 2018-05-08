@@ -1,20 +1,20 @@
 package hu.elte.wr14yr.musicportal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
 @Table(name = "PLAYLISTS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"keywords",
+@JsonIgnoreProperties({"user",
+                        "keywords",
                         "songs"})
 public class Playlist {
 
@@ -31,10 +31,10 @@ public class Playlist {
     private User user;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "playlists")
-    private Set<Keyword> keywords;
+    private List<Keyword> keywords;
 
     @JoinTable(name = "SONG_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),
                                 inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
-    private Set<Song> songs;
+    private List<Song> songs;
 }

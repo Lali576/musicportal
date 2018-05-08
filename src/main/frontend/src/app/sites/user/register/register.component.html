@@ -69,11 +69,11 @@
     </mat-form-field>
   </div>
   <div class="form-group">
-    <input name="iconFile" [(ngModel)]="user.iconFile" class="ng-hide" id="input-file-id" multiple type="file" />
+    <input name="iconFile" [(ngModel)]="user.iconFile" class="ng-hide" id="input-file-id" multiple type="file" accept="image/*"/>
   </div>
   <div class="form-group">
     <mat-form-field>
-      <mat-select name="favGenreText" [(ngModel)]="favGenre" placeholder="Kedvenc műfaj" required>
+      <mat-select name="favGenreText" [(ngModel)]="user.favGenreId" placeholder="Kedvenc műfaj" required>
         <mat-option *ngFor="let genre of genres" [value]="genre">
           {{genre.name}}
         </mat-option>

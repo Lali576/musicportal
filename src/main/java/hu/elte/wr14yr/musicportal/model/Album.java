@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.File;
 import java.time.Year;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,11 +44,11 @@ public class Album {
     private User user;
 
     @OneToMany(targetEntity = Song.class, mappedBy = "album")
-    private Set<Song> songs;
+    private List<Song> songs;
 
     @ManyToMany(targetEntity = Genre.class, mappedBy = "albums")
-    private Set<Genre> genres;
+    private List<Genre> genres;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "albums")
-    private Set<Keyword> keywords;
+    private List<Keyword> keywords;
 }

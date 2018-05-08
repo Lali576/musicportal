@@ -1,6 +1,6 @@
 package hu.elte.wr14yr.musicportal.controller;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_MULTIPLYPeer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.Playlist;
@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Key;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/playlist")
@@ -40,10 +40,12 @@ public class PlaylistController {
 
     //@Role({USER, ARTIST})
     @PostMapping("/new")
-    public ResponseEntity<Playlist> create(@RequestBody Playlist playlist,
-                                           @RequestBody User user,
-                                           @RequestBody Set<Song> songs,
-                                           @RequestBody Set<Keyword> keywords) {
+    public ResponseEntity<Playlist> create(@RequestBody Map<String, Object> params) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Playlist playlist = mapper.readValue(params.get("playlist").toString(), Playlist.class);
+        User user = mapper.readValue(params.get("user").toString(), User.class);
+        List<Song> songs = mapper.readValue(params.get("songs").toString(), List.class);
+        List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
         Playlist savedPlaylist = playlistService.create(playlist, user, songs, keywords);
 
         return ResponseEntity.ok(savedPlaylist);

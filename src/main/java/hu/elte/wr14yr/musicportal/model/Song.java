@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.File;
 import java.time.Year;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -53,15 +53,16 @@ public class Song {
     private User user;
 
     @OneToMany(targetEntity = SongComment.class, mappedBy = "song")
-    private Set<SongComment> songComments;
+    private List<SongComment> songComments;
 
     @OneToMany(targetEntity = SongCounter.class, mappedBy = "song")
-    private Set<SongCounter> songCounters;
+    private List<SongCounter> songCounters;
 
+    @Transient
     private int songCounterNumber;
 
     @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
-    private Set<SongLike> songLikes;
+    private List<SongLike> songLikes;
 
     @Transient
     private int songLikeNumber;
@@ -70,11 +71,11 @@ public class Song {
     private int songDislikeNumber;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
-    private Set<Playlist> playlists;
+    private List<Playlist> playlists;
 
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
-    private Set<Genre> genres;
+    private List<Genre> genres;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "songs")
-    private Set<Keyword> keywords;
+    private List<Keyword> keywords;
 }

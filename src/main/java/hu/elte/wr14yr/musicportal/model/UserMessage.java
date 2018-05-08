@@ -29,7 +29,6 @@ public class UserMessage {
 
     @JoinColumn(name = "USER_FROM_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
-    @JsonIgnore
     private User userFrom;
 
     @Column(name = "TEXT", nullable = false)

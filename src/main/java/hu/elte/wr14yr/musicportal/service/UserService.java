@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -38,7 +41,7 @@ public class UserService {
 
     private User user;
 
-    public User register(User user, String password) {
+    public User register(User user, String password) throws IOException, URISyntaxException {
         user.setRole(User.Role.USER);
 
         SecureRandom rand = new SecureRandom();
@@ -61,10 +64,14 @@ public class UserService {
             return null;
         }
 
-        new File("..\\media\\" + user.getUsername() + "\\icon").mkdir();
-        File file = new File("..\\media\\" + user.getUsername() + "\\icon\\" + user.getIconFile().getName());
-
-        user.setIconPath(file.getPath());
+        String file = getClass().getClassLoader().getResource("\\media").toURI().getPath();
+        File userDir = new File(file+"\\"+user.getUsername());
+        if(!userDir.exists()) {
+            userDir.mkdir();
+        }
+        File file2 = new File(userDir.getPath()+"\\"+user.getIconFile().getName());
+        boolean k = file2.createNewFile();
+        user.setIconPath(file2.getPath());
 
         return this.user = userRepository.save(user);
     }

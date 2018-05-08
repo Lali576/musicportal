@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 @RestController
@@ -26,7 +27,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody Map<String, Object> params) throws IOException {
+    public ResponseEntity<User> register(@RequestBody Map<String, Object> params) throws IOException, URISyntaxException {
         String password = params.get("password").toString();
         ObjectMapper mapper = new ObjectMapper();
         String jsonUser = params.get("user").toString();
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody Map<String, String> params) {
+    public ResponseEntity<User> login(@RequestBody Map<String, Object> params) {
         try {
             String username = params.get("username").toString();
             String password = params.get("password").toString();

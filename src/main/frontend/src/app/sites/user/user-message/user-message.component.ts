@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from "../../../auth.service";
+import {UserMessage} from "../../../model/usermessage";
 
 @Component({
   selector: 'app-user-message',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserMessageComponent implements OnInit {
 
-  constructor() { }
+  userMessages: UserMessage[] = [];
+
+  constructor(
+    private authService: AuthService,
+  ) { }
 
   ngOnInit() {
+    if(this.authService.user.role !== 'GUEST') {
+      this.userMessages = this.userMessages;
+    }
   }
 
 }

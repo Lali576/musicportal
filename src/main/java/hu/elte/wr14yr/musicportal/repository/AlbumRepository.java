@@ -4,11 +4,9 @@ import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.model.Genre;
 import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
-import java.util.Set;
+import java.util.List;
 
 public interface AlbumRepository extends CrudRepository<Album, Long> {
     @Override
@@ -22,13 +20,13 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
     void saveAlbumKeyword(@Param("ALBUM_ID") long albumId, @Param("KEYWORD_ID") long keywordId);
     */
 
-    Set<Album> findAllByNameContainsAllIgnoreCase(String name);
+    List<Album> findAllByNameContainsAllIgnoreCase(String name);
 
-    Set<Album> findAllByUser(User user);
+    List<Album> findAllByUser(User user);
 
-    Set<Album> findAllByGenres(Genre genre);
+    List<Album> findAllByGenres(Genre genre);
 
-    Set<Album> findAllByKeywords(Keyword keyword);
+    List<Album> findAllByKeywords(Keyword keyword);
 
     Album findAlbumById(Long id);
 

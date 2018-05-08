@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../model/user";
 import {Observable} from "rxjs/index";
-import {promise} from "selenium-webdriver";
 import {Genre} from "../model/genre";
+import {UserMessage} from "../model/usermessage";
+import {AuthService} from "../auth.service";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -15,10 +16,14 @@ const httpOptions = {
 export class UserService {
 
   user: User;
+  authService: AuthService;
 
   constructor(
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private authServicse: AuthService
+  ) {
+    this.authService = authServicse;
+  }
 
   getGenres(): Observable<Genre[]> {
     return this.http.get<Genre[]>('/api/genre/list');

@@ -3,11 +3,9 @@ package hu.elte.wr14yr.musicportal.repository;
 import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.User;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
-import java.util.Set;
+import java.util.List;
 
 public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     @Override
@@ -18,11 +16,11 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     void savePlaylistKeyword(@Param("PLAYLIST_ID") long playlistId, @Param("KEYWORD_ID") long keywordId);
     */
 
-    Set<Playlist> findAllByNameContainsAllIgnoreCase(String name);
+    List<Playlist> findAllByNameContainsAllIgnoreCase(String name);
 
-    Set<Playlist> findAllByKeywords(Keyword keyword);
+    List<Playlist> findAllByKeywords(Keyword keyword);
 
-    Set<Playlist> findAllByUser(User user);
+    List<Playlist> findAllByUser(User user);
 
     Playlist findPlaylistById(Long id);
 

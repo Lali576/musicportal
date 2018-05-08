@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/song")
@@ -47,11 +50,13 @@ public class SongController {
 
     //@Role({ARTIST})
     @PostMapping("/new")
-    public ResponseEntity<Song> create(@RequestBody Song song,
-                                       @RequestBody User user,
-                                       @RequestBody Album album,
-                                       @RequestBody Set<Genre> genres,
-                                       @RequestBody Set<Keyword> keywords) {
+    public ResponseEntity<Song> create(@RequestBody Map<String, Object> params) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Song song = mapper.readValue(params.get("song").toString(), Song.class);
+        User user = mapper.readValue(params.get("user").toString(), User.class);
+        Album album = mapper.readValue(params.get("album").toString(), Album.class);
+        List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
+        List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
         Song savedSong = songService.create(song, user, album, genres, keywords);
 
         return ResponseEntity.ok(savedSong);

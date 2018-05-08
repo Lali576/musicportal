@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class PlaylistService {
@@ -21,7 +21,7 @@ public class PlaylistService {
     @Autowired
     private SongRepository songRepository;
 
-    public Playlist create(Playlist playlist, User user, Set<Song> songs, Set<Keyword> keywords) {
+    public Playlist create(Playlist playlist, User user, List<Song> songs, List<Keyword> keywords) {
         playlist.setUser(user);
         playlist.setSongs(songs);
         playlist.setKeywords(keywords);

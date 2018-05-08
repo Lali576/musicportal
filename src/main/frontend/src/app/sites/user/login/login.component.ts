@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       this.message = "Bejelentkezés folyamatban";
       await this.authService.login(this.username, this.password);
       console.log("successful logging");
-      this.router.navigate([this.authService.redirectUrl]);
+      this.router.navigate(['/user', this.authService.user.id]);
     } catch (e) {
       this.message = "Sikertelen bejelentkezés";
       console.log(e);

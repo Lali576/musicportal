@@ -1,13 +1,12 @@
 package hu.elte.wr14yr.musicportal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,20 +30,20 @@ public class Keyword {
     @JoinTable(name = "SONG_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
                                inverseJoinColumns = @JoinColumn(name = "SONG_ID",referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
-    private Set<Song> songs;
+    private List<Song> songs;
 
     @JoinTable(name = "PLAYLIST_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
                                    inverseJoinColumns = @JoinColumn(name = "PLAYLIST_ID",referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Playlist.class)
-    private Set<Playlist> playlists;
+    private List<Playlist> playlists;
 
     @JoinTable(name = "ALBUM_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
                                 inverseJoinColumns = @JoinColumn(name = "ALBUM_ID",referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Album.class)
-    private Set<Album> albums;
+    private List<Album> albums;
 
     @JoinTable(name = "USER_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),
                                  inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = User.class)
-    private Set<User> users;
+    private List<User> users;
 }

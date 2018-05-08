@@ -12,9 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.Key;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class SongService {
@@ -31,7 +30,7 @@ public class SongService {
     @Autowired
     private SongLikeRepository songLikeRepository;
 
-    public Song create(Song song, User user, Album album, Set<Genre> genres, Set<Keyword> keywords) {
+    public Song create(Song song, User user, Album album, List<Genre> genres, List<Keyword> keywords) {
         song.setUser(user);
         song.setAlbum(album);
         song.setGenres(genres);

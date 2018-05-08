@@ -15,6 +15,9 @@ import java.util.Set;
 @Table(name = "GENRES")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"users",
+                        "albums",
+                        "songs"})
 public class Genre {
 
     @Id
@@ -26,18 +29,15 @@ public class Genre {
     private String name;
 
     @OneToMany(targetEntity = User.class, mappedBy = "favGenreId")
-    @JsonIgnore
     private List<User> users;
 
     @JoinTable(name = "ALBUM_GENRE", joinColumns = @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID"),
                              inverseJoinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Album.class)
-    @JsonIgnore
-    private Set<Album> albums;
+    private List<Album> albums;
 
     @JoinTable(name = "SONG_GENRE", joinColumns = @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID"),
                              inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
-    @JsonIgnore
-    private Set<Song> songs;
+    private List<Song> songs;
 }

@@ -1,13 +1,9 @@
 package hu.elte.wr14yr.musicportal.repository;
 
 import hu.elte.wr14yr.musicportal.model.*;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
-import javax.annotation.security.PermitAll;
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
 public interface SongRepository extends CrudRepository<Song, Long>{
     @Override
@@ -24,17 +20,17 @@ public interface SongRepository extends CrudRepository<Song, Long>{
     void saveSongPlaylist(@Param("SONG_ID") long songId, @Param("PLAYLIST_ID") long playlistId);
     */
 
-    Set<Song> findAllByTitleContainsAllIgnoreCase(String title);
+    List<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
-    Set<Song> findAllByAlbum(Album album);
+    List<Song> findAllByAlbum(Album album);
 
-    Set<Song> findAllByUser(User user);
+    List<Song> findAllByUser(User user);
 
-    Set<Song> findAllByPlaylists(Playlist playlist);
+    List<Song> findAllByPlaylists(Playlist playlist);
 
-    Set<Song> findAllByGenres(Genre genre);
+    List<Song> findAllByGenres(Genre genre);
 
-    Set<Song> findAllByKeywords(Keyword keyword);
+    List<Song> findAllByKeywords(Keyword keyword);
 
     Song findSongById(long id);
 
