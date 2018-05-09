@@ -12,11 +12,11 @@ import {SongEditComponent} from "../sites/song/song-edit/song-edit.component";
 import {SongDetailComponent} from "../sites/song/song-detail/song-detail.component";
 import {PlaylistListComponent} from "../sites/playlist/playlist-list/playlist-list.component";
 import {PlaylistEditComponent} from "../sites/playlist/playlist-edit/playlist-edit.component";
-import {PlaylistService} from "../service/playlist.service";
 import {PlaylistDetailComponent} from "../sites/playlist/playlist-detail/playlist-detail.component";
 import {RegisterComponent} from "../sites/user/register/register.component";
 import {LoginComponent} from "../sites/user/login/login.component";
 import {UserDetailComponent} from "../sites/user/user-detail/user-detail.component";
+import {SearchComponent} from "../sites/search/search.component";
 
 const routes: Routes = [
   {
@@ -31,26 +31,26 @@ const routes: Routes = [
   {
     path: 'album',
     component: AlbumListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST']}
   },
   {
     path: 'album/new',
     component: AlbumEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST']}
   },
   {
     path: 'album/:id',
     component: AlbumDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST', 'USER', 'GUEST']}
   },
   {
     path: 'album/:id/edit',
     component: AlbumEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST']}
   },
   {
     path: 'song',
@@ -61,14 +61,14 @@ const routes: Routes = [
   {
     path: 'song/new',
     component: SongEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST']}
   },
   {
     path: 'song/:id',
     component: SongDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST', 'USER', 'GUEST']}
   },
   {
     path: 'song/:id/edit',
@@ -79,26 +79,26 @@ const routes: Routes = [
   {
     path: 'playlist',
     component: PlaylistListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST', 'USER']}
   },
   {
     path: 'playlist/new',
     component: PlaylistEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST', 'USER']}
   },
   {
     path: 'playlist/:id',
     component: PlaylistDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST', 'USER', 'GUEST']}
   },
   {
     path: 'playlist/:id/edit',
     component: PlaylistEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST', 'USER']}
   },
   {
     path: 'register',
@@ -111,14 +111,18 @@ const routes: Routes = [
   {
     path: 'user/:id',
     component: UserDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['USER', 'ARTIST']}
   },
   {
     path: 'user/:id/edit',
     component: UserDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['USER', 'ARTIST']}
+  },
+  {
+    path: 'search/:word',
+    component: SearchComponent
   }
 ]
 

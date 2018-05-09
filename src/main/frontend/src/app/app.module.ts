@@ -34,6 +34,9 @@ import {AuthGuard} from "./auth.guard";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { SearchComponent } from './sites/search/search.component';
+import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
+import { SearchSongComponent } from './sites/search/search-song/search-song.component';
+import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
 
 
 @NgModule({
@@ -56,7 +59,10 @@ import { SearchComponent } from './sites/search/search.component';
     RegisterComponent,
     SongCommentComponent,
     UserMessageComponent,
-    SearchComponent
+    SearchComponent,
+    SearchAlbumComponent,
+    SearchSongComponent,
+    SearchPlaylistComponent
   ],
   imports: [
     BrowserModule,
