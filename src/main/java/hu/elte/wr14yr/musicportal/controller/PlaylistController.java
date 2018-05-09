@@ -13,6 +13,7 @@ import hu.elte.wr14yr.musicportal.model.Song;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.service.PlaylistService;
 import hu.elte.wr14yr.musicportal.service.SongService;
+import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +30,15 @@ public class PlaylistController {
     private PlaylistService playlistService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private SongService songService;
 
     //@Role({USER, ARTIST})
     @GetMapping
-    public ResponseEntity<Iterable<Playlist>> list(User user) {
-        Iterable<Playlist> playlists = playlistService.list(user);
+    public ResponseEntity<Iterable<Playlist>> list() {
+        Iterable<Playlist> playlists = playlistService.list(userService.getLoggedInUser());
         return ResponseEntity.ok(playlists);
     }
 

@@ -5,6 +5,7 @@ import hu.elte.wr14yr.musicportal.model.*;
 
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.SongService;
+import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +22,13 @@ public class AlbumController {
     @Autowired
     private AlbumService albumService;
 
+    @Autowired
+    private UserService userService;
+
     //@Role({ARTIST})
     @GetMapping
-    public ResponseEntity<Iterable<Album>> list(@RequestBody User user) {
-        Iterable<Album> albums = albumService.list(user);
+    public ResponseEntity<Iterable<Album>> list() {
+        Iterable<Album> albums = albumService.list(userService.getLoggedInUser());
         return ResponseEntity.ok(albums);
     }
 

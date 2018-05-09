@@ -1,3 +1,29 @@
-<p>
-  album-list works!
-</p>
+<h1 class="display-2">
+  Albumaim:
+</h1>
+<div *ngIf="albums.length === 0">
+  <strong>
+    Magának még nincsenek albumai!
+  </strong>
+</div>
+
+<div *ngIf="albums.length >= 1" class="row">
+  <div class="col">
+    <table class="table">
+      <tbody>
+        <tr *ngFor="let album of albums">
+          <td>
+            <a mat-icon-button
+               [routerLink]="['/album', 'edit', album.id]">
+              {{album.name}}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<a mat-raised-button color="primary" routerLink="/album/new">
+  Új album
+</a>

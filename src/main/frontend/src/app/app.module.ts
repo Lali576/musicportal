@@ -37,6 +37,8 @@ import { SearchComponent } from './sites/search/search.component';
 import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
 import { SearchSongComponent } from './sites/search/search-song/search-song.component';
 import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
+import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
+import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
 
 
 @NgModule({
@@ -62,7 +64,9 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
     SearchComponent,
     SearchAlbumComponent,
     SearchSongComponent,
-    SearchPlaylistComponent
+    SearchPlaylistComponent,
+    AlbumFormComponent,
+    PlaylistFormComponent
   ],
   imports: [
     BrowserModule,
