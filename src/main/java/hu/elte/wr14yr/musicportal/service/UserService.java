@@ -10,11 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -64,16 +69,27 @@ public class UserService {
             return null;
         }
 
-        String file = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-        File userDir = new File(file+"\\"+user.getUsername());
+        /*String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
+        File userDir = new File(resourceDir+"\\"+user.getUsername());
         if(!userDir.exists()) {
             userDir.mkdir();
         }
-        File file2 = new File(userDir.getPath()+"\\"+user.getIconFile().getName());
-        boolean k = file2.createNewFile();
-        user.setIconPath(file2.getPath());
 
-        return this.user = userRepository.save(user);
+        File userIconFile = new File(userDir.getPath()+"\\"+user.getIconFile().getName());
+        BufferedImage iconFile = null;
+        String path = user.getIconFile().getPath();
+        try {
+            iconFile = ImageIO.read(new File(path));
+            ImageIO.write(iconFile,"jpeg", userIconFile);
+        } catch (Exception e) {
+
+        }*/
+
+        user.setIconPath("");
+
+        this.user = userRepository.save(user);
+
+        return this.user;
     }
 
     public Iterable<UserMessage> createUserMessage(UserMessage userMessage) {
@@ -91,6 +107,7 @@ public class UserService {
          if(loginUser.isPresent()) {
              if(isValid(loginUser.get(), password)) {
                  user = loginUser.get();
+                 user.setIconFile(new File(user.getIconPath()));
                  return user;
              }
          }
@@ -120,7 +137,27 @@ public class UserService {
         return user;
     }
 
-    public User update(User user) {
+    public User update(User user) throws URISyntaxException, IOException {
+        /*String lastPath = getLoggedInUser().getIconPath();
+        String lastPathName = new File(lastPath).getName();
+
+        if(!(user.getIconFile().getName().equals(lastPathName))) {
+            try {
+                Files.delete(Paths.get(lastPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
+            File userDir = new File(resourceDir+"\\"+user.getUsername());
+            File userIconFile = new File(userDir.getPath()+"\\"+user.getIconFile().getName());
+            userIconFile.createNewFile();
+            user.setIconPath(userIconFile.getPath());
+        } else {
+            user.setIconPath(lastPath);
+        }*/
+        user.setIconPath("");
+
         return userRepository.save(user);
     }
 

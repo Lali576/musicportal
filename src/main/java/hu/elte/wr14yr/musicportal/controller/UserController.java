@@ -47,42 +47,42 @@ public class UserController {
         }
     }
 
-    //@Role({ARTIST, USER})
+    @Role({ARTIST, USER})
     @GetMapping("/messages")
     public ResponseEntity<Iterable<UserMessage>> listUserMessages() {
         Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
         return ResponseEntity.ok(userMessages);
     }
 
-    //@Role({ARTIST, USER})
+    @Role({ARTIST, USER})
     @PostMapping("/messages/new")
     public ResponseEntity<Iterable<UserMessage>> createUserMessage(@RequestBody UserMessage userMessage) {
         Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
         return ResponseEntity.ok(userMessages);
     }
 
-    //@Role({ARTIST, USER})
+    @Role({ARTIST, USER})
     @PutMapping("/update/{id}")
-    public ResponseEntity<User> update(@PathVariable long id, User user) {
+    public ResponseEntity<User> update(@PathVariable long id, User user) throws IOException, URISyntaxException {
         User updatedUser = userService.update(user);
         return ResponseEntity.ok(updatedUser);
     }
 
-    //@Role({ARTIST, USER})
+    @Role({ARTIST, USER})
     @GetMapping("/{id}")
     public ResponseEntity<User> find(@PathVariable long id) {
         User foundUser = userService.getLoggedInUser();
         return ResponseEntity.ok(foundUser);
     }
 
-    //@Role({ARTIST, USER})
+    @Role({ARTIST, USER})
     @PostMapping("/logout")
     public ResponseEntity logout() {
         userService.logout();
         return ResponseEntity.status(204).build();
     }
 
-    //@Role({ARTIST, USER})s
+    @Role({ARTIST, USER})
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable long id, User user) throws IOException, URISyntaxException {
         userService.delete(id, user);

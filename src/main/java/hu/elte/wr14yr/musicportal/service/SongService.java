@@ -36,9 +36,9 @@ public class SongService {
         song.setGenres(genres);
         song.setKeywords(keywords);
 
-        String path = song.getAudioFile().getName();
+        //new File("\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + path);
 
-        new File("\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + path);
+        song.setAudioPath("");
 
         return songRepository.save(song);
     }
@@ -68,10 +68,10 @@ public class SongService {
 
     public Song find(long id) {
         Song song = songRepository.findSongById(id);
-        song.setSongCounterNumber(songCounterRepository.countAllBySong(song));
+        //song.setSongCounterNumber(songCounterRepository.countAllBySong(song));
         //song.setSongLikeNumber(songLikeRepository.countAllBySongAndRoleLike(id));
         //song.setSongDislikeNumber(songLikeRepository.countAllBySongAndRoleDislike(id));
-        song.setAudioFile(new File(song.getAudioPath()));
+        //song.setAudioFile(new File(song.getAudioPath()));
 
         return song;
     }
@@ -93,7 +93,7 @@ public class SongService {
     }
 
     public Song update(Song song) {
-        String lastPath = songRepository.findSongById(song.getId()).getAudioPath();
+        /*String lastPath = songRepository.findSongById(song.getId()).getAudioPath();
         if(!(song.getAudioFile().getName().equals(lastPath))) {
             try {
                 Files.delete(Paths.get(lastPath));
@@ -102,7 +102,8 @@ public class SongService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
+        song.setAudioPath("");
 
         return songRepository.save(song);
     }
@@ -117,11 +118,11 @@ public class SongService {
         songCommentRepository.deleteAllBySong(song);
         songCounterRepository.deleteAllBySong(song);
         songLikeRepository.deleteAllBySong(song);
-        try {
+        /*try {
             Files.delete(Paths.get(song.getAudioPath()));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         songRepository.deleteById(song.getId());
     }

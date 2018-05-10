@@ -31,12 +31,11 @@ export class AlbumService {
     return this.http.get<Album>(`api/album/${id}`).toPromise();
   }
 
-  addAlbum(album: Album, user: User, genres: Genre[], keywords: Keyword[]): Promise<Album> {
+  addAlbum(album: String, genres: String, keywords: String): Promise<Album> {
     return this.http.post<Album>(
       `api/album/new`,
       {
         "album": album,
-        "user": user,
         "genres": genres,
         "keywords": keywords
       },
@@ -53,6 +52,7 @@ export class AlbumService {
   }
 
   deleteAlbum(id: number) {
-    this.http.delete(`api/album/${id}`)
+    console.log("albums " + id);
+    return this.http.delete(`api/album/${id}`);
   }
 }

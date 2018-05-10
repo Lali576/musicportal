@@ -35,41 +35,41 @@ public class PlaylistController {
     @Autowired
     private SongService songService;
 
-    //@Role({USER, ARTIST})
+    @Role({USER, ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Playlist>> list() {
         Iterable<Playlist> playlists = playlistService.list(userService.getLoggedInUser());
         return ResponseEntity.ok(playlists);
     }
 
-    //@Role({USER, ARTIST})
+    @Role({USER, ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Playlist> create(@RequestBody Map<String, Object> params) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Playlist playlist = mapper.readValue(params.get("playlist").toString(), Playlist.class);
-        User user = mapper.readValue(params.get("user").toString(), User.class);
+        User user = userService.getLoggedInUser();
         List<Song> songs = mapper.readValue(params.get("songs").toString(), List.class);
-        List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
-        Playlist savedPlaylist = playlistService.create(playlist, user, songs, keywords);
+        //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
+        Playlist savedPlaylist = playlistService.create(playlist, user, songs, null);
 
         return ResponseEntity.ok(savedPlaylist);
     }
 
-    //@Role({USER, ARTIST, GUEST})
+    @Role({USER, ARTIST, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Playlist> find(@PathVariable long id) {
         Playlist foundPlaylist = playlistService.find(id);
         return ResponseEntity.ok(foundPlaylist);
     }
 
-    //@Role({USER, ARTIST})
+    @Role({USER, ARTIST})
     @PutMapping("/edit/{id}")
     public ResponseEntity<Playlist> update(@PathVariable long id, @RequestBody Playlist playlist) {
         Playlist updatedPlaylist = playlistService.update(playlist);
         return ResponseEntity.ok(updatedPlaylist);
     }
 
-    //@Role({USER, ARTIST})
+    @Role({USER, ARTIST})
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable long id) {
         playlistService.delete(id);

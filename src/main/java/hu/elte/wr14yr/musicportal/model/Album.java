@@ -32,7 +32,7 @@ public class Album {
     private String name;
 
     @Column(name = "YEAR", nullable = false)
-    private Year year;
+    private String year;
 
     @Column(name = "COVER_PATH", unique = true, nullable = false)
     private String coverPath;

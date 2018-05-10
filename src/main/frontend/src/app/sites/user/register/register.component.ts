@@ -4,7 +4,6 @@ import {AuthService} from "../../../auth.service";
 import {Router} from "@angular/router";
 import {Genre} from "../../../model/genre";
 import {UserService} from "../../../service/user.service";
-import {getFile} from "ts-node";
 
 @Component({
   selector: 'app-register',
@@ -36,9 +35,9 @@ export class RegisterComponent implements OnInit {
       return;
     }
     try {
-      console.log(this.user);
       this.message = "Regisztráció folyamatban";
       var userString = JSON.stringify(this.user);
+      console.log(userString);
       await this.authService.register(userString, this.password);
       console.log("successful registration");
       this.router.navigate(['/user', this.authService.user.id]);

@@ -38,14 +38,18 @@ public class AlbumService {
         album.setGenres(genres);
         album.setKeywords(keywords);
 
+        /*
         String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-        File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
+        File albumDir = new File(resourceDir+"\\"+user.getUsername()+"\\"+album.getName());
         if(!albumDir.exists()) {
             albumDir.mkdir();
         }
         File albumCoverFile = new File(albumDir.getPath()+"\\"+album.getCoverFile().getName());
         albumCoverFile.createNewFile();
-        album.setCoverPath(albumCoverFile.getPath());
+        */
+
+        //album.setCoverPath(albumCoverFile.getPath());
+        album.setCoverPath("");
 
         Album savedAlbum = albumRepository.save(album);
 
@@ -53,7 +57,7 @@ public class AlbumService {
     }
 
     public Iterable<Album> list(User user) {
-        if(user.getRole() == User.Role.ARTIST || user.getRole() == User.Role.USER) {
+        if(user.getRole() == User.Role.ARTIST) {
             return albumRepository.findAllByUser(user);
         } else {
             return Collections.emptyList();
@@ -67,11 +71,12 @@ public class AlbumService {
     }
 
     public Album update(Album album) throws URISyntaxException, IOException {
-        String lastPathName = new File(albumRepository.findAlbumById(album.getId()).getCoverPath()).getName();
+        String lastPath = albumRepository.findAlbumById(album.getId()).getCoverPath();
+        String lastPathName = new File(lastPath).getName();
 
-        if(!(album.getCoverFile().getName().equals(lastPathName))) {
+        /*if(!(album.getCoverFile().getName().equals(lastPathName))) {
             try {
-                Files.delete(Paths.get(lastPathName));
+                Files.delete(Paths.get(lastPath));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -81,7 +86,11 @@ public class AlbumService {
             File albumCoverFile = new File(albumDir.getPath()+"\\"+album.getCoverFile().getName());
             albumCoverFile.createNewFile();
             album.setCoverPath(albumCoverFile.getPath());
-        }
+        } else {
+            album.setCoverPath(lastPath);
+        }*/
+
+        album.setCoverPath("");
 
         return albumRepository.save(album);
     }
@@ -94,9 +103,9 @@ public class AlbumService {
 
     public void delete(Album album) throws URISyntaxException, IOException {
         songService.deleteAllByAlbum(album);
-        String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-        File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
-        Files.delete(Paths.get(albumDir.toString()));
+        //String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
+        //File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
+        //Files.delete(Paths.get(albumDir.toString()));
 
         albumRepository.deleteById(album.getId());
     }

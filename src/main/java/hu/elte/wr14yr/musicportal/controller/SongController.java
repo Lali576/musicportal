@@ -27,7 +27,7 @@ public class SongController {
     @Autowired
     private UserService userService;
 
-    //@Role({ARTIST})
+    @Role({ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Song>> list() {
         Iterable<Song> songs = songService.list(userService.getLoggedInUser());
@@ -46,14 +46,14 @@ public class SongController {
         return ResponseEntity.ok(songs);
     }
 
-    //@Role({ARTIST, USER})
+    @Role({ARTIST, USER})
     @PostMapping("/comments")
     public ResponseEntity<Iterable<SongComment>> listSongComments(@RequestBody Song song) {
         Iterable<SongComment> songComments = songService.listSongComments(song);
         return ResponseEntity.ok(songComments);
     }
 
-    //@Role({ARTIST, USER})
+    @Role({ARTIST, USER})
     @PostMapping("/comments/new")
     public ResponseEntity<Iterable<SongComment>> createSongComment(@RequestBody SongComment songComment) {
         Iterable<SongComment> songComments = songService.createSongComment(songComment);
@@ -64,35 +64,35 @@ public class SongController {
         SongLike, SongCounter
      */
 
-    //@Role({ARTIST})
+    @Role({ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Song> create(@RequestBody Map<String, Object> params) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Song song = mapper.readValue(params.get("song").toString(), Song.class);
-        User user = mapper.readValue(params.get("user").toString(), User.class);
+        User user = userService.getLoggedInUser();
         Album album = mapper.readValue(params.get("album").toString(), Album.class);
-        List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
-        List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
-        Song savedSong = songService.create(song, user, album, genres, keywords);
+        //List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
+        //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
+        Song savedSong = songService.create(song, user, album, null, null);
 
         return ResponseEntity.ok(savedSong);
     }
 
-    //@Role({ARTIST})
+    @Role({ARTIST})
     @PutMapping("/edit/{id}")
     public ResponseEntity<Song> update(@PathVariable long id, @RequestBody Song song) {
         Song updatedSong = songService.update(song);
         return ResponseEntity.ok(updatedSong);
     }
 
-    //@Role({ARTIST, USER, GUEST})
+    @Role({ARTIST, USER, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Song> find(@PathVariable long id) {
         Song foundSong  = songService.find(id);
         return ResponseEntity.ok(foundSong);
     }
 
-    //@Role({ARTIST})
+    @Role({ARTIST})
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable long id, @RequestBody Song song) {
         songService.delete(song);

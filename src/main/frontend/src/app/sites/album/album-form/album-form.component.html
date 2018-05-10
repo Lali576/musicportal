@@ -1,3 +1,38 @@
-<p>
-  album-form works!
-</p>
+<h1 class="display-2">Új album</h1>
+<form (submit)="submit(albumForm)" #albumForm="ngForm">
+
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="nameText"
+        [(ngModel)]="model.name"
+        matInput type="text"
+        placeholder="Album címe"
+        required
+        #nameText="ngModel">
+      <mat-error *ngIf="nameText.invalid && (nameText.dirty || nameText.touched)">
+        Adja meg az album címét!
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input name="yearText"
+             [(ngModel)]="model.year"
+             matInput type="number"
+             min="1900"
+             max="2099"
+             step="1"
+            required
+            #yearText="ngModel"/>
+    </mat-form-field>
+    <mat-error *ngIf="yearText.invalid && (yearText.dirty || yearText.touched)">
+      Adja meg az album keletkezési évét!
+    </mat-error>
+  </div>
+  <div class="form-group">
+    <input name="iconFile" [(ngModel)]="model.coverFile" class="ng-hide" id="input-file-id" multiple type="file" accept="image/*"/>
+  </div>
+
+  <button [disabled]="albumForm.invalid" type="submit" mat-raised-button color="primary">Album mentése</button>
+</form>

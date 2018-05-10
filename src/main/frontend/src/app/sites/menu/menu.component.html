@@ -16,6 +16,7 @@
     <button mat-button routerLink="/song">Zenék</button>
     <button mat-button routerLink="/playlist">Playlist</button>
     <span class="fill-remaining-space"></span>
+    <img src="{{authService.user.iconFile.webkitRelativePath}}" width="50" height="50">
     <span>{{authService.user.username}}</span>
     <button mat-button (click)="logout()">Kijelentkezés</button>
   </div>

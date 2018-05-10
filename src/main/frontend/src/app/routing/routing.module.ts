@@ -31,32 +31,32 @@ const routes: Routes = [
   {
     path: 'album',
     component: AlbumListComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST']}
   },
   {
     path: 'album/new',
     component: AlbumEditComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST']}
   },
   {
     path: 'album/:id',
     component: AlbumDetailComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST', 'USER', 'GUEST']}
   },
   {
     path: 'album/:id/edit',
     component: AlbumEditComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST']}
   },
   {
     path: 'song',
     component: SongListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
+    //canActivate: [AuthGuard],
+    //data: {roles: ['ARTIST']}
   },
   {
     path: 'song/new',

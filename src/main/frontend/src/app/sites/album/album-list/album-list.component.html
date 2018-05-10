@@ -14,8 +14,20 @@
         <tr *ngFor="let album of albums">
           <td>
             <a mat-icon-button
-               [routerLink]="['/album', 'edit', album.id]">
+               [routerLink]="['/album', album.id]">
               {{album.name}}
+            </a>
+          </td>
+          <td>
+            <a mat-icon-button
+               [routerLink]="['/album', album.id, 'edit']">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </td>
+          <td>
+            <a mat-icon-button
+               [routerLink]="['/album']" (click)="delete(album.id)">
+              <mat-icon>delete</mat-icon>
             </a>
           </td>
         </tr>

@@ -35,7 +35,7 @@ public class Song {
     private String title;
 
     @Column(name = "YEAR", nullable = false)
-    private Year year;
+    private String year;
 
     @Column(name = "LYRICS")
     private String lyrics;

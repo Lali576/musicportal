@@ -23,4 +23,9 @@ export class AlbumListComponent implements OnInit {
         this.albums = albums;
       });
   }
+
+  delete(id: number) {
+    console.log("keksz");
+    //this.albumService.deleteAlbum(id);
+  }
 }

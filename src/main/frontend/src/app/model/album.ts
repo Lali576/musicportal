@@ -4,7 +4,7 @@ import {Keyword} from "./keyword";
 
 export class Album {
   id: number = 0;
-  name: string = '';
-  year: Date = null;
+  name: string = "";
+  year: string = "";
   coverFile: File = null;
 }
