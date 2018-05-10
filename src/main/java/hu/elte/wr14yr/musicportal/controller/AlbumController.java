@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ public class AlbumController {
         User user = userService.getLoggedInUser();
         //List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
         //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
+        album.setDate(new Date());
         Album savedAlbum = albumService.create(album, user, null, null);
 
         return ResponseEntity.ok(savedAlbum);

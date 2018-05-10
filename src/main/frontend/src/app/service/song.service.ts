@@ -4,6 +4,8 @@ import {Song} from "../model/song";
 import {Observable} from "rxjs/index";
 import {Album} from "../model/album";
 import {Playlist} from "../model/playlist";
+import {Genre} from "../model/genre";
+import {Keyword} from "../model/keyword";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -22,36 +24,44 @@ export class SongService {
     return this.http.get<Song[]>('api/song');
   }
 
-  getSongsByAlbum(album: Album): Observable<Song[]> {
+  getSongsByAlbum(album: Album): Promise<Song[]> {
      return this.http.post<Song[]>(
        `api/song/albumby`,
             album,
-       httpOptions);
+       httpOptions).toPromise();
   }
 
-  getSongsByPlaylist(playlist: Playlist): Observable<Song[]> {
+  getSongsByPlaylist(playlist: Playlist): Promise<Song[]> {
     return this.http.post<Song[]>(
           `api/song/playlistby`,
               playlist,
-              httpOptions);
+              httpOptions).toPromise();
   }
 
   getSong(id: number): Promise<Song> {
     return this.http.get<Song>(`api/song/${id}`).toPromise();
   }
 
-  addSong(song: Song): Promise<Song> {
+  addSong(song: String, album: String, genres: String, keywords: String): Promise<Song> {
     return this.http.post<Song>(
-      `api/song`,
-      song,
+      `api/song/new`,
+      {
+        "song": song,
+        "album": album,
+        "genres": genres,
+        "keywords": keywords
+      },
       httpOptions
     ).toPromise();
   }
 
-  updateSong(id: number, song: Song): Promise<Song> {
+  updateSong(id: number, song: String, album:String): Promise<Song> {
     return this.http.put<Song>(
-      `api/song/${id}`,
-      song,
+      `api/song/edit/${id}`,
+      {
+        "song": song,
+        "album": album
+      },
       httpOptions
     ).toPromise();
   }

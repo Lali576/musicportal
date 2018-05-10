@@ -5,7 +5,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {RoutingModule} from "./routing/routing.module";
 import {MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule,
         MatFormFieldModule, MatInputModule, MatButtonToggleModule,
-        MatSelectModule, MatOptionModule} from "@angular/material";
+        MatSelectModule, MatOptionModule, MatCheckboxModule,
+        MatDatepickerModule, MatNativeDateModule} from "@angular/material";
 
 import { AppComponent } from './app.component';
 import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
@@ -81,6 +82,9 @@ import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-f
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     RoutingModule,
     FormsModule,
     HttpClientModule

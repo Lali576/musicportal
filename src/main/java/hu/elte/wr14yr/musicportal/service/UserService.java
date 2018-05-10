@@ -47,8 +47,6 @@ public class UserService {
     private User user;
 
     public User register(User user, String password) throws IOException, URISyntaxException {
-        user.setRole(User.Role.USER);
-
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
         rand.nextBytes(salt);

@@ -92,7 +92,8 @@ public class SongService {
         return songRepository.findAllByPlaylists(playlist);
     }
 
-    public Song update(Song song) {
+    public Song update(Song song, Album album, User user, List<Genre> genres, List<Keyword> keywords) {
+        System.out.println("its not the same");
         /*String lastPath = songRepository.findSongById(song.getId()).getAudioPath();
         if(!(song.getAudioFile().getName().equals(lastPath))) {
             try {
@@ -103,6 +104,10 @@ public class SongService {
                 e.printStackTrace();
             }
         }*/
+        song.setUser(user);
+        song.setAlbum(album);
+        song.setGenres(genres);
+        song.setKeywords(keywords);
         song.setAudioPath("");
 
         return songRepository.save(song);

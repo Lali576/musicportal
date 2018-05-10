@@ -80,8 +80,12 @@ public class SongController {
 
     @Role({ARTIST})
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Song> update(@PathVariable long id, @RequestBody Song song) {
-        Song updatedSong = songService.update(song);
+    public ResponseEntity<Song> update(@PathVariable long id, @RequestBody Map<String, Object> params) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Song song = mapper.readValue(params.get("song").toString(), Song.class);
+        User user = userService.getLoggedInUser();
+        Album album = mapper.readValue(params.get("album").toString(), Album.class);
+        Song updatedSong = songService.update(song,album,user,null,null);
         return ResponseEntity.ok(updatedSong);
     }
 

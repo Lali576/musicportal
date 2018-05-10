@@ -34,13 +34,11 @@ public class Song {
     @Column(name = "TITLE", unique = true, nullable = false)
     private String title;
 
-    @Column(name = "YEAR", nullable = false)
-    private String year;
-
     @Column(name = "LYRICS")
     private String lyrics;
 
-    @Column(name = "AUDIO_PATH", unique = true, nullable = false)
+    //unique=true for real
+    @Column(name = "AUDIO_PATH", unique = false, nullable = false)
     private String audioPath;
 
     @Transient

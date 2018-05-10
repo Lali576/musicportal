@@ -30,8 +30,7 @@ public class UserController {
     public ResponseEntity<User> register(@RequestBody Map<String, Object> params) throws IOException, URISyntaxException {
         String password = params.get("password").toString();
         ObjectMapper mapper = new ObjectMapper();
-        String jsonUser = params.get("user").toString();
-        User user = mapper.readValue(jsonUser, User.class);
+        User user = mapper.readValue(params.get("user").toString(), User.class);
         User savedUser = userService.register(user, password);
         return ResponseEntity.ok(savedUser);
     }

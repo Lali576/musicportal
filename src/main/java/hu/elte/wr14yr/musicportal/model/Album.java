@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.File;
 import java.time.Year;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -31,10 +32,11 @@ public class Album {
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "YEAR", nullable = false)
-    private String year;
+    @Column(name = "DATE", nullable = false)
+    private Date date;
 
-    @Column(name = "COVER_PATH", unique = true, nullable = false)
+    //unique=true for real
+    @Column(name = "COVER_PATH", unique = false, nullable = false)
     private String coverPath;
 
     @Transient

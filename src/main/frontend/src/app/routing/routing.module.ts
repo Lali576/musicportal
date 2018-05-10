@@ -21,11 +21,6 @@ import {SearchComponent} from "../sites/search/search.component";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
-  },
-  {
-    path: 'dashboard',
     component: MainPageComponent
   },
   {
@@ -55,20 +50,20 @@ const routes: Routes = [
   {
     path: 'song',
     component: SongListComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST']}
   },
   {
     path: 'song/new',
     component: SongEditComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST']}
   },
   {
     path: 'song/:id',
     component: SongDetailComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST', 'USER', 'GUEST']}
   },
   {
     path: 'song/:id/edit',
@@ -79,26 +74,26 @@ const routes: Routes = [
   {
     path: 'playlist',
     component: PlaylistListComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST', 'USER']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST', 'USER']}
   },
   {
     path: 'playlist/new',
     component: PlaylistEditComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST', 'USER']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST', 'USER']}
   },
   {
     path: 'playlist/:id',
     component: PlaylistDetailComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST', 'USER', 'GUEST']}
   },
   {
     path: 'playlist/:id/edit',
     component: PlaylistEditComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['ARTIST', 'USER']}
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST', 'USER']}
   },
   {
     path: 'register',
@@ -111,14 +106,14 @@ const routes: Routes = [
   {
     path: 'user/:id',
     component: UserDetailComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['USER', 'ARTIST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['USER', 'ARTIST']}
   },
   {
     path: 'user/:id/edit',
     component: UserDetailComponent,
-    //canActivate: [AuthGuard],
-    //data: {roles: ['USER', 'ARTIST']}
+    canActivate: [AuthGuard],
+    data: {roles: ['USER', 'ARTIST']}
   },
   {
     path: 'search/:word',

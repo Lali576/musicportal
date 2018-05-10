@@ -15,7 +15,8 @@ export class RegisterComponent implements OnInit {
   user: User = new User();
   password: string = "";
   message: string = "";
-  genres: Genre[] = [];
+  chooseableGenres: Genre[] = [];
+  isArtist: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -26,7 +27,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.userService.getGenres().subscribe(
       genres => {
-        this.genres = genres;
+        this.chooseableGenres = genres;
       });
   }
 
@@ -35,6 +36,11 @@ export class RegisterComponent implements OnInit {
       return;
     }
     try {
+      if(this.isArtist) {
+        this.user.role = "ARTIST";
+      } else {
+        this.user.role = "USER";
+      }
       this.message = "Regisztráció folyamatban";
       var userString = JSON.stringify(this.user);
       console.log(userString);

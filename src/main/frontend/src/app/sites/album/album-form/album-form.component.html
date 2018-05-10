@@ -1,38 +1,91 @@
 <h1 class="display-2">Új album</h1>
-<form (submit)="submit(albumForm)" #albumForm="ngForm">
+<div style="display: inline-block;">
+  <form (submit)="submitAlbum(albumForm)" #albumForm="ngForm">
+    <div class="form-group">
+      <mat-form-field>
+        <input
+          name="nameText"
+          [(ngModel)]="modelAlbum.name"
+          matInput type="text"
+          placeholder="Album címe"
+          required
+          #nameText="ngModel">
+        <mat-error *ngIf="nameText.invalid && (nameText.dirty || nameText.touched)">
+          Adja meg az album címét!
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input name="dateText" matInput [matDatepicker]="datePicker" [(ngModel)]="album.date" [min]="1900" [max]="2099" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+      <!--<mat-error *ngIf="datePicker.invalid && (yearDatePicker.dirty || yearDatePicker.touched)">
+        Adja meg az album keletkezési évét!
+      </mat-error>-->
+    </div>
+    <div class="form-group">
+      <input name="iconFile" [(ngModel)]="modelAlbum.coverFile" class="ng-hide" id="input-file-id" multiple type="file" accept="image/*"/>
+    </div>
 
+    <button [disabled]="albumForm.invalid" type="submit" mat-raised-button color="primary">Album mentése</button>
+  </form>
+  <div>
+    <h2>
+      Eddigi zenék
+    </h2>
+    <table class="table">
+      <tr *ngFor="let song of modelSongs">
+        <td>
+          {{song.title}}
+        </td>
+        <td (click)="editSong(song)">
+          <mat-icon>
+            edit
+          </mat-icon>
+        </td>
+        <td (click)="deleteSong(song)">
+          <mat-icon>
+            delete
+          </mat-icon>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<hr>
+<h2>
+  Új zene
+</h2>
+<form (submit)="submitSong(songForm)" #songForm="ngForm">
   <div class="form-group">
     <mat-form-field>
       <input
-        name="nameText"
-        [(ngModel)]="model.name"
+        name="titleText"
+        [(ngModel)]="currentSong.title"
         matInput type="text"
-        placeholder="Album címe"
+        placeholder="Dal címe"
         required
-        #nameText="ngModel">
-      <mat-error *ngIf="nameText.invalid && (nameText.dirty || nameText.touched)">
-        Adja meg az album címét!
+        #titleText="ngModel">
+      <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
+        Adja meg az dal címét!
       </mat-error>
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
-      <input name="yearText"
-             [(ngModel)]="model.year"
-             matInput type="number"
-             min="1900"
-             max="2099"
-             step="1"
-            required
-            #yearText="ngModel"/>
+      <input
+        name="lyricsText"
+        [(ngModel)]="currentSong.lyrics"
+        matInput type="text"
+        placeholder="Dal címe"
+        #titleText="ngModel">
+      <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
+        Adja meg az dal szövegét!
+      </mat-error>
     </mat-form-field>
-    <mat-error *ngIf="yearText.invalid && (yearText.dirty || yearText.touched)">
-      Adja meg az album keletkezési évét!
-    </mat-error>
-  </div>
-  <div class="form-group">
-    <input name="iconFile" [(ngModel)]="model.coverFile" class="ng-hide" id="input-file-id" multiple type="file" accept="image/*"/>
   </div>
 
-  <button [disabled]="albumForm.invalid" type="submit" mat-raised-button color="primary">Album mentése</button>
+  <button [disabled]="songForm.invalid" type="submit" mat-raised-button color="primary">Dal mentése</button>
 </form>

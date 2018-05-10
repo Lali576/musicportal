@@ -74,13 +74,17 @@
   <div class="form-group">
     <mat-form-field>
       <mat-select name="favGenreText" [(ngModel)]="user.favGenreId" placeholder="Kedvenc műfaj" required>
-        <mat-option *ngFor="let genre of genres" [value]="genre">
+        <mat-option *ngFor="let genre of chooseableGenres" [value]="genre">
           {{genre.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-
+  <div class="form-group">
+    <mat-checkbox name="artistCheckBox" [(ngModel)]="isArtist">
+      Dal szerzőnek jelentkezés
+    </mat-checkbox>
+  </div>
 
 
   <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
