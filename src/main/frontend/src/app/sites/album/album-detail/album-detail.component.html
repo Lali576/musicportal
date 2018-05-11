@@ -6,9 +6,20 @@
     Keletkezési év
   </dt>
   <dd class="col-sm-9">
-    {{album.year}}
+    {{album.date}}
   </dd>
 </dl>
+<h2>Dalok:</h2>
+<table class="table">
+  <tr *ngFor="let song of songs">
+    <td>
+      <a mat-icon-button
+         [routerLink]="['/song', song.id]">
+        {{song.title}}
+      </a>
+    </td>
+  </tr>
+</table>
 <button mat-raised-button routerLink="/album">
   Vissza
 </button>

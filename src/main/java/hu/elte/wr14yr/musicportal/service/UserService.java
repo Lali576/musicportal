@@ -9,11 +9,13 @@ import hu.elte.wr14yr.musicportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -67,20 +69,25 @@ public class UserService {
             return null;
         }
 
-        /*String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-        File userDir = new File(resourceDir+"\\"+user.getUsername());
-        if(!userDir.exists()) {
-            userDir.mkdir();
+        /*File resourceDir = new File("C:\\musicPortalMedia\\media", user.getUsername());
+        if (!resourceDir.exists())
+            resourceDir.mkdirs();
+
+        File userIconFile = new File(resourceDir, multipartFile.getOriginalFilename());
+        if (!userIconFile.exists()) {
+            userIconFile.createNewFile();
         }
 
-        File userIconFile = new File(userDir.getPath()+"\\"+user.getIconFile().getName());
-        BufferedImage iconFile = null;
-        String path = user.getIconFile().getPath();
-        try {
-            iconFile = ImageIO.read(new File(path));
-            ImageIO.write(iconFile,"jpeg", userIconFile);
-        } catch (Exception e) {
 
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(userIconFile);
+            outputStream.write(multipartFile.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null)
+                outputStream.close();
         }*/
 
         user.setIconPath("");

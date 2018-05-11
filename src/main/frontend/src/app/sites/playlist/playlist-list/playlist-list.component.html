@@ -1,3 +1,41 @@
-<p>
-  playlist-list works!
-</p>
+<h1 class="display-2">
+  Lejátszási listáim:
+</h1>
+<div *ngIf="playlists.length === 0">
+  <strong>
+    Magának még nincsenek lejátszási listái!
+  </strong>
+</div>
+
+<div *ngIf="playlists.length >= 1" class="row">
+  <div class="col">
+    <table class="table">
+      <tbody>
+      <tr *ngFor="let playlist of playlists">
+        <td>
+          <a mat-icon-button
+             [routerLink]="['/playlist', playlist.id]">
+            {{playlist.name}}
+          </a>
+        </td>
+        <td>
+          <a mat-icon-button
+             [routerLink]="['/playlist', playlist.id, 'edit']">
+            <mat-icon>edit</mat-icon>
+          </a>
+        </td>
+        <td>
+          <a mat-icon-button
+             [routerLink]="['/playlist']" (click)="delete(playlist.id)">
+            <mat-icon>delete</mat-icon>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<a mat-raised-button color="primary" routerLink="/playlist/new">
+  Új lejátszási lista
+</a>

@@ -1,3 +1,19 @@
-<p>
-  playlist-detail works!
-</p>
+<h1 class="display-2">
+  {{playlist.name}}
+</h1>
+<hr>
+<h2>Dalok:</h2>
+<table class="table">
+  <tr *ngFor="let song of songs">
+    <td>
+      <a mat-icon-button
+         [routerLink]="['/song', song.id]">
+        {{song.title}}
+      </a>
+    </td>
+  </tr>
+</table>
+<button mat-raised-button routerLink="/playlist">
+  Vissza
+</button>
+

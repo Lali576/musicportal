@@ -27,6 +27,13 @@ public class SongController {
     @Autowired
     private UserService userService;
 
+    @Role({ARTIST, USER})
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<Song>> listAll() {
+        Iterable<Song> songs = songService.listAll();
+        return ResponseEntity.ok(songs);
+    }
+
     @Role({ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Song>> list() {

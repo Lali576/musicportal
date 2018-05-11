@@ -40,8 +40,6 @@ export class AlbumFormComponent implements OnChanges {
     }
 
     this.currentSong = new Song();
-
-    console.log(this.modelSongs);
   }
 
   editSong(song: Song) {

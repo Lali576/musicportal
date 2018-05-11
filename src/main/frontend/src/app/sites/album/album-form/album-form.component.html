@@ -17,13 +17,15 @@
     </div>
     <div class="form-group">
       <mat-form-field>
-        <input name="dateText" matInput [matDatepicker]="datePicker" [(ngModel)]="album.date" [min]="1900" [max]="2099" placeholder="Choose a date">
+        <input name="dateText" matInput [matDatepicker]="datePicker" [(ngModel)]="modelAlbum.date" [min]="1900" [max]="2099" placeholder="Choose a date" required>
         <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
         <mat-datepicker #datePicker></mat-datepicker>
+        <!--
+        <mat-error *ngIf="datePicker.invalid && (yearDatePicker.dirty || yearDatePicker.touched)">
+          Adja meg az album keletkezési évét!
+        </mat-error>
+        -->
       </mat-form-field>
-      <!--<mat-error *ngIf="datePicker.invalid && (yearDatePicker.dirty || yearDatePicker.touched)">
-        Adja meg az album keletkezési évét!
-      </mat-error>-->
     </div>
     <div class="form-group">
       <input name="iconFile" [(ngModel)]="modelAlbum.coverFile" class="ng-hide" id="input-file-id" multiple type="file" accept="image/*"/>

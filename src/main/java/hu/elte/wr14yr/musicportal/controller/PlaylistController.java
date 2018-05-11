@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +50,10 @@ public class PlaylistController {
         ObjectMapper mapper = new ObjectMapper();
         Playlist playlist = mapper.readValue(params.get("playlist").toString(), Playlist.class);
         User user = userService.getLoggedInUser();
-        List<Song> songs = mapper.readValue(params.get("songs").toString(), List.class);
-        //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
+        Song[] arraySongs = mapper.readValue(params.get("songs").toString(), Song[].class);
+        List<Song> songs = Arrays.asList(arraySongs);
+        //Keyword[] arrayKeywords = mapper.readValue(params.get("keywords").toString(), Keyword[].class);
+        //List<Keyword> keywords = Arrays.asList(arrayKeywords);
         Playlist savedPlaylist = playlistService.create(playlist, user, songs, null);
 
         return ResponseEntity.ok(savedPlaylist);
@@ -64,8 +68,13 @@ public class PlaylistController {
 
     @Role({USER, ARTIST})
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Playlist> update(@PathVariable long id, @RequestBody Playlist playlist) {
-        Playlist updatedPlaylist = playlistService.update(playlist);
+    public ResponseEntity<Playlist> update(@PathVariable long id, @RequestBody Map<String, Object> params) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Playlist playlist = mapper.readValue(params.get("playlist").toString(), Playlist.class);
+        User user = userService.getLoggedInUser();
+        Song[] arraySongs = mapper.readValue(params.get("songs").toString(), Song[].class);
+        List<Song> songs = Arrays.asList(arraySongs);
+        Playlist updatedPlaylist = playlistService.update(playlist, songs, user);
         return ResponseEntity.ok(updatedPlaylist);
     }
 

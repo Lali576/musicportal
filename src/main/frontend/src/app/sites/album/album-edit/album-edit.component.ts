@@ -57,7 +57,6 @@ export class AlbumEditComponent implements OnInit {
       var albumString = JSON.stringify(album);
       var savedAlbum: Album = await this.albumService.addAlbum(albumString, null, null);
       albumString = JSON.stringify(savedAlbum);
-      console.log(albumString);
 
       for(var i = 0; i < songs.length; i++) {
         var songString = JSON.stringify(songs[i]);

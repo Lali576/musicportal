@@ -29,21 +29,25 @@ export class PlaylistService {
     return this.http.get<Playlist>(`api/playlist/${id}`).toPromise();
   }
 
-  addPlaylist(playlist: Playlist, keywords: Keyword[]): Promise<Playlist> {
+  addPlaylist(playlist: String, songs: String, keywords: String[]): Promise<Playlist> {
     return this.http.post<Playlist>(
       `api/playlist/new`,
       {
         "playlist": playlist,
+        "songs": songs,
         "keywords": keywords
       },
       httpOptions
     ).toPromise();
   }
 
-  updatePlaylist(id: number, playlist: Playlist): Promise<Playlist> {
+  updatePlaylist(id: number, playlist: String, songs: String): Promise<Playlist> {
     return this.http.put<Playlist>(
       `api/playlist/edit/${id}`,
-      playlist,
+      {
+        "playlist": playlist,
+        "songs": songs
+      },
       httpOptions
     ).toPromise();
   }

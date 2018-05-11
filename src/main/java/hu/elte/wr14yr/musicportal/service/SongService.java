@@ -76,6 +76,10 @@ public class SongService {
         return song;
     }
 
+    public Iterable<Song> listAll() {
+        return songRepository.findAll();
+    }
+
     public Iterable<Song> list(User user) {
         if(user.getRole() == User.Role.ARTIST) {
             return songRepository.findAllByUser(user);

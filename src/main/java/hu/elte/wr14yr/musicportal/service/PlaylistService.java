@@ -43,7 +43,9 @@ public class PlaylistService {
         return playlist;
     }
 
-    public Playlist update(Playlist playlist) {
+    public Playlist update(Playlist playlist, List<Song> songs, User user) {
+        playlist.setUser(user);
+        playlist.setSongs(songs);
         return playlistRepository.save(playlist);
     }
 

@@ -1,3 +1,25 @@
-<p>
-  song-list works!
-</p>
+<h1 class="display-2">
+  Dalaim:
+</h1>
+<div *ngIf="songs.length === 0">
+  <strong>
+    Magának még nincsenek számai!
+  </strong>
+</div>
+
+<div *ngIf="songs.length >= 1" class="row">
+  <div class="col">
+    <table class="table">
+      <tbody>
+      <tr *ngFor="let song of songs">
+        <td>
+          <a mat-icon-button
+             [routerLink]="['/song', song.id]">
+            {{song.title}}
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

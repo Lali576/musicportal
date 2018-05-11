@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {Song} from "../../../model/song";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {SongService} from "../../../service/song.service";
+import {switchMap} from "rxjs/internal/operators";
 
 @Component({
   selector: 'app-song-detail',
@@ -7,9 +11,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SongDetailComponent implements OnInit {
 
-  constructor() { }
+  song: Song = new Song();
+
+  constructor(
+    private route: ActivatedRoute,
+    private songService: SongService
+  ) { }
 
   ngOnInit() {
+    this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
+      const id = +params.get('id');
+      this.song = await this.songService.getSong(id);
+    })).subscribe();
   }
 
 }

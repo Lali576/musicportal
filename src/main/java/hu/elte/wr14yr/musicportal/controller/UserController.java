@@ -14,17 +14,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Iterator;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
+    private MultipartFile multipartFile = null;
+
     @Autowired
     private UserService userService;
+
+    @PostMapping("/file")
+    public ResponseEntity<String> file(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+
+        Iterator<String> iterator = request.getFileNames();
+
+        while (iterator.hasNext()) {
+            multipartFile = request.getFile(iterator.next());
+        }
+
+        String username = multipartFile.getName();
+        File resourceDir = new File("C:\\musicPortalMedia\\media", username);
+        if (!resourceDir.exists())
+            resourceDir.mkdirs();
+
+        File userIconFile = new File(resourceDir, multipartFile.getOriginalFilename());
+        if (!userIconFile.exists()) {
+            userIconFile.createNewFile();
+        }
+
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(userIconFile);
+            outputStream.write(multipartFile.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null)
+                outputStream.close();
+        }
+
+        String userIconPath = userIconFile.getPath();
+
+        return ResponseEntity.ok(userIconPath);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody Map<String, Object> params) throws IOException, URISyntaxException {

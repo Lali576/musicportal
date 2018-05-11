@@ -20,6 +20,10 @@ export class SongService {
     private http: HttpClient
   ) { }
 
+  getAllSongs(): Observable<Song[]> {
+    return this.http.get<Song[]>('/api/song/list');
+  }
+
   getSongs(): Observable<Song[]> {
     return this.http.get<Song[]>('api/song');
   }
