@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {Genre} from "../../../model/genre";
 import {UserService} from "../../../service/user.service";
 import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
+import {tap} from "rxjs/internal/operators";
 
 @Component({
   selector: 'app-register',
@@ -39,44 +40,30 @@ export class RegisterComponent implements OnInit {
     console.log(this.userIconFile);
   }
 
-
   async submit(f) {
     if(f.invalid) {
       return;
     }
     try {
-      if(this.isArtist) {
-        this.user.role = "ARTIST";
-      } else {
-        this.user.role = "USER";
-      }
-      this.message = "Regisztráció folyamatban";
-      var userString = JSON.stringify(this.user);
 
       const uploadData = new FormData();
       uploadData.append(this.user.username, this.userIconFile, this.userIconFile.name);
-      await this.http.post('/api/user/file', uploadData).subscribe(
-        (res: string) => {
-          console.log(res);
-          this.subimt2();
+      await this.http.post<object>('/api/user/file', uploadData)
+        .subscribe((res) => {
+          if(this.isArtist) {
+            this.user.role = "ARTIST";
+          } else {
+            this.user.role = "USER";
+          }
+          this.message = "Regisztráció folyamatban";
+          var userString = JSON.stringify(this.user);
+          this.authService.register(userString, this.password);
+          console.log("successful registration");
+          this.router.navigate(['/user', this.authService.user.id]);
         });
     } catch (e) {
       this.message = "Sikertelen regisztráció";
       console.log(e);
     }
-  }
-
-  async subimt2() {
-    if(this.isArtist) {
-      this.user.role = "ARTIST";
-    } else {
-      this.user.role = "USER";
-    }
-    this.message = "Regisztráció folyamatban";
-    var userString = JSON.stringify(this.user);
-
-    await this.authService.register(userString, this.password);
-    console.log("successful registration");
-    this.router.navigate(['/user', this.authService.user.id]);
   }
 }

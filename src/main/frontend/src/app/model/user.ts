@@ -8,5 +8,6 @@ export class User {
   fullName: string = "";
   biography: string = "";
   iconFile: File = null;
+  iconPath: string = "";
   role: string = "GUEST";
 }

@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties({"saltCode",
                         "hashPassword",
-                        "iconPath",
                         "albums",
                         "songs",
                         "songComments",

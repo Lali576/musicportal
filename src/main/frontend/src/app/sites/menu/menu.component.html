@@ -18,7 +18,7 @@
     <button mat-button routerLink="/playlist">Playlist</button>
     <span class="fill-remaining-space"></span>
     <button mat-button [routerLink]="['/user', authService.user.id]">
-      <img src="about:blank" width="50" height="50">
+      <img src="{{authService.user.iconPath}}" height="35px" width="35px" style="border: solid 3px black; margin: 10px; border-radius: 5px;">
       <span>{{authService.user.username}}</span>
     </button>
     <button mat-button (click)="logout()">Kijelentkezés</button>

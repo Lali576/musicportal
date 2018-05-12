@@ -11,13 +11,16 @@ import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 export class UserDetailComponent implements OnInit {
 
   user: User = new User();
-  image: SafeStyle;
+  imageUrl2;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
     this.user = this.authService.user;
+    //var imageUrl: string  = this.user.iconFile.toString();
+    this.imageUrl2 = this.sanitizer.bypassSecurityTrustResourceUrl("C:\\Users\\Tóth Ádám\\Downloads\\jpeg-home.jpg");
   }
 }

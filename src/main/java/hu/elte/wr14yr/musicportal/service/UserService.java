@@ -69,29 +69,6 @@ public class UserService {
             return null;
         }
 
-        /*File resourceDir = new File("C:\\musicPortalMedia\\media", user.getUsername());
-        if (!resourceDir.exists())
-            resourceDir.mkdirs();
-
-        File userIconFile = new File(resourceDir, multipartFile.getOriginalFilename());
-        if (!userIconFile.exists()) {
-            userIconFile.createNewFile();
-        }
-
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(userIconFile);
-            outputStream.write(multipartFile.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (outputStream != null)
-                outputStream.close();
-        }*/
-
-        user.setIconPath("");
-
         this.user = userRepository.save(user);
 
         return this.user;
@@ -112,7 +89,6 @@ public class UserService {
          if(loginUser.isPresent()) {
              if(isValid(loginUser.get(), password)) {
                  user = loginUser.get();
-                 user.setIconFile(new File(user.getIconPath()));
                  return user;
              }
          }

@@ -29,12 +29,14 @@ import java.util.Map;
 public class UserController {
 
     private MultipartFile multipartFile = null;
+    private String userIconFilePath = null;
+    private final String assetFolderPath = "C:\\Users\\Tóth Ádám\\Desktop\\Egyetemi dolgok\\Programtervező Informatikus\\8. félév\\Szakdolgozat\\MusicPortal\\src\\main\\frontend\\src\\assets";
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/file")
-    public ResponseEntity<String> file(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+    public ResponseEntity file(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -43,7 +45,7 @@ public class UserController {
         }
 
         String username = multipartFile.getName();
-        File resourceDir = new File("C:\\musicPortalMedia\\media", username);
+        File resourceDir = new File(assetFolderPath+"\\media", username);
         if (!resourceDir.exists())
             resourceDir.mkdirs();
 
@@ -64,9 +66,9 @@ public class UserController {
                 outputStream.close();
         }
 
-        String userIconPath = userIconFile.getPath();
+        userIconFilePath = "\\assets\\media\\"+username+"\\"+userIconFile.getName();
 
-        return ResponseEntity.ok(userIconPath);
+        return ResponseEntity.status(200).build();
     }
 
     @PostMapping("/register")
@@ -74,7 +76,10 @@ public class UserController {
         String password = params.get("password").toString();
         ObjectMapper mapper = new ObjectMapper();
         User user = mapper.readValue(params.get("user").toString(), User.class);
+        user.setIconPath(userIconFilePath);
         User savedUser = userService.register(user, password);
+        multipartFile = null;
+        userIconFilePath = null;
         return ResponseEntity.ok(savedUser);
     }
 
