@@ -11,16 +11,25 @@ import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/album")
 public class AlbumController {
+
+    private MultipartFile multipartFile = null;
+    private String albumCoverFilePath = null;
+    private final String assetFolderPath = "C:\\MusicPortal\\src\\main\\frontend\\src\\assets";
 
     @Autowired
     private AlbumService albumService;
@@ -35,6 +44,41 @@ public class AlbumController {
         return ResponseEntity.ok(albums);
     }
 
+    @PostMapping("/file")
+    public ResponseEntity file(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+        Iterator<String> iterator = request.getFileNames();
+
+        while (iterator.hasNext()) {
+            multipartFile = request.getFile(iterator.next());
+        }
+
+        String albumName = multipartFile.getName();
+        File resourceDir = new File(assetFolderPath+"\\media\\"+userService.getLoggedInUser().getUsername(), albumName);
+        if (!resourceDir.exists())
+            resourceDir.mkdirs();
+
+        File albumCoverFile = new File(resourceDir, multipartFile.getOriginalFilename());
+        if (!albumCoverFile.exists()) {
+            albumCoverFile.createNewFile();
+        }
+
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(albumCoverFile);
+            outputStream.write(multipartFile.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null)
+                outputStream.close();
+        }
+
+        albumCoverFilePath = "\\assets\\media\\"+userService.getLoggedInUser().getUsername()+"\\"+albumName+"\\"+albumCoverFile.getName();
+
+        return ResponseEntity.status(200).build();
+    }
+
     @Role({ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Album> create(@RequestBody Map<String, Object> params) throws IOException, URISyntaxException {
@@ -43,8 +87,10 @@ public class AlbumController {
         User user = userService.getLoggedInUser();
         //List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
         //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
+        album.setCoverPath(albumCoverFilePath);
         Album savedAlbum = albumService.create(album, user, null, null);
-
+        multipartFile = null;
+        albumCoverFilePath = null;
         return ResponseEntity.ok(savedAlbum);
     }
 

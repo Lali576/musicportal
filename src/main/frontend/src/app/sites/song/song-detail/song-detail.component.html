@@ -1,6 +1,10 @@
 <h1 class="display-2">
   {{song.title}}
 </h1>
+<audio controls>
+  <source src="{{song.audioPath}}" type="audio/mpeg">
+  A böngésző nem támogatja a kért audio elemet.
+</audio>
 <button mat-raised-button routerLink="/song">
   Vissza
 </button>

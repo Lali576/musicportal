@@ -41,7 +41,6 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
 import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
 import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

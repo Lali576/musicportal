@@ -45,11 +45,10 @@ export class RegisterComponent implements OnInit {
       return;
     }
     try {
-
       const uploadData = new FormData();
       uploadData.append(this.user.username, this.userIconFile, this.userIconFile.name);
-      await this.http.post<object>('/api/user/file', uploadData)
-        .subscribe((res) => {
+      await this.http.post('/api/user/file', uploadData)
+        .subscribe(async (res) => {
           if(this.isArtist) {
             this.user.role = "ARTIST";
           } else {
@@ -57,7 +56,7 @@ export class RegisterComponent implements OnInit {
           }
           this.message = "Regisztráció folyamatban";
           var userString = JSON.stringify(this.user);
-          this.authService.register(userString, this.password);
+          await this.authService.register(userString, this.password);
           console.log("successful registration");
           this.router.navigate(['/user', this.authService.user.id]);
         });

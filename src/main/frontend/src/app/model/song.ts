@@ -4,4 +4,5 @@ export class Song {
   lyrics: string = "";
   songCounterNumber: number = 0;
   audioFile: File = null;
+  audioPath: string = "";
 }

@@ -14,6 +14,7 @@ export class AlbumFormComponent implements OnChanges {
   modelAlbum: Album = null;
   modelSongs: Song[] = [];
   currentSong: Song = new Song();
+  albumCoverFile: File;
   @Output() onSubmit = new EventEmitter<object>();
 
   constructor() { }
@@ -23,11 +24,23 @@ export class AlbumFormComponent implements OnChanges {
     this.modelSongs = Object.assign([], this.songs);
   }
 
+  onAlbumCoverFileSelected(event) {
+    this.albumCoverFile = <File>event.target.files[0];
+    console.log(this.albumCoverFile);
+  }
+
   submitAlbum(form) {
     if(!form.valid) {
       return;
     }
+    this.modelAlbum.coverFile = this.albumCoverFile;
+    console.log(this.modelAlbum);
     this.onSubmit.emit({album: this.modelAlbum, songs: this.modelSongs});
+  }
+
+  onSongAudioFileSelected(event) {
+    this.currentSong.audioFile = <File>event.target.files[0];
+    console.log(this.currentSong.audioFile);
   }
 
   submitSong(form) {

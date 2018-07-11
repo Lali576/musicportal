@@ -7,6 +7,7 @@ import {switchMap} from "rxjs/internal/operators";
 import {Observable, of} from "rxjs/index";
 import {Location} from "@angular/common";
 import {SongService} from "../../../service/song.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-album-edit',
@@ -22,7 +23,8 @@ export class AlbumEditComponent implements OnInit {
     private route: ActivatedRoute,
     private albumService: AlbumService,
     private songService: SongService,
-    private location: Location
+    private location: Location,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -33,6 +35,7 @@ export class AlbumEditComponent implements OnInit {
         this.songs = await this.songService.getSongsByAlbum(this.album);
       } else {
         this.album = new Album();
+        this.songs = [];
       }
 
       return of (Observable);
@@ -42,28 +45,36 @@ export class AlbumEditComponent implements OnInit {
   async onFormSubmit(params: object) {
     var album: Album = params["album"];
     var songs: Song[] = params["songs"];
-
-    if(album.id > 0) {
+    if (album.id > 0) {
       await this.albumService.updateAlbum(album.id, album);
 
-      for(var i = 0; i < songs.length; i++) {
+      for (var i = 0; i < songs.length; i++) {
         var song: Song = songs[i];
         var songString = JSON.stringify(song);
         var albumString = JSON.stringify(album);
         await this.songService.updateSong(song.id, songString, albumString);
       }
-
     } else {
-      var albumString = JSON.stringify(album);
-      var savedAlbum: Album = await this.albumService.addAlbum(albumString, null, null);
-      albumString = JSON.stringify(savedAlbum);
+      const uploadAlbumCover = new FormData();
+      uploadAlbumCover.append(album.name, album.coverFile, album.coverFile.name);
+      await this.http.post('/api/album/file', uploadAlbumCover)
+        .subscribe(async (res) => {
+          var albumString = JSON.stringify(album);
+          var savedAlbum: Album = await this.albumService.addAlbum(albumString, null, null);
+          albumString = JSON.stringify(savedAlbum);
 
-      for(var i = 0; i < songs.length; i++) {
-        var songString = JSON.stringify(songs[i]);
-        await this.songService.addSong(songString, albumString, null, null);
+          for (var i = 0; i < songs.length; i++) {
+            var song: Song = songs[i];
+            const uploadSongAudio = new FormData();
+            uploadSongAudio.append(savedAlbum.name+"\\"+song.title, song.audioFile, song.audioFile.name);
+            await this.http.post('/api/song/file', uploadSongAudio)
+              .subscribe(async (res) => {
+                var songString = JSON.stringify(song);
+                await this.songService.addSong(songString, albumString, null, null);
+              });
+          }
+        });
       }
+      this.location.back();
     }
-    this.location.back();
   }
-
-}

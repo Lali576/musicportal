@@ -30,7 +30,7 @@ public class UserController {
 
     private MultipartFile multipartFile = null;
     private String userIconFilePath = null;
-    private final String assetFolderPath = "C:\\Users\\Tóth Ádám\\Desktop\\Egyetemi dolgok\\Programtervező Informatikus\\8. félév\\Szakdolgozat\\MusicPortal\\src\\main\\frontend\\src\\assets";
+    private final String assetFolderPath = "C:\\MusicPortal\\src\\main\\frontend\\src\\assets";
 
     @Autowired
     private UserService userService;

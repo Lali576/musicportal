@@ -17,8 +17,7 @@ import java.util.Set;
 @Table(name = "ALBUMS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"coverPath",
-                        "user",
+@JsonIgnoreProperties({"user",
                         "songs",
                         "genres",
                         "keywords"})

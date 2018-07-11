@@ -3,4 +3,5 @@ export class Album {
   name: string = "";
   date: Date = null;
   coverFile: File = null;
+  coverPath: string = "";
 }

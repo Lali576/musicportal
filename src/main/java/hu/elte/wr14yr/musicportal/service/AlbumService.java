@@ -91,6 +91,7 @@ public class AlbumService {
         }*/
 
         album.setCoverPath("");
+        songService.deleteAllByAlbum(album);
 
         return albumRepository.save(album);
     }
