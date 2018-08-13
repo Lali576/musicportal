@@ -30,9 +30,6 @@ public class AlbumService {
     @Autowired
     private SongService songService;
 
-    public AlbumService() {
-    }
-
     public Album create(Album album, User user, List<Genre> genres, List<Keyword> keywords) throws URISyntaxException, IOException {
         album.setUser(user);
         album.setGenres(genres);

@@ -9,9 +9,7 @@ import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
 import hu.elte.wr14yr.musicportal.service.UserNotValidException;
 import hu.elte.wr14yr.musicportal.service.UserService;
-import jdk.nashorn.internal.objects.NativeJSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +34,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/file")
-    public ResponseEntity file(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+    public ResponseEntity file(MultipartHttpServletRequest request) throws IOException {
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -76,7 +74,6 @@ public class UserController {
         String password = params.get("password").toString();
         ObjectMapper mapper = new ObjectMapper();
         User user = mapper.readValue(params.get("user").toString(), User.class);
-        user.setIconPath(userIconFilePath);
         User savedUser = userService.register(user, password);
         multipartFile = null;
         userIconFilePath = null;

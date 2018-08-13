@@ -23,5 +23,4 @@ export class SongListComponent implements OnInit {
         this.songs = songs;
       });
   }
-
 }

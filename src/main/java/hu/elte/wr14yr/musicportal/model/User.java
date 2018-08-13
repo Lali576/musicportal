@@ -1,6 +1,5 @@
 package hu.elte.wr14yr.musicportal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,7 @@ import java.util.List;
                         "songLikes",
                         "userToMessages",
                         "userFromMessages",
-                        "playlists",
+                        "playlist",
                         "keywords"})
 public class User {
     @Id
@@ -38,10 +37,10 @@ public class User {
     @Column(name = "EMAIL_ADDRESS", unique = true, nullable = false)
     private String emailAddress;
 
-    @Column(name = "SALT_CODE", unique = true, nullable = false)
+    @Column(name = "SALT_CODE", nullable = false)
     private String saltCode;
 
-    @Column(name = "HASH_PASSWORD", unique = true, nullable = false)
+    @Column(name = "HASH_PASSWORD", nullable = false)
     private String hashPassword;
 
     @ManyToOne(targetEntity = Genre.class, optional = false)
@@ -54,11 +53,16 @@ public class User {
     @Column(name = "BIOGRAPHY")
     private String biography;
 
-    @Column(name = "ICON_PATH", nullable = false)
-    private String iconPath;
+    @Column(name = "USER_FOLDER_GDA_ID", unique = true, nullable = false)
+    private String userFolderGdaId;
 
+    @Column(name = "ICON_FILE_GDA_ID", unique = true, nullable = false)
+    private String iconFileGdaId;
+
+    /*
     @Transient
     private File iconFile;
+    */
 
     @OneToMany(targetEntity = Album.class, mappedBy = "user")
     private List<Album> albums;
@@ -82,7 +86,7 @@ public class User {
     private List<UserMessage> userFromMessages;
 
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
-    private List<Playlist> playlists;
+    private List<Playlist> playlist;
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "users")
     private List<Keyword> keywords;

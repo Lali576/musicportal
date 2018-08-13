@@ -50,7 +50,7 @@ public class PlaylistService {
     }
 
     public void deleteAllByUser(User user) {
-        for(Playlist playlist : user.getPlaylists()) {
+        for(Playlist playlist : user.getPlaylist()) {
             delete(playlist.getId());
         }
     }

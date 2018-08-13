@@ -137,7 +137,6 @@ public class UserService {
         } else {
             user.setIconPath(lastPath);
         }*/
-        user.setIconPath("");
 
         return userRepository.save(user);
     }
