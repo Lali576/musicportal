@@ -7,6 +7,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
+import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.UserNotValidException;
 import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/file")
-    public ResponseEntity file(MultipartHttpServletRequest request) throws IOException {
+    @Autowired
+    public FileService fileService;
+
+    private File convertToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+        MultipartFile multipartFile = null;
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -42,41 +56,16 @@ public class UserController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        String username = multipartFile.getName();
-        File resourceDir = new File(assetFolderPath+"\\media", username);
-        if (!resourceDir.exists())
-            resourceDir.mkdirs();
-
-        File userIconFile = new File(resourceDir, multipartFile.getOriginalFilename());
-        if (!userIconFile.exists()) {
-            userIconFile.createNewFile();
-        }
-
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(userIconFile);
-            outputStream.write(multipartFile.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (outputStream != null)
-                outputStream.close();
-        }
-
-        userIconFilePath = "\\assets\\media\\"+username+"\\"+userIconFile.getName();
-
-        return ResponseEntity.status(200).build();
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody Map<String, Object> params) throws IOException, URISyntaxException {
-        String password = params.get("password").toString();
         ObjectMapper mapper = new ObjectMapper();
-        User user = mapper.readValue(params.get("user").toString(), User.class);
-        User savedUser = userService.register(user, password);
-        multipartFile = null;
-        userIconFilePath = null;
+
+        String password = request.getParameter("password").toString();
+
+        User user = mapper.readValue(request.getParameter("user").toString(), User.class);
+
+        File file = convertToFile(multipartFile);
+
+        User savedUser = userService.register(user, password, file);
+
         return ResponseEntity.ok(savedUser);
     }
 

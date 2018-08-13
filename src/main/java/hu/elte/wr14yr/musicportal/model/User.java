@@ -53,10 +53,10 @@ public class User {
     @Column(name = "BIOGRAPHY")
     private String biography;
 
-    @Column(name = "USER_FOLDER_GDA_ID", unique = true, nullable = false)
+    @Column(name = "USER_FOLDER_GDA_ID", unique = true)
     private String userFolderGdaId;
 
-    @Column(name = "ICON_FILE_GDA_ID", unique = true, nullable = false)
+    @Column(name = "ICON_FILE_GDA_ID", unique = true)
     private String iconFileGdaId;
 
     /*

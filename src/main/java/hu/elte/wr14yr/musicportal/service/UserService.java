@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.service;
 
+import hu.elte.wr14yr.musicportal.gda.GoogleDriveApi;
 import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.User;
@@ -46,9 +47,12 @@ public class UserService {
     @Autowired
     private PlaylistService playlistService;
 
+    @Autowired
+    public FileService fileService;
+
     private User user;
 
-    public User register(User user, String password) throws IOException, URISyntaxException {
+    public User register(User user, String password, File file) throws IOException, URISyntaxException {
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
         rand.nextBytes(salt);
@@ -70,6 +74,10 @@ public class UserService {
         }
 
         this.user = userRepository.save(user);
+
+        this.user.setUserFolderGdaId(fileService.uploadFolder(this.user.getUsername(), GoogleDriveApi.MAIN_FOLDER_ID));
+
+        this.user.setIconFileGdaId(fileService.uploadFile(file, this.user.getUserFolderGdaId()));
 
         return this.user;
     }
