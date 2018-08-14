@@ -19,14 +19,10 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  register(user: string, password: string) {
+  register(uploadData: FormData) {
     return this.http.post<User>(
       'api/user/register',
-      {
-        "user": user,
-        "password": password
-      },
-      httpOptions
+      uploadData
     ).pipe(
       tap((user: User) => {
         this.isLoggedIn = true;

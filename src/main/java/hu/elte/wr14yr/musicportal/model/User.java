@@ -44,7 +44,7 @@ public class User {
     private String hashPassword;
 
     @ManyToOne(targetEntity = Genre.class, optional = false)
-    @JoinColumn(name = "FAV_GENRE_ID", nullable = false)
+    @JoinColumn(name = "FAV_GENRE_ID", nullable = true)
     private Genre favGenreId;
 
     @Column(name = "FULL_NAME")

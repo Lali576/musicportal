@@ -43,6 +43,7 @@
       </mat-error>
     </mat-form-field>
   </div>
+  <!--
   <div class="form-group">
     <mat-form-field>
       <input
@@ -68,9 +69,11 @@
       </mat-error>
     </mat-form-field>
   </div>
+  -->
   <div class="form-group">
     <input name="iconFile" (change)="onFileSelected($event)" class="ng-hide" type="file" accept="image/*"/>
   </div>
+  <!--
   <div class="form-group">
     <mat-form-field>
       <mat-select name="favGenreText" [(ngModel)]="user.favGenreId" placeholder="Kedvenc műfaj" required>
@@ -85,6 +88,7 @@
       Dal szerzőnek jelentkezés
     </mat-checkbox>
   </div>
+  -->
 
 
   <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">

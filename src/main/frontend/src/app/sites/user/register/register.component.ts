@@ -46,20 +46,19 @@ export class RegisterComponent implements OnInit {
     }
     try {
       const uploadData = new FormData();
-      uploadData.append(this.user.username, this.userIconFile, this.userIconFile.name);
-      await this.http.post('/api/user/file', uploadData)
-        .subscribe(async (res) => {
-          if(this.isArtist) {
-            this.user.role = "ARTIST";
-          } else {
-            this.user.role = "USER";
-          }
-          this.message = "Regisztráció folyamatban";
-          var userString = JSON.stringify(this.user);
-          await this.authService.register(userString, this.password);
-          console.log("successful registration");
-          this.router.navigate(['/user', this.authService.user.id]);
-        });
+      uploadData.append(this.userIconFile.name, this.userIconFile, this.userIconFile.name);
+      uploadData.append("user", JSON.stringify(this.user));
+      uploadData.append("password", this.password);
+
+      if (this.isArtist) {
+        this.user.role = "ARTIST";
+      } else {
+        this.user.role = "USER";
+      }
+
+      await this.authService.register(uploadData);
+      console.log("successful registration");
+      this.router.navigate(['/user', this.authService.user.id]);
     } catch (e) {
       this.message = "Sikertelen regisztráció";
       console.log(e);

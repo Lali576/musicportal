@@ -23,6 +23,27 @@ const routes: Routes = [
     component: MainPageComponent
   },
   {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'user/:id',
+    component: UserDetailComponent,
+    canActivate: [AuthGuard],
+    data: {roles: ['USER', 'ARTIST']}
+  },
+  {
+    path: 'user/:id/edit',
+    component: UserDetailComponent,
+    canActivate: [AuthGuard],
+    data: {roles: ['USER', 'ARTIST']}
+  },
+  /*
+  {
     path: 'album',
     component: AlbumListComponent,
     canActivate: [AuthGuard],
@@ -95,29 +116,10 @@ const routes: Routes = [
     data: {roles: ['ARTIST', 'USER']}
   },
   {
-    path: 'register',
-    component: RegisterComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'user/:id',
-    component: UserDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
-  },
-  {
-    path: 'user/:id/edit',
-    component: UserDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
-  },
-  {
     path: 'search/:word',
     component: SearchComponent
   }
+  */
 ]
 
 @NgModule({

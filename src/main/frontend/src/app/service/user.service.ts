@@ -20,15 +20,16 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private authServicse: AuthService
+    private auth: AuthService
   ) {
-    this.authService = authServicse;
+    this.authService = auth;
   }
 
   getGenres(): Observable<Genre[]> {
     return this.http.get<Genre[]>('/api/genre/list');
   }
 
+  /*
   getUser(id: number): Promise<User> {
     return this.http.get<User>(`api/user/${id}`).toPromise();
   }
@@ -52,4 +53,5 @@ export class UserService {
   deleteUser(id: number): void {
     this.http.delete(`api/user/${id}`);
   }
+  */
 }
