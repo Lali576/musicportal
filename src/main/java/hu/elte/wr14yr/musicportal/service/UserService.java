@@ -1,35 +1,22 @@
 package hu.elte.wr14yr.musicportal.service;
 
+import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.gda.GoogleDriveApi;
-import hu.elte.wr14yr.musicportal.model.Album;
-import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.User;
-import hu.elte.wr14yr.musicportal.model.UserMessage;
-import hu.elte.wr14yr.musicportal.repository.UserMessageRepository;
 import hu.elte.wr14yr.musicportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

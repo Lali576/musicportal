@@ -6,9 +6,8 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.User;
-import hu.elte.wr14yr.musicportal.model.UserMessage;
 import hu.elte.wr14yr.musicportal.service.FileService;
-import hu.elte.wr14yr.musicportal.service.UserNotValidException;
+import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/user")
