@@ -24,7 +24,8 @@ import java.util.List;
                         "userToMessages",
                         "userFromMessages",
                         "playlist",
-                        "keywords"})
+                        "keywords",
+                        "userFolderGdaId"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +44,8 @@ public class User {
     @Column(name = "HASH_PASSWORD", nullable = false)
     private String hashPassword;
 
-    @ManyToOne(targetEntity = Genre.class, optional = false)
-    @JoinColumn(name = "FAV_GENRE_ID", nullable = true)
+    @ManyToOne(targetEntity = Genre.class, optional = true)
+    @JoinColumn(name = "FAV_GENRE_ID")
     private Genre favGenreId;
 
     @Column(name = "FULL_NAME")

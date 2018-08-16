@@ -8,4 +8,5 @@ export class User {
   fullName: string = "";
   biography: string = "";
   role: string = "GUEST";
+  iconFileGdaId: string = "";
 }

@@ -29,10 +29,12 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    /*
     this.userService.getGenres().subscribe(
       genres => {
         this.chooseableGenres = genres;
       });
+    */
   }
 
   onFileSelected(event) {
@@ -45,19 +47,20 @@ export class RegisterComponent implements OnInit {
       return;
     }
     try {
-      const uploadData = new FormData();
-      uploadData.append(this.userIconFile.name, this.userIconFile, this.userIconFile.name);
-      uploadData.append("user", JSON.stringify(this.user));
-      uploadData.append("password", this.password);
-
       if (this.isArtist) {
         this.user.role = "ARTIST";
       } else {
         this.user.role = "USER";
       }
 
+      const uploadData = new FormData();
+      uploadData.append(this.userIconFile.name, this.userIconFile, this.userIconFile.name);
+      uploadData.append("user", JSON.stringify(this.user));
+      uploadData.append("password", this.password);
+
       await this.authService.register(uploadData);
       console.log("successful registration");
+      console.log("Try to login with user named " + this.authService.user.username + " and with number id" + this.authService.user.id);
       this.router.navigate(['/user', this.authService.user.id]);
     } catch (e) {
       this.message = "Sikertelen regisztráció";

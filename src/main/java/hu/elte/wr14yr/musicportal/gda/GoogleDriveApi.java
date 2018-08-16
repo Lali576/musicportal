@@ -108,4 +108,12 @@ public class GoogleDriveApi {
 
         return folder.getId();
     }
+
+    public static void delete(String id) throws GeneralSecurityException, IOException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+        service.files().delete(id);
+    }
 }

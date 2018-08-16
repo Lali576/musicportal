@@ -9,7 +9,11 @@
   <span class="fill-remaining-space" fxHide="false" fxHide.gt-sm></span>
   <div *ngIf="!authService.isLoggedIn" class="w-100" fxLayout="row" fxShow="false" fxShow.gt-sm>
       <span class="fill-remaining-space"></span>
-      <input type="text" placeholder="Keresés" (submit)="search($event)">
+      <!--
+      <form (submit)="search()">
+        <input type="text" placeholder="Keresés">
+      </form>
+      -->
       <button mat-button routerLink="/login">Bejelentkezés</button>
       <button mat-button routerLink="/register">Regisztrálás</button>
   </div>
@@ -18,11 +22,13 @@
     <button mat-button routerLink="/song">Zenék</button>
     <button mat-button routerLink="/playlist">Playlist</button>
     <span class="fill-remaining-space"></span>
+    <!--
     <form (submit)="search()">
       <input type="text" placeholder="Keresés">
     </form>
+    -->
     <button mat-button [routerLink]="['/user', authService.user.id]">
-      <img src="{{authService.user.iconPath}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
+      <img src="{{'https://docs.google.com/uc?export=download&id=' + authService.user.iconFileGdaId}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
       <span>{{authService.user.username}}</span>
     </button>
     <button mat-button (click)="logout()">Kijelentkezés</button>

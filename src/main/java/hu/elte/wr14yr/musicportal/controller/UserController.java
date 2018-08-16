@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/user")
@@ -30,6 +32,7 @@ public class UserController {
     private MultipartFile multipartFile = null;
     private String userIconFilePath = null;
     private final String assetFolderPath = "C:\\MusicPortal\\src\\main\\frontend\\src\\assets";
+    private Logger logger = Logger.getLogger(UserController.class.getName());
 
     @Autowired
     private UserService userService;
@@ -37,17 +40,16 @@ public class UserController {
     @Autowired
     public FileService fileService;
 
-    private File convertToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convFile;
+    @GetMapping("/get")
+    public ResponseEntity<User> getLoginUser() {
+        logger.log(Level.INFO, "Trying to get login user if it exists");
+        User user = userService.getLoggedInUser();
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+        logger.log(Level.INFO, "",request);
         MultipartFile multipartFile = null;
 
         Iterator<String> iterator = request.getFileNames();
@@ -64,7 +66,13 @@ public class UserController {
 
         File file = convertToFile(multipartFile);
 
+        logger.log(Level.INFO, "Try to save new user named " + user.getUsername() + "", user);
+
         User savedUser = userService.register(user, password, file);
+
+        logger.log(Level.INFO, "New user named " + savedUser.getUsername() + " was saved in MusicPortal database");
+
+        file.delete();
 
         return ResponseEntity.ok(savedUser);
     }
@@ -120,5 +128,14 @@ public class UserController {
     public ResponseEntity delete(@PathVariable long id, User user) throws IOException, URISyntaxException {
         userService.delete(id, user);
         return ResponseEntity.ok().build();
+    }
+
+    private File convertToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
     }
 }

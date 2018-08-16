@@ -15,7 +15,7 @@ export class UserDetailComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private sanitizer: DomSanitizer
+    //private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
