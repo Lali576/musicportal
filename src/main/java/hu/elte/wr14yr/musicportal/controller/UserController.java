@@ -32,7 +32,7 @@ public class UserController {
     private MultipartFile multipartFile = null;
     private String userIconFilePath = null;
     private final String assetFolderPath = "C:\\MusicPortal\\src\\main\\frontend\\src\\assets";
-    private Logger logger = Logger.getLogger(UserController.class.getName());
+    //private Logger logger = Logger.getLogger(UserController.class.getName());
 
     @Autowired
     private UserService userService;
@@ -42,14 +42,12 @@ public class UserController {
 
     @GetMapping("/get")
     public ResponseEntity<User> getLoginUser() {
-        logger.log(Level.INFO, "Trying to get login user if it exists");
         User user = userService.getLoggedInUser();
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
-        logger.log(Level.INFO, "",request);
         MultipartFile multipartFile = null;
 
         Iterator<String> iterator = request.getFileNames();
@@ -66,11 +64,7 @@ public class UserController {
 
         File file = convertToFile(multipartFile);
 
-        logger.log(Level.INFO, "Try to save new user named " + user.getUsername() + "", user);
-
         User savedUser = userService.register(user, password, file);
-
-        logger.log(Level.INFO, "New user named " + savedUser.getUsername() + " was saved in MusicPortal database");
 
         file.delete();
 
@@ -88,6 +82,7 @@ public class UserController {
         }
     }
 
+    /*
     @Role({ARTIST, USER})
     @GetMapping("/messages")
     public ResponseEntity<Iterable<UserMessage>> listUserMessages() {
@@ -101,6 +96,7 @@ public class UserController {
         Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
         return ResponseEntity.ok(userMessages);
     }
+    */
 
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}")
