@@ -49,17 +49,11 @@ export class AuthService {
   }
 
   getUser() {
-    console.log("Try to get possible login user");
-    return this.http.get('api/user/get'
-    ).pipe(
-      tap((user: User) => {
-        console.log("User got");
-        if (user !== null) {
-          this.isLoggedIn = true;
-          this.user = user;
-          console.log("Found user: " + this.user.username);
-        }
-      })
+    console.log("Try to get possible logged in user");
+    this.http.get<User>('api/user/get').subscribe(
+      (user : User) => {
+        this.user = user;
+      }
     );
   }
 

@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
   user: User = new User();
   password: string = "";
   message: string = "";
-  chooseableGenres: Genre[] = [];
+  //chooseAbleGenres: Genre[] = [];
   isArtist: boolean = false;
   userIconFile: File;
 
@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
     /*
     this.userService.getGenres().subscribe(
       genres => {
-        this.chooseableGenres = genres;
+        this.chooseAbleGenres = genres;
       });
     */
   }

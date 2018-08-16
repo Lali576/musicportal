@@ -23,13 +23,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         List<User.Role> routeRoles = getRoles((HandlerMethod) handler);
-        User user = userService.getLoggedInUser();
+        User user = (userService.isLoggedIn()) ? userService.getLoggedInUser() : null;
 
         if(routeRoles.isEmpty() || routeRoles.contains(User.Role.GUEST)) {
             return true;
         }
 
-        if(userService.isLoggenIn() && routeRoles.contains(user.getRole())) {
+        if(userService.isLoggedIn() && routeRoles.contains(user.getRole())) {
             return true;
         }
 

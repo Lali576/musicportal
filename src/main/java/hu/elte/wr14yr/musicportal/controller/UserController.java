@@ -26,9 +26,6 @@ import java.util.Map;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private MultipartFile multipartFile = null;
-    private String userIconFilePath = null;
-    private final String assetFolderPath = "C:\\MusicPortal\\src\\main\\frontend\\src\\assets";
     //private Logger logger = Logger.getLogger(UserController.class.getName());
 
     @Autowired
@@ -39,7 +36,7 @@ public class UserController {
 
     @GetMapping("/get")
     public ResponseEntity<User> getLoginUser() {
-        User user = userService.getLoggedInUser();
+        User user = (userService.isLoggedIn()) ? userService.getLoggedInUser() : null;
         return ResponseEntity.ok(user);
     }
 
