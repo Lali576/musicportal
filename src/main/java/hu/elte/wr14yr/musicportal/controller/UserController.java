@@ -21,12 +21,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
-    //private Logger logger = Logger.getLogger(UserController.class.getName());
+    private Logger logger = Logger.getLogger(UserController.class.getName());
 
     @Autowired
     private UserService userService;
@@ -36,24 +38,30 @@ public class UserController {
 
     @GetMapping("/get")
     public ResponseEntity<User> getLoginUser() {
+        logger.log(Level.INFO, "Entrance: endpoint '/get'");
         User user = (userService.isLoggedIn()) ? userService.getLoggedInUser() : null;
+        logger.log(Level.INFO, "Exit: endpoint '/get'");
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+        logger.log(Level.INFO, "Entrance: endpoint '/register'");
         MultipartFile multipartFile = null;
 
         Iterator<String> iterator = request.getFileNames();
 
+        logger.log(Level.INFO, "Get file parameter");
         while (iterator.hasNext()) {
             multipartFile = request.getFile(iterator.next());
         }
 
         ObjectMapper mapper = new ObjectMapper();
 
+        logger.log(Level.INFO, "Get parameter 'password'");
         String password = request.getParameter("password").toString();
 
+        logger.log(Level.INFO, "Get parameter 'user'");
         User user = mapper.readValue(request.getParameter("user").toString(), User.class);
 
         File file = convertToFile(multipartFile);
@@ -62,16 +70,23 @@ public class UserController {
 
         file.delete();
 
+        logger.log(Level.INFO, "Exit: endpoint '/register'");
+
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody Map<String, Object> params) {
+        logger.log(Level.INFO, "Entrance: endpoint '/login'");
         try {
+            logger.log(Level.INFO, "Get parameter 'username'");
             String username = params.get("username").toString();
+            logger.log(Level.INFO, "Get parameter 'password'");
             String password = params.get("password").toString();
+            logger.log(Level.INFO, "Exit: endpoint '/login'");
             return ResponseEntity.ok(userService.login(username, password));
         } catch (UserNotValidException e) {
+            logger.log(Level.SEVERE, "Required user was not found!");
             return ResponseEntity.badRequest().build();
         }
     }
@@ -95,28 +110,36 @@ public class UserController {
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}")
     public ResponseEntity<User> update(@PathVariable long id, User user) throws IOException, URISyntaxException {
+        logger.log(Level.INFO, "Entrance: endpoint '/update'");
         User updatedUser = userService.update(user);
+        logger.log(Level.INFO, "Exit: endpoint '/update'");
         return ResponseEntity.ok(updatedUser);
     }
 
     @Role({ARTIST, USER})
     @GetMapping("/{id}")
     public ResponseEntity<User> find(@PathVariable long id) {
+        logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
         User foundUser = userService.getLoggedInUser();
+        logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
         return ResponseEntity.ok(foundUser);
     }
 
     @Role({ARTIST, USER})
     @PostMapping("/logout")
     public ResponseEntity logout() {
+        logger.log(Level.INFO, "Entrance: endpoint '/logout'");
         userService.logout();
+        logger.log(Level.INFO, "Exit: endpoint '/logout'");
         return ResponseEntity.status(204).build();
     }
 
     @Role({ARTIST, USER})
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable long id, User user) throws IOException, URISyntaxException {
+        logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         userService.delete(id, user);
+        logger.log(Level.INFO, "Exit: endpoint '/delete" + id + "'");
         return ResponseEntity.ok().build();
     }
 
