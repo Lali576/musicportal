@@ -1,5 +1,7 @@
 <h1 class="display-4">Adataim:</h1>
-
+    <div>
+      <img src="{{'https://docs.google.com/uc?export=download&id=' + user.iconFileGdaId}}" class="float-left border" width="100px">
+    </div>
     <table class="table">
       <tbody>
         <tr>
@@ -25,15 +27,19 @@
           </th>
           <td>{{ user.fullName }}</td>
         </tr>
-        <tr>
-          <th>
-            Kedvenc műfaj:
-          </th>
-          <td>
-            {{user.favGenreId.name}}
-          </td>
-        </tr>
         -->
+      <tr>
+        <td>
+          <button (click)="update()">
+            Szerkeszt
+          </button>
+        </td>
+        <td>
+          <button (click)="delete()">
+            Töröl
+          </button>
+        </td>
+      </tr>
       </tbody>
     </table>
 <form>

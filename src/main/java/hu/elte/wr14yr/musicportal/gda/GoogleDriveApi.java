@@ -114,6 +114,6 @@ public class GoogleDriveApi {
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
-        service.files().delete(id);
+        service.files().delete(id).execute();
     }
 }

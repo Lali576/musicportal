@@ -5,6 +5,7 @@ import {Observable} from "rxjs/index";
 import {Genre} from "../model/genre";
 import {UserMessage} from "../model/usermessage";
 import {AuthService} from "../auth.service";
+import {tap} from "rxjs/internal/operators";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -29,11 +30,12 @@ export class UserService {
     return this.http.get<Genre[]>('/api/genre/list');
   }
 
-  /*
+
   getUser(id: number): Promise<User> {
     return this.http.get<User>(`api/user/${id}`).toPromise();
   }
 
+  /*
   addUser(user: User): Promise<User> {
     return this.http.post<User>(
       `api/user/register`,
@@ -41,17 +43,26 @@ export class UserService {
       httpOptions
     ).toPromise();
   }
+  */
 
-  updateUser(id: number, user: User): Promise<User> {
+  updateUser(id: number, uploadData: FormData): Promise<User> {
     return this.http.put<User>(
       `api/user/${id}`,
-      user,
+      uploadData,
       httpOptions
+    ).pipe(
+      tap((user: User) => {
+        this.authService.isLoggedIn = true;
+        this.authService.user = user;
+      })
     ).toPromise();
   }
 
   deleteUser(id: number): void {
-    this.http.delete(`api/user/${id}`);
+    this.http.delete(`api/user/delete/${id}`).pipe(
+      tap(() => {
+        this.authService.logout();
+      })
+    ).toPromise();
   }
-  */
 }

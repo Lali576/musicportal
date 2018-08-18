@@ -52,7 +52,10 @@ export class AuthService {
     console.log("Try to get possible logged in user");
     this.http.get<User>('api/user/get').subscribe(
       (user : User) => {
-        this.user = user;
+        if (user !== null) {
+          this.user = user;
+          this.isLoggedIn = true;
+        }
       }
     );
   }

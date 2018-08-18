@@ -109,10 +109,30 @@ public class UserController {
 
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}")
-    public ResponseEntity<User> update(@PathVariable long id, User user) throws IOException, URISyntaxException {
+    public ResponseEntity<User> update(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
         logger.log(Level.INFO, "Entrance: endpoint '/update'");
-        User updatedUser = userService.update(user);
+        MultipartFile multipartFile = null;
+
+        Iterator<String> iterator = request.getFileNames();
+
+        logger.log(Level.INFO, "Get file parameter");
+        while (iterator.hasNext()) {
+            multipartFile = request.getFile(iterator.next());
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        logger.log(Level.INFO, "Get parameter 'user'");
+        User user = mapper.readValue(request.getParameter("user").toString(), User.class);
+
+        File file = convertToFile(multipartFile);
+
+        User updatedUser = userService.update(user, file);
+
+        file.delete();
+
         logger.log(Level.INFO, "Exit: endpoint '/update'");
+
         return ResponseEntity.ok(updatedUser);
     }
 
@@ -138,9 +158,10 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable long id, User user) throws IOException, URISyntaxException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
-        userService.delete(id, user);
+        userService.delete(id);
         logger.log(Level.INFO, "Exit: endpoint '/delete" + id + "'");
-        return ResponseEntity.ok().build();
+
+        return ResponseEntity.status(204).build();
     }
 
     private File convertToFile(MultipartFile file) throws IOException {

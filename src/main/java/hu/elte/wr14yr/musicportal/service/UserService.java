@@ -43,7 +43,7 @@ public class UserService {
 
     private User user = null;
 
-    public User register(User user, String password, File file) throws IOException, URISyntaxException {
+    public User register(User user, String password, File file) {
 
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
@@ -74,6 +74,7 @@ public class UserService {
         userRepository.updateFolderGdaId(this.user.getId(), userFolderGdaId);
         userRepository.updateFileGdaId(this.user.getId(), iconFileGdaId);
 
+        this.user.setUserFolderGdaId(userFolderGdaId);
         this.user.setIconFileGdaId(iconFileGdaId);
 
         return this.user;
@@ -134,28 +135,20 @@ public class UserService {
         return user;
     }
 
-    public User update(User user) throws URISyntaxException, IOException {
-        /*String lastPath = getLoggedInUser().getIconPath();
-        String lastPathName = new File(lastPath).getName();
-
-        if(!(user.getIconFile().getName().equals(lastPathName))) {
-            try {
-                Files.delete(Paths.get(lastPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-            File userDir = new File(resourceDir+"\\"+user.getUsername());
-            File userIconFile = new File(userDir.getPath()+"\\"+user.getIconFile().getName());
-            userIconFile.createNewFile();
-            user.setIconPath(userIconFile.getPath());
-        } else {
-            user.setIconPath(lastPath);
-        }*/
+    public User update(User user, File file) {
         logger.log(Level.INFO, "User named " + user.getUsername() + "'s  datas are going to update in database MusicPortal");
 
-        return userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+
+        fileService.delete(user.getIconFileGdaId());
+
+        String iconFileGdaId = fileService.uploadFile(file, user.getUserFolderGdaId());
+
+        userRepository.updateFileGdaId(updatedUser.getId(), iconFileGdaId);
+
+        updatedUser.setIconFileGdaId(iconFileGdaId);
+
+        return updatedUser;
     }
 
     public void logout() {
@@ -164,7 +157,7 @@ public class UserService {
         logger.log(Level.INFO, "Previous login user was logged out");
     }
 
-    public void delete(long id, User user) throws IOException, URISyntaxException {
+    public void delete(long id) {
         /*
         for(Album album : user.getAlbums()) {
             albumService.delete(album);
@@ -179,16 +172,20 @@ public class UserService {
         }
         */
 
-        logger.log(Level.INFO, "User's icon picture file is going to delete from Google Drive");
+        isLoggedIn();
+
+        logger.log(Level.INFO, "User's icon picture file is going to delete from Google Drive", user.getIconFileGdaId());
         fileService.delete(user.getIconFileGdaId());
         logger.log(Level.INFO, "User's icon picture file was successfully deleted from Google Drive");
 
-        logger.log(Level.INFO, "User's storing folder is going to delete from Google Drive");
+        logger.log(Level.INFO, "User's storing folder is going to delete from Google Drive", user.getUserFolderGdaId());
         fileService.delete(user.getUserFolderGdaId());
         logger.log(Level.INFO, "User's storing folder was successfully deleted from Google Drive");
 
         logger.log(Level.INFO, "User with id number " + id + " is going to delete from database MusicPortal");
         userRepository.deleteById(id);
         logger.log(Level.INFO, "User with id number " + id + " was successfully deleted from database MusicPortal");
+
+        user = null;
     }
 }
