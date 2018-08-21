@@ -4,7 +4,11 @@ import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.model.Genre;
 import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,15 +16,7 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
     @Override
     Album save(Album album);
 
-    /*
-    @Query(value = "INSERT INTO ALBUM_GENRE (ALBUM_ID, GENRE_ID) VALUES (:ALBUM_ID, :GENRE_ID)", nativeQuery = true)
-    void saveAlbumGenre(@Param("ALBUM_ID") long albumId, @Param("GENRE_ID") long genreId);
-
-    @Query(value = "INSERT INTO ALBUM_KEYWORD (ALBUM_ID, KEYWORD_ID) VALUES (:ALBUM_ID, :KEYWORD_ID)", nativeQuery = true)
-    void saveAlbumKeyword(@Param("ALBUM_ID") long albumId, @Param("KEYWORD_ID") long keywordId);
-    */
-
-    List<Album> findAllByNameContainsAllIgnoreCase(String name);
+    List<Album> findAllByTitleContainsAllIgnoreCase(String name);
 
     List<Album> findAllByUser(User user);
 
@@ -30,14 +26,16 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     Album findAlbumById(Long id);
 
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(value = "UPDATE ALBUMS SET ALBUM_FOLDER_GDA_ID = :ALBUM_FOLDER_GDA_ID WHERE ID = :ID", nativeQuery = true)
+    void updateFolderGdaId(@Param("ID") long id, @Param("ALBUM_FOLDER_GDA_ID") String folderGdaId);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(value = "UPDATE ALBUMS SET COVER_FILE_GDA_ID = :COVER_FILE_GDA_ID WHERE ID = :ID", nativeQuery = true)
+    void updateFileGdaId(@Param("ID") long id, @Param("COVER_FILE_GDA_ID") String fileGdaId);
+
     @Override
     void deleteById(Long id);
-
-    /*
-    @Query(value = "DELETE FROM ALBUM_GENRE WHERE ALBUM_ID = :ALBUM_ID", nativeQuery = true)
-    void deleteAlbumGenre(@Param("ALBUM_ID") long albumId);
-
-    @Query(value = "DELETE FROM ALBUM_KEYWORD WHERE ALBUM_ID = :ALBUM_ID", nativeQuery = true)
-    void deleteAlbumKeyword(@Param("ALBUM_ID") long albumId);
-    */
 }

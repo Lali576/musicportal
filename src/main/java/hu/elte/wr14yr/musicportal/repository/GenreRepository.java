@@ -6,6 +6,10 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface GenreRepository extends CrudRepository<Genre, Long> {
+    @Override
+    Genre save(Genre genre);
+
     List<Genre> findAll();
+
     List<Genre> findAllByNameContainsAllIgnoreCase(String name);
 }

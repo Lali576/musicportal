@@ -34,7 +34,7 @@ public class SearchService {
     }
 
     public Iterable<Album> findAlbumByName(String name) {
-        return albumRepository.findAllByNameContainsAllIgnoreCase(name);
+        return albumRepository.findAllByTitleContainsAllIgnoreCase(name);
     }
 
     public Iterable<Album> findAlbumByKeyword(Keyword keyword) {

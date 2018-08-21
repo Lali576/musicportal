@@ -93,7 +93,7 @@ public class SongService {
     }
 
     public Iterable<Song> listByPlaylist(Playlist playlist) {
-        return songRepository.findAllByPlaylists(playlist);
+        return songRepository.findAllByPlaylist(playlist);
     }
 
     public Song update(Song song, Album album, User user, List<Genre> genres, List<Keyword> keywords) {
