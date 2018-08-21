@@ -53,4 +53,12 @@ public class Album {
 
     @ManyToMany(targetEntity = Keyword.class, mappedBy = "albums")
     private List<Keyword> keywords;
+
+    @Column(name = "TYPE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    public enum Type {
+        SINGLE, EP, LP
+    }
 }

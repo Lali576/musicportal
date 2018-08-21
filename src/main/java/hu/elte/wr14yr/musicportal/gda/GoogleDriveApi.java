@@ -109,11 +109,24 @@ public class GoogleDriveApi {
         return folder.getId();
     }
 
-    public static void delete(String id) throws GeneralSecurityException, IOException {
+    public static void updateFile(String gdaId, java.io.File newFilePath) throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
-        service.files().delete(id).execute();
+
+        File fileMetadata = new File();
+        fileMetadata.setName(newFilePath.getName());
+        FileContent mediaContent = new FileContent(fileMetadata.getMimeType(), newFilePath);
+
+        service.files().update(gdaId, fileMetadata, mediaContent).execute();
+    }
+
+    public static void delete(String gdaId) throws GeneralSecurityException, IOException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+        service.files().delete(gdaId).execute();
     }
 }
