@@ -6,19 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.File;
-import java.time.Year;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "ALBUMS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"user",
-                        "songs",
+@JsonIgnoreProperties({"songs",
                         "genres",
                         "keywords"})
 public class Album {
@@ -28,18 +24,17 @@ public class Album {
     @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "NAME", unique = true, nullable = false)
-    private String name;
+    @Column(name = "TITLE", unique = true, nullable = false)
+    private String title;
 
     @Column(name = "DATE", nullable = false)
     private Date date;
 
-    //unique=true for real
-    @Column(name = "COVER_PATH", unique = false, nullable = false)
-    private String coverPath;
+    @Column(name = "ALBUM_FOLDER_GDA_ID", unique = true)
+    private String albumFolderGdaId;
 
-    @Transient
-    private File coverFile;
+    @Column(name = "COVER_FILE_GDA_ID", unique = true)
+    private String coverFileGdaId;
 
     @ManyToOne(targetEntity = User.class, optional = false)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")

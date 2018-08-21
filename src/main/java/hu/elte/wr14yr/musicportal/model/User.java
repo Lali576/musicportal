@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.File;
 import java.util.List;
 
 @Entity
@@ -38,13 +37,13 @@ public class User {
     @Column(name = "EMAIL_ADDRESS", unique = true, nullable = false)
     private String emailAddress;
 
-    @Column(name = "SALT_CODE", nullable = false)
+    @Column(name = "SALT_CODE", unique = true, nullable = false)
     private String saltCode;
 
-    @Column(name = "HASH_PASSWORD", nullable = false)
+    @Column(name = "HASH_PASSWORD", unique = true, nullable = false)
     private String hashPassword;
 
-    @ManyToOne(targetEntity = Genre.class, optional = true)
+    @ManyToOne(targetEntity = Genre.class, optional = false)
     @JoinColumn(name = "FAV_GENRE_ID")
     private Genre favGenreId;
 
@@ -59,11 +58,6 @@ public class User {
 
     @Column(name = "ICON_FILE_GDA_ID", unique = true)
     private String iconFileGdaId;
-
-    /*
-    @Transient
-    private File iconFile;
-    */
 
     @OneToMany(targetEntity = Album.class, mappedBy = "user")
     private List<Album> albums;

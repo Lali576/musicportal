@@ -1,20 +1,17 @@
 package hu.elte.wr14yr.musicportal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
 @Table(name = "SONG_COMMENTS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({""})
 public class SongComment {
 
     @Id
@@ -34,6 +31,6 @@ public class SongComment {
     @Column(name = "TEXT_MESSAGE", nullable = false)
     private String textMessage;
 
-    @Column(name = "DATE_TIME", nullable = false)
-    private LocalDateTime dateTime;
+    @Column(name = "DATE", nullable = false)
+    private Date date;
 }

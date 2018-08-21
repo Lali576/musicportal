@@ -87,7 +87,7 @@ public class AlbumController {
         User user = userService.getLoggedInUser();
         //List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
         //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
-        album.setCoverPath(albumCoverFilePath);
+        //album.setCoverPath(albumCoverFilePath);
         Album savedAlbum = albumService.create(album, user, null, null);
         multipartFile = null;
         albumCoverFilePath = null;

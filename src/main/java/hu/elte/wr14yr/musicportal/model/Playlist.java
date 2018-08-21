@@ -13,8 +13,7 @@ import java.util.List;
 @Table(name = "PLAYLISTS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"user",
-                        "keywords",
+@JsonIgnoreProperties({"keywords",
                         "songs"})
 public class Playlist {
 
@@ -30,7 +29,7 @@ public class Playlist {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
-    @ManyToMany(targetEntity = Keyword.class, mappedBy = "playlists")
+    @ManyToMany(targetEntity = Keyword.class, mappedBy = "playlist")
     private List<Keyword> keywords;
 
     @JoinTable(name = "SONG_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),

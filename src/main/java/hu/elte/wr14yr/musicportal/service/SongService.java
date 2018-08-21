@@ -38,7 +38,7 @@ public class SongService {
 
         //new File("\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + path);
 
-        song.setAudioPath("");
+        //song.setAudioPath("");
 
         return songRepository.save(song);
     }
@@ -112,7 +112,7 @@ public class SongService {
         song.setAlbum(album);
         song.setGenres(genres);
         song.setKeywords(keywords);
-        song.setAudioPath("");
+        //song.setAudioPath("");
 
         return songRepository.save(song);
     }

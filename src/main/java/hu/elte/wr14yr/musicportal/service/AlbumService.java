@@ -46,7 +46,7 @@ public class AlbumService {
         */
 
         //album.setCoverPath(albumCoverFile.getPath());
-        album.setCoverPath("");
+        //album.setCoverPath("");
 
         Album savedAlbum = albumRepository.save(album);
 
@@ -68,8 +68,8 @@ public class AlbumService {
     }
 
     public Album update(Album album) throws URISyntaxException, IOException {
-        String lastPath = albumRepository.findAlbumById(album.getId()).getCoverPath();
-        String lastPathName = new File(lastPath).getName();
+        //String lastPath = albumRepository.findAlbumById(album.getId()).getCoverPath();
+        //String lastPathName = new File(lastPath).getName();
 
         /*if(!(album.getCoverFile().getName().equals(lastPathName))) {
             try {
@@ -87,7 +87,7 @@ public class AlbumService {
             album.setCoverPath(lastPath);
         }*/
 
-        album.setCoverPath("");
+        //album.setCoverPath("");
         songService.deleteAllByAlbum(album);
 
         return albumRepository.save(album);

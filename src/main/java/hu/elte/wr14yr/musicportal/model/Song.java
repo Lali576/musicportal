@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.File;
-import java.time.Year;
 import java.util.List;
 
 @Entity
@@ -15,12 +14,10 @@ import java.util.List;
 @Table(name = "SONGS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"album",
-                        "user",
-                        "songComments",
+@JsonIgnoreProperties({"songComments",
                         "songCounters",
                         "songLikes",
-                        "playlists",
+                        "playlist",
                         "genres",
                         "keywords"})
 public class Song {
@@ -36,12 +33,8 @@ public class Song {
     @Column(name = "LYRICS")
     private String lyrics;
 
-    //unique=true for real
-    @Column(name = "AUDIO_PATH", unique = false, nullable = false)
-    private String audioPath;
-
-    @Transient
-    private File audioFile;
+    @Column(name = "ALBUM_FILE_GDA_ID", unique = true)
+    private String albumFileGdaId;
 
     @ManyToOne(targetEntity = Album.class, optional = false)
     @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID")
@@ -63,14 +56,8 @@ public class Song {
     @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
     private List<SongLike> songLikes;
 
-    //@Transient
-    //private int songLikeNumber;
-
-    //@Transient
-    //private int songDislikeNumber;
-
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
-    private List<Playlist> playlists;
+    private List<Playlist> playlist;
 
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
     private List<Genre> genres;
