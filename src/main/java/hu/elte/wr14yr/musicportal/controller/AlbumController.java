@@ -85,10 +85,7 @@ public class AlbumController {
         ObjectMapper mapper = new ObjectMapper();
         Album album = mapper.readValue(params.get("album").toString(), Album.class);
         User user = userService.getLoggedInUser();
-        //List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
-        //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
-        //album.setCoverPath(albumCoverFilePath);
-        Album savedAlbum = albumService.create(album, user, null, null);
+        Album savedAlbum = albumService.create(album, user, null);
         multipartFile = null;
         albumCoverFilePath = null;
         return ResponseEntity.ok(savedAlbum);
@@ -98,7 +95,7 @@ public class AlbumController {
     @PutMapping("/edit/{id}")
     public ResponseEntity<Album> update(@PathVariable long id, @RequestBody Album album) throws IOException, URISyntaxException {
         album.setUser(userService.getLoggedInUser());
-        Album updatedAlbum = albumService.update(album);
+        Album updatedAlbum = albumService.update(album, null);
         return ResponseEntity.ok(updatedAlbum);
     }
 

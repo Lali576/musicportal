@@ -2,7 +2,10 @@ package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.gda.GoogleDriveApi;
+import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.model.User;
+import hu.elte.wr14yr.musicportal.model.UserMessage;
+import hu.elte.wr14yr.musicportal.repository.UserMessageRepository;
 import hu.elte.wr14yr.musicportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,14 +31,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //@Autowired
-    //private UserMessageRepository userMessageRepository;
+    @Autowired
+    private UserMessageRepository userMessageRepository;
 
     @Autowired
     private AlbumService albumService;
 
-    //@Autowired
-    //private PlaylistService playlistService;
+    @Autowired
+    private PlaylistService playlistService;
 
     @Autowired
     public FileService fileService;
@@ -80,19 +84,15 @@ public class UserService {
         return this.user;
     }
 
-    /*
     public Iterable<UserMessage> createUserMessage(UserMessage userMessage) {
-        userMessage.setDateTime(LocalDateTime.now());
+        userMessage.setDate(new Date());
         UserMessage savedUserMessage = userMessageRepository.save(userMessage);
         return userMessageRepository.findAllByUserTo(savedUserMessage.getUserTo());
     }
-    */
 
-    /*
     public Iterable<UserMessage> listUserMessages(User user) {
         return userMessageRepository.findAllByUserTo(user);
     }
-    */
 
     public User login(String username, String password) throws UserNotValidException {
         logger.log(Level.INFO, "Trying to login with username " + username);
@@ -138,17 +138,17 @@ public class UserService {
     public User update(User user, File file) {
         logger.log(Level.INFO, "User named " + user.getUsername() + "'s  datas are going to update in database MusicPortal");
 
-        User updatedUser = userRepository.save(user);
+        this.user = userRepository.save(user);
 
         fileService.delete(user.getIconFileGdaId());
 
         String iconFileGdaId = fileService.uploadFile(file, user.getUserFolderGdaId());
 
-        userRepository.updateFileGdaId(updatedUser.getId(), iconFileGdaId);
+        userRepository.updateFileGdaId(this.user.getId(), iconFileGdaId);
 
-        updatedUser.setIconFileGdaId(iconFileGdaId);
+        this.user.setIconFileGdaId(iconFileGdaId);
 
-        return updatedUser;
+        return this.user;
     }
 
     public void logout() {
@@ -157,20 +157,18 @@ public class UserService {
         logger.log(Level.INFO, "Previous login user was logged out");
     }
 
-    public void delete(long id) {
-        /*
-        for(Album album : user.getAlbums()) {
-            albumService.delete(album);
-        }
-        */
+    public void delete(long id) throws IOException, URISyntaxException {
 
-        //playlistService.deleteAllByUser(user);
+        albumService.deleteAllByUser(user);
 
-        /*
+        playlistService.deleteAllByUser(user);
+
+
         for(UserMessage userMessage : user.getUserFromMessages()) {
             userMessageRepository.deleteAllByUserFrom(user);
         }
-        */
+
+        //Delete keywords
 
         isLoggedIn();
 

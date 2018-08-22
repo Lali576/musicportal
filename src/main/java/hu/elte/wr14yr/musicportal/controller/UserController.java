@@ -36,7 +36,7 @@ public class UserController {
     @Autowired
     public FileService fileService;
 
-    @GetMapping("/get")
+    @GetMapping("/login/get")
     public ResponseEntity<User> getLoginUser() {
         logger.log(Level.INFO, "Entrance: endpoint '/get'");
         User user = (userService.isLoggedIn()) ? userService.getLoggedInUser() : null;

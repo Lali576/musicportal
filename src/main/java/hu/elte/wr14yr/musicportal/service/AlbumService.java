@@ -1,6 +1,5 @@
 package hu.elte.wr14yr.musicportal.service;
 
-import hu.elte.wr14yr.musicportal.controller.AlbumController;
 import hu.elte.wr14yr.musicportal.model.*;
 import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
 import hu.elte.wr14yr.musicportal.repository.SongRepository;
@@ -10,13 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
 public class AlbumService {
@@ -25,30 +18,24 @@ public class AlbumService {
     private AlbumRepository albumRepository;
 
     @Autowired
-    private SongRepository songRepository;
-
-    @Autowired
     private SongService songService;
 
-    public Album create(Album album, User user, List<Genre> genres, List<Keyword> keywords) throws URISyntaxException, IOException {
+    @Autowired
+    private FileService fileService;
+
+    public Album create(Album album, User user, File coverFile) throws URISyntaxException, IOException {
         album.setUser(user);
-        album.setGenres(genres);
-        album.setKeywords(keywords);
-
-        /*
-        String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-        File albumDir = new File(resourceDir+"\\"+user.getUsername()+"\\"+album.getName());
-        if(!albumDir.exists()) {
-            albumDir.mkdir();
-        }
-        File albumCoverFile = new File(albumDir.getPath()+"\\"+album.getCoverFile().getName());
-        albumCoverFile.createNewFile();
-        */
-
-        //album.setCoverPath(albumCoverFile.getPath());
-        //album.setCoverPath("");
 
         Album savedAlbum = albumRepository.save(album);
+
+        String albumFolderGdaId = fileService.uploadFolder(savedAlbum.getTitle(), user.getUserFolderGdaId());
+        String coverFileGdaId = fileService.uploadFile(coverFile, albumFolderGdaId);
+
+        albumRepository.updateFolderGdaId(savedAlbum.getId(), albumFolderGdaId);
+        albumRepository.updateFileGdaId(savedAlbum.getId(), coverFileGdaId);
+
+        savedAlbum.setAlbumFolderGdaId(albumFolderGdaId);
+        savedAlbum.setCoverFileGdaId(coverFileGdaId);
 
         return savedAlbum;
     }
@@ -67,28 +54,21 @@ public class AlbumService {
        return album;
     }
 
-    public Album update(Album album) throws URISyntaxException, IOException {
-        //String lastPath = albumRepository.findAlbumById(album.getId()).getCoverPath();
-        //String lastPathName = new File(lastPath).getName();
+    public Album update(Album album, File file) throws URISyntaxException, IOException {
 
-        /*if(!(album.getCoverFile().getName().equals(lastPathName))) {
-            try {
-                Files.delete(Paths.get(lastPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Album updatedAlbum = albumRepository.save(album);
 
-            String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-            File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
-            File albumCoverFile = new File(albumDir.getPath()+"\\"+album.getCoverFile().getName());
-            albumCoverFile.createNewFile();
-            album.setCoverPath(albumCoverFile.getPath());
-        } else {
-            album.setCoverPath(lastPath);
-        }*/
 
-        //album.setCoverPath("");
-        songService.deleteAllByAlbum(album);
+
+        fileService.delete(updatedAlbum.getCoverFileGdaId());
+
+        String coverFileGdaId = fileService.uploadFile(file, album.getCoverFileGdaId());
+
+        albumRepository.updateFileGdaId(updatedAlbum.getId(), coverFileGdaId);
+
+        updatedAlbum.setCoverFileGdaId(coverFileGdaId);
+
+        //Update possible changed songs
 
         return albumRepository.save(album);
     }
@@ -101,9 +81,12 @@ public class AlbumService {
 
     public void delete(Album album) throws URISyntaxException, IOException {
         songService.deleteAllByAlbum(album);
-        //String resourceDir = getClass().getClassLoader().getResource("\\media").toURI().getPath();
-        //File albumDir = new File(resourceDir+"\\"+album.getUser().getUsername()+"\\"+album.getName());
-        //Files.delete(Paths.get(albumDir.toString()));
+
+        //Delete keywords and genres
+
+        fileService.delete(album.getCoverFileGdaId());
+
+        fileService.delete(album.getAlbumFolderGdaId());
 
         albumRepository.deleteById(album.getId());
     }

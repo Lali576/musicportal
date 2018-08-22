@@ -80,7 +80,7 @@ public class SongController {
         Album album = mapper.readValue(params.get("album").toString(), Album.class);
         //List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
         //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
-        Song savedSong = songService.create(song, user, album, null, null);
+        Song savedSong = songService.create(song, user, album, null);
 
         return ResponseEntity.ok(savedSong);
     }

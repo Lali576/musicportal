@@ -23,8 +23,7 @@ import java.util.List;
                         "userToMessages",
                         "userFromMessages",
                         "playlist",
-                        "keywords",
-                        "userFolderGdaId"})
+                        "keywords"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

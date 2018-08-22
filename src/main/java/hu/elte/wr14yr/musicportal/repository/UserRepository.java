@@ -33,7 +33,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Modifying(clearAutomatically = true)
     @Transactional
-    @Query(value = "UPDATE USERS SET HASH_PASSWORD = :HASH_PASSWORD WHERE ID := ID", nativeQuery = true)
+    @Query(value = "UPDATE USERS SET HASH_PASSWORD = :HASH_PASSWORD WHERE ID = :ID", nativeQuery = true)
     void updateHashPassword(@Param("ID") long id, @Param("HASH_PASSWORD") String hashPassword);
 
     @Modifying(clearAutomatically = true)

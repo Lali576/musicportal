@@ -30,22 +30,31 @@ public class SongService {
     @Autowired
     private SongLikeRepository songLikeRepository;
 
-    public Song create(Song song, User user, Album album, List<Genre> genres, List<Keyword> keywords) {
+    @Autowired
+    private FileService fileService;
+
+    public Song create(Song song, User user, Album album, File audioFile) {
         song.setUser(user);
         song.setAlbum(album);
-        song.setGenres(genres);
-        song.setKeywords(keywords);
 
-        //new File("\\media\\" + user.getUsername() + "\\" + album.getName() + "\\" + path);
+        Song savedSong = songRepository.save(song);
 
-        //song.setAudioPath("");
+        String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumFolderGdaId());
 
-        return songRepository.save(song);
+        songRepository.updateAudioFileGdaId(savedSong.getId(), audioFileGdaId);
+
+        savedSong.setAudioFileGdaId(audioFileGdaId);
+
+        return savedSong;
     }
 
     public Iterable<SongComment> createSongComment(SongComment songComment) {
         SongComment savedSongComment = songCommentRepository.save(songComment);
         return songCommentRepository.findAllBySong(savedSongComment.getSong());
+    }
+
+    public Iterable<SongComment> listSongComments(Song song) {
+        return songCommentRepository.findAllBySong(song);
     }
 
     public int saveSongLike(SongLike songLike) {
@@ -62,16 +71,8 @@ public class SongService {
         return songCounterRepository.countAllBySong(songCounter.getSong());
     }
 
-    public Iterable<SongComment> listSongComments(Song song) {
-        return songCommentRepository.findAllBySong(song);
-    }
-
     public Song find(long id) {
         Song song = songRepository.findSongById(id);
-        //song.setSongCounterNumber(songCounterRepository.countAllBySong(song));
-        //song.setSongLikeNumber(songLikeRepository.countAllBySongAndRoleLike(id));
-        //song.setSongDislikeNumber(songLikeRepository.countAllBySongAndRoleDislike(id));
-        //song.setAudioFile(new File(song.getAudioPath()));
 
         return song;
     }
@@ -97,22 +98,10 @@ public class SongService {
     }
 
     public Song update(Song song, Album album, User user, List<Genre> genres, List<Keyword> keywords) {
-        System.out.println("its not the same");
-        /*String lastPath = songRepository.findSongById(song.getId()).getAudioPath();
-        if(!(song.getAudioFile().getName().equals(lastPath))) {
-            try {
-                Files.delete(Paths.get(lastPath));
-                String path = song.getAudioFile().getName();
-                new File("\\media\\" + song.getUser().getUsername() + "\\" + song.getAlbum().getName() + "\\" + path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
         song.setUser(user);
         song.setAlbum(album);
         song.setGenres(genres);
         song.setKeywords(keywords);
-        //song.setAudioPath("");
 
         return songRepository.save(song);
     }
@@ -127,11 +116,6 @@ public class SongService {
         songCommentRepository.deleteAllBySong(song);
         songCounterRepository.deleteAllBySong(song);
         songLikeRepository.deleteAllBySong(song);
-        /*try {
-            Files.delete(Paths.get(song.getAudioPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         songRepository.deleteById(song.getId());
     }
