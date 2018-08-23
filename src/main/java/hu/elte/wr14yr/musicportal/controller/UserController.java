@@ -5,7 +5,9 @@ import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
+import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
+import hu.elte.wr14yr.musicportal.model.UserMessage;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -19,7 +21,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,17 +60,21 @@ public class UserController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        ObjectMapper mapper = new ObjectMapper();
+        File file = convertToFile(multipartFile);
 
-        logger.log(Level.INFO, "Get parameter 'password'");
-        String password = request.getParameter("password").toString();
+        ObjectMapper mapper = new ObjectMapper();
 
         logger.log(Level.INFO, "Get parameter 'user'");
         User user = mapper.readValue(request.getParameter("user").toString(), User.class);
 
-        File file = convertToFile(multipartFile);
+        logger.log(Level.INFO, "Get parameter 'password'");
+        String password = request.getParameter("password").toString();
 
-        User savedUser = userService.register(user, password, file);
+        logger.log(Level.INFO, "Get parameter 'keywords'");
+        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
+        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
+
+        User savedUser = userService.register(user, password, file, keywordsList);
 
         file.delete();
 
@@ -91,7 +99,6 @@ public class UserController {
         }
     }
 
-    /*
     @Role({ARTIST, USER})
     @GetMapping("/messages")
     public ResponseEntity<Iterable<UserMessage>> listUserMessages() {
@@ -105,7 +112,6 @@ public class UserController {
         Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
         return ResponseEntity.ok(userMessages);
     }
-    */
 
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}")

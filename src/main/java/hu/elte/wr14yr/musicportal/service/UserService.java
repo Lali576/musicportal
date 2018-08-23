@@ -3,8 +3,10 @@ package hu.elte.wr14yr.musicportal.service;
 import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.gda.GoogleDriveApi;
 import hu.elte.wr14yr.musicportal.model.Album;
+import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
+import hu.elte.wr14yr.musicportal.repository.KeywordRepository;
 import hu.elte.wr14yr.musicportal.repository.UserMessageRepository;
 import hu.elte.wr14yr.musicportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +38,9 @@ public class UserService {
     private UserMessageRepository userMessageRepository;
 
     @Autowired
+    private KeywordRepository keywordRepository;
+
+    @Autowired
     private AlbumService albumService;
 
     @Autowired
@@ -47,7 +53,7 @@ public class UserService {
 
     private User user = null;
 
-    public User register(User user, String password, File file) {
+    public User register(User user, String password, File file, List<Keyword> keywords) {
 
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
@@ -163,10 +169,7 @@ public class UserService {
 
         playlistService.deleteAllByUser(user);
 
-
-        for(UserMessage userMessage : user.getUserFromMessages()) {
-            userMessageRepository.deleteAllByUserFrom(user);
-        }
+        userMessageRepository.deleteAllByUserFrom(user);
 
         //Delete keywords
 

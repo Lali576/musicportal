@@ -41,12 +41,13 @@ export class PlaylistService {
     ).toPromise();
   }
 
-  updatePlaylist(id: number, playlist: String, songs: String): Promise<Playlist> {
+  updatePlaylist(id: number, playlist: String, songs: String, keywords: String): Promise<Playlist> {
     return this.http.put<Playlist>(
       `api/playlist/edit/${id}`,
       {
         "playlist": playlist,
-        "songs": songs
+        "songs": songs,
+        "keywords": keywords
       },
       httpOptions
     ).toPromise();

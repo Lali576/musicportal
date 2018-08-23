@@ -24,7 +24,7 @@ public class Keyword {
     @Column(name = "ID", nullable = false)
     private long id;
 
-    @Column(name = "WORD", unique = true, nullable = false)
+    @Column(name = "WORD", nullable = false)
     private String word;
 
     @JoinTable(name = "SONG_KEYWORD", joinColumns = @JoinColumn(name = "KEYWORD_ID", referencedColumnName = "ID"),

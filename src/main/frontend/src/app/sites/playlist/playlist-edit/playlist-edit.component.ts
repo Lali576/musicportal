@@ -8,6 +8,7 @@ import {PlaylistService} from "../../../service/playlist.service";
 import {Album} from "../../../model/album";
 import {switchMap} from "rxjs/internal/operators";
 import {Observable, of} from "rxjs/index";
+import {Keyword} from "../../../model/keyword";
 
 @Component({
   selector: 'app-playlist-edit',
@@ -42,14 +43,15 @@ export class PlaylistEditComponent implements OnInit {
   async onFormSubmit(params: object) {
     var playlist: Playlist = params["playlist"];
     var songs: Song[] = params["songs"];
+    var keywords: Keyword[] = params["keywords"];
+
+    var playlistString = JSON.stringify(playlist);
+    var songsString = JSON.stringify(songs);
+    var stringKeywords = JSON.stringify(keywords);
 
     if(playlist.id > 0) {
-      var playlistString = JSON.stringify(playlist);
-      var songsString = JSON.stringify(songs);
-      await this.playlistService.updatePlaylist(playlist.id, playlistString, songsString);
+      await this.playlistService.updatePlaylist(playlist.id, playlistString, songsString, stringKeywords);
     } else {
-      var playlistString = JSON.stringify(playlist);
-      var songsString = JSON.stringify(songs);
       await this.playlistService.addPlaylist(playlistString, songsString, null);
     }
     this.location.back();
