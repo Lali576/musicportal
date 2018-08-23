@@ -54,7 +54,6 @@ public class UserService {
     private User user = null;
 
     public User register(User user, String password, File file, List<Keyword> keywords) {
-
         logger.log(Level.INFO, "Given password is going to being salted and hashed");
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];

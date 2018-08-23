@@ -5,6 +5,7 @@ import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
+import hu.elte.wr14yr.musicportal.model.Genre;
 import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
@@ -130,10 +131,17 @@ public class UserController {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/details'");
         ObjectMapper mapper = new ObjectMapper();
 
-        logger.log(Level.INFO, "Get parameter 'user'");
-        User user = mapper.readValue(request.getParameter("user").toString(), User.class);
+        logger.log(Level.INFO, "Get parameter 'fullName'");
+        String fullName = request.getParameter("fullName").toString();
 
-        User updatedUser = userService.updateDetails(user);
+        logger.log(Level.INFO, "Get parameter 'favGenre'");
+        Genre favGenre = mapper.readValue(request.getParameter("favGenre").toString(), Genre.class);
+
+        logger.log(Level.INFO, "Get parameter 'keywords'");
+        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
+        List<Keyword> keywordList = Arrays.asList(keywordsArray);
+
+        User updatedUser = userService.updateDetails(fullName, favGenre, keywordList);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/details'");
 
         return ResponseEntity.ok(updatedUser);
