@@ -55,6 +55,7 @@ public class UserService {
 
     public User register(User user, String password, File file, List<Keyword> keywords) {
 
+        logger.log(Level.INFO, "Given password is going to being salted and hashed");
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
         rand.nextBytes(salt);
@@ -74,6 +75,7 @@ public class UserService {
             e.printStackTrace();
             return null;
         }
+        logger.log(Level.INFO, "Password has been salted and hashed successfully");
 
         this.user = userRepository.save(user);
 
@@ -81,11 +83,19 @@ public class UserService {
 
         String iconFileGdaId = fileService.uploadFile(file, userFolderGdaId);
 
-        userRepository.updateFolderGdaId(this.user.getId(), userFolderGdaId);
-        userRepository.updateFileGdaId(this.user.getId(), iconFileGdaId);
+        //userRepository.updateFolderGdaId(this.user.getId(), userFolderGdaId);
+        //userRepository.updateFileGdaId(this.user.getId(), iconFileGdaId);
 
         this.user.setUserFolderGdaId(userFolderGdaId);
         this.user.setIconFileGdaId(iconFileGdaId);
+
+        for(Keyword keyword : keywords) {
+            keyword = keywordRepository.save(keyword);
+        }
+
+        this.user.setKeywords(keywords);
+
+        this.user = userRepository.save(this.user);
 
         return this.user;
     }
