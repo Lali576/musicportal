@@ -44,34 +44,6 @@ public class GoogleDriveApi {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
 
-    /*
-    public static List<File> list() throws GeneralSecurityException, IOException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-
-        FileList result = service.files().list()
-                .setQ("'root' in parents and mimeType = 'audio/mpeg' and trashed = false")
-                .setSpaces("drive")
-                .setPageSize(10)
-                .setFields("nextPageToken, files(id, name, webViewLink)")
-                .execute();
-
-        List<File> files = result.getFiles();
-
-        for(File file : files) {
-
-        }
-
-        if(files == null || files.isEmpty()) {
-            return null;
-        } else {
-            return files;
-        }
-    }
-    */
-
     public static String uploadFile(java.io.File filePath, String folderGdaId) throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -109,7 +81,7 @@ public class GoogleDriveApi {
         return folder.getId();
     }
 
-    public static void updateFile(String gdaId, java.io.File newFilePath) throws GeneralSecurityException, IOException {
+    public static String updateFile(String gdaId, java.io.File newFilePath) throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
@@ -119,7 +91,10 @@ public class GoogleDriveApi {
         fileMetadata.setName(newFilePath.getName());
         FileContent mediaContent = new FileContent(fileMetadata.getMimeType(), newFilePath);
 
-        service.files().update(gdaId, fileMetadata, mediaContent).execute();
+        File updatedFile = service.files().update(gdaId, fileMetadata, mediaContent).execute();
+        System.out.println("File ID: " + updatedFile.getId());
+
+        return updatedFile.getId();
     }
 
     public static void delete(String gdaId) throws GeneralSecurityException, IOException {

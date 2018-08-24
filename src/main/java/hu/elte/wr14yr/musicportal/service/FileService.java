@@ -48,15 +48,19 @@ public class FileService {
         return null;
     }
 
-    public void updateFile(String olderGdaId, java.io.File newFile) {
+    public String updateFile(String fileGdaId, java.io.File newFile) {
         logger.log(Level.INFO, "");
 
         try {
-            GoogleDriveApi.updateFile(olderGdaId, newFile);
+            String newFileGdaId = GoogleDriveApi.updateFile(fileGdaId, newFile);
+
+            return newFileGdaId;
         } catch(GeneralSecurityException | IOException e) {
             logger.log(Level.SEVERE, "");
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public void delete(String id) {
