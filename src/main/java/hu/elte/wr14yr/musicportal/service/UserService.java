@@ -145,7 +145,7 @@ public class UserService {
     }
 
     public User updateDetails(String fullName, Genre favGenre, List<Keyword> keywords) {
-        logger.log(Level.INFO, "User named " + loggedInUser.getUsername() + "'s  datas are going to update in database MusicPortal");
+        logger.log(Level.INFO, "User named " + loggedInUser.getUsername() + "'s  data are going to update in database MusicPortal");
 
         loggedInUser.setFullName(fullName);
         loggedInUser.setFavGenreId(favGenre);

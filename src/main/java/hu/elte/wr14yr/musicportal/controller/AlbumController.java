@@ -83,7 +83,7 @@ public class AlbumController {
         Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
         List<Keyword> keywordsList = Arrays.asList(keywordsArray);
 
-        Album updatedAlbum = albumService.updateDetails(album, null);
+        Album updatedAlbum = albumService.updateDetails(album, genresList, keywordsList);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "'");
 
         return ResponseEntity.ok(updatedAlbum);
