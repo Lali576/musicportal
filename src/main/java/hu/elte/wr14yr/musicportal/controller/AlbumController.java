@@ -6,7 +6,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.*;
 import hu.elte.wr14yr.musicportal.model.*;
 
 import hu.elte.wr14yr.musicportal.service.AlbumService;
-import hu.elte.wr14yr.musicportal.service.SongService;
+import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +18,24 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/album")
 public class AlbumController {
-
-    private MultipartFile multipartFile = null;
-    private String albumCoverFilePath = null;
-    private final String assetFolderPath = "C:\\MusicPortal\\src\\main\\frontend\\src\\assets";
 
     @Autowired
     private AlbumService albumService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileService fileService;
+
+    private Logger logger = Logger.getLogger(AlbumController.class.getName());
 
     @Role({ARTIST})
     @GetMapping
@@ -44,74 +44,93 @@ public class AlbumController {
         return ResponseEntity.ok(albums);
     }
 
-    @PostMapping("/file")
-    public ResponseEntity file(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+    @Role({ARTIST})
+    @PostMapping("/new")
+    public ResponseEntity<Album> create(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+        logger.log(Level.INFO, "Entrance: endpoint '/new'");MultipartFile multipartFile = null;
+
         Iterator<String> iterator = request.getFileNames();
 
+        logger.log(Level.INFO, "Get file parameter");
         while (iterator.hasNext()) {
             multipartFile = request.getFile(iterator.next());
         }
 
-        String albumName = multipartFile.getName();
-        File resourceDir = new File(assetFolderPath+"\\media\\"+userService.getLoggedInUser().getUsername(), albumName);
-        if (!resourceDir.exists())
-            resourceDir.mkdirs();
+        File file = fileService.convertToFile(multipartFile);
 
-        File albumCoverFile = new File(resourceDir, multipartFile.getOriginalFilename());
-        if (!albumCoverFile.exists()) {
-            albumCoverFile.createNewFile();
-        }
-
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(albumCoverFile);
-            outputStream.write(multipartFile.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (outputStream != null)
-                outputStream.close();
-        }
-
-        albumCoverFilePath = "\\assets\\media\\"+userService.getLoggedInUser().getUsername()+"\\"+albumName+"\\"+albumCoverFile.getName();
-
-        return ResponseEntity.status(200).build();
-    }
-
-    @Role({ARTIST})
-    @PostMapping("/new")
-    public ResponseEntity<Album> create(@RequestBody Map<String, Object> params) throws IOException, URISyntaxException {
         ObjectMapper mapper = new ObjectMapper();
-        Album album = mapper.readValue(params.get("album").toString(), Album.class);
+        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
+        List<Genre> genresList = Arrays.asList(genresArray);
+        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
+        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
         User user = userService.getLoggedInUser();
-        Album savedAlbum = albumService.create(album, user, null);
-        multipartFile = null;
-        albumCoverFilePath = null;
+        Album savedAlbum = albumService.create(album, user, file, genresList, keywordsList);
+        logger.log(Level.INFO, "Exit: endpoint '/new'");
+
         return ResponseEntity.ok(savedAlbum);
     }
 
     @Role({ARTIST})
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<Album> update(@PathVariable long id, @RequestBody Album album) throws IOException, URISyntaxException {
+    @PutMapping("/update/{id}/details")
+    public ResponseEntity<Album> updateDetails(@PathVariable long id, MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "'");
+        ObjectMapper mapper = new ObjectMapper();
+        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
         album.setUser(userService.getLoggedInUser());
-        Album updatedAlbum = albumService.update(album, null);
+        Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
+        List<Genre> genresList = Arrays.asList(genresArray);
+        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
+        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
+
+        Album updatedAlbum = albumService.updateDetails(album, null);
+        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "'");
+
         return ResponseEntity.ok(updatedAlbum);
+    }
+
+    @Role({ARTIST, USER})
+    @PutMapping("/update/{id}/cover")
+    public ResponseEntity<Album> updateCoverFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/cover'");
+        MultipartFile multipartFile = null;
+
+        Iterator<String> iterator = request.getFileNames();
+
+        logger.log(Level.INFO, "Get file parameter");
+        while (iterator.hasNext()) {
+            multipartFile = request.getFile(iterator.next());
+        }
+
+        File file = fileService.convertToFile(multipartFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Album updatedAlbum = albumService.updateCoverFile(album, file);
+        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/cover'");
+
+        return ResponseEntity.ok(null);
     }
 
     @Role({ARTIST, USER, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Album> find(@PathVariable long id) {
+        logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
         Album foundAlbum = albumService.find(id);
+        logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
+
         return ResponseEntity.ok(foundAlbum);
     }
 
     @Role({ARTIST})
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable long id) throws URISyntaxException, IOException {
-        Album album = albumService.find(id);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
+        logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
+        ObjectMapper mapper = new ObjectMapper();
+        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
         albumService.delete(album);
+        logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(204).build();
     }
 }

@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class AlbumService {
@@ -23,7 +24,7 @@ public class AlbumService {
     @Autowired
     private FileService fileService;
 
-    public Album create(Album album, User user, File coverFile) throws URISyntaxException, IOException {
+    public Album create(Album album, User user, File coverFile, List<Genre> genres, List<Keyword> keywords) throws URISyntaxException, IOException {
         album.setUser(user);
 
         Album savedAlbum = albumRepository.save(album);
@@ -54,7 +55,7 @@ public class AlbumService {
        return album;
     }
 
-    public Album update(Album album, File file) throws URISyntaxException, IOException {
+    public Album updateDetails(Album album, File file) throws URISyntaxException, IOException {
 
         Album updatedAlbum = albumRepository.save(album);
 
@@ -71,6 +72,10 @@ public class AlbumService {
         //Update possible changed songs
 
         return albumRepository.save(album);
+    }
+
+    public Album updateCoverFile(Album album, File coverFile) {
+        return null;
     }
 
     public void deleteAllByUser(User user) throws URISyntaxException, IOException {

@@ -2,8 +2,11 @@ package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.gda.GoogleDriveApi;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import sun.util.logging.PlatformLogger;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.logging.Level;
@@ -72,5 +75,14 @@ public class FileService {
             e.printStackTrace();
         }
         logger.log(Level.INFO, "Deleting file with id " + id + " from Google Drive was successful");
+    }
+
+    public File convertToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
     }
 }

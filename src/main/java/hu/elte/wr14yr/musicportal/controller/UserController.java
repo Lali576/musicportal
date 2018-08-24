@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -61,7 +60,7 @@ public class UserController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        File file = convertToFile(multipartFile);
+        File file = fileService.convertToFile(multipartFile);
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -182,7 +181,7 @@ public class UserController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        File file = convertToFile(multipartFile);
+        File file = fileService.convertToFile(multipartFile);
 
         User updatedUser = userService.updateImageFile(file);
 
@@ -230,14 +229,5 @@ public class UserController {
         logger.log(Level.INFO, "Exit: endpoint '/delete" + id + "'");
 
         return ResponseEntity.status(204).build();
-    }
-
-    private File convertToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convFile;
     }
 }
