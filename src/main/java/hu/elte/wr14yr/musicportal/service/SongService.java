@@ -33,7 +33,7 @@ public class SongService {
     @Autowired
     private FileService fileService;
 
-    public Song create(Song song, User user, Album album, File audioFile) {
+    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres, List<Keyword> keywords) {
         song.setUser(user);
         song.setAlbum(album);
 
@@ -97,11 +97,9 @@ public class SongService {
         return songRepository.findAllByPlaylist(playlist);
     }
 
-    public Song update(Song song, Album album, User user, List<Genre> genres, List<Keyword> keywords) {
+    public Song update(Song song, Album album, User user, File file) {
         song.setUser(user);
         song.setAlbum(album);
-        song.setGenres(genres);
-        song.setKeywords(keywords);
 
         return songRepository.save(song);
     }

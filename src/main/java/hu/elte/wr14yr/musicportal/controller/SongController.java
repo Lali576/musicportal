@@ -7,15 +7,24 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.File;
 import java.io.IOException;
+import java.security.Key;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/song")
@@ -26,6 +35,50 @@ public class SongController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileService fileService;
+
+    private Logger logger = Logger.getLogger(SongController.class.getName());
+
+    @Role({ARTIST})
+    @PostMapping("/new")
+    public ResponseEntity<Song> create(MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "");
+        MultipartFile multipartFile = null;
+
+        Iterator<String> iterator = request.getFileNames();
+
+        logger.log(Level.INFO, "Get file parameter");
+        while (iterator.hasNext()) {
+            multipartFile = request.getFile(iterator.next());
+        }
+
+        File file = fileService.convertToFile(multipartFile);
+
+        ObjectMapper mapper = new ObjectMapper();
+        Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
+        User user = userService.getLoggedInUser();
+        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
+        List<Genre> genresList = Arrays.asList(genresArray);
+        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
+        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
+        Song savedSong = songService.create(song, user, album, file, genresList, keywordsList);
+        logger.log(Level.INFO, "");
+
+        return ResponseEntity.ok(savedSong);
+    }
+
+    @Role({ARTIST, USER, GUEST})
+    @GetMapping("/{id}")
+    public ResponseEntity<Song> find(@PathVariable long id) {
+        logger.log(Level.INFO, "");
+        Song foundSong  = songService.find(id);
+        logger.log(Level.INFO, "");
+
+        return ResponseEntity.ok(foundSong);
+    }
 
     @Role({ARTIST, USER})
     @GetMapping("/list")
@@ -41,29 +94,43 @@ public class SongController {
         return ResponseEntity.ok(songs);
     }
 
-    @PostMapping("/albumby")
-    public ResponseEntity<Iterable<Song>> songsByAlbum(@RequestBody Album album) {
+    @PostMapping("/by-album")
+    public ResponseEntity<Iterable<Song>> songsByAlbum(MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "");
+        ObjectMapper mapper = new ObjectMapper();
+        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
         Iterable<Song> songs = songService.listByAlbum(album);
+        logger.log(Level.INFO, "");
+
         return ResponseEntity.ok(songs);
     }
 
-    @PostMapping("/playlistby")
-    public ResponseEntity<Iterable<Song>> songsByPlaylist(@RequestBody Playlist playlist) {
+    @PostMapping("/by-playlist")
+    public ResponseEntity<Iterable<Song>> songsByPlaylist(MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "");
+        ObjectMapper mapper = new ObjectMapper();
+        Playlist playlist = mapper.readValue(request.getParameter("playlist").toString(), Playlist.class);
         Iterable<Song> songs = songService.listByPlaylist(playlist);
-        return ResponseEntity.ok(songs);
-    }
+        logger.log(Level.INFO, "");
 
-    @Role({ARTIST, USER})
-    @PostMapping("/comments")
-    public ResponseEntity<Iterable<SongComment>> listSongComments(@RequestBody Song song) {
-        Iterable<SongComment> songComments = songService.listSongComments(song);
-        return ResponseEntity.ok(songComments);
+        return ResponseEntity.ok(songs);
     }
 
     @Role({ARTIST, USER})
     @PostMapping("/comments/new")
-    public ResponseEntity<Iterable<SongComment>> createSongComment(@RequestBody SongComment songComment) {
+    public ResponseEntity<Iterable<SongComment>> createSongComment(MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        SongComment songComment = mapper.readValue(request.getParameter("songComment").toString(), SongComment.class);
         Iterable<SongComment> songComments = songService.createSongComment(songComment);
+        return ResponseEntity.ok(songComments);
+    }
+
+    @Role({ARTIST, USER})
+    @PostMapping("/comments")
+    public ResponseEntity<Iterable<SongComment>> listSongComments(MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
+        Iterable<SongComment> songComments = songService.listSongComments(song);
         return ResponseEntity.ok(songComments);
     }
 
@@ -72,41 +139,38 @@ public class SongController {
      */
 
     @Role({ARTIST})
-    @PostMapping("/new")
-    public ResponseEntity<Song> create(@RequestBody Map<String, Object> params) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        Song song = mapper.readValue(params.get("song").toString(), Song.class);
-        User user = userService.getLoggedInUser();
-        Album album = mapper.readValue(params.get("album").toString(), Album.class);
-        //List<Genre> genres = mapper.readValue(params.get("genres").toString(), List.class);
-        //List<Keyword> keywords = mapper.readValue(params.get("keywords").toString(), List.class);
-        Song savedSong = songService.create(song, user, album, null);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Song> update(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "");
+        MultipartFile multipartFile = null;
 
-        return ResponseEntity.ok(savedSong);
-    }
+        Iterator<String> iterator = request.getFileNames();
 
-    @Role({ARTIST})
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<Song> update(@PathVariable long id, @RequestBody Map<String, Object> params) throws IOException {
+        logger.log(Level.INFO, "Get file parameter");
+        while (iterator.hasNext()) {
+            multipartFile = request.getFile(iterator.next());
+        }
+
+        File file = fileService.convertToFile(multipartFile);
+
         ObjectMapper mapper = new ObjectMapper();
-        Song song = mapper.readValue(params.get("song").toString(), Song.class);
+        Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
         User user = userService.getLoggedInUser();
-        Album album = mapper.readValue(params.get("album").toString(), Album.class);
-        Song updatedSong = songService.update(song,album,user,null,null);
+        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Song updatedSong = songService.update(song,album,user,file);
+        logger.log(Level.INFO, "");
+
         return ResponseEntity.ok(updatedSong);
     }
 
-    @Role({ARTIST, USER, GUEST})
-    @GetMapping("/{id}")
-    public ResponseEntity<Song> find(@PathVariable long id) {
-        Song foundSong  = songService.find(id);
-        return ResponseEntity.ok(foundSong);
-    }
-
     @Role({ARTIST})
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable long id, @RequestBody Song song) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "");
+        ObjectMapper mapper = new ObjectMapper();
+        Song song = mapper.readValue(request.getParameter("album").toString(), Song.class);
         songService.delete(song);
+        logger.log(Level.INFO, "");
 
         return ResponseEntity.ok().build();
     }

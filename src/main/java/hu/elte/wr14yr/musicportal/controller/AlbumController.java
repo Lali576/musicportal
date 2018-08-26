@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -38,16 +37,10 @@ public class AlbumController {
     private Logger logger = Logger.getLogger(AlbumController.class.getName());
 
     @Role({ARTIST})
-    @GetMapping
-    public ResponseEntity<Iterable<Album>> list() {
-        Iterable<Album> albums = albumService.list(userService.getLoggedInUser());
-        return ResponseEntity.ok(albums);
-    }
-
-    @Role({ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Album> create(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
-        logger.log(Level.INFO, "Entrance: endpoint '/new'");MultipartFile multipartFile = null;
+        logger.log(Level.INFO, "Entrance: endpoint '/new'");
+        MultipartFile multipartFile = null;
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -69,6 +62,23 @@ public class AlbumController {
         logger.log(Level.INFO, "Exit: endpoint '/new'");
 
         return ResponseEntity.ok(savedAlbum);
+    }
+
+    @Role({ARTIST, USER, GUEST})
+    @GetMapping("/{id}")
+    public ResponseEntity<Album> find(@PathVariable long id) {
+        logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
+        Album foundAlbum = albumService.find(id);
+        logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
+
+        return ResponseEntity.ok(foundAlbum);
+    }
+
+    @Role({ARTIST})
+    @GetMapping
+    public ResponseEntity<Iterable<Album>> list() {
+        Iterable<Album> albums = albumService.list(userService.getLoggedInUser());
+        return ResponseEntity.ok(albums);
     }
 
     @Role({ARTIST})
@@ -112,19 +122,9 @@ public class AlbumController {
         return ResponseEntity.ok(null);
     }
 
-    @Role({ARTIST, USER, GUEST})
-    @GetMapping("/{id}")
-    public ResponseEntity<Album> find(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
-        Album foundAlbum = albumService.find(id);
-        logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
-
-        return ResponseEntity.ok(foundAlbum);
-    }
-
     @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
+    public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         ObjectMapper mapper = new ObjectMapper();
         Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
