@@ -2,7 +2,6 @@ package hu.elte.wr14yr.musicportal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.annotation.Role;
-import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 
 import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

@@ -6,7 +6,6 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.Genre;
-import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
 import hu.elte.wr14yr.musicportal.service.FileService;

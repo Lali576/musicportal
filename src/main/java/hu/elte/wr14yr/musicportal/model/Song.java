@@ -1,12 +1,12 @@
 package hu.elte.wr14yr.musicportal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.File;
 import java.util.List;
 
 @Entity
@@ -62,6 +62,6 @@ public class Song {
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
     private List<Genre> genres;
 
-    @ManyToMany(targetEntity = Keyword.class, mappedBy = "songs")
-    private List<Keyword> keywords;
+    @ManyToMany(targetEntity = SongKeyword.class, mappedBy = "songs")
+    private List<SongKeyword> songKeywords;
 }

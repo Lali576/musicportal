@@ -23,7 +23,7 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByGenres(Genre genre);
 
-    List<Song> findAllByKeywords(Keyword keyword);
+    //List<Song> findAllByKeywords(Keyword keyword);
 
     Song findSongById(long id);
 

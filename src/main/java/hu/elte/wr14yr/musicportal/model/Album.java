@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,8 +47,8 @@ public class Album {
     @ManyToMany(targetEntity = Genre.class, mappedBy = "albums")
     private List<Genre> genres;
 
-    @ManyToMany(targetEntity = Keyword.class, mappedBy = "albums")
-    private List<Keyword> keywords;
+    @ManyToMany(targetEntity = AlbumKeyword.class, mappedBy = "albums")
+    private List<AlbumKeyword> albumKeywords;
 
     @Column(name = "TYPE", nullable = false)
     @Enumerated(EnumType.STRING)

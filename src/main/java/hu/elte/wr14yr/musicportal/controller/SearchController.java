@@ -1,18 +1,12 @@
 package hu.elte.wr14yr.musicportal.controller;
 
 
-import hu.elte.wr14yr.musicportal.annotation.Role;
-import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
-import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
-import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
-
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
 import hu.elte.wr14yr.musicportal.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Key;
 
 @RestController
 @RequestMapping("/api/search")
@@ -30,8 +24,8 @@ public class SearchController {
 
     //@Role({ARTIST, GUEST, USER})
     @GetMapping("/keywords/{word}")
-    public ResponseEntity<Iterable<Keyword>> findKeywordByWord(@PathVariable String word) {
-        Iterable<Keyword> foundKeywords = searchService.findKeywordByWord(word);
+    public ResponseEntity<Iterable<UserKeyword>> findKeywordByWord(@PathVariable String word) {
+        Iterable<UserKeyword> foundKeywords = searchService.findKeywordByWord(word);
         return ResponseEntity.ok(foundKeywords);
     }
 

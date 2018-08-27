@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
 import hu.elte.wr14yr.musicportal.repository.SongCommentRepository;
 import hu.elte.wr14yr.musicportal.repository.SongCounterRepository;
 import hu.elte.wr14yr.musicportal.repository.SongLikeRepository;
@@ -9,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,11 +31,17 @@ public class SongService {
     @Autowired
     private FileService fileService;
 
-    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres, List<Keyword> keywords) {
+    @Autowired
+    private KeywordService keywordService;
+
+    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres, List<SongKeyword> songKeywords) {
         song.setUser(user);
         song.setAlbum(album);
+        song.setGenres(genres);
 
         Song savedSong = songRepository.save(song);
+
+        keywordService.createSongKeywords(songKeywords, savedSong);
 
         String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumFolderGdaId());
 
@@ -66,9 +70,21 @@ public class SongService {
         }
     }
 
+    public int[] countLikesDivided(Song song) {
+        int[] counts = new int[2];
+        counts[0] = songLikeRepository.countAllBySongAndRoleLike(song.getId());
+        counts[1] = songLikeRepository.countAllBySongAndRoleDislike(song.getId());
+
+        return counts;
+    }
+
     public int saveSongCounter(SongCounter songCounter) {
         SongCounter savedSongCounter = songCounterRepository.save(songCounter);
         return songCounterRepository.countAllBySong(songCounter.getSong());
+    }
+
+    public int getSongCounterNumber(Song song) {
+        return songCounterRepository.countAllBySong(song);
     }
 
     public Song find(long id) {
@@ -114,6 +130,7 @@ public class SongService {
         songCommentRepository.deleteAllBySong(song);
         songCounterRepository.deleteAllBySong(song);
         songLikeRepository.deleteAllBySong(song);
+        keywordService.deleteAllSongKeywordsBySong(song);
 
         songRepository.deleteById(song.getId());
     }

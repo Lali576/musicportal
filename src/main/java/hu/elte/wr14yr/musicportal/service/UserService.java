@@ -3,7 +3,7 @@ package hu.elte.wr14yr.musicportal.service;
 import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.gda.GoogleDriveApi;
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.repository.KeywordRepository;
+import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
 import hu.elte.wr14yr.musicportal.repository.UserMessageRepository;
 import hu.elte.wr14yr.musicportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class UserService {
     private UserMessageRepository userMessageRepository;
 
     @Autowired
-    private KeywordRepository keywordRepository;
+    private KeywordService keywordService;
 
     @Autowired
     private AlbumService albumService;
@@ -50,7 +50,7 @@ public class UserService {
 
     private User loggedInUser = null;
 
-    public User register(User user, String password, File file, List<Keyword> keywords) {
+    public User register(User user, String password, File file, List<UserKeyword> userKeywords) {
         logger.log(Level.INFO, "Given password is going to being salted and hashed");
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
@@ -75,18 +75,14 @@ public class UserService {
 
         loggedInUser = userRepository.save(user);
 
+        keywordService.createUserKeywords(userKeywords, loggedInUser);
+
         String userFolderGdaId = fileService.uploadFolder(loggedInUser.getUsername(), GoogleDriveApi.MAIN_FOLDER_ID);
 
         String iconFileGdaId = fileService.uploadFile(file, userFolderGdaId);
 
         loggedInUser.setUserFolderGdaId(userFolderGdaId);
         loggedInUser.setIconFileGdaId(iconFileGdaId);
-
-        for(Keyword keyword : keywords) {
-            keywordRepository.save(keyword);
-        }
-
-        loggedInUser.setKeywords(keywords);
 
         loggedInUser = userRepository.save(loggedInUser);
 
@@ -144,12 +140,12 @@ public class UserService {
         return loggedInUser;
     }
 
-    public User updateDetails(String fullName, Genre favGenre, List<Keyword> keywords) {
+    public User updateDetails(String fullName, Genre favGenre, List<UserKeyword> userKeywords) {
         logger.log(Level.INFO, "User named " + loggedInUser.getUsername() + "'s  data are going to update in database MusicPortal");
 
         loggedInUser.setFullName(fullName);
         loggedInUser.setFavGenreId(favGenre);
-        loggedInUser.setKeywords(keywords);
+        //loggedInUser.setUserKeywords(userKeywords);
         loggedInUser = userRepository.save(loggedInUser);
 
         return loggedInUser;
@@ -209,7 +205,7 @@ public class UserService {
 
         userMessageRepository.deleteAllByUserFrom(loggedInUser);
 
-        //Delete keywords
+        keywordService.deleteAllUserKeywordsByUser(loggedInUser);
 
         isLoggedIn();
 

@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
 import hu.elte.wr14yr.musicportal.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class SearchService {
     private GenreRepository genreRepository;
 
     @Autowired
-    private KeywordRepository keywordRepository;
+    private KeywordService keywordService;
 
     public Iterable<Genre> findGenreByName(String name) {
         return genreRepository.findAllByNameContainsAllIgnoreCase(name);
@@ -37,7 +38,7 @@ public class SearchService {
         return albumRepository.findAllByTitleContainsAllIgnoreCase(name);
     }
 
-    public Iterable<Album> findAlbumByKeyword(Keyword keyword) {
+    public Iterable<Album> findAlbumByAlbumKeyword(AlbumKeyword keyword) {
         return albumRepository.findAllByKeywords(keyword);
     }
 

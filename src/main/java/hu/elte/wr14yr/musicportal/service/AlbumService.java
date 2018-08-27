@@ -1,16 +1,13 @@
 package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
+import hu.elte.wr14yr.musicportal.repository.AlbumKeywordRepository;
 import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
-import hu.elte.wr14yr.musicportal.repository.GenreRepository;
-import hu.elte.wr14yr.musicportal.repository.KeywordRepository;
-import hu.elte.wr14yr.musicportal.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -28,28 +25,23 @@ public class AlbumService {
     private FileService fileService;
 
     @Autowired
-    private KeywordRepository keywordRepository;
+    private KeywordService keywordService;
 
     private Logger logger = Logger.getLogger(AlbumService.class.getName());
 
-    public Album create(Album album, User user, File coverFile, List<Genre> genres, List<Keyword> keywords) {
+    public Album create(Album album, User user, File coverFile, List<Genre> genres, List<AlbumKeyword> albumKeywords) {
         album.setUser(user);
+        album.setGenres(genres);
 
         Album savedAlbum = albumRepository.save(album);
+
+        keywordService.createAlbumKeywords(albumKeywords, savedAlbum);
 
         String albumFolderGdaId = fileService.uploadFolder(savedAlbum.getTitle(), user.getUserFolderGdaId());
         String coverFileGdaId = fileService.uploadFile(coverFile, albumFolderGdaId);
 
         savedAlbum.setAlbumFolderGdaId(albumFolderGdaId);
         savedAlbum.setCoverFileGdaId(coverFileGdaId);
-
-        savedAlbum.setGenres(genres);
-
-        for (Keyword keyword : keywords) {
-            keywordRepository.save(keyword);
-        }
-
-        savedAlbum.setKeywords(keywords);
 
         savedAlbum = albumRepository.save(savedAlbum);
 
@@ -70,9 +62,9 @@ public class AlbumService {
        return album;
     }
 
-    public Album updateDetails(Album album, List<Genre> genres, List<Keyword> keywords) {
+    public Album updateDetails(Album album, List<Genre> genres, List<AlbumKeyword> albumKeywords) {
         album.setGenres(genres);
-        album.setKeywords(keywords);
+        album.setAlbumKeywords(albumKeywords);
         album = albumRepository.save(album);
 
         return album;
@@ -94,6 +86,8 @@ public class AlbumService {
 
     public void delete(Album album) {
         songService.deleteAllByAlbum(album);
+
+        keywordService.deleteAllAlbumKeywordsByAlbum(album);
 
         fileService.delete(album.getCoverFileGdaId());
 

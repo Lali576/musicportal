@@ -1,9 +1,9 @@
 package hu.elte.wr14yr.musicportal.service;
 
-import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.Song;
 import hu.elte.wr14yr.musicportal.model.User;
+import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
 import hu.elte.wr14yr.musicportal.repository.PlaylistRepository;
 import hu.elte.wr14yr.musicportal.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,16 @@ public class PlaylistService {
     @Autowired
     private SongRepository songRepository;
 
-    public Playlist create(Playlist playlist, User user, List<Song> songs, List<Keyword> keywords) {
+    @Autowired
+    private KeywordService keywordService;
+
+    public Playlist create(Playlist playlist, User user, List<Song> songs, List<PlaylistKeyword> playlistKeywords) {
         playlist.setUser(user);
         playlist.setSongs(songs);
-        playlist.setKeywords(keywords);
+        Playlist savedPlaylist = playlistRepository.save(playlist);
+        keywordService.createPlaylistKeywords(playlistKeywords, savedPlaylist);
 
-        return playlistRepository.save(playlist);
+        return savedPlaylist;
     }
 
     public Iterable<Playlist> list(User user) {
@@ -51,11 +55,12 @@ public class PlaylistService {
 
     public void deleteAllByUser(User user) {
         for(Playlist playlist : user.getPlaylist()) {
-            delete(playlist.getId());
+            delete(playlist);
         }
     }
 
-    public void delete(long id) {
-        playlistRepository.deleteById(id);
+    public void delete(Playlist playlist) {
+        keywordService.deleteAllPlaylistKeywordsByPlaylist(playlist);
+        playlistRepository.deleteById(playlist.getId());
     }
 }

@@ -1,6 +1,5 @@
 package hu.elte.wr14yr.musicportal.repository;
 
-import hu.elte.wr14yr.musicportal.model.Keyword;
 import hu.elte.wr14yr.musicportal.model.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +19,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAllByUsernameContainsAllIgnoreCase(String username);
 
-    List<User> findAllByKeywords(Keyword keyword);
+    //List<User> findAllByKeywords(Keyword keyword);
 
     User findUserById(Long id);
 
