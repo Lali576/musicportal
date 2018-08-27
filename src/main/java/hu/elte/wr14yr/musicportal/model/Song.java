@@ -62,6 +62,6 @@ public class Song {
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
     private List<Genre> genres;
 
-    @ManyToMany(targetEntity = SongKeyword.class, mappedBy = "songs")
+    @OneToMany(targetEntity = SongKeyword.class, mappedBy = "song")
     private List<SongKeyword> songKeywords;
 }

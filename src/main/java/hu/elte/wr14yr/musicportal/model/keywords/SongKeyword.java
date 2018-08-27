@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "SONG_KEYWORD")
+@Table(name = "SONG_KEYWORDS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class SongKeyword {

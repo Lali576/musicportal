@@ -1,12 +1,21 @@
 package hu.elte.wr14yr.musicportal.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
+import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
+import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
 import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
 import hu.elte.wr14yr.musicportal.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/search")
@@ -23,11 +32,13 @@ public class SearchController {
     }
 
     //@Role({ARTIST, GUEST, USER})
+    /*
     @GetMapping("/keywords/{word}")
     public ResponseEntity<Iterable<UserKeyword>> findKeywordByWord(@PathVariable String word) {
         Iterable<UserKeyword> foundKeywords = searchService.findKeywordByWord(word);
         return ResponseEntity.ok(foundKeywords);
     }
+    */
 
     //@Role({ARTIST, GUEST, USER})
     @GetMapping("/albums/{name}")
@@ -38,8 +49,12 @@ public class SearchController {
 
     //@Role({ARTIST, GUEST, USER})
     @PostMapping("/albums/keyword/{word}")
-    public ResponseEntity<Iterable<Album>> findAlbumByKeyword(@RequestBody  Keyword keyword, @PathVariable String word) {
-        Iterable<Album> foundAlbums = searchService.findAlbumByKeyword(keyword);
+    public ResponseEntity<Iterable<Album>> findAlbumByKeyword(@PathVariable String word, MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), AlbumKeyword[].class);
+        List<AlbumKeyword> albumKeywordsList = Arrays.asList(albumKeywordsArray);
+        Iterable<Album> foundAlbums = searchService.findAlbumByAlbumKeywords(albumKeywordsList);
+
         return ResponseEntity.ok(foundAlbums);
     }
 
@@ -59,8 +74,11 @@ public class SearchController {
 
     //@Role({ARTIST, GUEST, USER})
     @PostMapping("/songs/keyword/{word}")
-    public ResponseEntity<Iterable<Song>> findSongByKeyword(@RequestBody Keyword keyword, @PathVariable String word) {
-        Iterable<Song> foundSongs = searchService.findSongByKeyword(keyword);
+    public ResponseEntity<Iterable<Song>> findSongByKeyword(@PathVariable String word, MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        SongKeyword[] songKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), SongKeyword[].class);
+        List<SongKeyword> songKeywordsList = Arrays.asList(songKeywordsArray);
+        Iterable<Song> foundSongs = searchService.findSongBySongKeywords(songKeywordsList);
         return ResponseEntity.ok(foundSongs);
     }
 
@@ -79,8 +97,11 @@ public class SearchController {
 
     //@Role({ARTIST, GUEST, USER})
     @PostMapping("/playlists/keyword/{word}")
-    public ResponseEntity<Iterable<Playlist>> findPlaylistByKeyword(@RequestBody Keyword keyword, @PathVariable String word) {
-        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByKeyword(keyword);
+    public ResponseEntity<Iterable<Playlist>> findPlaylistByKeyword(@PathVariable String word, MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        PlaylistKeyword[] playlistKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), PlaylistKeyword[].class);
+        List<PlaylistKeyword> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
+        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByPlaylistKeywords(playlistKeywordsList);
         return ResponseEntity.ok(foundPlaylists);
     }
 
@@ -93,8 +114,11 @@ public class SearchController {
 
     //@Role({ARTIST, GUEST, USER})
     @PostMapping("/users/{word}")
-    public ResponseEntity<Iterable<User>> findUserByKeyword(@RequestBody Keyword keyword, @PathVariable String word) {
-        Iterable<User> foundUsers = searchService.findUserByKeyword(keyword);
+    public ResponseEntity<Iterable<User>> findUserByKeyword(@PathVariable String word, MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), UserKeyword[].class);
+        List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
+        Iterable<User> foundUsers = searchService.findUsersByUserKeywords(userKeywordsList);
         return ResponseEntity.ok(foundUsers);
     }
 }

@@ -7,6 +7,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -60,9 +61,9 @@ public class SongController {
         Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
         Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
-        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
-        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
-        Song savedSong = songService.create(song, user, album, file, genresList, keywordsList);
+        SongKeyword[] songKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), SongKeyword[].class);
+        List<SongKeyword> songKeywordsList = Arrays.asList(songKeywordsArray);
+        Song savedSong = songService.create(song, user, album, file, genresList, songKeywordsList);
         logger.log(Level.INFO, "");
 
         return ResponseEntity.ok(savedSong);

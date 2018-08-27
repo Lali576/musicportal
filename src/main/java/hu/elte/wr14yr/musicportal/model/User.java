@@ -83,9 +83,6 @@ public class User {
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
     private List<Playlist> playlist;
 
-    //@ManyToMany(targetEntity = Keyword.class, mappedBy = "users")
-    //private List<Keyword> keywords;
-
     @OneToMany(targetEntity = UserKeyword.class, mappedBy = "user")
     private List<UserKeyword> userKeywords;
 

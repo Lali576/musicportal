@@ -16,11 +16,13 @@ import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/playlist")
@@ -34,6 +36,8 @@ public class PlaylistController {
 
     @Autowired
     private SongService songService;
+
+    private Logger logger = Logger.getLogger(PlaylistController.class.getName());
 
     @Role({USER, ARTIST})
     @GetMapping
@@ -78,8 +82,11 @@ public class PlaylistController {
 
     @Role({USER, ARTIST})
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable long id) {
-        playlistService.delete(id);
+    public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Playlist playlist = mapper.readValue(request.getParameter("playlist").toString(), Playlist.class);
+
+        playlistService.delete(playlist);
 
         return ResponseEntity.ok().build();
     }

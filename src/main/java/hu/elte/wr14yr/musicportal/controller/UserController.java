@@ -8,6 +8,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 import hu.elte.wr14yr.musicportal.model.Genre;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
+import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -70,10 +71,10 @@ public class UserController {
         String password = request.getParameter("password").toString();
 
         logger.log(Level.INFO, "Get parameter 'keywords'");
-        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
-        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
+        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), UserKeyword[].class);
+        List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
-        User savedUser = userService.register(user, password, file, keywordsList);
+        User savedUser = userService.register(user, password, file, userKeywordsList);
 
         file.delete();
         logger.log(Level.INFO, "Exit: endpoint '/register'");
@@ -136,10 +137,10 @@ public class UserController {
         Genre favGenre = mapper.readValue(request.getParameter("favGenre").toString(), Genre.class);
 
         logger.log(Level.INFO, "Get parameter 'keywords'");
-        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
-        List<Keyword> keywordList = Arrays.asList(keywordsArray);
+        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), UserKeyword[].class);
+        List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
-        User updatedUser = userService.updateDetails(fullName, favGenre, keywordList);
+        User updatedUser = userService.updateDetails(fullName, favGenre, userKeywordsList);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/details'");
 
         return ResponseEntity.ok(updatedUser);

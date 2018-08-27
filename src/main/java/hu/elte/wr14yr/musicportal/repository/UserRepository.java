@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.repository;
 
 import hu.elte.wr14yr.musicportal.model.User;
+import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,16 +20,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAllByUsernameContainsAllIgnoreCase(String username);
 
-    //List<User> findAllByKeywords(Keyword keyword);
+    List<User> findAllByUserKeywords(List<UserKeyword> userKeywords);
 
     User findUserById(Long id);
-
-    /*
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    @Query(value = "UPDATE USERS SET SALT_CODE = :SALT_CODE WHERE ID := ID", nativeQuery = true)
-    void updateSaltCode(@Param("ID") long id, @Param("SALT_CODE") String saltCode);
-    */
 
     @Modifying(clearAutomatically = true)
     @Transactional

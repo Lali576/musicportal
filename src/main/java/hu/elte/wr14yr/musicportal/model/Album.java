@@ -47,7 +47,7 @@ public class Album {
     @ManyToMany(targetEntity = Genre.class, mappedBy = "albums")
     private List<Genre> genres;
 
-    @ManyToMany(targetEntity = AlbumKeyword.class, mappedBy = "albums")
+    @OneToMany(targetEntity = AlbumKeyword.class, mappedBy = "album")
     private List<AlbumKeyword> albumKeywords;
 
     @Column(name = "TYPE", nullable = false)

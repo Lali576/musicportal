@@ -30,7 +30,7 @@ public class Playlist {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
-    @ManyToMany(targetEntity = PlaylistKeyword.class, mappedBy = "playlist")
+    @OneToMany(targetEntity = PlaylistKeyword.class, mappedBy = "playlist")
     private List<PlaylistKeyword> playlistKeywords;
 
     @JoinTable(name = "SONG_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),

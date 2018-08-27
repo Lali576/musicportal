@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.repository.keywords;
 
+import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
 import org.springframework.data.repository.CrudRepository;
 

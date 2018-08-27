@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "ALBUM_KEYWORD")
+@Table(name = "ALBUM_KEYWORDS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class AlbumKeyword {

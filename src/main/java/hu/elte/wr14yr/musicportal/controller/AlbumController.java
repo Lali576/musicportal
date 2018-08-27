@@ -5,6 +5,7 @@ import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.*;
 import hu.elte.wr14yr.musicportal.model.*;
 
+import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -55,10 +56,10 @@ public class AlbumController {
         Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
         Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
-        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
-        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
+        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), AlbumKeyword[].class);
+        List<AlbumKeyword> albumKeywordsList = Arrays.asList(albumKeywordsArray);
         User user = userService.getLoggedInUser();
-        Album savedAlbum = albumService.create(album, user, file, genresList, keywordsList);
+        Album savedAlbum = albumService.create(album, user, file, genresList, albumKeywordsList);
         logger.log(Level.INFO, "Exit: endpoint '/new'");
 
         return ResponseEntity.ok(savedAlbum);
@@ -90,10 +91,10 @@ public class AlbumController {
         album.setUser(userService.getLoggedInUser());
         Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
-        Keyword[] keywordsArray = mapper.readValue(request.getParameter("keywords").toString(), Keyword[].class);
-        List<Keyword> keywordsList = Arrays.asList(keywordsArray);
+        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), AlbumKeyword[].class);
+        List<AlbumKeyword> albumKeywordsList = Arrays.asList(albumKeywordsArray);
 
-        Album updatedAlbum = albumService.updateDetails(album, genresList, keywordsList);
+        Album updatedAlbum = albumService.updateDetails(album, genresList, albumKeywordsList);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "'");
 
         return ResponseEntity.ok(updatedAlbum);

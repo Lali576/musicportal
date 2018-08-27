@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.repository;
 
 import hu.elte.wr14yr.musicportal.model.*;
+import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -23,7 +24,7 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByGenres(Genre genre);
 
-    //List<Song> findAllByKeywords(Keyword keyword);
+    List<Song> findAllBySongKeywords(List<SongKeyword> songKeywords);
 
     Song findSongById(long id);
 
