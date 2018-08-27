@@ -8,10 +8,10 @@ import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
 import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
 import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
 import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
-import hu.elte.wr14yr.musicportal.repository.AlbumKeywordRepository;
-import hu.elte.wr14yr.musicportal.repository.PlaylistKeywordRepository;
-import hu.elte.wr14yr.musicportal.repository.SongKeywordRepository;
-import hu.elte.wr14yr.musicportal.repository.UserKeywordRepository;
+import hu.elte.wr14yr.musicportal.repository.keywords.AlbumKeywordRepository;
+import hu.elte.wr14yr.musicportal.repository.keywords.PlaylistKeywordRepository;
+import hu.elte.wr14yr.musicportal.repository.keywords.SongKeywordRepository;
+import hu.elte.wr14yr.musicportal.repository.keywords.UserKeywordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

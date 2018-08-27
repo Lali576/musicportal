@@ -2,7 +2,6 @@ package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
 import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
-import hu.elte.wr14yr.musicportal.repository.AlbumKeywordRepository;
 import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
