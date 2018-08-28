@@ -29,11 +29,11 @@ public class SongLike {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @Column(name = "ROLE")
+    @Column(name = "TYPE")
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private Type type;
 
-    public enum Role {
+    public enum Type {
         LIKE, DISLIKE
     }
 }
