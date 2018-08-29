@@ -151,7 +151,7 @@ public class UserController {
     public ResponseEntity<User> updateEmailAddress(@PathVariable("id") long id, MultipartHttpServletRequest request) {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/email'");
         String emailAddress = request.getParameter("emailAddress");
-        User updatedUser = userService.updateEmailAddress(emailAddress);
+        User updatedUser = userService.changeEmailAddress(emailAddress);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/email'");
 
         return ResponseEntity.ok(updatedUser);
@@ -183,7 +183,7 @@ public class UserController {
 
         File file = fileService.convertToFile(multipartFile);
 
-        User updatedUser = userService.updateImageFile(file);
+        User updatedUser = userService.changeImageFile(file);
 
         file.delete();
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/icon'");

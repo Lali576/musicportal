@@ -65,7 +65,6 @@ public class AlbumController {
         return ResponseEntity.ok(savedAlbum);
     }
 
-    @Role({ARTIST, USER, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Album> find(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
@@ -75,7 +74,12 @@ public class AlbumController {
         return ResponseEntity.ok(foundAlbum);
     }
 
-    @Role({ARTIST})
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<Album>> listAll() {
+        Iterable<Album> albums = albumService.listAll();
+        return ResponseEntity.ok(albums);
+    }
+
     @GetMapping
     public ResponseEntity<Iterable<Album>> list() {
         Iterable<Album> albums = albumService.list(userService.getLoggedInUser());
@@ -100,7 +104,7 @@ public class AlbumController {
         return ResponseEntity.ok(updatedAlbum);
     }
 
-    @Role({ARTIST, USER})
+    @Role({ARTIST})
     @PutMapping("/update/{id}/cover")
     public ResponseEntity<Album> updateCoverFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/cover'");
@@ -117,7 +121,7 @@ public class AlbumController {
 
         ObjectMapper mapper = new ObjectMapper();
         Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
-        Album updatedAlbum = albumService.updateCoverFile(album, file);
+        Album updatedAlbum = albumService.changeCoverFile(album, file);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/cover'");
 
         return ResponseEntity.ok(null);

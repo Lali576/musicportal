@@ -16,6 +16,8 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
     @Override
     Album save(Album album);
 
+    List<Album> findAll();
+
     List<Album> findAllByTitleContainsAllIgnoreCase(String name);
 
     List<Album> findAllByUser(User user);
@@ -26,6 +28,7 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     Album findAlbumById(Long id);
 
+    /*
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "UPDATE ALBUMS SET ALBUM_FOLDER_GDA_ID = :ALBUM_FOLDER_GDA_ID WHERE ID = :ID", nativeQuery = true)
@@ -35,6 +38,7 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
     @Transactional
     @Query(value = "UPDATE ALBUMS SET COVER_FILE_GDA_ID = :COVER_FILE_GDA_ID WHERE ID = :ID", nativeQuery = true)
     void updateFileGdaId(@Param("ID") long id, @Param("COVER_FILE_GDA_ID") String fileGdaId);
+    */
 
     @Override
     void deleteById(Long id);

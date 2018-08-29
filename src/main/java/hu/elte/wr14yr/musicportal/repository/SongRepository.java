@@ -14,6 +14,8 @@ public interface SongRepository extends CrudRepository<Song, Long>{
     @Override
     Song save(Song song);
 
+    List<Song> findAll();
+
     List<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
     List<Song> findAllByAlbum(Album album);
@@ -28,10 +30,12 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     Song findSongById(long id);
 
+    /*
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query(value = "UPDATE SONGS SET AUDIO_FILE_GDA_ID = :AUDIO_FILE_GDA_ID WHERE ID = :ID", nativeQuery = true)
     void updateAudioFileGdaId(@Param("ID") long id, @Param("AUDIO_FILE_GDA_ID") String audioFileGdaId);
+    */
 
     @Override
     void deleteById(Long id);

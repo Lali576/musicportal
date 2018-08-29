@@ -69,7 +69,6 @@ public class SongController {
         return ResponseEntity.ok(savedSong);
     }
 
-    @Role({ARTIST, USER, GUEST})
     @GetMapping("/{id}")
     public ResponseEntity<Song> find(@PathVariable long id) {
         logger.log(Level.INFO, "");
@@ -79,14 +78,12 @@ public class SongController {
         return ResponseEntity.ok(foundSong);
     }
 
-    @Role({ARTIST, USER})
     @GetMapping("/list")
     public ResponseEntity<Iterable<Song>> listAll() {
         Iterable<Song> songs = songService.listAll();
         return ResponseEntity.ok(songs);
     }
 
-    @Role({ARTIST})
     @GetMapping
     public ResponseEntity<Iterable<Song>> list() {
         Iterable<Song> songs = songService.list(userService.getLoggedInUser());
@@ -120,22 +117,62 @@ public class SongController {
     public ResponseEntity<Iterable<SongComment>> createSongComment(MultipartHttpServletRequest request) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         SongComment songComment = mapper.readValue(request.getParameter("songComment").toString(), SongComment.class);
-        Iterable<SongComment> songComments = songService.createSongComment(songComment);
+        Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
+        Iterable<SongComment> songComments = songService.createSongComment(songComment, song);
+
         return ResponseEntity.ok(songComments);
     }
 
     @Role({ARTIST, USER})
-    @PostMapping("/comments")
-    public ResponseEntity<Iterable<SongComment>> listSongComments(MultipartHttpServletRequest request) throws IOException {
+    @PostMapping("/comments/{id}")
+    public ResponseEntity<Iterable<SongComment>> listSongComments(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
         Iterable<SongComment> songComments = songService.listSongComments(song);
+
         return ResponseEntity.ok(songComments);
     }
 
-    /*
-        SongLike, SongCounter
-     */
+    @Role({ARTIST, USER})
+    @PostMapping("/like/new")
+    public ResponseEntity<Integer> createSongLike(MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        SongLike songLike = mapper.readValue(request.getParameter("songLike").toString(), SongLike.class);
+        Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
+        int likeNumber = songService.saveSongLike(songLike, song);
+
+        return  ResponseEntity.ok(likeNumber);
+    }
+
+    @Role({ARTIST, USER})
+    @PostMapping("/like/{id}")
+    public ResponseEntity<int[]> countSongLikes(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
+        int[] likesNumbers = songService.countLikesDivided(song);
+
+        return ResponseEntity.ok(likesNumbers);
+    }
+
+    @PostMapping("/counter/new")
+    public ResponseEntity<Integer> createSongCounter(MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        SongCounter songCounter = mapper.readValue(request.getParameter("songCounter").toString(), SongCounter.class);
+        Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
+        User user = mapper.readValue(request.getParameter("user").toString(), User.class);
+        int counterNumber = songService.saveSongCounter(songCounter, song, user);
+
+        return  ResponseEntity.ok(counterNumber);
+    }
+
+    @PostMapping("/counter/{id}")
+    public ResponseEntity<Integer> countSongCounter(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Song  song = mapper.readValue(request.getParameter("song").toString(), Song.class);
+        int counterNumber = songService.countSongCounterNumber(song);
+
+        return ResponseEntity.ok(counterNumber);
+    }
 
     @Role({ARTIST})
     @PutMapping("/update/{id}")
