@@ -101,27 +101,13 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @GetMapping("/messages")
-    public ResponseEntity<Iterable<UserMessage>> listUserMessages() {
-        logger.log(Level.INFO, "Entrance: endpoint 'messages'");
-        Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
-        logger.log(Level.INFO, "Exit: endpoint 'messages'");
+    @PostMapping("/logout")
+    public ResponseEntity logout() {
+        logger.log(Level.INFO, "Entrance: endpoint '/logout'");
+        userService.logout();
+        logger.log(Level.INFO, "Exit: endpoint '/logout'");
 
-        return ResponseEntity.ok(userMessages);
-    }
-
-    @Role({ARTIST, USER})
-    @PostMapping("/messages/new")
-    public ResponseEntity<Iterable<UserMessage>> createUserMessage(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint 'messages/new'");
-        ObjectMapper mapper = new ObjectMapper();
-
-        UserMessage userMessage = mapper.readValue(request.getParameter("userMessage").toString(), UserMessage.class);
-
-        Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
-        logger.log(Level.INFO, "Exit: endpoint 'messages/new'");
-
-        return ResponseEntity.ok(userMessages);
+        return ResponseEntity.status(204).build();
     }
 
     @Role({ARTIST, USER})
@@ -212,16 +198,6 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PostMapping("/logout")
-    public ResponseEntity logout() {
-        logger.log(Level.INFO, "Entrance: endpoint '/logout'");
-        userService.logout();
-        logger.log(Level.INFO, "Exit: endpoint '/logout'");
-
-        return ResponseEntity.status(204).build();
-    }
-
-    @Role({ARTIST, USER})
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable long id) throws IOException, URISyntaxException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
@@ -229,5 +205,30 @@ public class UserController {
         logger.log(Level.INFO, "Exit: endpoint '/delete" + id + "'");
 
         return ResponseEntity.status(204).build();
+    }
+
+    @Role({ARTIST, USER})
+    @GetMapping("/messages")
+    public ResponseEntity<Iterable<UserMessage>> listUserMessages() {
+        logger.log(Level.INFO, "Entrance: endpoint 'messages'");
+        Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
+        logger.log(Level.INFO, "Exit: endpoint 'messages'");
+
+        return ResponseEntity.ok(userMessages);
+    }
+
+    @Role({ARTIST, USER})
+    @PostMapping("/messages/new")
+    public ResponseEntity<Iterable<UserMessage>> createUserMessage(MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "Entrance: endpoint 'messages/new'");
+        ObjectMapper mapper = new ObjectMapper();
+
+        logger.log(Level.INFO, "Get parameter 'userMessage'");
+        UserMessage userMessage = mapper.readValue(request.getParameter("userMessage").toString(), UserMessage.class);
+
+        Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
+        logger.log(Level.INFO, "Exit: endpoint 'messages/new'");
+
+        return ResponseEntity.ok(userMessages);
     }
 }

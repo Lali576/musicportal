@@ -8,15 +8,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/api/genre")
 public class GenreController {
     @Autowired
     private GenreRepository genreRepository;
 
+    private Logger logger = Logger.getLogger(GenreRepository.class.getName());
+
     @GetMapping("/list")
     public ResponseEntity<Iterable<Genre>> list() {
+        logger.log(Level.INFO, "Entrance: endpoint '/list'");
         Iterable<Genre> genres = genreRepository.findAll();
+        logger.log(Level.INFO, "Exit: endpoint '/list'");
+
         return ResponseEntity.ok(genres);
     }
 }

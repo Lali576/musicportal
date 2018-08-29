@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RestController
@@ -44,57 +45,93 @@ public class PlaylistController {
     @Role({USER, ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Playlist> create(MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "Entrance: endpoint '/new'");
         ObjectMapper mapper = new ObjectMapper();
+
+        logger.log(Level.INFO, "Get parameter 'playlist'");
         Playlist playlist = mapper.readValue(request.getParameter("playlist").toString(), Playlist.class);
+
+        logger.log(Level.INFO, "Get current logged in user");
         User user = userService.getLoggedInUser();
+
+        logger.log(Level.INFO, "Get parameter 'songs'");
         Song[] songsArray = mapper.readValue(request.getParameter("songs").toString(), Song[].class);
         List<Song> songsList = Arrays.asList(songsArray);
+
+        logger.log(Level.INFO, "Get parameter 'keywords'");
         PlaylistKeyword[] playlistKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), PlaylistKeyword[].class);
         List<PlaylistKeyword> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
+
         Playlist savedPlaylist = playlistService.create(playlist, user, songsList, playlistKeywordsList);
+        logger.log(Level.INFO, "Exit: endpoint '/new'");
 
         return ResponseEntity.ok(savedPlaylist);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Playlist> find(@PathVariable long id) {
+        logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
         Playlist foundPlaylist = playlistService.find(id);
+        logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
+
         return ResponseEntity.ok(foundPlaylist);
     }
 
     @GetMapping("/list")
     public ResponseEntity<Iterable<Playlist>> listAll() {
+        logger.log(Level.INFO, "Entrance: endpoint '/list'");
         Iterable<Playlist> playlist = playlistService.listAll();
+        logger.log(Level.INFO, "Exit: endpoint '/list'");
+
         return ResponseEntity.ok(playlist);
     }
 
     @GetMapping
     public ResponseEntity<Iterable<Playlist>> list() {
+        logger.log(Level.INFO, "Entrance: endpoint '/'");
         Iterable<Playlist> playlist = playlistService.list(userService.getLoggedInUser());
+        logger.log(Level.INFO, "Exit: endpoint '/'");
+
         return ResponseEntity.ok(playlist);
     }
 
     @Role({USER, ARTIST})
     @PutMapping("/update/{id}")
     public ResponseEntity<Playlist> update(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "'");
         ObjectMapper mapper = new ObjectMapper();
+
+        logger.log(Level.INFO, "Get parameter 'playlist'");
         Playlist playlist = mapper.readValue(request.getParameter("playlist").toString(), Playlist.class);
+
+        logger.log(Level.INFO, "Get current logged in user");
         User user = userService.getLoggedInUser();
+
+        logger.log(Level.INFO, "Get parameter 'songs'");
         Song[] songsArray = mapper.readValue(request.getParameter("songs").toString(), Song[].class);
         List<Song> songsList = Arrays.asList(songsArray);
+
+        logger.log(Level.INFO, "Get parameter 'keywords'");
         PlaylistKeyword[] playlistKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), PlaylistKeyword[].class);
         List<PlaylistKeyword> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
+
         Playlist updatedPlaylist = playlistService.update(playlist, songsList, user, playlistKeywordsList);
+        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "'");
+
         return ResponseEntity.ok(updatedPlaylist);
     }
 
     @Role({USER, ARTIST})
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+        logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         ObjectMapper mapper = new ObjectMapper();
+
+        logger.log(Level.INFO, "Get parameter 'playlist'");
         Playlist playlist = mapper.readValue(request.getParameter("playlist").toString(), Playlist.class);
 
         playlistService.delete(playlist);
+        logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
         return ResponseEntity.ok().build();
     }
