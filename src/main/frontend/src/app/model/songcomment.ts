@@ -1,8 +1,8 @@
 import {User} from "./user";
 
-export class Songcomment {
+export class SongComment {
   id: number = 0;
   user: User = null;
-  textMessage: string = '';
-  dateTime: Date = null;
+  textMessage: string = "";
+  date: Date = null;
 }

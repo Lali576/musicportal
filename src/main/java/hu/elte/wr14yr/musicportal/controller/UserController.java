@@ -101,7 +101,7 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity logout() {
         logger.log(Level.INFO, "Entrance: endpoint '/logout'");
         userService.logout();
@@ -133,7 +133,7 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PutMapping("update/{id}/email")
+    @PutMapping("/update/{id}/email")
     public ResponseEntity<User> updateEmailAddress(@PathVariable("id") long id, MultipartHttpServletRequest request) {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/email'");
         String emailAddress = request.getParameter("emailAddress");
@@ -145,7 +145,7 @@ public class UserController {
 
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}/password")
-    public ResponseEntity updatePassword(@PathVariable("id") long id, MultipartHttpServletRequest request) {
+    public ResponseEntity<User> updatePassword(@PathVariable("id") long id, MultipartHttpServletRequest request) {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/password'");
         String password = request.getParameter("password");
         User updatedUser = userService.updatePassword(password);

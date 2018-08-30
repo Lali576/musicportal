@@ -14,8 +14,9 @@ import java.util.List;
 @Table(name = "PLAYLISTS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"keywords",
-                        "songs"})
+@JsonIgnoreProperties({"user",
+                        "songs",
+                        "playlistKeywords"})
 public class Playlist {
 
     @Id
@@ -30,11 +31,11 @@ public class Playlist {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
-    @OneToMany(targetEntity = PlaylistKeyword.class, mappedBy = "playlist")
-    private List<PlaylistKeyword> playlistKeywords;
-
     @JoinTable(name = "SONG_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),
-                                inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
+            inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
     private List<Song> songs;
+
+    @OneToMany(targetEntity = PlaylistKeyword.class, mappedBy = "playlist")
+    private List<PlaylistKeyword> playlistKeywords;
 }

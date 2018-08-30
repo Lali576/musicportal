@@ -1,5 +1,7 @@
 package hu.elte.wr14yr.musicportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class UserMessage {
 
     @JoinColumn(name = "USER_TO_ID", nullable = false)
     @ManyToOne(targetEntity = User.class, optional = false)
+    @JsonIgnore
     private User userTo;
 
     @JoinColumn(name = "USER_FROM_ID", nullable = false)

@@ -1,7 +1,8 @@
 export class Album {
   id: number = 0;
-  name: string = "";
+  title: string = "";
   date: Date = null;
-  coverFile: File = null;
-  coverPath: string = "";
+  albumFolderGdaId: string = "";
+  coverFileGdaId: string = "";
+  type: string = ""
 }

@@ -131,9 +131,10 @@ public class SongService {
                 song.getTitle() + " has been successfully deleted from database MusicPortal");
     }
 
-    public Iterable<SongComment> createSongComment(SongComment songComment, Song song) {
+    public Iterable<SongComment> createSongComment(SongComment songComment, User user, Song song) {
         logger.log(Level.INFO, "Song service: new song comment for song titled " +
                 song.getTitle() + " is going to be saved");
+        songComment.setUser(user);
         songComment.setSong(song);
         SongComment savedSongComment = songCommentRepository.save(songComment);
         logger.log(Level.INFO, "Song service: new song comment for song titled " +
@@ -149,9 +150,10 @@ public class SongService {
         return songCommentRepository.findAllBySong(song);
     }
 
-    public int saveSongLike(SongLike songLike, Song song) {
+    public int saveSongLike(SongLike songLike, User user, Song song) {
         logger.log(Level.INFO, "Song service: new like material for song titled " +
                 song.getTitle() + " is going to be saved");
+        songLike.setUser(user);
         songLike.setSong(song);
         SongLike savedSongLike = songLikeRepository.save(songLike);
         if(savedSongLike.getType().equals(SongLike.Type.LIKE)) {

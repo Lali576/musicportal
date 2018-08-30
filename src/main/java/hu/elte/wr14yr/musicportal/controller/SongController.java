@@ -191,10 +191,13 @@ public class SongController {
         logger.log(Level.INFO, "Get parameter 'songComment'");
         SongComment songComment = mapper.readValue(request.getParameter("songComment").toString(), SongComment.class);
 
+        logger.log(Level.INFO, "Get parameter 'user'");
+        User user = mapper.readValue(request.getParameter("user").toString(), User.class);
+
         logger.log(Level.INFO, "Get parameter 'song'");
         Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
 
-        Iterable<SongComment> songComments = songService.createSongComment(songComment, song);
+        Iterable<SongComment> songComments = songService.createSongComment(songComment, user, song);
         logger.log(Level.INFO, "Exit: endpoint '/comment/new'");
 
         return ResponseEntity.ok(songComments);
@@ -224,10 +227,13 @@ public class SongController {
         logger.log(Level.INFO, "Get parameter 'songLike'");
         SongLike songLike = mapper.readValue(request.getParameter("songLike").toString(), SongLike.class);
 
+        logger.log(Level.INFO, "Get parameter 'user'");
+        User user = mapper.readValue(request.getParameter("user").toString(), User.class);
+
         logger.log(Level.INFO, "Get parameter 'song'");
         Song song = mapper.readValue(request.getParameter("song").toString(), Song.class);
 
-        int likeNumber = songService.saveSongLike(songLike, song);
+        int likeNumber = songService.saveSongLike(songLike, user, song);
         logger.log(Level.INFO, "Exit: endpoint '/like/new'");
 
         return  ResponseEntity.ok(likeNumber);

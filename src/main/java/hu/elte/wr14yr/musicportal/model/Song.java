@@ -14,12 +14,14 @@ import java.util.List;
 @Table(name = "SONGS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"songComments",
+@JsonIgnoreProperties({"user",
+                        "album",
+                        "songComments",
                         "songCounters",
                         "songLikes",
                         "playlist",
                         "genres",
-                        "keywords"})
+                        "songKeywords"})
 public class Song {
 
     @Id
@@ -49,9 +51,6 @@ public class Song {
 
     @OneToMany(targetEntity = SongCounter.class, mappedBy = "song")
     private List<SongCounter> songCounters;
-
-    @Transient
-    private int songCounterNumber;
 
     @OneToMany(targetEntity = SongLike.class, mappedBy = "song")
     private List<SongLike> songLikes;

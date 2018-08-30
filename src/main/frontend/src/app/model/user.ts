@@ -7,6 +7,7 @@ export class User {
   favGenreId: Genre = null;
   fullName: string = "";
   biography: string = "";
-  role: string = "GUEST";
+  userFolderGdaId: string = "";
   iconFileGdaId: string = "";
+  role: string = "GUEST";
 }
