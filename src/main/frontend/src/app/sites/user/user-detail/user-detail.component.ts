@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../../model/user";
-import {AuthService} from "../../../auth.service";
+import {AuthService} from "../../../service/auth.service";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UserService} from "../../../service/user.service";
 import {Route, Router} from "@angular/router";

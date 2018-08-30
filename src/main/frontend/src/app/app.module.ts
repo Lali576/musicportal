@@ -30,7 +30,7 @@ import {PlaylistService} from "./service/playlist.service";
 import { RegisterComponent } from './sites/user/register/register.component';
 import { SongCommentComponent } from './sites/song/song-comment/song-comment.component';
 import { UserMessageComponent } from './sites/user/user-message/user-message.component';
-import {AuthService} from "./auth.service";
+import {AuthService} from "./service/auth.service";
 import {AuthGuard} from "./auth.guard";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";

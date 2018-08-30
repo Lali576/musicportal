@@ -20,9 +20,6 @@ public class PlaylistService {
     private PlaylistRepository playlistRepository;
 
     @Autowired
-    private SongRepository songRepository;
-
-    @Autowired
     private KeywordService keywordService;
 
     private Logger logger = Logger.getLogger(PlaylistService.class.getName());

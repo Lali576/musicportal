@@ -4,7 +4,7 @@ import {Album} from "../model/album";
 import {Observable} from "rxjs/index";
 import {Song} from "../model/song";
 import {AuthGuard} from "../auth.guard";
-import {AuthService} from "../auth.service";
+import {AuthService} from "./auth.service";
 import {User} from "../model/user";
 import {Keyword} from "../model/keyword";
 import {Genre} from "../model/genre";

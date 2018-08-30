@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/index";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Playlist} from "../model/playlist";
-import {AuthService} from "../auth.service";
+import {AuthService} from "./auth.service";
 import {Keyword} from "../model/keyword";
 import {Song} from "../model/song";
 import {Album} from "../model/album";

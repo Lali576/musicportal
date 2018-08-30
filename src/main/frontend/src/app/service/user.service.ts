@@ -4,7 +4,7 @@ import {User} from "../model/user";
 import {Observable} from "rxjs/index";
 import {Genre} from "../model/genre";
 import {UserMessage} from "../model/usermessage";
-import {AuthService} from "../auth.service";
+import {AuthService} from "./auth.service";
 import {tap} from "rxjs/internal/operators";
 
 const httpOptions = {

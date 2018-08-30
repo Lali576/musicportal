@@ -10,7 +10,7 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
     @Override
     Playlist save(Playlist playlist);
 
-    List<Playlist> listAll();
+    List<Playlist> findAll();
 
     List<Playlist> findAllByNameContainsAllIgnoreCase(String name);
 

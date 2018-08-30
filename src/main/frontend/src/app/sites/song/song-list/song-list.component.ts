@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SongService} from "../../../service/song.service";
-import {AuthService} from "../../../auth.service";
+import {AuthService} from "../../../service/auth.service";
 import {Song} from "../../../model/song";
 
 @Component({
