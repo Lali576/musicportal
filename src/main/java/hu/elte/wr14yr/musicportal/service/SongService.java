@@ -47,7 +47,9 @@ public class SongService {
         Song savedSong = songRepository.save(song);
         logger.log(Level.INFO, "Song service: new song has been successfully saved in database MusicPortal");
 
-        keywordService.createSongKeywords(songKeywords, savedSong);
+        if(songKeywords != null) {
+            keywordService.createSongKeywords(songKeywords, savedSong);
+        }
 
         String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumFolderGdaId());
 
@@ -111,7 +113,8 @@ public class SongService {
     public void deleteAllByAlbum(Album album) {
         logger.log(Level.INFO, "Song service: album titled " +
                 album.getTitle() + "'s songs are going to be deleted");
-        for (Song song : album.getSongs()) {
+        Iterable<Song> albumSongs = listByAlbum(album);
+        for (Song song : albumSongs) {
             delete(song);
         }
         logger.log(Level.INFO, "Song service: album titled " +

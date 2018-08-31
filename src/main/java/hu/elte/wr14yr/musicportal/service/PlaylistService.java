@@ -30,7 +30,10 @@ public class PlaylistService {
         playlist.setSongs(songs);
         Playlist savedPlaylist = playlistRepository.save(playlist);
         logger.log(Level.INFO, "Playlist service: new playlist has been successfully saved in database MusicPortal");
-        keywordService.createPlaylistKeywords(playlistKeywords, savedPlaylist);
+
+        if(playlistKeywords != null) {
+            keywordService.createPlaylistKeywords(playlistKeywords, savedPlaylist);
+        }
 
         return savedPlaylist;
     }
@@ -58,15 +61,20 @@ public class PlaylistService {
         return playlist;
     }
 
-    public Playlist update(Playlist playlist, List<Song> songs, User user, List<PlaylistKeyword> keywordList) {
+    public Playlist update(Playlist playlist, List<Song> songs, User user, List<PlaylistKeyword> playlistKeywords) {
         logger.log(Level.INFO, "Playlist service: playlist named " +
                 playlist.getName() + " is going to be updated");
         playlist.setUser(user);
         playlist.setSongs(songs);
-        playlist.setPlaylistKeywords(keywordList);
         playlist = playlistRepository.save(playlist);
         logger.log(Level.INFO, "Playlist service: playlist named " +
                 playlist.getName() + " has been updated successfully");
+
+        keywordService.deleteAllPlaylistKeywordsByPlaylist(playlist);
+
+        if(playlistKeywords != null) {
+            keywordService.createPlaylistKeywords(playlistKeywords, playlist);
+        }
 
         return playlist;
     }
@@ -74,7 +82,8 @@ public class PlaylistService {
     public void deleteAllByUser(User user) {
         logger.log(Level.INFO, "Playlist service: user named " +
                 user.getUsername() + "'s playlist are going to be deleted");
-        for(Playlist playlist : user.getPlaylist()) {
+        Iterable<Playlist> userPlaylist = list(user);
+        for(Playlist playlist : userPlaylist) {
             delete(playlist);
         }
         logger.log(Level.INFO, "Playlist service: user named " +

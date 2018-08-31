@@ -35,6 +35,8 @@ public class AlbumController {
     @Autowired
     private FileService fileService;
 
+    private ObjectMapper mapper = new ObjectMapper();
+
     private Logger logger = Logger.getLogger(AlbumController.class.getName());
 
     @Role({ARTIST})
@@ -42,6 +44,7 @@ public class AlbumController {
     public ResponseEntity<Album> create(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
         logger.log(Level.INFO, "Entrance: endpoint '/new'");
         MultipartFile multipartFile = null;
+        File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -50,19 +53,19 @@ public class AlbumController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        File file = fileService.convertToFile(multipartFile);
-
-        ObjectMapper mapper = new ObjectMapper();
+        if(multipartFile != null) {
+            file = fileService.convertToFile(multipartFile);
+        }
 
         logger.log(Level.INFO, "Get parameter 'album'");
-        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
         logger.log(Level.INFO, "Get parameter 'genres'");
-        Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
+        Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
         logger.log(Level.INFO, "Get parameter 'keywords'");
-        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), AlbumKeyword[].class);
+        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("keywords"), AlbumKeyword[].class);
         List<AlbumKeyword> albumKeywordsList = Arrays.asList(albumKeywordsArray);
 
         logger.log(Level.INFO, "Get current logged in user");
@@ -105,20 +108,19 @@ public class AlbumController {
     @PutMapping("/update/{id}/details")
     public ResponseEntity<Album> updateDetails(@PathVariable long id, MultipartHttpServletRequest request) throws IOException, URISyntaxException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "'");
-        ObjectMapper mapper = new ObjectMapper();
 
         logger.log(Level.INFO, "Get parameter 'album'");
-        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
         logger.log(Level.INFO, "Get current logged in user");
         album.setUser(userService.getLoggedInUser());
 
         logger.log(Level.INFO, "Get parameter 'genres'");
-        Genre[] genresArray = mapper.readValue(request.getParameter("genres").toString(), Genre[].class);
+        Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
         logger.log(Level.INFO, "Get parameter 'keywords'");
-        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), AlbumKeyword[].class);
+        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("keywords"), AlbumKeyword[].class);
         List<AlbumKeyword> albumKeywordsList = Arrays.asList(albumKeywordsArray);
 
         Album updatedAlbum = albumService.updateDetails(album, genresList, albumKeywordsList);
@@ -132,6 +134,7 @@ public class AlbumController {
     public ResponseEntity<Album> updateCoverFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/cover'");
         MultipartFile multipartFile = null;
+        File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -140,14 +143,18 @@ public class AlbumController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        File file = fileService.convertToFile(multipartFile);
-
-        ObjectMapper mapper = new ObjectMapper();
+        if (multipartFile != null) {
+            file = fileService.convertToFile(multipartFile);
+        }
 
         logger.log(Level.INFO, "Get parameter 'album'");
-        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
         Album updatedAlbum = albumService.changeCoverFile(album, file);
+
+        if(file != null) {
+            file.delete();
+        }
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/cover'");
 
         return ResponseEntity.ok(updatedAlbum);
@@ -157,10 +164,9 @@ public class AlbumController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
-        ObjectMapper mapper = new ObjectMapper();
 
         logger.log(Level.INFO, "Get parameter 'album'");
-        Album album = mapper.readValue(request.getParameter("album").toString(), Album.class);
+        Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
         albumService.delete(album);
         logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");

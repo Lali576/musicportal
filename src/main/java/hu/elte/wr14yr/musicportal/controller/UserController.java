@@ -31,13 +31,15 @@ import java.util.logging.Logger;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private Logger logger = Logger.getLogger(UserController.class.getName());
-
     @Autowired
     private UserService userService;
 
     @Autowired
     public FileService fileService;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
+    private Logger logger = Logger.getLogger(UserController.class.getName());
 
     @GetMapping("/login/get")
     public ResponseEntity<User> getLoginUser() {
@@ -65,16 +67,14 @@ public class UserController {
             file = fileService.convertToFile(multipartFile);
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-
         logger.log(Level.INFO, "Get parameter 'user'");
-        User user = mapper.readValue(request.getParameter("user").toString(), User.class);
+        User user = mapper.readValue(request.getParameter("user"), User.class);
 
         logger.log(Level.INFO, "Get parameter 'password'");
-        String password = request.getParameter("password").toString();
+        String password = request.getParameter("password");
 
         logger.log(Level.INFO, "Get parameter 'keywords'");
-        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords").toString(), UserKeyword[].class);
+        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserKeyword[].class);
         List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
         User savedUser = userService.register(user, password, file, userKeywordsList);
@@ -92,9 +92,9 @@ public class UserController {
         logger.log(Level.INFO, "Entrance: endpoint '/login'");
         try {
             logger.log(Level.INFO, "Get parameter 'username'");
-            String username = request.getParameter("username").toString();
+            String username = request.getParameter("username");
             logger.log(Level.INFO, "Get parameter 'password'");
-            String password = request.getParameter("password").toString();
+            String password = request.getParameter("password");
             logger.log(Level.INFO, "Exit: endpoint '/login'");
 
             return ResponseEntity.ok(userService.login(username, password));
@@ -119,16 +119,15 @@ public class UserController {
     @PutMapping("/update/{id}/details")
     public ResponseEntity<User> updateDetails(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/details'");
-        ObjectMapper mapper = new ObjectMapper();
 
         logger.log(Level.INFO, "Get parameter 'fullName'");
-        String fullName = request.getParameter("fullName").toString();
+        String fullName = request.getParameter("fullName");
 
         logger.log(Level.INFO, "Get parameter 'favGenre'");
-        Genre favGenre = mapper.readValue(request.getParameter("favGenre").toString(), Genre.class);
+        Genre favGenre = mapper.readValue(request.getParameter("favGenre"), Genre.class);
 
         logger.log(Level.INFO, "Get parameter 'keywords'");
-        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), UserKeyword[].class);
+        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords"), UserKeyword[].class);
         List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
         User updatedUser = userService.updateDetails(fullName, favGenre, userKeywordsList);
@@ -179,7 +178,9 @@ public class UserController {
 
         User updatedUser = userService.changeImageFile(file);
 
-        file.delete();
+        if(file != null) {
+            file.delete();
+        }
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/icon'");
 
         return ResponseEntity.ok(updatedUser);
@@ -207,7 +208,7 @@ public class UserController {
 
     @Role({ARTIST, USER})
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id) throws IOException, URISyntaxException {
+    public ResponseEntity delete(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         userService.delete(id);
         logger.log(Level.INFO, "Exit: endpoint '/delete" + id + "'");
@@ -229,10 +230,9 @@ public class UserController {
     @PostMapping("/messages/new")
     public ResponseEntity<Iterable<UserMessage>> createUserMessage(MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint 'messages/new'");
-        ObjectMapper mapper = new ObjectMapper();
 
         logger.log(Level.INFO, "Get parameter 'userMessage'");
-        UserMessage userMessage = mapper.readValue(request.getParameter("userMessage").toString(), UserMessage.class);
+        UserMessage userMessage = mapper.readValue(request.getParameter("userMessage"), UserMessage.class);
 
         Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
         logger.log(Level.INFO, "Exit: endpoint 'messages/new'");

@@ -37,13 +37,17 @@ public class AlbumService {
         Album savedAlbum = albumRepository.save(album);
         logger.log(Level.INFO, "Album service: new album has been successfully saved in database MusicPortal");
 
-        keywordService.createAlbumKeywords(albumKeywords, savedAlbum);
+        if(albumKeywords != null) {
+            keywordService.createAlbumKeywords(albumKeywords, savedAlbum);
+        }
 
         String albumFolderGdaId = fileService.uploadFolder(savedAlbum.getTitle(), user.getUserFolderGdaId());
-        String coverFileGdaId = fileService.uploadFile(coverFile, albumFolderGdaId);
-
         savedAlbum.setAlbumFolderGdaId(albumFolderGdaId);
-        savedAlbum.setCoverFileGdaId(coverFileGdaId);
+
+        if(coverFile != null) {
+            String coverFileGdaId = fileService.uploadFile(coverFile, albumFolderGdaId);
+            savedAlbum.setCoverFileGdaId(coverFileGdaId);
+        }
 
         savedAlbum = albumRepository.save(savedAlbum);
         logger.log(Level.INFO, "Album service: new album has been updated with folder and file id's");
@@ -78,10 +82,15 @@ public class AlbumService {
         logger.log(Level.INFO, "Album service: album titled " +
                 album.getTitle() + " is going to be updated");
         album.setGenres(genres);
-        album.setAlbumKeywords(albumKeywords);
         album = albumRepository.save(album);
         logger.log(Level.INFO, "Album service: album titled " +
                 album.getTitle() + " has been updated successfully");
+
+        keywordService.deleteAllAlbumKeywordsByAlbum(album);
+
+        if(albumKeywords != null) {
+            keywordService.createAlbumKeywords(albumKeywords, album);
+        }
 
         return album;
     }
@@ -89,8 +98,13 @@ public class AlbumService {
     public Album changeCoverFile(Album album, File coverFile) {
         logger.log(Level.INFO, "Album service: album titled " +
                 album.getTitle() + "'s cover image is going to be changed");
-        String newCoverFileGdaId = fileService.updateFile(album.getCoverFileGdaId(), coverFile);
-        album.setCoverFileGdaId(newCoverFileGdaId);
+        if(coverFile != null) {
+            String newCoverFileGdaId = fileService.updateFile(album.getCoverFileGdaId(), coverFile);
+            album.setCoverFileGdaId(newCoverFileGdaId);
+        } else {
+            fileService.delete(album.getCoverFileGdaId());
+            album.setCoverFileGdaId(null);
+        }
         album = albumRepository.save(album);
         logger.log(Level.INFO, "Album service: album titled " +
                 album.getTitle() + "'s cover image has been changed successfully");
@@ -101,7 +115,8 @@ public class AlbumService {
     public void deleteAllByUser(User user) {
         logger.log(Level.INFO, "Album service: user named " +
                 user.getUsername() + "'s albums are going to be deleted");
-        for(Album album : user.getAlbums()) {
+        Iterable<Album> userAlbums = list(user);
+        for(Album album : userAlbums) {
             delete(album);
         }
         logger.log(Level.INFO, "Album service: user named " +
@@ -113,7 +128,10 @@ public class AlbumService {
                 album.getTitle() + " is going to be deleted from database MusicPortal");
         songService.deleteAllByAlbum(album);
         keywordService.deleteAllAlbumKeywordsByAlbum(album);
-        fileService.delete(album.getCoverFileGdaId());
+
+        if(album.getCoverFileGdaId() != null) {
+            fileService.delete(album.getCoverFileGdaId());
+        }
         fileService.delete(album.getAlbumFolderGdaId());
         albumRepository.deleteById(album.getId());
         logger.log(Level.INFO, "Album service: album titled " +

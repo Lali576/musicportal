@@ -50,7 +50,7 @@ public class UserService {
 
     private User loggedInUser = null;
 
-    public User register(User user, String password, File file, List<UserKeyword> userKeywords) {
+    public User register(User user, String password, File iconFile, List<UserKeyword> userKeywords) {
         logger.log(Level.INFO, "User service: new user is going to be saved in database MusicPortal");
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
@@ -83,8 +83,8 @@ public class UserService {
         String userFolderGdaId = fileService.uploadFolder(loggedInUser.getUsername(), GoogleDriveApi.MAIN_FOLDER_ID);
         loggedInUser.setUserFolderGdaId(userFolderGdaId);
 
-        if(file != null) {
-            String iconFileGdaId = fileService.uploadFile(file, userFolderGdaId);
+        if(iconFile != null) {
+            String iconFileGdaId = fileService.uploadFile(iconFile, userFolderGdaId);
             loggedInUser.setIconFileGdaId(iconFileGdaId);
         }
 
@@ -92,21 +92,6 @@ public class UserService {
         logger.log(Level.INFO, "User service: new user has been updated with folder and file id's");
 
         return loggedInUser;
-    }
-
-    public Iterable<UserMessage> createUserMessage(UserMessage userMessage) {
-        logger.log(Level.INFO, "User service: new user message has started to be saved" +
-                "\n(from " + userMessage.getUserFrom().getUsername() + " to " + userMessage.getUserTo().getUsername() + ")");
-        userMessage.setDate(new Date());
-        UserMessage savedUserMessage = userMessageRepository.save(userMessage);
-        logger.log(Level.INFO, "User service: new user message has been saved successfully");
-
-        return userMessageRepository.findAllByUserTo(savedUserMessage.getUserTo());
-    }
-
-    public Iterable<UserMessage> listUserMessages(User user) {
-        logger.log(Level.INFO, "User service: user messages for user named " + user.getUsername() + " are going to be listed");
-        return userMessageRepository.findAllByUserTo(user);
     }
 
     public User login(String username, String password) throws UserNotValidException {
@@ -164,6 +149,12 @@ public class UserService {
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s data has been updated successfully");
 
+        keywordService.deleteAllUserKeywordsByUser(loggedInUser);
+
+        if(userKeywords != null) {
+            keywordService.createUserKeywords(userKeywords, loggedInUser);
+        }
+
         return loggedInUser;
     }
 
@@ -203,8 +194,13 @@ public class UserService {
     public User changeImageFile(File iconFile) {
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s icon image file is going to be changed");
-        String iconFileGdaId = fileService.updateFile(loggedInUser.getIconFileGdaId(), iconFile);
-        loggedInUser.setIconFileGdaId(iconFileGdaId);
+        if(iconFile != null) {
+            String iconFileGdaId = fileService.updateFile(loggedInUser.getIconFileGdaId(), iconFile);
+            loggedInUser.setIconFileGdaId(iconFileGdaId);
+        } else {
+            fileService.delete(loggedInUser.getIconFileGdaId());
+            loggedInUser.setIconFileGdaId(null);
+        }
         loggedInUser = userRepository.save(loggedInUser);
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s icon image file has been changed successfully");
@@ -241,11 +237,11 @@ public class UserService {
 
         keywordService.deleteAllUserKeywordsByUser(loggedInUser);
 
-        isLoggedIn();
-
-        logger.log(Level.INFO, "User service: user's icon picture file is going to delete from Google Drive", loggedInUser.getIconFileGdaId());
-        fileService.delete(loggedInUser.getIconFileGdaId());
-        logger.log(Level.INFO, "User service: user's icon picture file has been successfully deleted from Google Drive");
+        if(loggedInUser.getIconFileGdaId() != null) {
+            logger.log(Level.INFO, "User service: user's icon picture file is going to delete from Google Drive", loggedInUser.getIconFileGdaId());
+            fileService.delete(loggedInUser.getIconFileGdaId());
+            logger.log(Level.INFO, "User service: user's icon picture file has been successfully deleted from Google Drive");
+        }
 
         logger.log(Level.INFO, "User service: user's storing folder is going to delete from Google Drive", loggedInUser.getUserFolderGdaId());
         fileService.delete(loggedInUser.getUserFolderGdaId());
@@ -256,5 +252,20 @@ public class UserService {
         logger.log(Level.INFO, "User service: user with id number " + id + " has been successfully deleted from database MusicPortal");
 
         loggedInUser = null;
+    }
+
+    public Iterable<UserMessage> createUserMessage(UserMessage userMessage) {
+        logger.log(Level.INFO, "User service: new user message has started to be saved" +
+                "\n(from " + userMessage.getUserFrom().getUsername() + " to " + userMessage.getUserTo().getUsername() + ")");
+        userMessage.setDate(new Date());
+        UserMessage savedUserMessage = userMessageRepository.save(userMessage);
+        logger.log(Level.INFO, "User service: new user message has been saved successfully");
+
+        return userMessageRepository.findAllByUserTo(savedUserMessage.getUserTo());
+    }
+
+    public Iterable<UserMessage> listUserMessages(User user) {
+        logger.log(Level.INFO, "User service: user messages for user named " + user.getUsername() + " are going to be listed");
+        return userMessageRepository.findAllByUserTo(user);
     }
 }
