@@ -29,7 +29,6 @@ import { AlbumService } from "./service/album.service";
 import { PlaylistService } from "./service/playlist.service";
 import { RegisterComponent } from './sites/user/register/register.component';
 import { SongCommentComponent } from './sites/song/song-comment/song-comment.component';
-import { UserMessageComponent } from './sites/user/user-message/user-message.component';
 import { AuthService } from "./service/auth.service";
 import { AuthGuard } from "./auth.guard";
 import { FormsModule } from "@angular/forms";
@@ -60,7 +59,6 @@ import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-f
     SongListComponent,
     RegisterComponent,
     SongCommentComponent,
-    UserMessageComponent,
     SearchComponent,
     SearchAlbumComponent,
     SearchSongComponent,

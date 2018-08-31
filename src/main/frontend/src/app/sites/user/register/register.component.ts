@@ -6,6 +6,8 @@ import {Genre} from "../../../model/genre";
 import {UserService} from "../../../service/user.service";
 import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
 import {tap} from "rxjs/internal/operators";
+import {logging} from "selenium-webdriver";
+import {UserKeyword} from "../../../model/keywords/userkeywords";
 
 @Component({
   selector: 'app-register',
@@ -15,26 +17,26 @@ import {tap} from "rxjs/internal/operators";
 export class RegisterComponent implements OnInit {
 
   user: User = new User();
+  emailAddressConfirm: string = "";
   password: string = "";
+  passwordConfirm : string = "";
   message: string = "";
-  //chooseAbleGenres: Genre[] = [];
+  chooseAbleGenres: Genre[] = [];
   isArtist: boolean = false;
-  userIconFile: File;
+  userIconFile: File = null;
+  userKeywords: UserKeyword[] = [];
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private router: Router,
-    private http: HttpClient
+    private router: Router
   ) { }
 
   ngOnInit() {
-    /*
     this.userService.getGenres().subscribe(
       genres => {
         this.chooseAbleGenres = genres;
       });
-    */
   }
 
   onFileSelected(event) {
@@ -54,17 +56,45 @@ export class RegisterComponent implements OnInit {
       }
 
       const uploadData = new FormData();
-      uploadData.append(this.userIconFile.name, this.userIconFile, this.userIconFile.name);
+      if(this.userIconFile !== null) {
+        uploadData.append(this.userIconFile.name, this.userIconFile, this.userIconFile.name);
+      }
       uploadData.append("user", JSON.stringify(this.user));
       uploadData.append("password", this.password);
+      uploadData.append("userKeywords", JSON.stringify(this.userKeywords));
 
+      this.message = "Regisztráció folyamatban";
       await this.authService.register(uploadData);
       console.log("successful registration");
+      this.message = "Regisztráció sikeres";
       console.log("Try to login with user named " + this.authService.user.username + " and with number id" + this.authService.user.id);
       this.router.navigate(['/user', this.authService.user.id]);
     } catch (e) {
       this.message = "Sikertelen regisztráció";
       console.log(e);
     }
+  }
+
+  getUserErrorMessage(usernameText) {
+    return usernameText.hasError('required') ? 'Adja meg a felhasználó nevét!' :
+          usernameText.hasError('pattern') ? 'A megadott felhasználónév karakterisztikája nem megfelelő!' :
+          usernameText.hasError('minlength') ? 'A megadott felhasználónév kevesebb, mint 5 karakterből áll!':
+          usernameText.hasError('maxlength') ? 'A megadott felhasználónév több, mint 30 karakterből áll!':
+            '';
+  }
+
+  getEmailAddressErrorMessage(emailAddressText) {
+    return emailAddressText.hasError('required') ? "Adja meg az e-mail címét!" :
+          emailAddressText.hasError('pattern') ? 'A megadott e-mail cím karakterisztikája nem megfelelő!' :
+          emailAddressText.hasError('minlength') ? 'A megadott e-mail cím kevesebb, mint 5 karakterből áll!':
+            '';
+  }
+
+  getPasswordErrorMessage(passwordText) {
+    return passwordText.hasError('required') ? 'Adja meg a jelszavát!':
+          passwordText.hasError('pattern') ? 'A megadott jelszó karakterisztikája nem megfelelő!' :
+          passwordText.hasError('minlength') ? 'A megadott jelszó kevesebb, mint 6 karakterből áll!':
+          passwordText.hasError('maxlength') ? 'A megadott jelszó több, mint 15 karakterből áll!':
+            '';
   }
 }

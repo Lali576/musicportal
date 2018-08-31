@@ -5,7 +5,7 @@ import {Observable} from "rxjs/index";
 import {Album} from "../model/album";
 import {Playlist} from "../model/playlist";
 import {Genre} from "../model/genre";
-import {Keyword} from "../model/keyword";
+import {Keyword} from "../model/keywords/keyword";
 
 const httpOptions = {
   headers: new HttpHeaders(

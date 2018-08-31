@@ -35,7 +35,8 @@ const routes: Routes = [
     component: UserDetailComponent,
     canActivate: [AuthGuard],
     data: {roles: ['USER', 'ARTIST']}
-  },
+  }
+  /*
   {
     path: 'user/:id/update/details',
     component: UserDetailComponent,
@@ -65,10 +66,9 @@ const routes: Routes = [
     component: null,
     canActivate: [AuthGuard],
     data: {roles: ['USER', 'ARTIST']}
-  }
-  /*
+  },
   {
-    path: 'album',
+    path: 'album/list',
     component: AlbumListComponent,
     canActivate: [AuthGuard],
     data: {roles: ['ARTIST']}
@@ -86,8 +86,14 @@ const routes: Routes = [
     data: {roles: ['ARTIST', 'USER', 'GUEST']}
   },
   {
-    path: 'album/:id/edit',
-    component: AlbumEditComponent,
+    path: 'album/:id/update/details',
+    component: null,
+    canActivate: [AuthGuard],
+    data: {roles: ['ARTIST']}
+  },
+  {
+    path: 'album/:id/update/cover',
+    component: null,
     canActivate: [AuthGuard],
     data: {roles: ['ARTIST']}
   },

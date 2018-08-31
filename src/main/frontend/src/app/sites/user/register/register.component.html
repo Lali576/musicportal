@@ -1,31 +1,62 @@
 <h1 class="display-2">Regisztráció</h1>
 <form (submit)="submit(f)" #f="ngForm">
-  {{message}}
+  {{message}} <i *ngIf="" class="fas fa-spinner fa-2x fa-spin"></i>
+              <i *ngIf="" class="fas fa-check fa-2x" style="color:limegreen;"></i>
+              <i *ngIf="" class="fas fa-times fa-2x" style="color: red;"></i>
   <div class="form-group">
     <mat-form-field>
       <input
         name="usernameText"
         [(ngModel)]="user.username"
+        #usernameText="ngModel"
         matInput type="text"
         placeholder="Felhasználónév"
         required
-      #usernameText="ngModel">
-      <mat-error *ngIf="usernameText.invalid && (usernameText.dirty || usernameText.touched)">
-        Adjon meg a felhasználónevét!
+        pattern="[0-9A-Za-z @#$!]*"
+        minlength="5"
+        maxlength="30">
+      <mat-error *ngIf="usernameText.invalid">
+        {{getUserErrorMessage(usernameText)}}
       </mat-error>
     </mat-form-field>
+    <i class="fas fa-info-circle fa-2x"
+       style="color:blue;"
+       title="Adjon meg egy min. 5 és max. 30 karakteres felhasználó nevet!">
+    </i>
   </div>
   <div class="form-group">
     <mat-form-field>
       <input
         name="emailAddressText"
         [(ngModel)]="user.emailAddress"
+        #emailAddressText="ngModel"
         matInput type="email"
-        placeholder="Email cím"
+        placeholder="E-mail cím"
         required
-        #emailAddressText="ngModel">
-      <mat-error *ngIf="emailAddressText.invalid && (emailAddressText.dirty || emailAddressText.touched)">
-        Adjon meg egy email címet!
+        pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+        minlength="5">
+      <mat-error *ngIf="emailAddressText.invalid">
+        {{getEmailAddressErrorMessage(emailAddressText)}}
+      </mat-error>
+    </mat-form-field>
+    <i class="fas fa-info-circle fa-2x"
+       style="color:blue;"
+       title="Adjon meg egy min. 5 karakteres e-mail címet!">
+    </i>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        name="emailAddressConfirmText"
+        [(ngModel)] = "emailAddressConfirm"
+        #emailAddressConfirmText = "ngModel"
+        matInput type="email"
+        placeholder="E-mail cím megerősítése"
+        required
+        pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+        minlength="5">
+      <mat-error *ngIf="user.emailAddress !== emailAddressConfirm">
+        Az e-mail címek nem egyeznek meg!
       </mat-error>
     </mat-form-field>
   </div>
@@ -34,24 +65,36 @@
       <input
         name="passwordText"
         [(ngModel)]="password"
+        #passwordText="ngModel"
         matInput type="text"
         placeholder="Jelszó"
         required
-        #passwordText="ngModel">
-      <mat-error *ngIf="passwordText.invalid && (passwordText.dirty || passwordText.touched)">
-        Adjon meg egy minimum 8 karakteres jelszót!!
+        pattern="[0-9A-Za-z@$_!.]*"
+        minlength="6"
+        maxlength="15">
+      <mat-error *ngIf="passwordText.invalid">
+        {{getPasswordErrorMessage(passwordText)}};
       </mat-error>
     </mat-form-field>
+    <i class="fas fa-info-circle fa-2x"
+       style="color:blue;"
+       title="Adjon meg egy min. 6, max. 15 karakteres jelszót!">
+    </i>
   </div>
-  <!--
   <div class="form-group">
     <mat-form-field>
       <input
-        name="passwordVerifyText"
+        name="passwordConfirmText"
+        [(ngModel)] = "passwordConfirm"
+        #passwordConfirmText = "ngModel"
         matInput type="text"
-        placeholder="Jelszó">
-      <mat-error>
-        Adjon meg egy minimum 8 karakteres jelszót!
+        placeholder="Jelszó megerősítése"
+        required
+        pattern="[0-9A-Za-z@$_!.]*"
+        minlength="6"
+        maxlength="15">
+      <mat-error *ngIf="password !== passwordConfirm">
+        A jelszavak nem egyeznek meg!
       </mat-error>
     </mat-form-field>
   </div>
@@ -62,36 +105,38 @@
         [(ngModel)]="user.fullName"
         matInput type="text"
         placeholder="Teljes név"
-        required
         #fullNameText="ngModel">
-      <mat-error *ngIf="fullNameText.invalid && (fullNameText.dirty || fullNameText.touched)">
-        Adja meg a teljes nevét!
-      </mat-error>
     </mat-form-field>
   </div>
-  -->
   <div class="form-group">
-    <input name="iconFile" (change)="onFileSelected($event)" class="ng-hide" type="file" accept="image/*"/>
+      <input
+        name="iconFile"
+        (change)="onFileSelected($event)"
+        placeholder="Ikon kép kiválasztás"
+        class="ng-hide"
+        type="file"
+        accept="image/*"/>
   </div>
-  <!--
   <div class="form-group">
     <mat-form-field>
-      <mat-select name="favGenreText" [(ngModel)]="user.favGenreId" placeholder="Kedvenc műfaj" required>
-        <mat-option *ngFor="let genre of chooseableGenres" [value]="genre">
+      <mat-select
+        name="favGenreSelect"
+        [(ngModel)]="user.favGenreId"
+        placeholder="Kedvenc műfaj"
+        #favGenreSelect>
+        <mat-option *ngFor="let genre of chooseAbleGenres" [value]="genre">
           {{genre.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div class="form-group">
-    <mat-checkbox name="artistCheckBox" [(ngModel)]="isArtist">
+    <mat-checkbox name="artistCheckBox" [(ngModel)]="isArtist" >
       Dal szerzőnek jelentkezés
     </mat-checkbox>
   </div>
-  -->
 
-
-  <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
+  <button [disabled]="f.invalid" type="submit" mat-raised-button color="accent">
     Regisztráció
   </button>
 </form>

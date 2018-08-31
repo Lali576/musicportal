@@ -1,19 +1,17 @@
 <mat-toolbar color="primary">
   <button mat-button routerLink="/">
-    <mat-icon>
-      home
-    </mat-icon>
+    <i class="fas fa-music"></i>
     Music Portal
   </button>
 
   <span class="fill-remaining-space" fxHide="false" fxHide.gt-sm></span>
   <div *ngIf="!authService.isLoggedIn" class="w-100" fxLayout="row" fxShow="false" fxShow.gt-sm>
       <span class="fill-remaining-space"></span>
-      <!--
-      <form (submit)="search()">
+
+      <form>
         <input type="text" placeholder="Keresés">
       </form>
-      -->
+
       <button mat-button routerLink="/login">Bejelentkezés</button>
       <button mat-button routerLink="/register">Regisztrálás</button>
   </div>
@@ -22,13 +20,12 @@
     <button mat-button routerLink="/song">Zenék</button>
     <button mat-button routerLink="/playlist">Playlist</button>
     <span class="fill-remaining-space"></span>
-    <!--
-    <form (submit)="search()">
+    <form>
       <input type="text" placeholder="Keresés">
     </form>
-    -->
     <button mat-button [routerLink]="['/user', authService.user.id]">
-      <img src="{{'https://docs.google.com/uc?export=download&id=' + authService.user.iconFileGdaId}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
+      <img *ngIf="authService.user.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + authService.user.iconFileGdaId}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
+      <img *ngIf="authService.user.iconFileGdaId === ''" class="fas fa-user">
       <span>{{authService.user.username}}</span>
     </button>
     <button mat-button (click)="logout()">Kijelentkezés</button>

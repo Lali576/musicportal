@@ -52,6 +52,7 @@ public class UserController {
     public ResponseEntity<User> register(MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/register'");
         MultipartFile multipartFile = null;
+        File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -60,7 +61,9 @@ public class UserController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        File file = fileService.convertToFile(multipartFile);
+        if(multipartFile != null) {
+            file = fileService.convertToFile(multipartFile);
+        }
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -71,12 +74,14 @@ public class UserController {
         String password = request.getParameter("password").toString();
 
         logger.log(Level.INFO, "Get parameter 'keywords'");
-        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords").toString(), UserKeyword[].class);
+        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords").toString(), UserKeyword[].class);
         List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
         User savedUser = userService.register(user, password, file, userKeywordsList);
 
-        file.delete();
+        if(file != null) {
+            file.delete();
+        }
         logger.log(Level.INFO, "Exit: endpoint '/register'");
 
         return ResponseEntity.ok(savedUser);
@@ -159,6 +164,7 @@ public class UserController {
     public ResponseEntity<User> updateIconFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/icon'");
         MultipartFile multipartFile = null;
+        File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
@@ -167,7 +173,9 @@ public class UserController {
             multipartFile = request.getFile(iterator.next());
         }
 
-        File file = fileService.convertToFile(multipartFile);
+        if (multipartFile != null) {
+            file = fileService.convertToFile(multipartFile);
+        }
 
         User updatedUser = userService.changeImageFile(file);
 

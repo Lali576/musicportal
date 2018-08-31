@@ -21,9 +21,12 @@
               "src/favicon.ico"
             ],
             "styles": [
+              "src/assets/css/all.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/all.js"
+            ]
           },
           "configurations": {
             "production": {

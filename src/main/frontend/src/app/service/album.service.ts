@@ -6,7 +6,7 @@ import {Song} from "../model/song";
 import {AuthGuard} from "../auth.guard";
 import {AuthService} from "./auth.service";
 import {User} from "../model/user";
-import {Keyword} from "../model/keyword";
+import {Keyword} from "../model/keywords/keyword";
 import {Genre} from "../model/genre";
 
 const httpOptions = {

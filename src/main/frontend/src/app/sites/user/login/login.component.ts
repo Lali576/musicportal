@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
-import {Keyword} from "../../../model/keyword";
+import {Keyword} from "../../../model/keywords/keyword";
 
 @Component({
   selector: 'app-login',

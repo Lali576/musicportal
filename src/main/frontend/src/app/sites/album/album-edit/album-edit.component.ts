@@ -56,7 +56,7 @@ export class AlbumEditComponent implements OnInit {
       }
     } else {
       const uploadAlbumCover = new FormData();
-      uploadAlbumCover.append(album.name, album.coverFile, album.coverFile.name);
+      //uploadAlbumCover.append(album.title, album.coverFile, album.coverFile.name);
       await this.http.post('/api/album/file', uploadAlbumCover)
         .subscribe(async (res) => {
           var albumString = JSON.stringify(album);
@@ -66,7 +66,7 @@ export class AlbumEditComponent implements OnInit {
           for (var i = 0; i < songs.length; i++) {
             var song: Song = songs[i];
             const uploadSongAudio = new FormData();
-            uploadSongAudio.append(savedAlbum.name+"\\"+song.title, song.audioFile, song.audioFile.name);
+            //uploadSongAudio.append(savedAlbum.name+"\\"+song.title, song.audioFile, song.audioFile.name);
             await this.http.post('/api/song/file', uploadSongAudio)
               .subscribe(async (res) => {
                 var songString = JSON.stringify(song);

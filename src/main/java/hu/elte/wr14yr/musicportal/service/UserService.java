@@ -76,14 +76,17 @@ public class UserService {
         loggedInUser = userRepository.save(user);
         logger.log(Level.INFO, "User service: new user has been successfully saved in database MusicPortal");
 
-        keywordService.createUserKeywords(userKeywords, loggedInUser);
+        if(userKeywords != null) {
+            keywordService.createUserKeywords(userKeywords, loggedInUser);
+        }
 
         String userFolderGdaId = fileService.uploadFolder(loggedInUser.getUsername(), GoogleDriveApi.MAIN_FOLDER_ID);
-
-        String iconFileGdaId = fileService.uploadFile(file, userFolderGdaId);
-
         loggedInUser.setUserFolderGdaId(userFolderGdaId);
-        loggedInUser.setIconFileGdaId(iconFileGdaId);
+
+        if(file != null) {
+            String iconFileGdaId = fileService.uploadFile(file, userFolderGdaId);
+            loggedInUser.setIconFileGdaId(iconFileGdaId);
+        }
 
         loggedInUser = userRepository.save(loggedInUser);
         logger.log(Level.INFO, "User service: new user has been updated with folder and file id's");
@@ -147,7 +150,7 @@ public class UserService {
     }
 
     public User getLoggedInUser() {
-        logger.log(Level.INFO, "USer service: getting current logged in user named " + loggedInUser.getUsername());
+        logger.log(Level.INFO, "User service: getting current logged in user named " + loggedInUser.getUsername());
         return loggedInUser;
     }
 

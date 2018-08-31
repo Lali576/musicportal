@@ -33,14 +33,14 @@ export class AlbumFormComponent implements OnChanges {
     if(!form.valid) {
       return;
     }
-    this.modelAlbum.coverFile = this.albumCoverFile;
+    //this.modelAlbum.coverFile = this.albumCoverFile;
     console.log(this.modelAlbum);
     this.onSubmit.emit({album: this.modelAlbum, songs: this.modelSongs});
   }
 
   onSongAudioFileSelected(event) {
-    this.currentSong.audioFile = <File>event.target.files[0];
-    console.log(this.currentSong.audioFile);
+    //this.currentSong.audioFile = <File>event.target.files[0];
+    //console.log(this.currentSong.audioFile);
   }
 
   submitSong(form) {

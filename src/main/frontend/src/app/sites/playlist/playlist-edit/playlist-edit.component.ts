@@ -8,7 +8,7 @@ import {PlaylistService} from "../../../service/playlist.service";
 import {Album} from "../../../model/album";
 import {switchMap} from "rxjs/internal/operators";
 import {Observable, of} from "rxjs/index";
-import {Keyword} from "../../../model/keyword";
+import {Keyword} from "../../../model/keywords/keyword";
 
 @Component({
   selector: 'app-playlist-edit',
