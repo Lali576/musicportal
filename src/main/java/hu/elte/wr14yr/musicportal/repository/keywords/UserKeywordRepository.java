@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.repository.keywords;
 
+import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
@@ -9,6 +10,8 @@ public interface UserKeywordRepository extends CrudRepository<UserKeyword, Long>
     UserKeyword save(UserKeyword userKeyword);
 
     List<UserKeyword> findAllByWordContainsAllIgnoreCase(String keyword);
+
+    List<UserKeyword> findByUser(User user);
 
     @Override
     void deleteById(Long id);

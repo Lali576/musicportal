@@ -12,6 +12,8 @@ public interface AlbumKeywordRepository extends CrudRepository<AlbumKeyword, Lon
 
     List<AlbumKeyword> findAllByWordContainsAllIgnoreCase(String keyword);
 
+    List<AlbumKeyword> findAllByAlbum(Album album);
+
     @Override
     void deleteById(Long id);
 }

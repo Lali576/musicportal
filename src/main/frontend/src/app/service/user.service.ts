@@ -53,7 +53,7 @@ export class UserService {
     ).pipe(
       tap((user: User) => {
         this.authService.isLoggedIn = true;
-        this.authService.user = user;
+        this.authService.loggedInUser = user;
       })
     ).toPromise();
   }
@@ -61,8 +61,9 @@ export class UserService {
   deleteUser(id: number): void {
     this.http.delete(`api/user/delete/${id}`).pipe(
       tap(() => {
-        this.authService.logout();
+        this.authService.isLoggedIn = false;
+        this.authService.loggedInUser = new User();
       })
-    ).toPromise();
+    );
   }
 }

@@ -67,8 +67,8 @@ export class RegisterComponent implements OnInit {
       await this.authService.register(uploadData);
       console.log("successful registration");
       this.message = "Regisztráció sikeres";
-      console.log("Try to login with user named " + this.authService.user.username + " and with number id" + this.authService.user.id);
-      this.router.navigate(['/user', this.authService.user.id]);
+      console.log("Try to login with user named " + this.authService.loggedInUser.username + " and with number id" + this.authService.loggedInUser.id);
+      this.router.navigate(['/user', this.authService.loggedInUser.id]);
     } catch (e) {
       this.message = "Sikertelen regisztráció";
       console.log(e);

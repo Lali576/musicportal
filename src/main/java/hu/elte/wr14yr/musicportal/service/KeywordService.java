@@ -83,7 +83,8 @@ public class KeywordService {
     public void deleteAllUserKeywordsByUser(User user) {
         logger.log(Level.INFO, " Keyword service: playlist keywords for user named " +
                 user.getUsername() + " are going to be deleted from database MusicPortal");
-        for (UserKeyword userKeyword: user.getUserKeywords()) {
+        List<UserKeyword> userKeywords = userKeywordRepository.findByUser(user);
+        for (UserKeyword userKeyword: userKeywords) {
             userKeywordRepository.deleteById(userKeyword.getId());
         }
         logger.log(Level.INFO, " Keyword service: playlist keywords for user named " +
@@ -93,7 +94,8 @@ public class KeywordService {
     public void deleteAllAlbumKeywordsByAlbum(Album album) {
         logger.log(Level.INFO, " Keyword service: album keywords for album titled " +
                 album.getTitle() + " are going to be deleted from database MusicPortal");
-        for (AlbumKeyword albumKeyword : album.getAlbumKeywords()) {
+        List<AlbumKeyword> albumKeywords = albumKeywordRepository.findAllByAlbum(album);
+        for (AlbumKeyword albumKeyword : albumKeywords) {
             albumKeywordRepository.deleteById(albumKeyword.getId());
         }
         logger.log(Level.INFO, " Keyword service: album keywords for album titled " +
@@ -103,7 +105,8 @@ public class KeywordService {
     public void deleteAllSongKeywordsBySong(Song song) {
         logger.log(Level.INFO, " Keyword service: song keywords for song titled " +
                 song.getTitle() + " are going to be deleted from database MusicPortal");
-        for (SongKeyword songKeyword : song.getSongKeywords()) {
+        List<SongKeyword> songKeywords = songKeywordRepository.findAllBySong(song);
+        for (SongKeyword songKeyword : songKeywords) {
             songKeywordRepository.deleteById(songKeyword.getId());
         }
         logger.log(Level.INFO, " Keyword service: song keywords for song titled " +
@@ -113,7 +116,8 @@ public class KeywordService {
     public void deleteAllPlaylistKeywordsByPlaylist(Playlist playlist) {
         logger.log(Level.INFO, " Keyword service: playlist keywords for playlist named " +
                 playlist.getName() + " are going to be deleted from database MusicPortal");
-        for (PlaylistKeyword playlistKeyword : playlist.getPlaylistKeywords()) {
+        List<PlaylistKeyword> playlistKeywords = playlistKeywordRepository.findAllByPlaylist(playlist);
+        for (PlaylistKeyword playlistKeyword : playlistKeywords) {
             playlistKeywordRepository.deleteById(playlistKeyword.getId());
         }
         logger.log(Level.INFO, " Keyword service: playlist keywords for playlist named " +

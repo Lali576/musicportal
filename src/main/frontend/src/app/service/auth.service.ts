@@ -13,7 +13,7 @@ export class AuthService {
 
   isLoggedIn: boolean = false;
   redirectUrl: string = "";
-  user: User;
+  loggedInUser: User;
 
   constructor(
     private http: HttpClient
@@ -26,24 +26,19 @@ export class AuthService {
     ).pipe(
       tap((user: User) => {
         this.isLoggedIn = true;
-        this.user = user;
+        this.loggedInUser = user;
       })
     ).toPromise();
   }
 
-  login(username: string, password: string) {
-    console.log(username + " " + password);
+  login(uploadData: FormData) {
     return this.http.post<User>(
-        'api/user/login',
-      {
-        "username": username,
-        "password": password
-      },
-      httpOptions
+      'api/user/login',
+      uploadData
     ).pipe(
       tap((user: User) => {
         this.isLoggedIn = true;
-        this.user = user;
+        this.loggedInUser = user;
       })
     ).toPromise();
   }
@@ -53,7 +48,7 @@ export class AuthService {
     this.http.get<User>('api/user/get').subscribe(
       (user : User) => {
         if (user !== null) {
-          this.user = user;
+          this.loggedInUser = user;
           this.isLoggedIn = true;
         }
       }
@@ -68,7 +63,7 @@ export class AuthService {
     ).pipe(
       tap(res => {
         this.isLoggedIn = false;
-        this.user = new User();
+        this.loggedInUser = new User();
       })
     ).toPromise();
   }

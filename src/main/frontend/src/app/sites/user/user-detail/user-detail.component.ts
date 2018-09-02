@@ -13,22 +13,14 @@ import {Route, Router} from "@angular/router";
 export class UserDetailComponent implements OnInit {
 
   user: User = new User();
-  //imageUrl2;
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private router: Router
   ) { }
 
   ngOnInit() {
-    this.user = this.authService.user;
-    //var imageUrl: string  = this.user.iconFile.toString();
-    //this.imageUrl2 = this.sanitizer.bypassSecurityTrustResourceUrl("C:\\Users\\Tóth Ádám\\Downloads\\jpeg-home.jpg");
-  }
-
-  update() {
-
+    this.user = this.authService.loggedInUser;
   }
 
   delete() {

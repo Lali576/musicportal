@@ -25,7 +25,7 @@
     </form>
     <button mat-button [routerLink]="['/user', authService.user.id]">
       <img *ngIf="authService.user.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + authService.user.iconFileGdaId}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
-      <img *ngIf="authService.user.iconFileGdaId === ''" class="fas fa-user">
+      <img *ngIf="authService.user.iconFileGdaId === ''" class="fas fa-user" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
       <span>{{authService.user.username}}</span>
     </button>
     <button mat-button (click)="logout()">Kijelentkezés</button>

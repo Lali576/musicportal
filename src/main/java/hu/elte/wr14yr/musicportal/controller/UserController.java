@@ -211,7 +211,7 @@ public class UserController {
     public ResponseEntity delete(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         userService.delete(id);
-        logger.log(Level.INFO, "Exit: endpoint '/delete" + id + "'");
+        logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
         return ResponseEntity.status(204).build();
     }
