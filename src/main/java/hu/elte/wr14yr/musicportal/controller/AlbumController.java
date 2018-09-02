@@ -95,7 +95,7 @@ public class AlbumController {
         return ResponseEntity.ok(albums);
     }
 
-    @GetMapping
+    @GetMapping("/by-user")
     public ResponseEntity<Iterable<Album>> list() {
         logger.log(Level.INFO, "Entrance: endpoint '/'");
         Iterable<Album> albums = albumService.list(userService.getLoggedInUser());

@@ -7,7 +7,7 @@ import {UserService} from "../../../service/user.service";
 import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
 import {tap} from "rxjs/internal/operators";
 import {logging} from "selenium-webdriver";
-import {UserKeyword} from "../../../model/keywords/userkeywords";
+import {UserKeyword} from "../../../model/keywords/userkeyword";
 
 @Component({
   selector: 'app-register',

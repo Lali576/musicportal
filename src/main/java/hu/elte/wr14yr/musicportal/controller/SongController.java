@@ -105,7 +105,7 @@ public class SongController {
         return ResponseEntity.ok(songs);
     }
 
-    @GetMapping
+    @GetMapping("/by-user")
     public ResponseEntity<Iterable<Song>> list() {
         logger.log(Level.INFO, "Entrance: endpoint '/'");
         Iterable<Song> songs = songService.list(userService.getLoggedInUser());
@@ -195,8 +195,8 @@ public class SongController {
         logger.log(Level.INFO, "Get parameter 'songComment'");
         SongComment songComment = mapper.readValue(request.getParameter("songComment"), SongComment.class);
 
-        logger.log(Level.INFO, "Get parameter 'user'");
-        User user = mapper.readValue(request.getParameter("user"), User.class);
+        logger.log(Level.INFO, "Get current logged in user");
+        User user = userService.getLoggedInUser();
 
         logger.log(Level.INFO, "Get parameter 'song'");
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
@@ -230,8 +230,8 @@ public class SongController {
         logger.log(Level.INFO, "Get parameter 'songLike'");
         SongLike songLike = mapper.readValue(request.getParameter("songLike"), SongLike.class);
 
-        logger.log(Level.INFO, "Get parameter 'user'");
-        User user = mapper.readValue(request.getParameter("user"), User.class);
+        logger.log(Level.INFO, "Get current logged in user");
+        User user = userService.getLoggedInUser();
 
         logger.log(Level.INFO, "Get parameter 'song'");
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
@@ -266,8 +266,8 @@ public class SongController {
         logger.log(Level.INFO, "Get parameter 'song'");
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
-        logger.log(Level.INFO, "Get parameter 'user'");
-        User user = mapper.readValue(request.getParameter("user"), User.class);
+        logger.log(Level.INFO, "Get current logged in user");
+        User user = userService.getLoggedInUser();
 
         int counterNumber = songService.saveSongCounter(songCounter, song, user);
         logger.log(Level.INFO, "Entrance: endpoint '/counter/new'");

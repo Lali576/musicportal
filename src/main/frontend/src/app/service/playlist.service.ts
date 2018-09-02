@@ -3,9 +3,9 @@ import {Observable} from "rxjs/index";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Playlist} from "../model/playlist";
 import {AuthService} from "./auth.service";
-import {Keyword} from "../model/keywords/keyword";
 import {Song} from "../model/song";
-import {Album} from "../model/album";
+import {PlaylistKeyword} from "../model/keywords/playlistkeyword";
+import {tap} from "rxjs/internal/operators";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -16,44 +16,59 @@ const httpOptions = {
 @Injectable()
 export class PlaylistService {
 
+  playlist: Playlist;
+
   constructor(
     private http: HttpClient,
-    private authService: AuthService
   ) { }
 
-  getPlaylists(): Observable<Playlist[]> {
-    return this.http.get<Playlist[]>('api/playlist');
-  }
-
-  getPlaylist(id: number): Promise<Playlist> {
-    return this.http.get<Playlist>(`api/playlist/${id}`).toPromise();
-  }
-
-  addPlaylist(playlist: String, songs: String, keywords: String[]): Promise<Playlist> {
+  addPlaylist(playlist: Playlist, songs: Song[], keywords: PlaylistKeyword[]): Promise<Playlist> {
+    const formData = new FormData();
+    formData.append("playlist", JSON.stringify(playlist));
+    formData.append("songs", JSON.stringify(songs));
+    formData.append("keywords", JSON.stringify(keywords));
     return this.http.post<Playlist>(
       `api/playlist/new`,
-      {
-        "playlist": playlist,
-        "songs": songs,
-        "keywords": keywords
-      },
-      httpOptions
+      formData
     ).toPromise();
   }
 
-  updatePlaylist(id: number, playlist: String, songs: String, keywords: String): Promise<Playlist> {
+  getPlaylist(id: number) {
+    return this.http.get<Playlist>(`api/playlist/${id}`).subscribe(
+      (playlist: Playlist) => {
+        this.playlist = playlist;
+      }
+    );
+  }
+
+  getUserPlaylist(): Promise<Playlist[]> {
+    return this.http.get<Playlist[]>('api/playlist/by-user').toPromise();
+  }
+
+  getAllPlaylist(): Promise<Playlist[]> {
+    return this.http.get<Playlist[]>('api/playlist').toPromise();
+  }
+
+  updatePlaylist(id: number, playlist: Playlist, songs: Song[], keywords: Playlist[]): Promise<Playlist> {
+    const formData = new FormData();
+    formData.append("playlist", JSON.stringify(playlist));
+    formData.append("songs", JSON.stringify(songs));
+    formData.append("keywords", JSON.stringify(keywords));
     return this.http.put<Playlist>(
-      `api/playlist/edit/${id}`,
-      {
-        "playlist": playlist,
-        "songs": songs,
-        "keywords": keywords
-      },
-      httpOptions
+      `api/playlist/update/${id}`,
+      formData
+    ).pipe(
+      tap((playlist: Playlist) => {
+        this.playlist = playlist;
+      })
     ).toPromise();
   }
 
-  deletePlaylist(id: number): void {
-    this.http.delete(`api/playlist/${id}`);
+  deletePlaylist(id: number):void {
+    this.http.delete(`api/playlist/delete/${id}`).pipe(
+      tap(() => {
+        this.playlist = null;
+      })
+    );
   }
 }

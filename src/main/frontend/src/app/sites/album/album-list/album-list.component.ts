@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Album} from "../../../model/album";
 import {AlbumService} from "../../../service/album.service";
-import {AuthService} from "../../../service/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-album-list',
@@ -14,7 +14,7 @@ export class AlbumListComponent implements OnInit {
 
   constructor(
     private albumService: AlbumService,
-    private authService: AuthService
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -25,6 +25,7 @@ export class AlbumListComponent implements OnInit {
   }
 
   delete(id: number) {
-    //this.albumService.deleteAlbum(id);
+    this.albumService.deleteAlbum(id);
+    this.router.navigate(["/album"]);
   }
 }

@@ -16,17 +16,17 @@
       <button mat-button routerLink="/register">Regisztrálás</button>
   </div>
   <div *ngIf=authService.isLoggedIn class="w-100" fxLayout="row" fxShow="false" fxShow.gt-sm>
-    <button mat-button routerLink="/album">Albumok</button>
-    <button mat-button routerLink="/song">Zenék</button>
-    <button mat-button routerLink="/playlist">Playlist</button>
+    <button mat-button routerLink="/album/list">Albumok</button>
+    <button mat-button routerLink="/song/list">Zenék</button>
+    <button mat-button routerLink="/playlist/list">Playlist</button>
     <span class="fill-remaining-space"></span>
     <form>
       <input type="text" placeholder="Keresés">
     </form>
-    <button mat-button [routerLink]="['/user', authService.user.id]">
-      <img *ngIf="authService.user.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + authService.user.iconFileGdaId}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
-      <img *ngIf="authService.user.iconFileGdaId === ''" class="fas fa-user" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
-      <span>{{authService.user.username}}</span>
+    <button mat-button [routerLink]="['/user', authService.loggedInUser.id]">
+      <img *ngIf="authService.loggedInUser.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + authService.loggedInUser.iconFileGdaId}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
+      <img *ngIf="authService.loggedInUser.iconFileGdaId === ''" class="fas fa-user" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
+      <span>{{authService.loggedInUser.username}}</span>
     </button>
     <button mat-button (click)="logout()">Kijelentkezés</button>
   </div>

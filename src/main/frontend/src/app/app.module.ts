@@ -39,7 +39,7 @@ import { SearchSongComponent } from './sites/search/search-song/search-song.comp
 import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
 import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
 import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
-import { UserPasswordComponent } from './user-password/user-password.component';
+import { UserPasswordComponent } from './sites/user/user-password/user-password.component';
 import { UserEmailComponent } from './sites/user/user-email/user-email.component';
 import { UserIconComponent } from './sites/user/user-icon/user-icon.component';
 import { UserBiographyComponent } from './sites/user/user-biography/user-biography.component';

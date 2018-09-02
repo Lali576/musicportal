@@ -217,8 +217,8 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @GetMapping("/messages")
-    public ResponseEntity<Iterable<UserMessage>> listUserMessages() {
+    @GetMapping("/messages/{id}")
+    public ResponseEntity<Iterable<UserMessage>> listUserMessages(@PathVariable("id") long id) {
         logger.log(Level.INFO, "Entrance: endpoint 'messages'");
         Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
         logger.log(Level.INFO, "Exit: endpoint 'messages'");
