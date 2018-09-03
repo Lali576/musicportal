@@ -30,15 +30,13 @@ export class LoginComponent implements OnInit {
       return;
     }
     try {
-      const uploadData = new FormData();
-      uploadData.append("username", this.username);
-      uploadData.append("password", this.password)
       this.message = "Bejelentkezés folyamatban";
-      await this.authService.login(uploadData);
-      console.log("successful logging");
+      await this.authService.login(this.username, this.password);
+      console.log("Successful logging");
       this.router.navigate(['/user', this.authService.loggedInUser.id]);
     } catch (e) {
       this.message = "Sikertelen bejelentkezés";
+      console.log("Error! Unsuccessful logging")
       console.log(e);
     }
   }

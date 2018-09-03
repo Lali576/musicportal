@@ -40,7 +40,7 @@ export class AuthService {
     formData.append("user", JSON.stringify(user));
     formData.append("password", password);
     formData.append(iconFile.name, iconFile, iconFile.name);
-    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("userKeywords", JSON.stringify(keywords));
     return this.http.post<User>(
       'api/user/register',
       formData
@@ -72,9 +72,8 @@ export class AuthService {
 
   logout() {
     console.log("Try to log out user with username " + this.loggedInUser.username)
-    return this.http.post(
-      'api/user/logout',
-      {}
+    return this.http.get(
+      'api/user/logout'
     ).pipe(
       tap(() => {
         console.log("Logged in user has been successfully logged out")

@@ -1,27 +1,43 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Album} from "../../../model/album";
 import {Song} from "../../../model/song";
+import {AlbumKeyword} from "../../../model/keywords/albumkeyword";
+import {GenreService} from "../../../service/genre.service";
+import {AlbumService} from "../../../service/album.service";
+import {SongService} from "../../../service/song.service";
+import {Genre} from "../../../model/genre";
 
 @Component({
   selector: 'app-album-form',
   templateUrl: './album-form.component.html',
   styleUrls: ['./album-form.component.css']
 })
-export class AlbumFormComponent implements OnChanges {
+export class AlbumFormComponent implements OnInit {
 
-  @Input() album: Album;
-  @Input() songs: Song[];
-  modelAlbum: Album = null;
-  modelSongs: Song[] = [];
+  album: Album = new Album();
+  albumCoverFile: File = null;
+  albumGenre: Genre[] = [];
+  albumKeywords: AlbumKeyword[] = [];
+  genres: Genre[] = [];
+  albumSongs: object[][] = [];
   currentSong: Song = new Song();
-  albumCoverFile: File;
-  @Output() onSubmit = new EventEmitter<object>();
+  currentSongFile: File = null;
+  message: string = "";
 
-  constructor() { }
+  constructor(
+    private albumService: AlbumService,
+    private songService: SongService,
+    private genreService: GenreService
+  ) {
+    this.genreService.getGenres().subscribe(
+      (genres: Genre[]) => {
+        this.genres = genres;
+      }
+    )
+  }
 
-  ngOnChanges() {
-    this.modelAlbum = Object.assign({}, this.album);
-    this.modelSongs = Object.assign([], this.songs);
+  ngOnInit() {
+
   }
 
   onAlbumCoverFileSelected(event) {
@@ -29,18 +45,24 @@ export class AlbumFormComponent implements OnChanges {
     console.log(this.albumCoverFile);
   }
 
-  submitAlbum(form) {
+  async submitAlbum(form) {
     if(!form.valid) {
       return;
     }
-    //this.modelAlbum.coverFile = this.albumCoverFile;
-    console.log(this.modelAlbum);
-    this.onSubmit.emit({album: this.modelAlbum, songs: this.modelSongs});
+    try {
+      console.log(this.album);
+      this.message = "Album feltöltése folyamatban";
+      await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);
+      this.message = "Album feltöltése sikeres";
+    } catch (e) {
+      this.message = "Album feltöltése sikertelen";
+      console.log(e);
+    }
   }
 
   onSongAudioFileSelected(event) {
-    //this.currentSong.audioFile = <File>event.target.files[0];
-    //console.log(this.currentSong.audioFile);
+    var file: File = <File>event.target.files[0];
+    console.log(file);
   }
 
   submitSong(form) {
@@ -49,10 +71,12 @@ export class AlbumFormComponent implements OnChanges {
     }
 
     if (this.currentSong.id === 0) {
-      var id = this.modelSongs.push(this.currentSong);
+      this.albumSongs.push(this.albumSongs);
+      this.albumSongs[this.albumSongs.length-1].push(this.currentSongFile);
     }
 
     this.currentSong = new Song();
+    this.currentSongFile = null;
   }
 
   editSong(song: Song) {
@@ -60,9 +84,9 @@ export class AlbumFormComponent implements OnChanges {
   }
 
   deleteSong(song: Song) {
-    var index = this.modelSongs.indexOf(song, 0);
+    var index = this.albumSongs.indexOf(Object.prototype.valueOf.call(song), 0);
     if(index > -1) {
-      this.modelSongs.splice(index, 1);
+      this.albumSongs.splice(index, 1);
     }
   }
 }

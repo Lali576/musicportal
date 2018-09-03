@@ -1,4 +1,4 @@
-<h1 class="display-2">
+<h1 class="display-4">
   Albumaim:
 </h1>
 <div *ngIf="albums.length === 0">
@@ -13,23 +13,27 @@
       <tbody>
         <tr *ngFor="let album of albums">
           <td>
+            <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="75px" style="margin: 10px; border-radius: 15px;">
+            <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-3x" width="75px" style="margin: 10px; border-radius: 15px;">
+          </td>
+          <td>
             <a mat-icon-button
                [routerLink]="['/album', album.id]">
-              {{album.title}}
+              <h3>
+                {{album.title}}
+              </h3>
             </a>
           </td>
           <td>
             <a mat-icon-button
                [routerLink]="['/album', album.id, 'update/details']">
-              <i></i>
+              <i class="fas fa-edit fa-4x"></i>
             </a>
           </td>
           <td>
             <a mat-icon-button
                [routerLink]="['/album']" (click)="delete(album.id)">
-              <i>
-
-              </i>
+              <i class="fas fa-times fa-4x" style="color: red;"></i>
             </a>
           </td>
         </tr>
@@ -39,5 +43,8 @@
 </div>
 
 <a mat-raised-button color="primary" routerLink="/album/new">
+  <mat-icon>
+    add
+  </mat-icon>
   Új album
 </a>

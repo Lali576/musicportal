@@ -45,14 +45,10 @@ export class PlaylistEditComponent implements OnInit {
     var songs: Song[] = params["songs"];
     var keywords: Keyword[] = params["keywords"];
 
-    var playlistString = JSON.stringify(playlist);
-    var songsString = JSON.stringify(songs);
-    var stringKeywords = JSON.stringify(keywords);
-
     if(playlist.id > 0) {
-      await this.playlistService.updatePlaylist(playlist.id, playlistString, songsString, stringKeywords);
+      await this.playlistService.updatePlaylist(playlist.id, playlist, songs, keywords);
     } else {
-      await this.playlistService.addPlaylist(playlistString, songsString, null);
+      await this.playlistService.addPlaylist(playlist, songs, keywords);
     }
     this.location.back();
   }

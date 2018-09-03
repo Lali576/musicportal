@@ -33,11 +33,12 @@ export class AlbumService {
   }
 
   getAlbum(id: number) {
-    return this.http.get<Album>(`api/album/${id}`).subscribe(
+    this.http.get<Album>(`api/album/${id}`).subscribe(
       (album: Album) => {
         this.album = album;
       }
     );
+    return this.album;
   }
 
   getAllAlbums(): Promise<Album[]> {

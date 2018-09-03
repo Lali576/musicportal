@@ -46,35 +46,24 @@ export class AlbumEditComponent implements OnInit {
     var album: Album = params["album"];
     var songs: Song[] = params["songs"];
     if (album.id > 0) {
-      await this.albumService.updateAlbum(album.id, album);
+      await this.albumService.updateAlbumDetails(album.id, album, null, null);
 
       for (var i = 0; i < songs.length; i++) {
         var song: Song = songs[i];
-        var songString = JSON.stringify(song);
-        var albumString = JSON.stringify(album);
-        await this.songService.updateSong(song.id, songString, albumString);
+        await this.songService.updateSong(song.id, song, null, album);
       }
     } else {
-      const uploadAlbumCover = new FormData();
-      //uploadAlbumCover.append(album.title, album.coverFile, album.coverFile.name);
-      await this.http.post('/api/album/file', uploadAlbumCover)
-        .subscribe(async (res) => {
-          var albumString = JSON.stringify(album);
-          var savedAlbum: Album = await this.albumService.addAlbum(albumString, null, null);
-          albumString = JSON.stringify(savedAlbum);
+      var savedAlbum: Album = await this.albumService.addAlbum(album, null, null, null);
 
-          for (var i = 0; i < songs.length; i++) {
-            var song: Song = songs[i];
-            const uploadSongAudio = new FormData();
-            //uploadSongAudio.append(savedAlbum.name+"\\"+song.title, song.audioFile, song.audioFile.name);
-            await this.http.post('/api/song/file', uploadSongAudio)
-              .subscribe(async (res) => {
-                var songString = JSON.stringify(song);
-                await this.songService.addSong(songString, albumString, null, null);
-              });
-          }
-        });
+      for (var i = 0; i < songs.length; i++) {
+        var song: Song = songs[i];
+        const uploadSongAudio = new FormData();
+        //uploadSongAudio.append(savedAlbum.name+"\\"+song.title, song.audioFile, song.audioFile.name);
+        await this.http.post('/api/song/file', uploadSongAudio)
+          .subscribe(async (res) => {
+            await this.songService.addSong(song, null, album, null, null);
+          });
       }
-      this.location.back();
     }
   }
+}

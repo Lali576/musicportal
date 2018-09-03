@@ -10,7 +10,7 @@ import {AuthService} from "../../../service/auth.service";
 })
 export class PlaylistListComponent implements OnInit {
 
-  playlists: Playlist[] = [];
+  playlist: Playlist[] = [];
 
   constructor(
     private playlistService: PlaylistService,
@@ -18,10 +18,12 @@ export class PlaylistListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.playlistService.getPlaylists()
-      .subscribe(playlists => {
-        this.playlists = playlists;
-      });
+    this.playlistService.getAllPlaylist()
+      .then(
+        (playlist: Playlist[]) => {
+          this.playlist = playlist;
+        }
+      )
   }
 
   delete(id: number) {

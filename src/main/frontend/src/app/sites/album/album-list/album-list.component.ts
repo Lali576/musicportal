@@ -18,10 +18,12 @@ export class AlbumListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.albumService.getAlbums()
-      .subscribe(albums => {
-        this.albums = albums;
-      });
+    this.albumService.getAllAlbums()
+      .then(
+        (albums: Album[]) => {
+          this.albums = albums;
+        }
+      )
   }
 
   delete(id: number) {

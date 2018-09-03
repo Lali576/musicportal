@@ -45,7 +45,7 @@ export class UserEditComponent implements OnInit {
     uploadData.append(file.name,file,file.name);
 
     if (user.id > 0) {
-      await this.userService.updateUser(user.id, uploadData);
+      //W.I.P.
     } else {
       // register section copy here
     }

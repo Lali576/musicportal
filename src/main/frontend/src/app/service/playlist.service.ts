@@ -34,11 +34,13 @@ export class PlaylistService {
   }
 
   getPlaylist(id: number) {
-    return this.http.get<Playlist>(`api/playlist/${id}`).subscribe(
+    this.http.get<Playlist>(`api/playlist/${id}`).subscribe(
       (playlist: Playlist) => {
         this.playlist = playlist;
       }
     );
+
+    return this.playlist;
   }
 
   getUserPlaylist(): Promise<Playlist[]> {
@@ -49,7 +51,7 @@ export class PlaylistService {
     return this.http.get<Playlist[]>('api/playlist').toPromise();
   }
 
-  updatePlaylist(id: number, playlist: Playlist, songs: Song[], keywords: Playlist[]): Promise<Playlist> {
+  updatePlaylist(id: number, playlist: Playlist, songs: Song[], keywords: PlaylistKeyword[]): Promise<Playlist> {
     const formData = new FormData();
     formData.append("playlist", JSON.stringify(playlist));
     formData.append("songs", JSON.stringify(songs));

@@ -32,7 +32,7 @@ export class SongService {
     private http: HttpClient
   ) { }
 
-  addSong(song: Song, audioFile: File, album: Song, genres: Genre[], keywords: SongKeyword[]): Promise<Song> {
+  addSong(song: Song, audioFile: File, album: Album, genres: Genre[], keywords: SongKeyword[]): Promise<Song> {
     const formData = new FormData();
     formData.append("song", JSON.stringify(song));
     formData.append(audioFile.name, audioFile, audioFile.name);
@@ -46,11 +46,13 @@ export class SongService {
   }
 
   getSong(id: number) {
-    return this.http.get<Song>(`api/song/${id}`).subscribe(
+    this.http.get<Song>(`api/song/${id}`).subscribe(
       (song: Song) => {
         this.song = song;
       }
     );
+
+    return this.song;
   }
 
 

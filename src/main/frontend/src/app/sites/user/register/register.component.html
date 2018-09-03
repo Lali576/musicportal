@@ -124,7 +124,7 @@
         [(ngModel)]="user.favGenreId"
         placeholder="Kedvenc műfaj"
         #favGenreSelect>
-        <mat-option *ngFor="let genre of chooseAbleGenres" [value]="genre">
+        <mat-option *ngFor="let genre of genres" [value]="genre">
           {{genre.name}}
         </mat-option>
       </mat-select>

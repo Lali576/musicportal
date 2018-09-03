@@ -11,17 +11,14 @@ const httpOptions = {
 
 @Injectable()
 export class GenreService {
-  genres: Genre[];
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
 
-  getGenres() {
-    return this.http.get<Genre[]>('/api/genre/list').subscribe(
-      (genres: Genre[]) => {
-        this.genres = genres;
-      }
-    );
+  }
+
+  getGenres(): Observable<Genre[]> {
+    return this.http.get<Genre[]>('/api/genre/list');
   }
 }

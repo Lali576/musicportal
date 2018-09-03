@@ -4,5 +4,5 @@ export class Album {
   date: Date = null;
   albumFolderGdaId: string = "";
   coverFileGdaId: string = "";
-  type: string = ""
+  type: string = "SINGLE";
 }

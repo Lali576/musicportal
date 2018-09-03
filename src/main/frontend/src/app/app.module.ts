@@ -44,6 +44,8 @@ import { UserEmailComponent } from './sites/user/user-email/user-email.component
 import { UserIconComponent } from './sites/user/user-icon/user-icon.component';
 import { UserBiographyComponent } from './sites/user/user-biography/user-biography.component';
 import { AlbumCoverComponent } from './sites/album/album-cover/album-cover.component';
+import {GenreService} from "./service/genre.service";
+import {SearchService} from "./service/search.service";
 
 @NgModule({
   declarations: [
@@ -101,6 +103,8 @@ import { AlbumCoverComponent } from './sites/album/album-cover/album-cover.compo
               AlbumService,
               PlaylistService,
               AuthService,
+              GenreService,
+              SearchService,
               AuthGuard],
   bootstrap: [AppComponent]
 })

@@ -3,11 +3,8 @@ import {User} from "../../../model/user";
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
 import {Genre} from "../../../model/genre";
-import {UserService} from "../../../service/user.service";
-import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
-import {tap} from "rxjs/internal/operators";
-import {logging} from "selenium-webdriver";
 import {UserKeyword} from "../../../model/keywords/userkeyword";
+import {GenreService} from "../../../service/genre.service";
 
 @Component({
   selector: 'app-register',
@@ -21,22 +18,25 @@ export class RegisterComponent implements OnInit {
   password: string = "";
   passwordConfirm : string = "";
   message: string = "";
-  chooseAbleGenres: Genre[] = [];
   isArtist: boolean = false;
   userIconFile: File = null;
   userKeywords: UserKeyword[] = [];
+  genres: Genre[] = [];
 
   constructor(
-    private userService: UserService,
     private authService: AuthService,
+    private genreService: GenreService,
     private router: Router
-  ) { }
+  ) {
+    this.genreService.getGenres().subscribe(
+      (genres: Genre[]) => {
+        this.genres = genres;
+      }
+    )
+  }
 
   ngOnInit() {
-    this.userService.getGenres().subscribe(
-      genres => {
-        this.chooseAbleGenres = genres;
-      });
+
   }
 
   onFileSelected(event) {
@@ -55,16 +55,8 @@ export class RegisterComponent implements OnInit {
         this.user.role = "USER";
       }
 
-      const uploadData = new FormData();
-      if(this.userIconFile !== null) {
-        uploadData.append(this.userIconFile.name, this.userIconFile, this.userIconFile.name);
-      }
-      uploadData.append("user", JSON.stringify(this.user));
-      uploadData.append("password", this.password);
-      uploadData.append("userKeywords", JSON.stringify(this.userKeywords));
-
       this.message = "Regisztráció folyamatban";
-      await this.authService.register(uploadData);
+      await this.authService.register(this.user, this.password, this.userIconFile, this.userKeywords);
       console.log("successful registration");
       this.message = "Regisztráció sikeres";
       console.log("Try to login with user named " + this.authService.loggedInUser.username + " and with number id" + this.authService.loggedInUser.id);
