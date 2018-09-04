@@ -1,92 +1,97 @@
-<h1 class="display-4">Új album</h1>
-<div style="display: inline-block;">
-  <form (submit)="submitAlbum(albumForm)" #albumForm="ngForm">
-    {{message}}
+<div id="parent" style="display: flex;">
+  <div id="album-form" style="width: 400px;">
+    <h1 class="display-4">Új album</h1>
+      <form (submit)="submitAlbum(albumForm)" #albumForm="ngForm" (invalid)="albumSongs.length === 0">
+        {{message}}
+        <div class="form-group">
+          <mat-form-field>
+            <input
+              name="nameText"
+              [(ngModel)]="album.title"
+              matInput type="text"
+              placeholder="Album címe"
+              required
+              #nameText="ngModel">
+            <mat-error *ngIf="nameText.invalid && (nameText.dirty || nameText.touched)">
+              Adja meg az album címét!
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field>
+            <input name="dateText" matInput [matDatepicker]="datePicker" [(ngModel)]="album.date" [min]="1900" [max]="2099" placeholder="Choose a date" required>
+            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <input name="coverFile" (change)="onAlbumCoverFileSelected($event)" class="ng-hide" type="file" accept="image/*"/>
+        </div>
+        <button [disabled]="albumForm.invalid"type="submit" mat-raised-button color="primary">Album mentése</button>
+      </form>
+  </div>
+  <div id="album-songs" style="flex: 1;">
+      <h3 class="display-4">
+        Dalok
+      </h3>
+      <table class="table">
+        <tr *ngFor="let song of albumSongs">
+          <td>
+            {{song.title}}
+          </td>
+          <td (click)="editSong(song)">
+            <i class="fas fa-edit"></i>
+          </td>
+          <td (click)="deleteSong(song)">
+            <i class="fas fa-times" style="color: red;"></i>
+          </td>
+        </tr>
+      </table>
+  </div>
+</div>
+<a mat-raised-button color="primary" *ngIf="!showNewSong" (click)="toggle()">
+  <mat-icon>
+    add
+  </mat-icon>
+  Új dal
+</a>
+<div name="newSong" *ngIf="showNewSong">
+  <h2>
+    Új dal
+  </h2>
+  <form (submit)="submitSong(songForm)" #songForm="ngForm">
     <div class="form-group">
       <mat-form-field>
         <input
-          name="nameText"
-          [(ngModel)]="album.title"
+          name="titleText"
+          [(ngModel)]="currentSong.title"
           matInput type="text"
-          placeholder="Album címe"
+          placeholder="Dal címe"
           required
-          #nameText="ngModel">
-        <mat-error *ngIf="nameText.invalid && (nameText.dirty || nameText.touched)">
-          Adja meg az album címét!
+          #titleText="ngModel">
+        <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
+          Adja meg az dal címét!
         </mat-error>
       </mat-form-field>
     </div>
     <div class="form-group">
+      <input name="audioFile" (change)="onSongAudioFileSelected($event)" class="ng-hide" type="file" accept="audio/*"/>
+    </div>
+    <!--
+    <div class="form-group">
       <mat-form-field>
-        <input name="dateText" matInput [matDatepicker]="datePicker" [(ngModel)]="album.date" [min]="1900" [max]="2099" placeholder="Choose a date" required>
-        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-        <mat-datepicker #datePicker></mat-datepicker>
+        <input
+          name="lyricsText"
+          [(ngModel)]="currentSong.lyrics"
+          matInput type="text"
+          placeholder="Dal címe"
+          #titleText="ngModel">
+        <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
+          Adja meg az dal szövegét!
+        </mat-error>
       </mat-form-field>
     </div>
-    <div class="form-group">
-      <input name="iconFile" (change)="onAlbumCoverFileSelected($event)" class="ng-hide" type="file" accept="image/*"/>
-    </div>
-
-    <button [disabled]="albumForm.invalid" type="submit" mat-raised-button color="primary">Album mentése</button>
+    -->
+    <button [disabled]="songForm.invalid" type="submit" mat-raised-button color="primary">Dal mentése</button>
   </form>
 </div>
-<!--
-<hr>
-  <div>
-    <h2>
-      Eddigi zenék
-    </h2>
-    <table class="table">
-      <tr *ngFor="let song of modelSongs">
-        <td>
-          {{song.title}}
-        </td>
-        <td (click)="editSong(song)">
-          <mat-icon>
-            edit
-          </mat-icon>
-        </td>
-        <td (click)="deleteSong(song)">
-          <mat-icon>
-            delete
-          </mat-icon>
-        </td>
-      </tr>
-    </table>
-  </div>
-<hr>
-<h2>
-  Új zene
-</h2>
-<form (submit)="submitSong(songForm)" #songForm="ngForm">
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="titleText"
-        [(ngModel)]="currentSong.title"
-        matInput type="text"
-        placeholder="Dal címe"
-        required
-        #titleText="ngModel">
-      <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
-        Adja meg az dal címét!
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="lyricsText"
-        [(ngModel)]="currentSong.lyrics"
-        matInput type="text"
-        placeholder="Dal címe"
-        #titleText="ngModel">
-      <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
-        Adja meg az dal szövegét!
-      </mat-error>
-    </mat-form-field>
-  </div>
-
-  <button [disabled]="songForm.invalid" type="submit" mat-raised-button color="primary">Dal mentése</button>
-</form>
--->

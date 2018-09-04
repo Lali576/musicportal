@@ -46,13 +46,11 @@ export class SongService {
   }
 
   getSong(id: number) {
-    this.http.get<Song>(`api/song/${id}`).subscribe(
-      (song: Song) => {
+    return this.http.get<Song>(`api/song/${id}`).pipe(
+      tap((song: Song) => {
         this.song = song;
-      }
-    );
-
-    return this.song;
+      })
+    ).toPromise();
   }
 
 

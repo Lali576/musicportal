@@ -35,7 +35,7 @@ public class Song {
     @Column(name = "LYRICS")
     private String lyrics;
 
-    @Column(name = "AUDIO_FILE_GDA_ID", unique = true)
+    @Column(name = "AUDIO_FILE_GDA_ID")
     private String audioFileGdaId;
 
     @ManyToOne(targetEntity = Album.class, optional = false)

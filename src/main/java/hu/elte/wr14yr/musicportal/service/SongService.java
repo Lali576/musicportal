@@ -54,6 +54,7 @@ public class SongService {
         String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumFolderGdaId());
 
         savedSong.setAudioFileGdaId(audioFileGdaId);
+        savedSong = songRepository.save(savedSong);
         logger.log(Level.INFO, "Song service: new song has been updated with file id");
 
         return savedSong;

@@ -7,6 +7,7 @@ import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";
 import {Genre} from "../../../model/genre";
 import {Router} from "@angular/router";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-album-form',
@@ -14,16 +15,17 @@ import {Router} from "@angular/router";
   styleUrls: ['./album-form.component.css']
 })
 export class AlbumFormComponent implements OnInit {
-
   album: Album = new Album();
   albumCoverFile: File = null;
   albumGenre: Genre[] = [];
   albumKeywords: AlbumKeyword[] = [];
   genres: Genre[] = [];
-  albumSongs: object[][] = [];
+  albumSongs: Song[] = [];
+  albumSongsFiles: File[] = [];
   currentSong: Song = new Song();
   currentSongFile: File = null;
   message: string = "";
+  showNewSong: boolean = false;
 
   constructor(
     private albumService: AlbumService,
@@ -54,8 +56,13 @@ export class AlbumFormComponent implements OnInit {
     try {
       console.log(this.album);
       this.message = "Album feltöltése folyamatban";
-      await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);
+      this.album = await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);
       this.message = "Album feltöltése sikeres";
+      for(var i = 0; i < this.albumSongs.length; i++) {
+        console.log("Try to upload song titled " + this.albumSongs[i].title);
+        await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenre,  this.albumKeywords);
+        console.log("Uploading song titled " + this.albumSongs[i].title + " was successful");
+      }
       this.route.navigate(['/album/list']);
     } catch (e) {
       this.message = "Album feltöltése sikertelen";
@@ -64,8 +71,8 @@ export class AlbumFormComponent implements OnInit {
   }
 
   onSongAudioFileSelected(event) {
-    var file: File = <File>event.target.files[0];
-    console.log(file);
+    this.currentSongFile = <File>event.target.files[0];
+    console.log(this.currentSongFile);
   }
 
   submitSong(form) {
@@ -73,23 +80,33 @@ export class AlbumFormComponent implements OnInit {
       return;
     }
 
-    if (this.currentSong.id === 0) {
-      this.albumSongs.push(this.albumSongs);
-      this.albumSongs[this.albumSongs.length-1].push(this.currentSongFile);
+    if (this.currentSong.id === 0 && !(this.albumSongs.includes(this.currentSong))) {
+      this.albumSongs.push(this.currentSong);
+      this.albumSongsFiles.push(this.currentSongFile);
     }
 
+    console.log("Song titled " + this.currentSong.title + " with file " + this.currentSongFile.name + " has been saved");
     this.currentSong = new Song();
     this.currentSongFile = null;
+    this.showNewSong = false;
   }
 
   editSong(song: Song) {
     this.currentSong = song;
+    var index = this.albumSongs.indexOf(song, 0)
+    this.currentSongFile = this.albumSongsFiles[index];
+    this.showNewSong = true;
   }
 
   deleteSong(song: Song) {
-    var index = this.albumSongs.indexOf(Object.prototype.valueOf.call(song), 0);
+    var index = this.albumSongs.indexOf(song, 0);
     if(index > -1) {
       this.albumSongs.splice(index, 1);
+      this.albumSongsFiles.splice(index, 1);
     }
+  }
+
+  toggle() {
+    this.showNewSong = !this.showNewSong;
   }
 }

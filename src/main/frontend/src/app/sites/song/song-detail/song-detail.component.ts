@@ -21,7 +21,9 @@ export class SongDetailComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
       const id = +params.get('id');
-      this.song = await this.songService.getSong(id);
+      await this.songService.getSong(id);
+      this.song = this.songService.song;
+      console.log(this.song.audioFileGdaId);
     })).subscribe();
   }
 
