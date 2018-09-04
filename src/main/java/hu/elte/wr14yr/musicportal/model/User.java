@@ -53,10 +53,10 @@ public class User {
     @Column(name = "BIOGRAPHY")
     private String biography;
 
-    @Column(name = "USER_FOLDER_GDA_ID", unique = true)
+    @Column(name = "USER_FOLDER_GDA_ID")
     private String userFolderGdaId;
 
-    @Column(name = "ICON_FILE_GDA_ID", unique = true)
+    @Column(name = "ICON_FILE_GDA_ID")
     private String iconFileGdaId;
 
     @OneToMany(targetEntity = Album.class, mappedBy = "user")

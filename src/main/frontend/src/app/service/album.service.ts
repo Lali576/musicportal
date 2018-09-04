@@ -14,7 +14,7 @@ const httpOptions = {
 @Injectable()
 export class AlbumService {
 
-  album: Album;
+  album: Album = new Album();
 
   constructor(
     private http: HttpClient,
@@ -23,7 +23,9 @@ export class AlbumService {
   addAlbum(album: Album, coverFile: File, genres: Genre[], keywords: AlbumKeyword[]): Promise<Album> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
-    formData.append(coverFile.name, coverFile, coverFile.name);
+    if(coverFile !== null) {
+      formData.append(coverFile.name, coverFile, coverFile.name);
+    }
     formData.append("genres", JSON.stringify(genres));
     formData.append("keywords", JSON.stringify(keywords));
     return this.http.post<Album>(
@@ -33,12 +35,11 @@ export class AlbumService {
   }
 
   getAlbum(id: number) {
-    this.http.get<Album>(`api/album/${id}`).subscribe(
-      (album: Album) => {
+    return this.http.get<Album>(`api/album/${id}`).pipe(
+      tap((album: Album) => {
         this.album = album;
-      }
-    );
-    return this.album;
+      })
+    ).toPromise();
   }
 
   getAllAlbums(): Promise<Album[]> {
@@ -77,11 +78,11 @@ export class AlbumService {
     ).toPromise();
   }
 
-  deleteAlbum(id: number):void {;
-    this.http.delete(`api/album/delete/${id}`).pipe(
+  deleteAlbum(id: number) {;
+    return this.http.delete(`api/album/delete/${id}`).pipe(
       tap(() => {
         this.album = null;
       })
-    );
+    ).toPromise();
   }
 }

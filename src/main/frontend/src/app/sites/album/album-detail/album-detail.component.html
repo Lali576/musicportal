@@ -1,14 +1,36 @@
-<h1 class="display-2">
-  {{albumService.album.title}}
+<h1 class="display-4">
+  Album:
 </h1>
-<dl class="row">
-  <dt class="col-sm-3">
-    Keletkezési év
-  </dt>
-  <dd class="col-sm-9">
-    {{album.date}}
-  </dd>
-</dl>
+<div>
+  <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" class="float-left" width="100px" style="margin: 10px; border-radius: 5px;">
+  <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
+  <br>
+  <button>
+    Szerkesztés
+  </button>
+</div>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>
+        Cím:
+      </th>
+      <td>
+        {{album.title}}
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Dátum:
+      </th>
+      <td>
+        {{album.date}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!--
 <h2>Dalok:</h2>
 <table class="table">
   <tr *ngFor="let song of songs">
@@ -20,6 +42,7 @@
     </td>
   </tr>
 </table>
-<button mat-raised-button routerLink="/album">
+-->
+<button mat-raised-button routerLink="/album/list">
   Vissza
 </button>

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../model/user";
-import {Observable} from "rxjs/index";
 import {Genre} from "../model/genre";
 import {UserMessage} from "../model/usermessage";
 import {AuthService} from "./auth.service";
@@ -17,16 +16,13 @@ const httpOptions = {
 @Injectable()
 export class UserService {
 
-  user: User;
+  user: User = new User();
   userMessages: UserMessage[];
-  authService: AuthService;
 
   constructor(
     private http: HttpClient,
-    private auth: AuthService
-  ) {
-    this.authService = auth;
-  }
+    private authService: AuthService
+  ) {}
 
   updateUser(id: number, fullName: string, favGenre: Genre, keywords: UserKeyword[]): Promise<User> {
     console.log("Try to update details for user named " +
@@ -108,13 +104,15 @@ export class UserService {
     return this.http.get<User>(`api/user/${id}`).toPromise();
   }
 
-  deleteUser(id: number): void {
-    this.http.delete(`api/user/delete/${id}`).pipe(
+  deleteUser(id: number) {
+    console.log("Try to delete user named " + this.authService.loggedInUser.username);
+    return this.http.delete(`api/user/delete/${id}`, httpOptions).pipe(
       tap(() => {
+        console.log("Deleting user named " + this.authService.loggedInUser.username + " was successful");
         this.authService.isLoggedIn = false;
         this.authService.loggedInUser = new User();
       })
-    );
+    ).toPromise();
   }
 
   getUserMessages(id: number) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../model/user";
 import {tap} from "rxjs/operators";
 import {UserKeyword} from "../model/keywords/userkeyword";
@@ -39,7 +39,9 @@ export class AuthService {
     const formData = new FormData();
     formData.append("user", JSON.stringify(user));
     formData.append("password", password);
-    formData.append(iconFile.name, iconFile, iconFile.name);
+    if(iconFile !==  null) {
+      formData.append(iconFile.name, iconFile, iconFile.name);
+    }
     formData.append("userKeywords", JSON.stringify(keywords));
     return this.http.post<User>(
       'api/user/register',

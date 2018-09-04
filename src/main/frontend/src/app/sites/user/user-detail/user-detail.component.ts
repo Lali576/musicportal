@@ -4,6 +4,7 @@ import {AuthService} from "../../../service/auth.service";
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 import {UserService} from "../../../service/user.service";
 import {Route, Router} from "@angular/router";
+import {addWeekParseToken} from "ngx-bootstrap/chronos/parse/token";
 
 @Component({
   selector: 'app-user-detail',
@@ -17,15 +18,17 @@ export class UserDetailComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.user = this.authService.loggedInUser;
   }
 
-  delete() {
+  async delete() {
     if(confirm("Biztos szeretné magát törölni az oldalról?")) {
-      this.userService.deleteUser(this.user.id);
+      await this.userService.deleteUser(this.user.id);
+      this.router.navigate(['/login']);
     }
   }
 }

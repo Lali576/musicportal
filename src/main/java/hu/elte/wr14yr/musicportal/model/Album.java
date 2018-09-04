@@ -32,10 +32,10 @@ public class Album {
     @Column(name = "DATE", nullable = false)
     private Date date;
 
-    @Column(name = "ALBUM_FOLDER_GDA_ID", unique = true)
+    @Column(name = "ALBUM_FOLDER_GDA_ID")
     private String albumFolderGdaId;
 
-    @Column(name = "COVER_FILE_GDA_ID", unique = true)
+    @Column(name = "COVER_FILE_GDA_ID")
     private String coverFileGdaId;
 
     @ManyToOne(targetEntity = User.class, optional = false)

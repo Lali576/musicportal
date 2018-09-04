@@ -95,12 +95,12 @@ export class SongService {
     ).toPromise();
   }
 
-  deleteSong(id: number): void {
-    this.http.delete(`api/song/delete/${id}`).pipe(
+  deleteSong(id: number) {
+    return this.http.delete(`api/song/delete/${id}`).pipe(
       tap(() => {
         this.song = null;
       })
-    );
+    ).toPromise();
   }
 
   addSongComment(songComment: SongComment, song: Song) {

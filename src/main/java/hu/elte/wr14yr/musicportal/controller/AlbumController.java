@@ -74,6 +74,10 @@ public class AlbumController {
         Album savedAlbum = albumService.create(album, user, file, genresList, albumKeywordsList);
         logger.log(Level.INFO, "Exit: endpoint '/new'");
 
+        if(file != null) {
+            file.delete();
+        }
+
         return ResponseEntity.ok(savedAlbum);
     }
 
@@ -162,7 +166,7 @@ public class AlbumController {
 
     @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+    public @ResponseBody void delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
 
         logger.log(Level.INFO, "Get parameter 'album'");
@@ -171,6 +175,6 @@ public class AlbumController {
         albumService.delete(album);
         logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
-        return ResponseEntity.status(204).build();
+        //return ResponseEntity.status(204).build();
     }
 }

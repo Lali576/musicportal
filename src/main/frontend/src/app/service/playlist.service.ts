@@ -66,11 +66,11 @@ export class PlaylistService {
     ).toPromise();
   }
 
-  deletePlaylist(id: number):void {
-    this.http.delete(`api/playlist/delete/${id}`).pipe(
+  deletePlaylist(id: number) {
+    return this.http.delete(`api/playlist/delete/${id}`).pipe(
       tap(() => {
         this.playlist = null;
       })
-    );
+    ).toPromise();
   }
 }

@@ -12,7 +12,8 @@ import {SongService} from "../../../service/song.service";
   styleUrls: ['./album-detail.component.css']
 })
 export class AlbumDetailComponent implements OnInit {
-  const
+  album: Album = new Album();
+  //albumSongs: Song[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -23,7 +24,10 @@ export class AlbumDetailComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
       const id = +params.get('id');
-      //this.songs = await this.songService.getSongsByAlbum(this.album);
+      await this.albumService.getAlbum(id);
+      this.album = this.albumService.album;
+      console.log(this.album.date.toString());
+      //this.albumSongs = await this.songService.getSongsByAlbum(this.album);
     })).subscribe();
   }
 

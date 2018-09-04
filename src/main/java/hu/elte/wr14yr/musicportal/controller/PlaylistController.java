@@ -123,7 +123,7 @@ public class PlaylistController {
 
     @Role({USER, ARTIST})
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+    public @ResponseBody void delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
 
         logger.log(Level.INFO, "Get parameter 'playlist'");
@@ -132,6 +132,6 @@ public class PlaylistController {
         playlistService.delete(playlist);
         logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
-        return ResponseEntity.ok().build();
+        //return ResponseEntity.ok().build();
     }
 }
