@@ -6,6 +6,7 @@ import {GenreService} from "../../../service/genre.service";
 import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";
 import {Genre} from "../../../model/genre";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-album-form',
@@ -27,7 +28,8 @@ export class AlbumFormComponent implements OnInit {
   constructor(
     private albumService: AlbumService,
     private songService: SongService,
-    private genreService: GenreService
+    private genreService: GenreService,
+    private route: Router
   ) {
     this.genreService.getGenres().subscribe(
       (genres: Genre[]) => {
@@ -54,6 +56,7 @@ export class AlbumFormComponent implements OnInit {
       this.message = "Album feltöltése folyamatban";
       await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);
       this.message = "Album feltöltése sikeres";
+      this.route.navigate(['/album/list']);
     } catch (e) {
       this.message = "Album feltöltése sikertelen";
       console.log(e);

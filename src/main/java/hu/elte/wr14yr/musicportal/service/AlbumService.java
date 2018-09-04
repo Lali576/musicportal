@@ -129,7 +129,7 @@ public class AlbumService {
         songService.deleteAllByAlbum(album);
         keywordService.deleteAllAlbumKeywordsByAlbum(album);
 
-        if(album.getCoverFileGdaId() != null) {
+        if(!(album.getCoverFileGdaId().equals(""))) {
             fileService.delete(album.getCoverFileGdaId());
         }
         fileService.delete(album.getAlbumFolderGdaId());

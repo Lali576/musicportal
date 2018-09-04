@@ -26,8 +26,10 @@ export class AlbumListComponent implements OnInit {
       )
   }
 
-  delete(id: number) {
-    this.albumService.deleteAlbum(id);
-    this.router.navigate(["/album"]);
+  async delete(album: Album) {
+    if(confirm("Biztos szeretné törölni az alábbi albumot: " + album.title + " ?")) {
+      await this.albumService.deleteAlbum(album);
+      this.router.navigate(["/album/list"]);
+    }
   }
 }

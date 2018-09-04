@@ -78,9 +78,13 @@ export class AlbumService {
     ).toPromise();
   }
 
-  deleteAlbum(id: number) {;
-    return this.http.delete(`api/album/delete/${id}`).pipe(
+  deleteAlbum(album: Album) {
+    console.log("Try to delete album titled " + album.title);
+    var id: number = album.id;
+    return this.http.delete(
+      `api/album/delete/${id}`).pipe(
       tap(() => {
+        console.log("Deleting album titled " + album.title + " was successful");
         this.album = null;
       })
     ).toPromise();

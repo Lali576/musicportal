@@ -6,6 +6,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.*;
 import hu.elte.wr14yr.musicportal.model.*;
 
 import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
+import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -166,12 +167,9 @@ public class AlbumController {
 
     @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody void delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+    public @ResponseBody void delete(@PathVariable long id) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
-
-        logger.log(Level.INFO, "Get parameter 'album'");
-        Album album = mapper.readValue(request.getParameter("album"), Album.class);
-
+        Album album = albumService.find(id);
         albumService.delete(album);
         logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
