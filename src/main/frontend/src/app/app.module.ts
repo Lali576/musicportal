@@ -7,6 +7,7 @@ import { MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule,
         MatFormFieldModule, MatInputModule, MatButtonToggleModule,
         MatSelectModule, MatOptionModule, MatCheckboxModule,
         MatDatepickerModule, MatNativeDateModule } from "@angular/material";
+import { AutoCompleteModule } from "primeng/primeng";
 
 import { AppComponent } from './app.component';
 import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
@@ -96,7 +97,8 @@ import {SearchService} from "./service/search.service";
     MatNativeDateModule,
     RoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AutoCompleteModule
   ],
   providers: [UserService,
               SongService,

@@ -22,6 +22,7 @@ const httpOptions = {
 export class SongService {
 
   song: Song;
+  audio;
   songComments: SongComment[];
   likeNumber: number;
   dislikeNumber: number;
@@ -30,7 +31,9 @@ export class SongService {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    this.audio = new Audio();
+  }
 
   addSong(song: Song, audioFile: File, album: Album, genres: Genre[], keywords: SongKeyword[]): Promise<Song> {
     const formData = new FormData();
