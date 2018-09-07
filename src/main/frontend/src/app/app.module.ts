@@ -7,46 +7,53 @@ import { MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule,
         MatFormFieldModule, MatInputModule, MatButtonToggleModule,
         MatSelectModule, MatOptionModule, MatCheckboxModule,
         MatDatepickerModule, MatNativeDateModule } from "@angular/material";
+import { FormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
 import { AutoCompleteModule } from "primeng/primeng";
+import { MessageModule } from "primeng/message";
+import { FileUploadModule } from "primeng/primeng";
+import { DropdownModule } from "primeng/primeng";
+import { PanelModule} from "primeng/panel";
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from "primeng/button";
 
-import { AppComponent } from './app.component';
-import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
-import { UserDetailComponent } from './sites/user/user-detail/user-detail.component';
-import { LoginComponent } from './sites/user/login/login.component';
-import { MainPageComponent } from './sites/main-page/main-page.component';
-import { MenuComponent } from './sites/menu/menu.component';
-import { AlbumEditComponent } from './sites/album/album-edit/album-edit.component';
-import { AlbumListComponent } from './sites/album/album-list/album-list.component';
-import { AlbumDetailComponent } from './sites/album/album-detail/album-detail.component';
-import { PlaylistListComponent } from './sites/playlist/playlist-list/playlist-list.component';
-import { PlaylistEditComponent } from './sites/playlist/playlist-edit/playlist-edit.component';
-import { PlaylistDetailComponent } from './sites/playlist/playlist-detail/playlist-detail.component';
-import { SongEditComponent } from './sites/song/song-edit/song-edit.component';
-import { SongDetailComponent } from './sites/song/song-detail/song-detail.component';
-import { SongListComponent } from './sites/song/song-list/song-list.component';
+import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
 import { SongService } from "./service/song.service";
 import { AlbumService } from "./service/album.service";
 import { PlaylistService } from "./service/playlist.service";
-import { RegisterComponent } from './sites/user/register/register.component';
-import { SongCommentComponent } from './sites/song/song-comment/song-comment.component';
 import { AuthService } from "./service/auth.service";
-import { AuthGuard } from "./auth.guard";
-import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
-import { SearchComponent } from './sites/search/search.component';
-import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
-import { SearchSongComponent } from './sites/search/search-song/search-song.component';
-import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
-import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
-import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
+import { SearchService } from "./service/search.service";
+import { GenreService } from "./service/genre.service";
+
+import { AppComponent } from './app.component';
+import { MenuComponent } from './sites/menu/menu.component';
+import { MainPageComponent } from './sites/main-page/main-page.component';
+import { RegisterComponent } from './sites/user/register/register.component';
+import { LoginComponent } from './sites/user/login/login.component';
+import { UserDetailComponent } from './sites/user/user-detail/user-detail.component';
+import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
 import { UserPasswordComponent } from './sites/user/user-password/user-password.component';
 import { UserEmailComponent } from './sites/user/user-email/user-email.component';
 import { UserIconComponent } from './sites/user/user-icon/user-icon.component';
 import { UserBiographyComponent } from './sites/user/user-biography/user-biography.component';
+import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
+import { AlbumListComponent } from './sites/album/album-list/album-list.component';
+import { AlbumDetailComponent } from './sites/album/album-detail/album-detail.component';
+import { AlbumEditComponent } from './sites/album/album-edit/album-edit.component';
 import { AlbumCoverComponent } from './sites/album/album-cover/album-cover.component';
-import {GenreService} from "./service/genre.service";
-import {SearchService} from "./service/search.service";
+import { SongListComponent } from './sites/song/song-list/song-list.component';
+import { SongDetailComponent } from './sites/song/song-detail/song-detail.component';
+import { SongEditComponent } from './sites/song/song-edit/song-edit.component';
+import { SongCommentComponent } from './sites/song/song-comment/song-comment.component';
+import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
+import { PlaylistListComponent } from './sites/playlist/playlist-list/playlist-list.component';
+import { PlaylistDetailComponent } from './sites/playlist/playlist-detail/playlist-detail.component';
+import { PlaylistEditComponent } from './sites/playlist/playlist-edit/playlist-edit.component';
+import { SearchComponent } from './sites/search/search.component';
+import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
+import { SearchSongComponent } from './sites/search/search-song/search-song.component';
+import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
 
 @NgModule({
   declarations: [
@@ -98,15 +105,21 @@ import {SearchService} from "./service/search.service";
     RoutingModule,
     FormsModule,
     HttpClientModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    MessageModule,
+    FileUploadModule,
+    DropdownModule,
+    PanelModule,
+    InputTextModule,
+    ButtonModule
   ],
-  providers: [UserService,
-              SongService,
+  providers: [AuthService,
+              UserService,
               AlbumService,
+              SongService,
               PlaylistService,
-              AuthService,
-              GenreService,
               SearchService,
+              GenreService,
               AuthGuard],
   bootstrap: [AppComponent]
 })

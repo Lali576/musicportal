@@ -74,6 +74,9 @@ export class SongDetailComponent implements OnInit {
 
 
   formatTime(seconds) {
+    if(isNaN(seconds)) {
+      return;
+    }
     let minutes:any = Math.floor(seconds/60);
     minutes = (minutes >= 10) ? minutes : "0" + minutes;
     seconds = Math.floor(seconds%60);

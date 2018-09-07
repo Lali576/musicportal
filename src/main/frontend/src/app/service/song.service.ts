@@ -21,7 +21,7 @@ const httpOptions = {
 @Injectable()
 export class SongService {
 
-  song: Song;
+  song: Song = null;
   audio;
   songComments: SongComment[];
   likeNumber: number;

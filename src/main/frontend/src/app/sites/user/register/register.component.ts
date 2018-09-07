@@ -9,7 +9,7 @@ import {GenreService} from "../../../service/genre.service";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
 
@@ -40,8 +40,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onFileSelected(event) {
-    this.userIconFile = <File>event.target.files[0];
+    this.userIconFile = <File>event.files[0];
     console.log(this.userIconFile);
+  }
+
+  onFileRemove() {
+    this.userIconFile = null;
+    console.log("You're right...");
   }
 
   async submit(f) {

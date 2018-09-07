@@ -1,37 +1,27 @@
-<h1 class="display-2">Bejelentkezés</h1>
+<h1 class="first">Bejelentkezés</h1>
 <form (submit)="submit(f)" #f="ngForm">
-  {{message}}
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="usernameText"
-        [(ngModel)]="username"
-        matInput type="text"
-        placeholder="Felhasználónév"
-        required
-        #usernameText="ngModel">
-      <mat-error *ngIf="usernameText.invalid && (usernameText.dirty || usernameText.touched)">
-        Adja meg a felhasználónevét!
-      </mat-error>
-    </mat-form-field>
-  </div>
-
-  <div>
-    <mat-form-field>
-      <input
-        name="passwordText"
-        [(ngModel)]="password"
-        matInput type="password"
-        placeholder="Jelszó"
-        required
-        #passwordText="ngModel">
-      <mat-error  *ngIf="passwordText.invalid && (passwordText.dirty || passwordText.touched)">
-        Adja meg a jelszavát!
-      </mat-error>
-    </mat-form-field>
-  </div>
-
-  <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
-    Bejelentkezés
-  </button>
+  <p-panel>
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <input name="usernameText" type="text" pInputText placeholder="Felhasználónév" [(ngModel)]="username" #usernameText="ngModel"/>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <input name="passwordText" type="password" pInputText placeholder="Jelszó" [(ngModel)]="password" #passwordtext="ngModel"/>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <button
+            class="ui-button-raised ui-button-success"
+            pButton type="submit"
+            label="Bejelentkezés"
+            [disabled]="f.invalid">
+          </button>
+        </div>
+      </div>
+    </div>
+  </p-panel>
 </form>

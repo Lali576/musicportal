@@ -1,142 +1,138 @@
-<h1 class="display-4">Regisztráció</h1>
-<form (submit)="submit(f)" #f="ngForm">
-  {{message}} <i *ngIf="" class="fas fa-spinner fa-2x fa-spin"></i>
-              <i *ngIf="" class="fas fa-check fa-2x" style="color:limegreen;"></i>
-              <i *ngIf="" class="fas fa-times fa-2x" style="color: red;"></i>
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="usernameText"
-        [(ngModel)]="user.username"
-        #usernameText="ngModel"
-        matInput type="text"
-        placeholder="Felhasználónév"
-        required
-        pattern="[0-9A-Za-z @#$!]*"
-        minlength="5"
-        maxlength="30">
-      <mat-error *ngIf="usernameText.invalid">
-        {{getUserErrorMessage(usernameText)}}
-      </mat-error>
-    </mat-form-field>
-    <i class="fas fa-info-circle fa-2x"
-       style="color:blue;"
-       title="Adjon meg egy min. 5 és max. 30 karakteres felhasználó nevet!">
-    </i>
-  </div>
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="emailAddressText"
-        [(ngModel)]="user.emailAddress"
-        #emailAddressText="ngModel"
-        matInput type="email"
-        placeholder="E-mail cím"
-        required
-        pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
-        minlength="5">
-      <mat-error *ngIf="emailAddressText.invalid">
-        {{getEmailAddressErrorMessage(emailAddressText)}}
-      </mat-error>
-    </mat-form-field>
-    <i class="fas fa-info-circle fa-2x"
-       style="color:blue;"
-       title="Adjon meg egy min. 5 karakteres e-mail címet!">
-    </i>
-  </div>
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="emailAddressConfirmText"
-        [(ngModel)] = "emailAddressConfirm"
-        #emailAddressConfirmText = "ngModel"
-        matInput type="email"
-        placeholder="E-mail cím megerősítése"
-        required
-        pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
-        minlength="5">
-      <mat-error *ngIf="user.emailAddress !== emailAddressConfirm">
-        Az e-mail címek nem egyeznek meg!
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="passwordText"
-        [(ngModel)]="password"
-        #passwordText="ngModel"
-        matInput type="text"
-        placeholder="Jelszó"
-        required
-        pattern="[0-9A-Za-z@$_!.]*"
-        minlength="6"
-        maxlength="15">
-      <mat-error *ngIf="passwordText.invalid">
-        {{getPasswordErrorMessage(passwordText)}};
-      </mat-error>
-    </mat-form-field>
-    <i class="fas fa-info-circle fa-2x"
-       style="color:blue;"
-       title="Adjon meg egy min. 6, max. 15 karakteres jelszót!">
-    </i>
-  </div>
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="passwordConfirmText"
-        [(ngModel)] = "passwordConfirm"
-        #passwordConfirmText = "ngModel"
-        matInput type="text"
-        placeholder="Jelszó megerősítése"
-        required
-        pattern="[0-9A-Za-z@$_!.]*"
-        minlength="6"
-        maxlength="15">
-      <mat-error *ngIf="password !== passwordConfirm">
-        A jelszavak nem egyeznek meg!
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div class="form-group">
-    <mat-form-field>
-      <input
-        name="fullNameText"
-        [(ngModel)]="user.fullName"
-        matInput type="text"
-        placeholder="Teljes név"
-        #fullNameText="ngModel">
-    </mat-form-field>
-  </div>
-  <div class="form-group">
-      <input
-        name="iconFile"
-        (change)="onFileSelected($event)"
-        placeholder="Ikon kép kiválasztás"
-        class="ng-hide"
-        type="file"
-        accept="image/*"/>
-  </div>
-  <div class="form-group">
-    <mat-form-field>
-      <mat-select
-        name="favGenreSelect"
-        [(ngModel)]="user.favGenreId"
-        placeholder="Kedvenc műfaj"
-        #favGenreSelect>
-        <mat-option *ngFor="let genre of genres" [value]="genre">
-          {{genre.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="form-group">
-    <mat-checkbox name="artistCheckBox" [(ngModel)]="isArtist" >
-      Dal szerzőnek jelentkezés
-    </mat-checkbox>
-  </div>
-
-  <button [disabled]="f.invalid" type="submit" mat-raised-button color="accent">
-    Regisztráció
-  </button>
-</form>
+<h1 class="first">Regisztráció</h1>
+  <form (submit)="submit(f)" #f="ngForm">
+    <p-panel>
+      <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            Felhasználónév *:
+          </div>
+          <div class="ui-grid-col-6">
+            <input name="usernameText"
+                   pInputText type="text"
+                   [(ngModel)]="user.username"
+                   #usernameText="ngModel"
+                   placeholder="Felhasználónév"
+                   required
+                   pattern="[0-9A-Za-z @#$!]*"
+                   minlength="5"
+                   maxlength="30" />
+          </div>
+          <div class="ui-grid-col-4">
+            <p-message
+              severity="error"
+              text="Felhasználónév szükséges!"
+              *ngIf="usernameText.invalid&&usernameText.dirty">
+            </p-message>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            E-amil cím *:
+          </div>
+          <div class="ui-grid-col-6">
+            <input name="emailAddressText"
+                   pInputText type="email"
+                   [(ngModel)]="user.emailAddress"
+                   #emailAddressText="ngModel"
+                   placeholder="E-mail cím"
+                   required
+                   pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+                   minlength="5" />
+          </div>
+          <div class="ui-grid-col-4">
+            <p-message
+              severity="error"
+              text="E-mail cím szükséges!"
+              *ngIf="emailAddressText.invalid&&emailAddressText.dirty">
+            </p-message>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            Jelszó *:
+          </div>
+          <div class="ui-grid-col-6">
+            <input name="passwordText"
+                   pInputText type="password"
+                   [(ngModel)]="password"
+                   #passwordText="ngModel"
+                   placeholder="Jelszó"
+                   required
+                   pattern="[0-9A-Za-z@$_!.]*"
+                   minlength="6"
+                   maxlength="15" />
+          </div>
+          <div class="ui-grid-col-4">
+            <p-message
+              severity="error"
+              [text]="passwordText.errors['required'] ? 'Adja meg a jelszót!' : passwordText.errors['minlength'] ? 'Kevés karakter!' : ''"
+              *ngIf="passwordText.invalid&&passwordText.dirty">
+            </p-message>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            Teljes név :
+          </div>
+          <div class="ui-grid-col-6">
+           <input name="fullNameText"
+                  pInputText type="text"
+                  [(ngModel)]="user.fullName"
+                  #fullNameText="ngModel"
+                  placeholder="Teljes név" />
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            Ikon kép :
+          </div>
+          <div class="ui-grid-col-6">
+            <p-fileUpload
+              (onSelect)="onFileSelected($event)"
+              (onClear)="onFileRemove()"
+              (onRemove)="onFileRemove()"
+              accept="image/*"
+              chooseLabel="Kiválasztás"
+              [showUploadButton]="false"
+              [showCancelButton]="false">
+              <ng-template pTemplate="content">
+              </ng-template>
+            </p-fileUpload>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            Kedvenc műfaj *:
+          </div>
+          <div class="ui-grid-col-6">
+            <p-dropdown name="favGenreId"
+                        [options]="genres"
+                        [(ngModel)]="user.favGenreId"
+                        #favGenre="ngModel"
+                        [autoWidth]="false"
+                        optionLabel="name"
+                        [required]="true"
+            ></p-dropdown>
+          </div>
+          <div class="ui-grid-col-4">
+            <p-message
+              severity="error"
+              text="Válassza ki kedvenc műfaját"
+              *ngIf="favGenre.invalid&&favGenre.dirty">
+            </p-message>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2"></div>
+          <div class="ui-grid-col-6">
+            <button
+              class="ui-button-raised ui-button-success"
+              pButton type="submit"
+              label="Regisztráció"
+              [disabled]="f.invalid">
+            </button>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+  </form>
