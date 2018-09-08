@@ -2,19 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import {Album} from "../../../model/album";
 import {AlbumService} from "../../../service/album.service";
 import {Router} from "@angular/router";
+import {ConfirmationService, Message, MessageService} from "primeng/api";
+import {async} from "q";
 
 @Component({
   selector: 'app-album-list',
   templateUrl: './album-list.component.html',
-  styleUrls: ['./album-list.component.css']
+  styleUrls: ['./album-list.component.css'],
+  providers: [ConfirmationService, MessageService]
 })
 export class AlbumListComponent implements OnInit {
 
   albums: Album[] = [];
+  msgs: Message[] = [];
 
   constructor(
     private albumService: AlbumService,
-    private router: Router
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -26,10 +31,28 @@ export class AlbumListComponent implements OnInit {
       )
   }
 
-  async delete(album: Album) {
-    if(confirm("Biztos szeretné törölni az alábbi albumot: " + album.title + " ?")) {
-      await this.albumService.deleteAlbum(album);
-      this.router.navigate(["/album/list"]);
-    }
+  deleteConfirm(album: Album) {
+    this.confirmationService.confirm({
+      message: "Biztos szeretné törölni az alábbi albumot: " + album.title + " ?",
+      header: 'Megerősítés',
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.deleteAlbum(album);
+      },
+      reject: () => {
+
+      }
+    });
+  }
+
+ async deleteAlbum(album) {
+    await this.albumService.deleteAlbum(album);
+    this.messageService.add({severity:'success', summary: album.title + ' című album sikeresen törölve', detail:''});
+    this.albumService.getAllAlbums()
+      .then(
+        (albums: Album[]) => {
+          this.albums = albums;
+        }
+      )
   }
 }

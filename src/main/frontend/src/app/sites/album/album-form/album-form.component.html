@@ -1,97 +1,150 @@
-<div id="parent" style="display: flex;">
-  <div id="album-form" style="width: 400px;">
-    <h1 class="display-4">Új album</h1>
-      <form (submit)="submitAlbum(albumForm)" #albumForm="ngForm" (invalid)="albumSongs.length === 0">
-        {{message}}
-        <div class="form-group">
-          <mat-form-field>
-            <input
-              name="nameText"
-              [(ngModel)]="album.title"
-              matInput type="text"
-              placeholder="Album címe"
-              required
-              #nameText="ngModel">
-            <mat-error *ngIf="nameText.invalid && (nameText.dirty || nameText.touched)">
-              Adja meg az album címét!
-            </mat-error>
-          </mat-form-field>
+<h1 class="first">Új album</h1>
+<p-messages></p-messages>
+<form (submit)="submitAlbum(f)" #f="ngForm">
+  <p-panel>
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Dal címe *:
         </div>
-        <div class="form-group">
-          <mat-form-field>
-            <input name="dateText" matInput [matDatepicker]="datePicker" [(ngModel)]="album.date" [min]="1900" [max]="2099" placeholder="Choose a date" required>
-            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-            <mat-datepicker #datePicker></mat-datepicker>
-          </mat-form-field>
+        <div class="ui-grid-col-6">
+          <input name="albumTitleText"
+                 pInputText type="text"
+                 pTooltip="Adja meg a feltölteni kívánt album címét!"
+                 [(ngModel)]="album.title"
+                 #albumTitleText="ngModel"
+                 placeholder="Album címe"
+                 required />
         </div>
-        <div class="form-group">
-          <input name="coverFile" (change)="onAlbumCoverFileSelected($event)" class="ng-hide" type="file" accept="image/*"/>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            text="Adja meg az album címét!"
+            *ngIf="albumTitleText.invalid&&albumTitleText.dirty">
+          </p-message>
         </div>
-        <button [disabled]="albumForm.invalid"type="submit" mat-raised-button color="primary">Album mentése</button>
-      </form>
-  </div>
-  <div id="album-songs" style="flex: 1;">
-      <h3 class="display-4">
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Dátum *:
+        </div>
+        <div class="ui-grid-col-6">
+          <p-calendar name="albumDate"
+                      [(ngModel)]="album.date"
+                      #albumDate="ngModel"
+                      placeholder="Album dátuma"
+                      [locale]="hu"
+                      [showIcon]="true"
+                      [required]="true"></p-calendar>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            text="Adja meg az album keletkezési dátumát!"
+            *ngIf="albumDate.invalid&&albumDate.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Borító kép :
+        </div>
+        <div class="ui-grid-col-6">
+          <p-fileUpload
+            (onSelect)="onAlbumCoverFileSelected($event)"
+            (onClear)="onFileRemove()"
+            (onRemove)="onFileRemove()"
+            accept="image/*"
+            chooseLabel="Kiválasztás"
+            [showUploadButton]="false"
+            [showCancelButton]="false">
+            <ng-template pTemplate="content">
+            </ng-template>
+          </p-fileUpload>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2"></div>
+        <div class="ui-grid-col-4">
+          <button
+            class="ui-button-raised ui-button-success"
+            pButton type="submit"
+            label="Feltöltés"
+            [disabled]="f.invalid">
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p-table [columns]="cols" [value]="albumSongs" selectionMode="single" [(selection)]="selectedSong" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="caption">
         Dalok
-      </h3>
-      <table class="table">
-        <tr *ngFor="let song of albumSongs">
-          <td>
-            {{song.title}}
-          </td>
-          <td (click)="editSong(song)">
-            <i class="fas fa-edit"></i>
-          </td>
-          <td (click)="deleteSong(song)">
-            <i class="fas fa-times" style="color: red;"></i>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns">
+            {{rowData[col.field]}}
           </td>
         </tr>
-      </table>
-  </div>
-</div>
-<a mat-raised-button color="primary" *ngIf="!showNewSong" (click)="toggle()">
-  <mat-icon>
-    add
-  </mat-icon>
-  Új dal
-</a>
-<div name="newSong" *ngIf="showNewSong">
-  <h2>
-    Új dal
-  </h2>
-  <form (submit)="submitSong(songForm)" #songForm="ngForm">
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          name="titleText"
-          [(ngModel)]="currentSong.title"
-          matInput type="text"
-          placeholder="Dal címe"
-          required
-          #titleText="ngModel">
-        <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
-          Adja meg az dal címét!
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="form-group">
-      <input name="audioFile" (change)="onSongAudioFileSelected($event)" class="ng-hide" type="file" accept="audio/*"/>
-    </div>
-    <!--
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          name="lyricsText"
-          [(ngModel)]="currentSong.lyrics"
-          matInput type="text"
-          placeholder="Dal címe"
-          #titleText="ngModel">
-        <mat-error *ngIf="titleText.invalid && (titleText.dirty || titleText.touched)">
-          Adja meg az dal szövegét!
-        </mat-error>
-      </mat-form-field>
-    </div>
-    -->
-    <button [disabled]="songForm.invalid" type="submit" mat-raised-button color="primary">Dal mentése</button>
-  </form>
-</div>
+      </ng-template>
+      <ng-template pTemplate="summary" let-rowData>
+        <div style="text-align:left">
+          <button type="button" pButton icon="fas fa-plus" class="ui-button-success" (click)="showDialogToAdd()" label="Új dal"></button>
+        </div>
+      </ng-template>
+    </p-table>
+
+    <p-dialog header="Dal adatok" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="300">
+      <div class="ui-g ui-fluid" *ngIf="song">
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="title">Cím</label>
+          </div>
+          <div class="ui-g-12">
+            <input
+              name="songTitleText"
+              pInputText
+              id="title"
+              [(ngModel)]="song.title"
+              #songTitleText="ngModel"
+              required/>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label for="fileUpload">Fájl</label>
+          </div>
+          <div class="ui-g-8">
+            <p-fileUpload
+              id="fileUpload"
+              (onSelect)="onSongAudioFileSelected($event)"
+              (onClear)="onFileRemove()"
+              (onRemove)="onFileRemove()"
+              accept="audio/*"
+              chooseLabel="Kiválasztás"
+              [showUploadButton]="false"
+              [showCancelButton]="false"
+              [files]="files">
+              <ng-template pTemplate="content">
+              </ng-template>
+            </p-fileUpload>
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fas fa-check" (click)="saveSong()" label="Mentés"></button>
+          <button type="button" pButton icon="fas fa-trash" (click)="deleteSong()" label="Törlés"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </p-panel>
+</form>

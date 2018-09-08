@@ -3,10 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { RoutingModule } from "./routing/routing.module";
-import { MatToolbarModule, MatButtonModule, MatMenuModule, MatIconModule,
-        MatFormFieldModule, MatInputModule, MatButtonToggleModule,
-        MatSelectModule, MatOptionModule, MatCheckboxModule,
-        MatDatepickerModule, MatNativeDateModule } from "@angular/material";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { AutoCompleteModule } from "primeng/primeng";
@@ -18,7 +14,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from "primeng/button";
 import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
-import {MessagesModule} from 'primeng/messages';
+import { MessagesModule } from 'primeng/messages';
+import { MenubarModule } from 'primeng/menubar';
+import { ToolbarModule } from 'primeng/toolbar';
+import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from "primeng/dialog";
+import { DataViewModule } from 'primeng/dataview';
+import { ConfirmDialogModule } from "primeng/primeng";
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -57,6 +60,7 @@ import { SearchComponent } from './sites/search/search.component';
 import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
 import { SearchSongComponent } from './sites/search/search-song/search-song.component';
 import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -87,24 +91,12 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
     UserEmailComponent,
     UserIconComponent,
     UserBiographyComponent,
-    AlbumCoverComponent
+    AlbumCoverComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatMenuModule,
-    MatInputModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     RoutingModule,
     FormsModule,
     HttpClientModule,
@@ -117,8 +109,15 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
     ButtonModule,
     TooltipModule,
     CheckboxModule,
-    MessagesModule
-
+    MessagesModule,
+    MenubarModule,
+    ToolbarModule,
+    CalendarModule,
+    TableModule,
+    DialogModule,
+    DataViewModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
   providers: [AuthService,
               UserService,

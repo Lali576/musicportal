@@ -1,5 +1,7 @@
-<h1 class="display-4">
-  Albumaim:
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<h1 class="first">
+  Albumaim
 </h1>
 <div *ngIf="albums.length === 0">
   <strong>
@@ -7,43 +9,45 @@
   </strong>
 </div>
 
-<div *ngIf="albums.length >= 1" class="row">
-  <div class="col">
-    <table class="table">
-      <tbody>
-        <tr *ngFor="let album of albums">
-          <td>
-            <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="75px" style="margin: 10px; border-radius: 15px;">
-            <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-3x" width="75px" style="margin: 10px; border-radius: 15px;">
-          </td>
-          <td>
-            <a mat-icon-button
-               [routerLink]="['/album', album.id]">
-              <h3>
+<div *ngIf="albums.length >= 1">
+  <p-dataView #dv [value]="albums" [paginator]="true" [rows]="10" paginatorPosition="both">
+    <ng-template let-album pTemplate="listItem">
+      <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+        <div class="ui-g-12 ui-md-3" style="text-align:center">
+          <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="75px">
+        </div>
+        <div class="ui-g-10 ui-md-7">
+          <div class="ui-g">
+            <a [routerLink]="['/album', album.id]" style="color: black;">
+              <h1 class="first">
                 {{album.title}}
-              </h3>
+              </h1>
             </a>
-          </td>
-          <td>
-            <a mat-icon-button
-               [routerLink]="['/album', album.id, 'update/details']">
-              <i class="fas fa-edit fa-4x"></i>
-            </a>
-          </td>
-          <td>
-            <a mat-icon-button (click)="delete(album)">
-              <i class="fas fa-times fa-4x" style="color: red;"></i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </div>
+        </div>
+          <div class="ui-g-6 ui-md-1">
+            <button
+              pButton type="button"
+              [routerLink]="['/album', album.id, 'update/details']"
+              style="width: 50px; height: 50px; margin-top: 10px;"
+              icon="fas fa-edit fa-2x"></button>
+          </div>
+          <div class="ui-g-6 ui-md-1">
+            <button
+              pButton type="button"
+              (click)="deleteConfirm(album)"
+              style="width: 50px; height: 50px; margin-top: 10px; color: red;"
+              icon="fas fa-trash fa-2x"></button>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
 </div>
-
-<a mat-raised-button color="primary" routerLink="/album/new">
-  <mat-icon>
-    add
-  </mat-icon>
-  Új album
-</a>
+<button
+  routerLink="/album/new"
+  pButton type="button"
+  icon="fas fa-plus"
+  class="ui-button-success"
+  label="Új album"
+  style="margin-top: 10px;">
+</button>

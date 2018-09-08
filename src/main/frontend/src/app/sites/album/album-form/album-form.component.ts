@@ -8,6 +8,7 @@ import {SongService} from "../../../service/song.service";
 import {Genre} from "../../../model/genre";
 import {Router} from "@angular/router";
 import {forEach} from "@angular/router/src/utils/collection";
+import {Message} from "primeng/api";
 
 @Component({
   selector: 'app-album-form',
@@ -15,17 +16,22 @@ import {forEach} from "@angular/router/src/utils/collection";
   styleUrls: ['./album-form.component.css']
 })
 export class AlbumFormComponent implements OnInit {
+  msgs: Message[] = [];
   album: Album = new Album();
   albumCoverFile: File = null;
   albumGenre: Genre[] = [];
   albumKeywords: AlbumKeyword[] = [];
   genres: Genre[] = [];
+  displayDialog: boolean;
+  song: Song = new Song();
+  songFile: File = null;
+  selectedSong: Song;
+  files: File[] = [];
+  newSong: boolean;
   albumSongs: Song[] = [];
   albumSongsFiles: File[] = [];
-  currentSong: Song = new Song();
-  currentSongFile: File = null;
-  message: string = "";
-  showNewSong: boolean = false;
+  cols: any[];
+  hu: any;
 
   constructor(
     private albumService: AlbumService,
@@ -41,12 +47,85 @@ export class AlbumFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.hu = {
+      firstDayOfWeek: 1,
+      dayNames: [ "hétfő","kedd","szerda","csütörtök","péntek","szombat","vasárnap" ],
+      dayNamesShort: [ "hét","ke","szer","csüt","pén","szo","vas" ],
+      dayNamesMin: [ "H","K","SZ","CS","P","SZ","V" ],
+      monthNames: [ "január","február","március","április","május","június","július","augusztus","szeptember","október","november","december" ],
+      monthNamesShort: [ "jan","feb","már","ápr","máj","jún","júl","aug","szep","okt","nov","dec" ],
+      today: 'Ma',
+      clear: 'Törlés'
+    }
 
+    this.cols = [
+      { field: 'title', header: 'Cím' },
+    ];
+  }
+
+  showDialogToAdd() {
+    this.newSong = true;
+    this.song = new Song();
+    this.songFile = null;
+    this.displayDialog = true;
+  }
+
+  saveSong() {
+    let songs = [...this.albumSongs];
+    let files = [...this.albumSongsFiles];
+    if(this.newSong) {
+      songs.push(this.song);
+      files.push(this.songFile);
+    } else {
+      let index = this.albumSongs.indexOf(this.selectedSong);
+      songs[index] = this.song;
+      files[index] = this.songFile;
+    }
+    this.albumSongs = songs;
+    this.albumSongsFiles = files;
+    this.song = null;
+    this.songFile = null;
+    this.displayDialog = false;
+  }
+
+  deleteSong() {
+    let index = this.albumSongs.indexOf(this.selectedSong);
+    this.albumSongs = this.albumSongs.filter((val, i) => i != index);
+    this.albumSongsFiles = this.albumSongsFiles.filter((val, i) => i != index);
+    this.song = null;
+    this.songFile = null;
+    this.displayDialog = false;
+  }
+
+  onRowSelect(event) {
+    this.newSong = false;
+    this.song = this.cloneSong(event.data);
+    let index = this.albumSongs.indexOf(this.song);
+    this.files.push(this.albumSongsFiles[index]);
+    this.displayDialog = true;
+  }
+
+  cloneSong(s: Song): Song {
+    let song = new Song();
+    for(let prop in s) {
+      song[prop] = s[prop];
+    }
+
+    return song;
+  }
+
+  onFileRemove() {
+    this.songFile = null;
   }
 
   onAlbumCoverFileSelected(event) {
-    this.albumCoverFile = <File>event.target.files[0];
+    this.albumCoverFile = <File>event.files[0];
     console.log(this.albumCoverFile);
+  }
+
+  onSongAudioFileSelected(event) {
+    this.songFile = <File>event.files[0];
+    console.log(this.songFile);
   }
 
   async submitAlbum(form) {
@@ -55,9 +134,9 @@ export class AlbumFormComponent implements OnInit {
     }
     try {
       console.log(this.album);
-      this.message = "Album feltöltése folyamatban";
+      this.showMsgInfo();
       this.album = await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);
-      this.message = "Album feltöltése sikeres";
+      this.showMsgSuccess();
       for(var i = 0; i < this.albumSongs.length; i++) {
         console.log("Try to upload song titled " + this.albumSongs[i].title);
         await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenre,  this.albumKeywords);
@@ -65,48 +144,23 @@ export class AlbumFormComponent implements OnInit {
       }
       this.route.navigate(['/album/list']);
     } catch (e) {
-      this.message = "Album feltöltése sikertelen";
+      this.showMsgError();
       console.log(e);
     }
   }
 
-  onSongAudioFileSelected(event) {
-    this.currentSongFile = <File>event.target.files[0];
-    console.log(this.currentSongFile);
+  showMsgInfo() {
+    this.msgs = [];
+    this.msgs.push({severity:'info', summary:'Album feltöltés folyamatban', detail:''});
   }
 
-  submitSong(form) {
-    if (!form.valid) {
-      return;
-    }
-
-    if (this.currentSong.id === 0 && !(this.albumSongs.includes(this.currentSong))) {
-      this.albumSongs.push(this.currentSong);
-      this.albumSongsFiles.push(this.currentSongFile);
-    }
-
-    console.log("Song titled " + this.currentSong.title + " with file " + this.currentSongFile.name + " has been saved");
-    this.currentSong = new Song();
-    this.currentSongFile = null;
-    this.showNewSong = false;
+  showMsgSuccess() {
+    this.msgs = [];
+    this.msgs.push({severity:'success', summary:'Sikeres album feltöltés', detail:''});
   }
 
-  editSong(song: Song) {
-    this.currentSong = song;
-    var index = this.albumSongs.indexOf(song, 0)
-    this.currentSongFile = this.albumSongsFiles[index];
-    this.showNewSong = true;
-  }
-
-  deleteSong(song: Song) {
-    var index = this.albumSongs.indexOf(song, 0);
-    if(index > -1) {
-      this.albumSongs.splice(index, 1);
-      this.albumSongsFiles.splice(index, 1);
-    }
-  }
-
-  toggle() {
-    this.showNewSong = !this.showNewSong;
+  showMsgError() {
+    this.msgs = [];
+    this.msgs.push({severity:'error', summary:'Album feltöltés sikertelen', detail:''});
   }
 }

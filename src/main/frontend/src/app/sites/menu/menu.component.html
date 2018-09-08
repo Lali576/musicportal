@@ -1,46 +1,24 @@
-<mat-toolbar color="primary">
-  <button mat-button routerLink="/">
-    <i class="fas fa-music"></i>
-    Music Portal
-  </button>
+<p-toolbar>
+  <div *ngIf="authService.isLoggedIn" class="ui-toolbar-group-left">
+    <button pButton type="button" routerLink="/" icon="fas fa-music" label="Music Portal"></button>
+    <button pButton type="button" routerLink="/album/list" label="Albumok"></button>
+    <button pButton type="button" routerLink="/song/list" label="Zenék"></button>
+    <button pButton type="button" routerLink="/playlist/list" label="Playlist"></button>
+  </div>
+  <div *ngIf="!authService.isLoggedIn" class="ui-toolbar-group-left">
+    <button pButton type="button" routerLink="/" icon="fas fa-music" label="Music Portal"></button>
+  </div>
 
-  <span class="fill-remaining-space" fxHide="false" fxHide.gt-sm></span>
-  <div *ngIf="!authService.isLoggedIn" class="w-100" fxLayout="row" fxShow="false" fxShow.gt-sm>
-      <span class="fill-remaining-space"></span>
-
-      <form>
-        <input type="text" placeholder="Keresés">
-      </form>
-
-      <button mat-button routerLink="/login">Bejelentkezés</button>
-      <button mat-button routerLink="/register">Regisztrálás</button>
+  <div class="ui-toolbar-group-right">
+    <div *ngIf="!authService.isLoggedIn">
+      <button pButton type="button" routerLink="/login" label="Bejelentkezés" icon="fas fa-sign-in-alt" style="margin-left:.25em;"></button>
+      <button pButton type="button" routerLink="/register" label="Regisztráció" icon="fas fa-user" style="margin-left:.25em;"></button>
+    </div>
+    <div *ngIf="authService.isLoggedIn">
+      <button pButton type="button" [routerLink]="['/user', authService.loggedInUser.id]" label="{{authService.loggedInUser.username}}" icon="fas fa-user">
+      </button>
+      <button pButton type="button" (click)="logout()" label="Kijelentkezés" icon="fas fa-sign-out-alt" style="margin-left:.25em;"></button>
+    </div>
   </div>
-  <div *ngIf=authService.isLoggedIn class="w-100" fxLayout="row" fxShow="false" fxShow.gt-sm>
-    <button mat-button routerLink="/album/list">Albumok</button>
-    <button mat-button routerLink="/song/list">Zenék</button>
-    <button mat-button routerLink="/playlist/list">Playlist</button>
-    <span class="fill-remaining-space"></span>
-    <form>
-      <input type="text" placeholder="Keresés">
-    </form>
-    <button mat-button [routerLink]="['/user', authService.loggedInUser.id]">
-      <img *ngIf="authService.loggedInUser.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + authService.loggedInUser.iconFileGdaId}}" height="35px" width="35px" style="border: solid 3px white; margin: 10px; border-radius: 5px;">
-      <img *ngIf="authService.loggedInUser.iconFileGdaId === ''" class="fas fa-user fa-2x" height="35px" width="35px" style="border: solid 3px white; margin: 5px; border-radius: 5px;">
-      <span>{{authService.loggedInUser.username}}</span>
-    </button>
-    <button mat-button (click)="logout()">Kijelentkezés</button>
-  </div>
-  <button mat-icon-button [matMenuTriggerFor]="menu" fxHide="false" fxHide.gt-sm>
-    <mat-icon>menu</mat-icon>
-  </button>
-</mat-toolbar>
-<mat-menu xPosition="before" #menu="matMenu">
-  <div *ngIf="!authService.isLoggedIn">
-    <button mat-button routerLink="/login">Bejelentkezés</button>
-    <button mat-button routerLink="/register">Regisztrálás</button>
-  </div>
-  <div *ngIf="authService.isLoggedIn">
-    <button mat-button (click)="logout()">Kijelentkezés</button>
-  </div>
-</mat-menu>
+</p-toolbar>
 
