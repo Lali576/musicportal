@@ -1,6 +1,7 @@
 <h1 class="first">Regisztráció</h1>
+<p-messages [(value)]="msgs"></p-messages>
   <form (submit)="submit(f)" #f="ngForm">
-    <p-panel>
+    <p-panel [showHeader]="false">
       <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
@@ -9,6 +10,7 @@
           <div class="ui-grid-col-6">
             <input name="usernameText"
                    pInputText type="text"
+                   pTooltip="Adjon meg egy min. 5 és max. 30 karakteres felhasználónevet!"
                    [(ngModel)]="user.username"
                    #usernameText="ngModel"
                    placeholder="Felhasználónév"
@@ -20,18 +22,22 @@
           <div class="ui-grid-col-4">
             <p-message
               severity="error"
-              text="Felhasználónév szükséges!"
+              [text]="usernameText.errors['required'] ? 'Adjon meg egy felhasználónevet!' :
+                    usernameText.errors['pattern'] ? 'A megadott felhasználónév nem megfelelő!' :
+                    usernameText.errors['minlength'] ? 'A megadott felhasználónév kevesebb, mint 5 karakter!' :
+                    usernameText.errors['maxlength'] ? 'A megadott felhasználónév több, mint 30 karakter!' : ''"
               *ngIf="usernameText.invalid&&usernameText.dirty">
             </p-message>
           </div>
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            E-amil cím *:
+            E-mail cím *:
           </div>
           <div class="ui-grid-col-6">
             <input name="emailAddressText"
                    pInputText type="email"
+                   pTooltip="Adja meg az kívánt e-mail címét!"
                    [(ngModel)]="user.emailAddress"
                    #emailAddressText="ngModel"
                    placeholder="E-mail cím"
@@ -42,8 +48,29 @@
           <div class="ui-grid-col-4">
             <p-message
               severity="error"
-              text="E-mail cím szükséges!"
+              [text]="emailAddressText.errors['required'] ? 'Adjon meg egy e-mail címet!' :
+                      emailAddressText.errors['pattern'] ? 'A megadott e-mail cím nem megfelelő!' :
+                      emailAddressText.errors['minlenght'] ? 'A megadott e-mail cím kevesebb, mint 5 karakter!' : ''"
               *ngIf="emailAddressText.invalid&&emailAddressText.dirty">
+            </p-message>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            E-mail cím megerősítés *:
+          </div>
+          <div class="ui-grid-col-6">
+            <input name="emailAddressConfirmText"
+                   pInputText type="email"
+                   pTooltip="Megadott e-mail cím megerősítése"
+                   #emailAddressConfirmText
+                   placeholder="E-mail cím megerősítés"
+                   required
+                   pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+                   minlength="5" />
+          </div>
+          <div class="ui-grid-col-4">
+            <p-message>
             </p-message>
           </div>
         </div>
@@ -54,6 +81,7 @@
           <div class="ui-grid-col-6">
             <input name="passwordText"
                    pInputText type="password"
+                   pTooltip="Adjon megy egy min. 6 és max. 15 karakteres jelszót!"
                    [(ngModel)]="password"
                    #passwordText="ngModel"
                    placeholder="Jelszó"
@@ -65,8 +93,30 @@
           <div class="ui-grid-col-4">
             <p-message
               severity="error"
-              [text]="passwordText.errors['required'] ? 'Adja meg a jelszót!' : passwordText.errors['minlength'] ? 'Kevés karakter!' : ''"
+              [text]="passwordText.errors['required'] ? 'Adja meg a jelszót!' :
+              passwordText.errors['minlength'] ? 'A megadott jelszó kevesebb, mint 5 karakter!' :
+              passwordText.errors['maxlenght'] ? 'A megadott jelszó több, mint 15 karakter!' : ''"
               *ngIf="passwordText.invalid&&passwordText.dirty">
+            </p-message>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2">
+            Jelszó megerősítés *:
+          </div>
+          <div class="ui-grid-col-6">
+            <input name="passwordConfirmText"
+                   pInputText type="password"
+                   pTooltip="Megadott jelszó megerősítése"
+                   #passwordConfirmText
+                   placeholder="Jelszó megerősítés"
+                   required
+                   pattern="[0-9A-Za-z@$_!.]*"
+                   minlength="6"
+                   maxlength="15" />
+          </div>
+          <div class="ui-grid-col-4">
+            <p-message>
             </p-message>
           </div>
         </div>
@@ -77,6 +127,7 @@
           <div class="ui-grid-col-6">
            <input name="fullNameText"
                   pInputText type="text"
+                  pTooltip="Adja meg teljes nevét!"
                   [(ngModel)]="user.fullName"
                   #fullNameText="ngModel"
                   placeholder="Teljes név" />
@@ -88,6 +139,7 @@
           </div>
           <div class="ui-grid-col-6">
             <p-fileUpload
+              pTooltip="Adja meg a kívánt ikon képét!"
               (onSelect)="onFileSelected($event)"
               (onClear)="onFileRemove()"
               (onRemove)="onFileRemove()"
@@ -106,20 +158,35 @@
           </div>
           <div class="ui-grid-col-6">
             <p-dropdown name="favGenreId"
+                        pTooltip="Válassza ki a kedvenc zenei műfaját!"
                         [options]="genres"
                         [(ngModel)]="user.favGenreId"
                         #favGenre="ngModel"
                         [autoWidth]="false"
                         optionLabel="name"
-                        [required]="true"
+                        [required]="false"
             ></p-dropdown>
           </div>
           <div class="ui-grid-col-4">
             <p-message
               severity="error"
-              text="Válassza ki kedvenc műfaját"
+              text="Válassza ki kedvenc műfaját!"
               *ngIf="favGenre.invalid&&favGenre.dirty">
             </p-message>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2"></div>
+          <div class="ui-grid-responsive">
+            <p-checkbox
+              name="isArtistCheckbox"
+              [(ngModel)]="isArtist"
+              #isArtistCheckbox = "ngModel"
+              pTooltip="Az oldalra előadókként való regisztálás során lehetősége lesz a továbbiakban saját szerzeményeit feltőlteni és megosztani!"
+              binary="true"></p-checkbox>
+          </div>
+          <div class="ui-grid-col-2">
+            Jelentkezem előadóként
           </div>
         </div>
         <div class="ui-grid-row">

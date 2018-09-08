@@ -1,15 +1,42 @@
 <h1 class="first">Bejelentkezés</h1>
+<p-messages [(value)]="msgs"></p-messages>
 <form (submit)="submit(f)" #f="ngForm">
-  <p-panel>
+  <p-panel [showHeader]="false">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
       <div class="ui-grid-row">
         <div class="ui-grid-col-4">
-          <input name="usernameText" type="text" pInputText placeholder="Felhasználónév" [(ngModel)]="username" #usernameText="ngModel"/>
+          <input
+            name="usernameText"
+            pInputText type="text"
+            [(ngModel)]="username"
+            #usernameText="ngModel"
+            placeholder="Felhasználónév"
+            required/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="usernameText.errors['required'] ? 'Adja meg a felhasználónevét!' : ''"
+            *ngIf="usernameText.invalid&&usernameText.dirty">
+          </p-message>
         </div>
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-4">
-          <input name="passwordText" type="password" pInputText placeholder="Jelszó" [(ngModel)]="password" #passwordtext="ngModel"/>
+          <input
+            name="passwordText"
+            pInputText type="password"
+            [(ngModel)]="password"
+            #passwordText="ngModel"
+            placeholder="Jelszó"
+            required/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="passwordText.errors['required'] ? 'Adja meg a jelszavát!' : ''"
+            *ngIf="passwordText.invalid&&passwordText.dirty">
+          </p-message>
         </div>
       </div>
       <div class="ui-grid-row">

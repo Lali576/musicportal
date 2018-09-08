@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
 import {Keyword} from "../../../model/keywords/keyword";
+import {Message} from "primeng/api";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   username: string = "";
   password: string = "";
-  message: string = "";
+  msgs: Message[] = [];
   keyword: Keyword = new Keyword();
   keywords: Keyword[] = [];
 
@@ -30,14 +31,30 @@ export class LoginComponent implements OnInit {
       return;
     }
     try {
-      this.message = "Bejelentkezés folyamatban";
+      this.showMsgInfo()
       await this.authService.login(this.username, this.password);
+      this.showMsgSuccess()
       console.log("Successful logging");
       this.router.navigate(['/user', this.authService.loggedInUser.id]);
     } catch (e) {
-      this.message = "Sikertelen bejelentkezés";
+      this.showMsgError()
       console.log("Error! Unsuccessful logging")
       console.log(e);
     }
+  }
+
+  showMsgInfo() {
+    this.msgs = [];
+    this.msgs.push({severity:'info', summary:'Bejelentkezés folyamatban', detail:''});
+  }
+
+  showMsgSuccess() {
+    this.msgs = [];
+    this.msgs.push({severity:'success', summary:'Sikeres bejelentkezés', detail:''});
+  }
+
+  showMsgError() {
+    this.msgs = [];
+    this.msgs.push({severity:'error', summary:'Bejelentkezés sikertelen', detail:''});
   }
 }

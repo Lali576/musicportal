@@ -16,6 +16,9 @@ import { DropdownModule } from "primeng/primeng";
 import { PanelModule} from "primeng/panel";
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from "primeng/button";
+import { TooltipModule } from 'primeng/tooltip';
+import { CheckboxModule } from 'primeng/checkbox';
+import {MessagesModule} from 'primeng/messages';
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -111,7 +114,11 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
     DropdownModule,
     PanelModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    TooltipModule,
+    CheckboxModule,
+    MessagesModule
+
   ],
   providers: [AuthService,
               UserService,
