@@ -22,6 +22,8 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from "primeng/dialog";
 import { DataViewModule } from 'primeng/dataview';
 import { ConfirmDialogModule } from "primeng/primeng";
+import { ToastModule } from 'primeng/toast';
+import { ChipsModule } from 'primeng/chips';
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -60,7 +62,6 @@ import { SearchComponent } from './sites/search/search.component';
 import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
 import { SearchSongComponent } from './sites/search/search-song/search-song.component';
 import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
-import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -117,7 +118,8 @@ import { ToastModule } from 'primeng/toast';
     DialogModule,
     DataViewModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    ChipsModule
   ],
   providers: [AuthService,
               UserService,

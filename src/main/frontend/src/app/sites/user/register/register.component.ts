@@ -6,6 +6,7 @@ import {Genre} from "../../../model/genre";
 import {UserKeyword} from "../../../model/keywords/userkeyword";
 import {GenreService} from "../../../service/genre.service";
 import {Message} from 'primeng/components/common/api';
+import {Keyword} from "../../../model/keywords/keyword";
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,7 @@ export class RegisterComponent implements OnInit {
   msgs: Message[] = [];
   isArtist: boolean = false;
   userIconFile: File = null;
-  userKeywords: UserKeyword[] = [];
+  keywords: string[] = [];
   genres: Genre[] = [];
 
   constructor(
@@ -60,8 +61,14 @@ export class RegisterComponent implements OnInit {
       } else {
         this.user.role = "USER";
       }
+      let userKeywords: UserKeyword[] = [];
+      for(let keyword of this.keywords) {
+        var userKeyword: UserKeyword = new UserKeyword();
+        userKeyword.word = keyword;
+        userKeywords.push(userKeyword);
+      }
       this.showMsgInfo()
-      await this.authService.register(this.user, this.password, this.userIconFile, this.userKeywords);
+      await this.authService.register(this.user, this.password, this.userIconFile, userKeywords);
       console.log("successful registration");
       this.showMsgSuccess()
       console.log("Try to login with user named " + this.authService.loggedInUser.username + " and with number id" + this.authService.loggedInUser.id);

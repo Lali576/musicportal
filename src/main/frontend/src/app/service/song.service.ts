@@ -96,9 +96,13 @@ export class SongService {
     ).toPromise();
   }
 
-  deleteSong(id: number) {
-    return this.http.delete(`api/song/delete/${id}`).pipe(
+  deleteSong(song: Song) {
+    console.log("Try to delete song titled " + song.title);
+    var id: number = song.id;
+    return this.http.delete(
+      `api/song/delete/${id}`).pipe(
       tap(() => {
+        console.log("Deleting song titled " + song.title + " was successful");
         this.song = null;
       })
     ).toPromise();

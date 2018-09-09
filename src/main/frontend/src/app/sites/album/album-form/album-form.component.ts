@@ -7,13 +7,13 @@ import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";
 import {Genre} from "../../../model/genre";
 import {Router} from "@angular/router";
-import {forEach} from "@angular/router/src/utils/collection";
-import {Message} from "primeng/api";
+import {Message, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-album-form',
   templateUrl: './album-form.component.html',
-  styleUrls: ['./album-form.component.css']
+  styleUrls: ['./album-form.component.css'],
+  providers: [MessageService]
 })
 export class AlbumFormComponent implements OnInit {
   msgs: Message[] = [];
@@ -37,6 +37,7 @@ export class AlbumFormComponent implements OnInit {
     private albumService: AlbumService,
     private songService: SongService,
     private genreService: GenreService,
+    private messageService: MessageService,
     private route: Router
   ) {
     this.genreService.getGenres().subscribe(
@@ -135,32 +136,43 @@ export class AlbumFormComponent implements OnInit {
     try {
       console.log(this.album);
       this.showMsgInfo();
+      this.messageService.add({key: 'toast', severity:'info', summary: this.album.title + ' című album feltöltés alatt', detail:''});
       this.album = await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);
-      this.showMsgSuccess();
+      this.messageService.add({key: 'toast', severity:'success', summary: this.album.title + ' című album sikeresen feltöltve', detail:''});
       for(var i = 0; i < this.albumSongs.length; i++) {
-        console.log("Try to upload song titled " + this.albumSongs[i].title);
-        await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenre,  this.albumKeywords);
-        console.log("Uploading song titled " + this.albumSongs[i].title + " was successful");
+        try {
+          this.messageService.add({key: 'toast', severity:'info', summary: this.albumSongs[i].title + ' című dal feltöltés alatt', detail:''});
+          console.log("Try to upload song titled " + this.albumSongs[i].title);
+          await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenre, this.albumKeywords);
+          this.messageService.add({key: 'toast', severity:'success', summary: this.albumSongs[i].title + ' című dal sikeresen feltöltve', detail:''});
+          console.log("Uploading song titled " + this.albumSongs[i].title + " was successful");
+        } catch (e) {
+          this.messageService.add({key: 'toast', severity:'error', summary: this.albumSongs[i].title + ' című dal feltöltése sikertelen', detail:''});
+          console.log(e);
+        }
       }
+      this.showMsgSuccess();
+      await  new Promise( resolve => setTimeout(resolve, 1000) );
       this.route.navigate(['/album/list']);
     } catch (e) {
       this.showMsgError();
+      this.messageService.add({key: 'toast', severity:'error', summary: this.album.title + ' című album feltöltése sikertelen', detail:''});
       console.log(e);
     }
   }
 
   showMsgInfo() {
     this.msgs = [];
-    this.msgs.push({severity:'info', summary:'Album feltöltés folyamatban', detail:''});
+    this.msgs.push({severity:'info', summary:'Album és dalok feltöltése folyamatban', detail:''});
   }
 
   showMsgSuccess() {
     this.msgs = [];
-    this.msgs.push({severity:'success', summary:'Sikeres album feltöltés', detail:''});
+    this.msgs.push({severity:'success', summary:'Sikeres album és dalai feltöltés', detail:''});
   }
 
   showMsgError() {
     this.msgs = [];
-    this.msgs.push({severity:'error', summary:'Album feltöltés sikertelen', detail:''});
+    this.msgs.push({severity:'error', summary:'Album és dalok feltöltése sikertelen', detail:''});
   }
 }

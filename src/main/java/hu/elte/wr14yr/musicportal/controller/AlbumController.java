@@ -172,7 +172,5 @@ public class AlbumController {
         Album album = albumService.find(id);
         albumService.delete(album);
         logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
-
-        //return ResponseEntity.status(204).build();
     }
 }

@@ -1,51 +1,64 @@
-<div id="parent" style="display: flex;">
-  <div id="album" style="width: 300px;">
-    <h1 class="display-4">
-      Album:
-    </h1>
-    <div>
-      <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" class="float-left" width="100px" style="margin: 10px; border-radius: 5px;">
-      <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
-      <br>
-      <button>
-        Szerkesztés
-      </button>
-    </div>
-    <table class="table">
-      <tbody>
-        <tr>
-          <th>
-            Cím:
-          </th>
-          <td>
-            {{album.title}}
-          </td>
-        </tr>
-        <tr>
-          <th>
-            Dátum:
-          </th>
-          <td>
-            {{album.date}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div id="albumSongs" style="flex: 1;">
-    <h2>Dalok</h2>
-    <table class="table">
-      <tr *ngFor="let song of albumSongs">
-        <td>
-          <a mat-icon-button
-             [routerLink]="['/song', song.id]">
-            {{song.title}}
-          </a>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
-<button mat-raised-button routerLink="/album/list">
-  Vissza
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<button pButton routerLink="/album/list" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
+<h1 class="first">
+  Album
+</h1>
+<div>
+  <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" class="float-left" width="100px" style="margin: 10px; border-radius: 5px;">
+  <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
+  <br>
+  <button>
+    Szerkesztés
+  </button>
+</div>
+<table class="table">
+  <tbody>
+  <tr>
+    <th>
+      Cím:
+    </th>
+    <td>
+      {{album.title}}
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Dátum:
+    </th>
+    <td>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+<p-dataView *ngIf="albumSongs.length >= 1" #dv [value]="albumSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
+  <ng-template let-song pTemplate="listItem">
+    <div class="ui-g" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
+      <div class="ui-g-10 ui-md-7">
+        <div class="ui-g">
+          <a [routerLink]="['/song', song.id]" style="color: black;">
+            <h4 class="first">
+              {{song.title}}
+            </h4>
+          </a>
+        </div>
+      </div>
+      <div class="ui-g-6 ui-md-1">
+        <button
+          pButton type="button"
+          [routerLink]="['/song', song.id, 'update/details']"
+          style="width: 30px; height: 30px; margin-top: 10px;"
+          icon="fas fa-edit"></button>
+      </div>
+      <div class="ui-g-6 ui-md-1">
+        <button
+          pButton type="button"
+          (click)="deleteSongConfirm(song)"
+          style="width: 30px; height: 30px; margin-top: 10px; color: red;"
+          icon="fas fa-trash"></button>
+      </div>
+    </div>
+  </ng-template>
+</p-dataView>

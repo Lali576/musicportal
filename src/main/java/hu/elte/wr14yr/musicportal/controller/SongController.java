@@ -175,12 +175,9 @@ public class SongController {
 
     @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody void delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+    public @ResponseBody void delete(@PathVariable long id) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
-
-        logger.log(Level.INFO, "Get parameter 'album'");
-        Song song = mapper.readValue(request.getParameter("album"), Song.class);
-
+        Song song = songService.find(id);
         songService.delete(song);
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
 

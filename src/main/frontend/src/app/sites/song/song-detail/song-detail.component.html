@@ -1,3 +1,5 @@
+<button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
+</button>
 <div class="details">
   <h3>
     {{song.title}}
@@ -30,6 +32,3 @@
     max="1"></progress>
   <span class="player__time-total">{{total}}</span>
 </div>
-<button mat-raised-button routerLink="/song/list">
-  Vissza
-</button>

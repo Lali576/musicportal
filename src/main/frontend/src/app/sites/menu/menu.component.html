@@ -1,9 +1,9 @@
 <p-toolbar>
   <div *ngIf="authService.isLoggedIn" class="ui-toolbar-group-left">
-    <button pButton type="button" routerLink="/" icon="fas fa-music" label="Music Portal"></button>
-    <button pButton type="button" routerLink="/album/list" label="Albumok"></button>
-    <button pButton type="button" routerLink="/song/list" label="Zenék"></button>
-    <button pButton type="button" routerLink="/playlist/list" label="Playlist"></button>
+    <button pButton type="button" routerLink="/" icon="fas fa-music" label="Music Portal" style="margin-left: .25em;"></button>
+    <button pButton type="button" routerLink="/album/list" label="Albumok" style="margin-left: .25em;"></button>
+    <button pButton type="button" routerLink="/song/list" label="Dalok" style="margin-left: .25em;"></button>
+    <button pButton type="button" routerLink="/playlist/list" label="Lej. listák" style="margin-left: .25em;"></button>
   </div>
   <div *ngIf="!authService.isLoggedIn" class="ui-toolbar-group-left">
     <button pButton type="button" routerLink="/" icon="fas fa-music" label="Music Portal"></button>

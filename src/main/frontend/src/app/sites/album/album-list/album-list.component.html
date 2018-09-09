@@ -14,7 +14,8 @@
     <ng-template let-album pTemplate="listItem">
       <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
         <div class="ui-g-12 ui-md-3" style="text-align:center">
-          <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="75px">
+          <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="75px" style="border:5px solid black; border-radius: 5px;">
+          <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-4x" width="75px" style="border:5px solid black; border-radius: 5px;">
         </div>
         <div class="ui-g-10 ui-md-7">
           <div class="ui-g">
@@ -35,7 +36,7 @@
           <div class="ui-g-6 ui-md-1">
             <button
               pButton type="button"
-              (click)="deleteConfirm(album)"
+              (click)="deleteAlbumConfirm(album)"
               style="width: 50px; height: 50px; margin-top: 10px; color: red;"
               icon="fas fa-trash fa-2x"></button>
         </div>

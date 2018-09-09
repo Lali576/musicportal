@@ -1,4 +1,5 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
 import {Song} from "../../../model/song";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {SongService} from "../../../service/song.service";
@@ -20,7 +21,8 @@ export class SongDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private songService: SongService
+    private songService: SongService,
+    private location: Location
   ) {
   }
 
@@ -65,6 +67,9 @@ export class SongDetailComponent implements OnInit {
   }
 
   handleTimeUpdate(e) {
+    if (isNaN(this.audio.duration)) {
+      return;
+    }
     const elapsed = this.audio.currentTime;
     const duration = this.audio.duration;
     this.current = elapsed/duration;
@@ -74,13 +79,14 @@ export class SongDetailComponent implements OnInit {
 
 
   formatTime(seconds) {
-    if(isNaN(seconds)) {
-      return;
-    }
     let minutes:any = Math.floor(seconds/60);
     minutes = (minutes >= 10) ? minutes : "0" + minutes;
     seconds = Math.floor(seconds%60);
     seconds = (seconds >= 10) ? seconds : "0" + seconds;
     return minutes + ":" + seconds;
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

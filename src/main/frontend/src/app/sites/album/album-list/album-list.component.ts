@@ -14,7 +14,6 @@ import {async} from "q";
 export class AlbumListComponent implements OnInit {
 
   albums: Album[] = [];
-  msgs: Message[] = [];
 
   constructor(
     private albumService: AlbumService,
@@ -23,24 +22,27 @@ export class AlbumListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadAlbums();
+  }
+
+  loadAlbums() {
     this.albumService.getAllAlbums()
       .then(
         (albums: Album[]) => {
           this.albums = albums;
         }
-      )
+      );
   }
 
-  deleteConfirm(album: Album) {
+  deleteAlbumConfirm(album: Album) {
     this.confirmationService.confirm({
       message: "Biztos szeretné törölni az alábbi albumot: " + album.title + " ?",
-      header: 'Megerősítés',
+      header: 'Album törlés',
       icon: 'fas fa-exclamation-triangle',
       accept: () => {
         this.deleteAlbum(album);
       },
       reject: () => {
-
       }
     });
   }
@@ -48,11 +50,6 @@ export class AlbumListComponent implements OnInit {
  async deleteAlbum(album) {
     await this.albumService.deleteAlbum(album);
     this.messageService.add({severity:'success', summary: album.title + ' című album sikeresen törölve', detail:''});
-    this.albumService.getAllAlbums()
-      .then(
-        (albums: Album[]) => {
-          this.albums = albums;
-        }
-      )
+    this.loadAlbums();
   }
 }
