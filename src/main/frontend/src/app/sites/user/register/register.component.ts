@@ -6,7 +6,6 @@ import {Genre} from "../../../model/genre";
 import {UserKeyword} from "../../../model/keywords/userkeyword";
 import {GenreService} from "../../../service/genre.service";
 import {Message} from 'primeng/components/common/api';
-import {Keyword} from "../../../model/keywords/keyword";
 
 @Component({
   selector: 'app-register',

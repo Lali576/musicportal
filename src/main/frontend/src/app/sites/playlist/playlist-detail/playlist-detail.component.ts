@@ -39,4 +39,5 @@ export class PlaylistDetailComponent implements OnInit {
           this.songs = songs;
         }
       );
+  }
 }

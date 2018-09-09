@@ -80,7 +80,11 @@
           </div>
           <div class="ui-grid-col-6">
             <input name="passwordText"
-                   pInputText type="password"
+                   pPassword type="password"
+                   promptLabel=""
+                   weakLabel="Gyenge"
+                   mediumLabel="Közepes"
+                   strongLabel="Erős"
                    pTooltip="Adjon megy egy min. 6 és max. 15 karakteres jelszót!"
                    [(ngModel)]="password"
                    #passwordText="ngModel"
@@ -88,7 +92,7 @@
                    required
                    pattern="[0-9A-Za-z@$_!.]*"
                    minlength="6"
-                   maxlength="15" />
+                   maxlength="15"/>
           </div>
           <div class="ui-grid-col-4">
             <p-message
@@ -106,14 +110,18 @@
           </div>
           <div class="ui-grid-col-6">
             <input name="passwordConfirmText"
-                   pInputText type="password"
-                   pTooltip="Megadott jelszó megerősítése"
+                   pPassword type="password"
+                   promptLabel=""
+                   weakLabel="Gyenge"
+                   mediumLabel="Közepes"
+                   strongLabel="Erős"
+                   pTooltip="Adjon megy egy min. 6 és max. 15 karakteres jelszót!"
                    #passwordConfirmText
                    placeholder="Jelszó megerősítés"
                    required
                    pattern="[0-9A-Za-z@$_!.]*"
                    minlength="6"
-                   maxlength="15" />
+                   maxlength="15"/>
           </div>
           <div class="ui-grid-col-4">
             <p-message>
