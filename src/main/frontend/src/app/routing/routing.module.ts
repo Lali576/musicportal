@@ -105,7 +105,7 @@ const routes: Routes = [
     data: {roles: ['ARTIST']}
   },
   {
-    path: 'song',
+    path: 'song/list',
     component: SongListComponent,
     canActivate: [AuthGuard],
     data: {roles: ['ARTIST']}
