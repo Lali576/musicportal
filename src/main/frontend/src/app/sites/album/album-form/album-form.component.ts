@@ -152,7 +152,7 @@ export class AlbumFormComponent implements OnInit {
         }
       }
       this.showMsgSuccess();
-      await  new Promise( resolve => setTimeout(resolve, 1000) );
+      await new Promise( resolve => setTimeout(resolve, this.msgs) );
       this.route.navigate(['/album/list']);
     } catch (e) {
       this.showMsgError();

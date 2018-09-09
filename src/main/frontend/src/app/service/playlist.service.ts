@@ -16,7 +16,7 @@ const httpOptions = {
 @Injectable()
 export class PlaylistService {
 
-  playlist: Playlist;
+  playlist: Playlist = new Playlist();
 
   constructor(
     private http: HttpClient,
@@ -34,13 +34,11 @@ export class PlaylistService {
   }
 
   getPlaylist(id: number) {
-    this.http.get<Playlist>(`api/playlist/${id}`).subscribe(
-      (playlist: Playlist) => {
+    return this.http.get<Playlist>(`api/playlist/${id}`).pipe(
+      tap((playlist: Playlist) => {
         this.playlist = playlist;
-      }
-    );
-
-    return this.playlist;
+      })
+    ).toPromise();
   }
 
   getUserPlaylist(): Promise<Playlist[]> {

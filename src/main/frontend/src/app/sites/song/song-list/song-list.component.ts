@@ -20,14 +20,11 @@ export class SongListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.songService.getSongs()
-      .subscribe(songs => {
-        this.songs = songs;
-      });
+    this.loadSongs()
   }
 
   loadSongs() {
-    this.songService.getAllSongs()
+    this.songService.getSongsByUser()
       .then(
         (songs: Song[]) => {
           this.songs = songs;

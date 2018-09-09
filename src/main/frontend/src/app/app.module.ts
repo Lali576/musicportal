@@ -24,6 +24,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { ConfirmDialogModule } from "primeng/primeng";
 import { ToastModule } from 'primeng/toast';
 import { ChipsModule } from 'primeng/chips';
+import { PickListModule } from 'primeng/picklist';
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -119,7 +120,8 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
     DataViewModule,
     ConfirmDialogModule,
     ToastModule,
-    ChipsModule
+    ChipsModule,
+    PickListModule
   ],
   providers: [AuthService,
               UserService,

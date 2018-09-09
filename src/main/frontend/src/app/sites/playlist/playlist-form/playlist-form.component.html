@@ -1,57 +1,48 @@
-<!--
-<h1 class="display-2">Új lejátszási lista</h1>
-<div style="display: inline-block;">
-  <form (submit)="submitPlaylist(playlistForm)" #playlistForm="ngForm">
-    <div class="form-group">
-      <mat-form-field>
-        <input
-          name="nameText"
-          [(ngModel)]="modelPlaylist.name"
-          matInput type="text"
-          placeholder="Album címe"
-          required
-          #nameText="ngModel">
-        <mat-error *ngIf="nameText.invalid && (nameText.dirty || nameText.touched)">
-          Adja meg az album címét!
-        </mat-error>
-      </mat-form-field>
+<h1 class="first">Új lej. lista</h1>
+<p-messages [(value)]="msgs"></p-messages>
+<form (submit)="submitPlaylist(f)" #f="ngForm">
+  <p-panel>
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Lej. lista neve *:
+        </div>
+        <div class="ui-grid-col-4">
+          <input name="playlistNameText"
+                 pInputText type="text"
+                 pTooltip="Adja meg a feltölteni kívánt lej. lista nevét!"
+                 [(ngModel)]="playlist.name"
+                 #playlistNameText="ngModel"
+                 placeholder="Lej. lista neve"
+                 required />
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            text="Adja meg a lej. lista!"
+            *ngIf="playlistNameText.invalid&&playlistNameText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2"></div>
+        <div class="ui-grid-col-4">
+          <button
+            class="ui-button-raised ui-button-success"
+            pButton type="submit"
+            label="Feltöltés"
+            [disabled]="f.invalid">
+          </button>
+        </div>
+      </div>
     </div>
-
-    <button [disabled]="playlistForm.invalid" type="submit" mat-raised-button color="primary">Mentés</button>
-  </form>
-  <div>
-    <h2>
-      Eddigi zenék
-    </h2>
-    <table class="table">
-      <tr *ngFor="let song of modelSelectedSongs">
-        <td>
-          {{song.title}}
-        </td>
-        <td (click)="deleteSong(song)">
-          <mat-icon>
-            delete
-          </mat-icon>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div>
-    <h2>
-      Dalok
-    </h2>
-    <table class="table">
-      <tr *ngFor="let song of allSongs">
-        <td>
-          {{song.title}}
-        </td>
-        <td (click)="selectSong(song)">
-          <mat-icon>
-            done
-          </mat-icon>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
--->
+    <p-pickList [source]="songs" [target]="selectedSongs" [responsive]="true" filterBy="title"
+                dragdrop="true" dragdropScope="songs" sourceFilterPlaceholder="Search by brand" targetFilterPlaceholder="Search by brand" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+      <ng-template let-song pTemplate="item">
+        <div class="ui-helper-clearfix">
+          <div style="font-size:14px;font-weight: bold;text-align: center;margin:15px 5px;">{{song.title}}</div>
+        </div>
+      </ng-template>
+    </p-pickList>
+  </p-panel>
+</form>

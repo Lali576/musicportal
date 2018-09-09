@@ -123,7 +123,7 @@ const routes: Routes = [
     data: {roles: ['ARTIST']}
   },
   {
-    path: 'playlist',
+    path: 'playlist/list',
     component: PlaylistListComponent,
     canActivate: [AuthGuard],
     data: {roles: ['ARTIST', 'USER']}

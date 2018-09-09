@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
   isArtist: boolean = false;
   userIconFile: File = null;
   keywords: string[] = [];
+  userKeywords: UserKeyword[] = [];
   genres: Genre[] = [];
 
   constructor(
@@ -61,14 +62,13 @@ export class RegisterComponent implements OnInit {
       } else {
         this.user.role = "USER";
       }
-      let userKeywords: UserKeyword[] = [];
       for(let keyword of this.keywords) {
         var userKeyword: UserKeyword = new UserKeyword();
         userKeyword.word = keyword;
-        userKeywords.push(userKeyword);
+        this.userKeywords.push(userKeyword);
       }
       this.showMsgInfo()
-      await this.authService.register(this.user, this.password, this.userIconFile, userKeywords);
+      await this.authService.register(this.user, this.password, this.userIconFile, this.userKeywords);
       console.log("successful registration");
       this.showMsgSuccess()
       console.log("Try to login with user named " + this.authService.loggedInUser.username + " and with number id" + this.authService.loggedInUser.id);

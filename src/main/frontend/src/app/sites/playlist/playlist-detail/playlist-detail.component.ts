@@ -25,9 +25,18 @@ export class PlaylistDetailComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
       const id = +params.get('id');
-      this.playlist = await this.playlistService.getPlaylist(id);
-      this.songs = await this.songService.getSongsByPlaylist(this.playlist);
+      await this.playlistService.getPlaylist(id);
+      this.playlist = this.playlistService.playlist;
+      console.log(this.playlist.name);
+      this.loadSongs();
     })).subscribe();
   }
 
+  loadSongs() {
+    this.songService.getSongsByPlaylist(this.playlist)
+      .then(
+        (songs: Song[]) => {
+          this.songs = songs;
+        }
+      );
 }

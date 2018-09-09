@@ -1,43 +1,50 @@
-<!--
-<h1 class="display-2">
-  Lejátszási listáim:
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<h1 class="first">
+  Lejátszási listáim
 </h1>
 <div *ngIf="playlists.length === 0">
   <strong>
-    Magának még nincsenek lejátszási listái!
+    Magának még nincsenek albumai!
   </strong>
 </div>
 
-<div *ngIf="playlists.length >= 1" class="row">
-  <div class="col">
-    <table class="table">
-      <tbody>
-      <tr *ngFor="let playlist of playlists">
-        <td>
-          <a mat-icon-button
-             [routerLink]="['/playlist', playlist.id]">
-            {{playlist.name}}
-          </a>
-        </td>
-        <td>
-          <a mat-icon-button
-             [routerLink]="['/playlist', playlist.id, 'edit']">
-            <mat-icon>edit</mat-icon>
-          </a>
-        </td>
-        <td>
-          <a mat-icon-button
-             [routerLink]="['/playlist']" (click)="delete(playlist.id)">
-            <mat-icon>delete</mat-icon>
-          </a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+<div *ngIf="playlists.length >= 1">
+  <p-dataView #dv [value]="playlists" [paginator]="true" [rows]="10" paginatorPosition="both">
+    <ng-template let-playlist pTemplate="listItem">
+      <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+        <div class="ui-g-10 ui-md-7">
+          <div class="ui-g">
+            <a [routerLink]="['/playlist', playlist.id]" style="color: black;">
+              <h1 class="first">
+                {{playlist.name}}
+              </h1>
+            </a>
+          </div>
+        </div>
+        <div class="ui-g-6 ui-md-1">
+          <button
+            pButton type="button"
+            [routerLink]="['/playlist', playlist.id, 'update/details']"
+            style="width: 50px; height: 50px; margin-top: 10px;"
+            icon="fas fa-edit fa-2x"></button>
+        </div>
+        <div class="ui-g-6 ui-md-1">
+          <button
+            pButton type="button"
+            (click)="deletePlaylistConfirm(playlist)"
+            style="width: 50px; height: 50px; margin-top: 10px; color: red;"
+            icon="fas fa-trash fa-2x"></button>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
 </div>
-
-<a mat-raised-button color="primary" routerLink="/playlist/new">
-  Új lejátszási lista
-</a>
--->
+<button
+  routerLink="/playlist/new"
+  pButton type="button"
+  icon="fas fa-plus"
+  class="ui-button-success"
+  label="Új album"
+  style="margin-top: 10px;">
+</button>

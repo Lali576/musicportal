@@ -26,7 +26,7 @@ export class AlbumListComponent implements OnInit {
   }
 
   loadAlbums() {
-    this.albumService.getAllAlbums()
+    this.albumService.getUserAlbums()
       .then(
         (albums: Album[]) => {
           this.albums = albums;

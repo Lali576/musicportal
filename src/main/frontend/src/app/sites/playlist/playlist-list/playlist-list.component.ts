@@ -1,33 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import {Playlist} from "../../../model/playlist";
 import {PlaylistService} from "../../../service/playlist.service";
-import {AuthService} from "../../../service/auth.service";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-playlist-list',
   templateUrl: './playlist-list.component.html',
-  styleUrls: ['./playlist-list.component.css']
+  styleUrls: ['./playlist-list.component.css'],
+  providers: [ConfirmationService, MessageService]
 })
 export class PlaylistListComponent implements OnInit {
 
-  playlist: Playlist[] = [];
+  playlists: Playlist[] = [];
 
   constructor(
     private playlistService: PlaylistService,
-    private authService: AuthService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
-    this.playlistService.getAllPlaylist()
+    this.playlistService.getUserPlaylist()
       .then(
-        (playlist: Playlist[]) => {
-          this.playlist = playlist;
+        (playlists: Playlist[]) => {
+          this.playlists = playlists;
         }
       )
   }
 
-  delete(id: number) {
-    //this.playlistService.deletePlaylist(id);
-  }
+  deletePlaylistConfirm(playlist) {
 
+  }
 }

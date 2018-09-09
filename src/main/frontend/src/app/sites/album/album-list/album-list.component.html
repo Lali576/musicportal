@@ -8,7 +8,6 @@
     Magának még nincsenek albumai!
   </strong>
 </div>
-
 <div *ngIf="albums.length >= 1">
   <p-dataView #dv [value]="albums" [paginator]="true" [rows]="10" paginatorPosition="both">
     <ng-template let-album pTemplate="listItem">

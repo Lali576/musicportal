@@ -1,58 +1,68 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Playlist} from "../../../model/playlist";
 import {Song} from "../../../model/song";
 import {SongService} from "../../../service/song.service";
+import {Message, MessageService} from "primeng/api";
+import {PlaylistService} from "../../../service/playlist.service";
+import {Router} from "@angular/router";
+import {PlaylistKeyword} from "../../../model/keywords/playlistkeyword";
 
 @Component({
   selector: 'app-playlist-form',
   templateUrl: './playlist-form.component.html',
-  styleUrls: ['./playlist-form.component.css']
+  styleUrls: ['./playlist-form.component.css'],
+  providers: [MessageService]
 })
-export class PlaylistFormComponent implements OnChanges {
-
-  @Input() playlist: Playlist;
-  @Input() songs: Song[] = [];
-  modelPlaylist: Playlist = null;
-  modelSelectedSongs: Song[] = [];
-  allSongs: Song[] = [];
-  @Output() onSubmit = new EventEmitter<object>();
+export class PlaylistFormComponent implements OnInit {
+  playlist: Playlist = new Playlist();
+  songs: Song[] = [];
+  selectedSongs: Song[] = [];
+  keywords: string[] = [];
+  playlistKeywords: PlaylistKeyword[] = [];
+  msgs: Message[] = [];
 
   constructor(
-    private songService: SongService
+    private playlistServive: PlaylistService,
+    private songService: SongService,
+    private router: Router
   ) { }
 
-  ngOnChanges() {
-    this.modelPlaylist = Object.assign({}, this.playlist);
-    this.modelSelectedSongs = Object.assign([], this.songs);
-
+  ngOnInit() {
     this.songService.getAllSongs()
-      .subscribe(albums => {
-        this.allSongs = albums;
+      .then((songs: Song[]) => {
+        this.songs = songs;
       });
   }
 
-  submitPlaylist(form) {
+  async submitPlaylist(form) {
     if(!form.valid) {
       return;
     }
-    this.onSubmit.emit({playlist: this.modelPlaylist, songs: this.modelSelectedSongs});
-  }
-
-  selectSong(song: Song) {
-    var id = this.modelSelectedSongs.push(song);
-
-    var index = this.allSongs.indexOf(song, 0);
-    if(index > -1 ) {
-      this.allSongs.splice(index, 1);
+    try {
+      console.log(this.playlist);
+      this.showMsgInfo();
+      this.playlist = await this.playlistServive.addPlaylist(this.playlist, this.selectedSongs, this.playlistKeywords);
+      this.showMsgSuccess();
+      await  new Promise( resolve => setTimeout(resolve, 1000) );
+      this.router.navigate(['/playlist/list']);
+    } catch (e) {
+      this.showMsgError();
+      console.log(e);
     }
   }
 
-  deleteSong(song: Song) {
-    var id = this.allSongs.push(song);
+  showMsgInfo() {
+    this.msgs = [];
+    this.msgs.push({severity:'info', summary:'Lejátszási lista feltöltése folyamatban', detail:''});
+  }
 
-    var index = this.modelSelectedSongs.indexOf(song, 0);
-    if(index > -1 ) {
-      this.modelSelectedSongs.splice(index, 1);
-    }
+  showMsgSuccess() {
+    this.msgs = [];
+    this.msgs.push({severity:'success', summary:'Sikeres Lejátszási lista feltöltés', detail:''});
+  }
+
+  showMsgError() {
+    this.msgs = [];
+    this.msgs.push({severity:'error', summary:'Lejátszási lista feltöltése sikertelen', detail:''});
   }
 }
