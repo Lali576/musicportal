@@ -35,7 +35,7 @@
 </table>
 <p-dataView *ngIf="albumSongs.length >= 1" #dv [value]="albumSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
   <ng-template let-song pTemplate="listItem">
-    <div class="ui-g" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
+    <div class="ui-g-12" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
       <div class="ui-g-10 ui-md-7">
         <div class="ui-g">
           <a [routerLink]="['/song', song.id]" style="color: black;">

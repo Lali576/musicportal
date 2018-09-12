@@ -1,7 +1,50 @@
-.details h3 {
+.cover {
   text-align: center;
-  padding: 50px 10px;
+  padding: 10px;
+  margin: 0px;
+}
+
+.cover div {
+  display: inline;
+  border: 5px solid rgb(24,107, 160);
+  border-radius: 20px;
+  width: 300px;
+  height: 300px;
+}
+
+.cover img {
+  width: 200px;
+  height: 200px;
+}
+
+.details {
+  text-align: center;
+  margin: 30px 0px;
+}
+
+.details div {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.details h3 {
+  padding: 30px 10px;
   margin: 0;
+}
+
+.details .details__left button,
+.details .details__right button {
+  background: transparent;
+  color: rgb(24,107,160);
+  border: none;
+  font-size: 35px;
+  outline: none;
+}
+
+.details .details__left button:hover,
+.details .details__right button:hover {
+  color: rgba(24, 107, 160, 0.7);
 }
 
 .player {
@@ -15,7 +58,10 @@
   margin-right: 10px;
 }
 
-.player .player__backward button, .player .player__forward button {
+.player .player__backward button,
+.player .player__forward button,
+.player .player__fast__backward button,
+.player .player__fast__forward button {
   background: transparent;
   border: 1px solid rgb(21,96,150);
   color: rgb(24,107,160);
@@ -26,17 +72,21 @@
   outline: none;
 }
 
-.player .player__backward button {
+.player .player__backward button,
+.player .player__fast__backward button {
   border-left: none;
 }
 
-.player .player__forward button {
+.player .player__forward button,
+.player .player__fast__forward button {
   border-right: none;
 }
 
 .player .player__main button:hover,
 .player .player__backward button:hover,
-.player .player__forward button:hover {
+.player .player__fast__backward button:hover,
+.player .player__forward button:hover,
+.player .player__fast__forward button:hover {
   color: rgba(24, 107, 160, 0.7);
   border: 1px solid rgba(21, 96, 150, 0.7);
 }
@@ -55,9 +105,30 @@
   outline: none;
 }
 
+.volume__bar {
+  margin-top: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.volume__bar div {
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.volume__bar .volume__down button,
+.volume__bar .volume__up button {
+  background: transparent;
+  color: rgb(21, 96, 150);
+  border: none;
+  font-size: 20px;
+  outline: none;
+}
+
 .progress_box {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 30px;
   color: rgb(21, 96, 150);
 }
 

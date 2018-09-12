@@ -71,7 +71,7 @@
             class="ui-button-raised ui-button-success"
             pButton type="submit"
             label="Feltöltés"
-            [disabled]="f.invalid">
+            [disabled]="f.invalid || albumSongs.length == 0">
           </button>
         </div>
       </div>
@@ -103,11 +103,11 @@
       </ng-template>
     </p-table>
 
-    <p-dialog header="Dal adatok" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="300">
+    <p-dialog header="Dal adatai" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="350">
       <div class="ui-g ui-fluid" *ngIf="song">
         <div class="ui-g-12">
           <div class="ui-g-4">
-            <label for="title">Cím</label>
+            <label for="title">Cím :</label>
           </div>
           <div class="ui-g-12">
             <input
@@ -115,15 +115,14 @@
               pInputText
               id="title"
               [(ngModel)]="song.title"
-              #songTitleText="ngModel"
-              required/>
+              #songTitleText="ngModel"s/>
           </div>
         </div>
         <div class="ui-g-12">
           <div class="ui-g-4">
-            <label for="fileUpload">Fájl</label>
+            <label for="fileUpload">Fájl :</label>
           </div>
-          <div class="ui-g-8">
+          <div class="ui-g-12">
             <p-fileUpload
               id="fileUpload"
               (onSelect)="onSongAudioFileSelected($event)"
@@ -142,8 +141,18 @@
       </div>
       <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fas fa-check" (click)="saveSong()" label="Mentés"></button>
-          <button type="button" pButton icon="fas fa-trash" (click)="deleteSong()" label="Törlés"></button>
+          <button
+            type="button" pButton
+            icon="fas fa-check"
+            (click)="saveSong()"
+            label="Mentés"
+            [disabled]="song.title === '' || songFile === null"></button>
+          <button
+            type="button" pButton
+            icon="fas fa-trash"
+            (click)="deleteSong()"
+            label="Törlés"
+            [disabled]="song.title === '' || songFile === null"></button>
         </div>
       </p-footer>
     </p-dialog>

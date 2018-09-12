@@ -26,6 +26,7 @@ import { ToastModule } from 'primeng/toast';
 import { ChipsModule } from 'primeng/chips';
 import { PickListModule } from 'primeng/picklist';
 import { PasswordModule } from 'primeng/password';
+import { SliderModule } from 'primeng/slider';
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -123,7 +124,8 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
     ToastModule,
     ChipsModule,
     PickListModule,
-    PasswordModule
+    PasswordModule,
+    SliderModule
   ],
   providers: [AuthService,
               UserService,

@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.user.favGenreId = this.genres[0];
   }
 
   onFileSelected(event) {
@@ -62,18 +62,19 @@ export class RegisterComponent implements OnInit {
         this.user.role = "USER";
       }
       for(let keyword of this.keywords) {
-        var userKeyword: UserKeyword = new UserKeyword();
+        let userKeyword: UserKeyword = new UserKeyword();
         userKeyword.word = keyword;
         this.userKeywords.push(userKeyword);
       }
-      this.showMsgInfo()
+      this.showMsgInfo();
       await this.authService.register(this.user, this.password, this.userIconFile, this.userKeywords);
       console.log("successful registration");
-      this.showMsgSuccess()
+      this.showMsgSuccess();
       console.log("Try to login with user named " + this.authService.loggedInUser.username + " and with number id" + this.authService.loggedInUser.id);
+      await new Promise( resolve => setTimeout(resolve, 1000) );
       this.router.navigate(['/user', this.authService.loggedInUser.id]);
     } catch (e) {
-      this.showMsgError()
+      this.showMsgError();
       console.log(e);
     }
   }

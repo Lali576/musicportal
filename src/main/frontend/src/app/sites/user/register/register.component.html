@@ -63,14 +63,18 @@
             <input name="emailAddressConfirmText"
                    pInputText type="email"
                    pTooltip="Megadott e-mail cím megerősítése"
-                   #emailAddressConfirmText
+                   [(ngModel)]="emailAddressConfirm"
+                   #emailAddressConfirmText = "ngModel"
                    placeholder="E-mail cím megerősítés"
                    required
                    pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
                    minlength="5" />
           </div>
           <div class="ui-grid-col-4">
-            <p-message>
+            <p-message
+              severity="error"
+              text="A két e-mail cím nem egyezik meg!"
+              *ngIf="(emailAddressConfirmText.invalid&&emailAddressConfirmText.dirty)||emailAddressConfirm!=user.emailAddress">
             </p-message>
           </div>
         </div>
@@ -115,8 +119,9 @@
                    weakLabel="Gyenge"
                    mediumLabel="Közepes"
                    strongLabel="Erős"
-                   pTooltip="Adjon megy egy min. 6 és max. 15 karakteres jelszót!"
-                   #passwordConfirmText
+                   pTooltip="Megadott jelszó megerősítése"
+                   [(ngModel)] = "passwordConfirm"
+                   #passwordConfirmText = "ngModel"
                    placeholder="Jelszó megerősítés"
                    required
                    pattern="[0-9A-Za-z@$_!.]*"
@@ -124,7 +129,10 @@
                    maxlength="15"/>
           </div>
           <div class="ui-grid-col-4">
-            <p-message>
+            <p-message
+              severity="error"
+              text="A két jelszó nem egyezik meg!"
+              *ngIf="(passwordConfirmText.invalid&&passwordConfirmText.dirty)||passwordConfirm!=password">
             </p-message>
           </div>
         </div>
@@ -147,7 +155,6 @@
           </div>
           <div class="ui-grid-col-6">
             <p-fileUpload
-              pTooltip="Adja meg a kívánt ikon képét!"
               (onSelect)="onFileSelected($event)"
               (onClear)="onFileRemove()"
               (onRemove)="onFileRemove()"
@@ -171,6 +178,8 @@
                         [(ngModel)]="user.favGenreId"
                         #favGenre="ngModel"
                         [autoWidth]="false"
+                        [filter]="true"
+                        scrollHeight="100px"
                         optionLabel="name"
                         [required]="false"
             ></p-dropdown>
@@ -190,7 +199,12 @@
           <div class="ui-grid-col-6">
             <p-chips name="userKeywordsChips"
                      [(ngModel)]="keywords"
-                     #userKeywords = "ngModel"></p-chips>
+                     #userKeywords = "ngModel"
+                     >
+              <ng-template let-item pTemplate="item">
+                #{{item}}<i style="margin-right:2em"></i>
+              </ng-template>
+            </p-chips>
           </div>
           <div class="ui-grid-col-4">
           </div>

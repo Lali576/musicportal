@@ -57,7 +57,7 @@ export class AlbumFormComponent implements OnInit {
       monthNamesShort: [ "jan","feb","már","ápr","máj","jún","júl","aug","szep","okt","nov","dec" ],
       today: 'Ma',
       clear: 'Törlés'
-    }
+    };
 
     this.cols = [
       { field: 'title', header: 'Cím' },
@@ -68,6 +68,7 @@ export class AlbumFormComponent implements OnInit {
     this.newSong = true;
     this.song = new Song();
     this.songFile = null;
+    this.files = [];
     this.displayDialog = true;
   }
 
@@ -84,8 +85,9 @@ export class AlbumFormComponent implements OnInit {
     }
     this.albumSongs = songs;
     this.albumSongsFiles = files;
-    this.song = null;
+    this.song = new Song();
     this.songFile = null;
+    this.files = [];
     this.displayDialog = false;
   }
 
@@ -102,7 +104,8 @@ export class AlbumFormComponent implements OnInit {
     this.newSong = false;
     this.song = this.cloneSong(event.data);
     let index = this.albumSongs.indexOf(this.song);
-    this.files.push(this.albumSongsFiles[index]);
+    this.songFile = this.albumSongsFiles[index];
+    this.files.push(this.songFile);
     this.displayDialog = true;
   }
 
@@ -139,7 +142,7 @@ export class AlbumFormComponent implements OnInit {
       this.messageService.add({key: 'toast', severity:'info', summary: this.album.title + ' című album feltöltés alatt', detail:''});
       this.album = await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);
       this.messageService.add({key: 'toast', severity:'success', summary: this.album.title + ' című album sikeresen feltöltve', detail:''});
-      for(var i = 0; i < this.albumSongs.length; i++) {
+      for(let i = 0; i < this.albumSongs.length; i++) {
         try {
           this.messageService.add({key: 'toast', severity:'info', summary: this.albumSongs[i].title + ' című dal feltöltés alatt', detail:''});
           console.log("Try to upload song titled " + this.albumSongs[i].title);
@@ -152,7 +155,7 @@ export class AlbumFormComponent implements OnInit {
         }
       }
       this.showMsgSuccess();
-      await new Promise( resolve => setTimeout(resolve, this.msgs) );
+      await new Promise( resolve => setTimeout(resolve, 1000) );
       this.route.navigate(['/album/list']);
     } catch (e) {
       this.showMsgError();

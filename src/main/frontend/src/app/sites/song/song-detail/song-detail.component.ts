@@ -4,6 +4,8 @@ import {Song} from "../../../model/song";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {SongService} from "../../../service/song.service";
 import {switchMap} from "rxjs/internal/operators";
+import {AlbumService} from "../../../service/album.service";
+import {Album} from "../../../model/album";
 
 @Component({
   selector: 'app-song-detail',
@@ -14,14 +16,17 @@ export class SongDetailComponent implements OnInit {
 
   song: Song = new Song();
   audio = new Audio();
+  album: Album = new Album();
   paused = true;
   elapsed;
   total;
   current;
+  volumeNumber: number = 50;
 
   constructor(
     private route: ActivatedRoute,
     private songService: SongService,
+    private albumService: AlbumService,
     private location: Location
   ) {
   }
@@ -32,9 +37,27 @@ export class SongDetailComponent implements OnInit {
       await this.songService.getSong(id);
       this.song = this.songService.song;
       this.audio.src = "https://docs.google.com/uc?export=download&id=" + this.song.audioFileGdaId;
+      console.log(this.song.audioFileGdaId);
       this.audio.load();
       this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
+      this.audio.volume = this.volumeNumber/100;
     })).subscribe();
+
+    this.album = this.albumService.album;
+  }
+
+  handleVolumeChange(e) {
+    this.audio.volume = this.volumeNumber/100;
+  }
+
+  handleVolumeDown() {
+    this.audio.volume = 0.0;
+    this.volumeNumber = 0;
+  }
+
+  handleVolumeUp() {
+    this.audio.volume = 1.0;
+    this.volumeNumber = 100;
   }
 
   handlePlay() {
@@ -58,12 +81,20 @@ export class SongDetailComponent implements OnInit {
     }
   }
 
+  handleFastBackward() {
+    this.audio.currentTime = 0;
+  }
+
   handleForward() {
     let elapsed = this.audio.currentTime;
     let duration = this.audio.duration;
     if(duration - elapsed >= 5) {
       this.audio.currentTime = elapsed + 5;
     }
+  }
+
+  handleFastForward() {
+    this.audio.currentTime = this.audio.duration;
   }
 
   handleTimeUpdate(e) {
@@ -76,7 +107,6 @@ export class SongDetailComponent implements OnInit {
     this.elapsed = this.formatTime(elapsed);
     this.total = this.formatTime(duration);
   }
-
 
   formatTime(seconds) {
     let minutes:any = Math.floor(seconds/60);
