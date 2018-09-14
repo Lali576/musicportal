@@ -27,6 +27,7 @@ import { ChipsModule } from 'primeng/chips';
 import { PickListModule } from 'primeng/picklist';
 import { PasswordModule } from 'primeng/password';
 import { SliderModule } from 'primeng/slider';
+import { ListboxModule } from 'primeng/listbox';
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -125,7 +126,8 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
     ChipsModule,
     PickListModule,
     PasswordModule,
-    SliderModule
+    SliderModule,
+    ListboxModule
   ],
   providers: [AuthService,
               UserService,
