@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,4 +40,37 @@ public class Genre {
                              inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Song.class)
     private List<Song> songs;
+
+    public static List<String> genres = new ArrayList<String>(){{
+        add("Alternative Rock");
+        add("Ambient");
+        add("Classical");
+        add("Country");
+        add("Dance & EDM");
+        add("Dancehall");
+        add("Deep House");
+        add("Disco");
+        add("Drum & Bass");
+        add("Dubstep");
+        add("Electronic");
+        add("Folk & Singer-Songwriter");
+        add("Hip-hop & Rap");
+        add("House");
+        add("Indie");
+        add("Jazz & Blues");
+        add("Latin");
+        add("Metal");
+        add("Piano");
+        add("Pop");
+        add("R&B & Soul");
+        add("Reggae");
+        add("Reggaeton");
+        add("Rock");
+        add("Soundtrack");
+        add("Techno");
+        add("Trance");
+        add("Trap");
+        add("Triphop");
+        add("World");
+    }};
 }
