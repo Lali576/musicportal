@@ -35,6 +35,12 @@ public class Album {
     @Column(name = "ALBUM_FOLDER_GDA_ID")
     private String albumFolderGdaId;
 
+    @Column(name = "ALBUM_SONGS_FOLDER_GDA_ID")
+    private String albumSongsFolderGdaId;
+
+    @Column(name = "ALBUM_COVER_FOLDER_GDA_ID")
+    private String albumCoverFolderGdaId;
+
     @Column(name = "COVER_FILE_GDA_ID")
     private String coverFileGdaId;
 

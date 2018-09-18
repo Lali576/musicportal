@@ -51,7 +51,7 @@ public class SongService {
             keywordService.createSongKeywords(songKeywords, savedSong);
         }
 
-        String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumFolderGdaId());
+        String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumSongsFolderGdaId());
 
         savedSong.setAudioFileGdaId(audioFileGdaId);
         savedSong = songRepository.save(savedSong);

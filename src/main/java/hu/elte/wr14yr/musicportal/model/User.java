@@ -56,6 +56,12 @@ public class User {
     @Column(name = "USER_FOLDER_GDA_ID")
     private String userFolderGdaId;
 
+    @Column(name = "USER_ALBUMS_FOLDER_GDA_ID")
+    private String userAlbumsFolderGdaId;
+
+    @Column(name = "USER_ICON_FOLDER_GDA_ID")
+    private String userIconFolderGdaId;
+
     @Column(name = "ICON_FILE_GDA_ID")
     private String iconFileGdaId;
 

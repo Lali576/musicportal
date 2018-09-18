@@ -1,5 +1,6 @@
 package hu.elte.wr14yr.musicportal.gda;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -79,6 +80,18 @@ public class GoogleDriveApi {
         System.out.println("File ID: " + folder.getId());
 
         return folder.getId();
+    }
+
+    public static OutputStream downloadFile(String fileGdaId) throws IOException, GeneralSecurityException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+
+        OutputStream outputStream = new ByteArrayOutputStream();
+        service.files().get(fileGdaId).executeMediaAndDownloadTo(outputStream);
+
+        return outputStream;
     }
 
     public static String updateFile(String gdaId, java.io.File newFilePath) throws GeneralSecurityException, IOException {

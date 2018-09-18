@@ -44,8 +44,14 @@ public class AlbumService {
         String albumFolderGdaId = fileService.uploadFolder(savedAlbum.getTitle(), user.getUserFolderGdaId());
         savedAlbum.setAlbumFolderGdaId(albumFolderGdaId);
 
+        String albumSongsFolderGdaId = fileService.uploadFolder("songs", albumFolderGdaId);
+        savedAlbum.setAlbumSongsFolderGdaId(albumSongsFolderGdaId);
+
+        String albumCoverFolderGdaId = fileService.uploadFolder("cover", albumFolderGdaId);
+        savedAlbum.setAlbumCoverFolderGdaId(albumCoverFolderGdaId);
+
         if(coverFile != null) {
-            String coverFileGdaId = fileService.uploadFile(coverFile, albumFolderGdaId);
+            String coverFileGdaId = fileService.uploadFile(coverFile, albumCoverFolderGdaId);
             savedAlbum.setCoverFileGdaId(coverFileGdaId);
         }
 
@@ -129,9 +135,12 @@ public class AlbumService {
         songService.deleteAllByAlbum(album);
         keywordService.deleteAllAlbumKeywordsByAlbum(album);
 
+        /*
         if(!(album.getCoverFileGdaId().equals(""))) {
             fileService.delete(album.getCoverFileGdaId());
         }
+        */
+
         fileService.delete(album.getAlbumFolderGdaId());
         albumRepository.deleteById(album.getId());
         logger.log(Level.INFO, "Album service: album titled " +

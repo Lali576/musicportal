@@ -137,7 +137,13 @@ export class AlbumFormComponent implements OnInit {
       return;
     }
     try {
-      console.log(this.album);
+      if(this.albumSongs.length <= 3) {
+        this.album.type = "SINGLE";
+      } else if (this.albumSongs.length >= 4 && this.albumSongs.length <= 6) {
+        this.album.type = "EP";
+      } else if (this.albumSongs.length >= 7) {
+        this.album.type = "LP";
+      }
       this.showMsgInfo();
       this.messageService.add({key: 'toast', severity:'info', summary: this.album.title + ' című album feltöltés alatt', detail:''});
       this.album = await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumKeywords);

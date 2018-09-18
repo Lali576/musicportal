@@ -32,11 +32,17 @@ public class Song {
     @Column(name = "TITLE", unique = true, nullable = false)
     private String title;
 
+    @Column(name="ORDER_NUMBER")
+    private int orderNumber;
+
     @Column(name = "LYRICS")
     private String lyrics;
 
     @Column(name = "AUDIO_FILE_GDA_ID")
     private String audioFileGdaId;
+
+    @Column(name = "DURATION")
+    private String duration;
 
     @ManyToOne(targetEntity = Album.class, optional = false)
     @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID")

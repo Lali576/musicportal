@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import sun.util.logging.PlatformLogger;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.GeneralSecurityException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +29,17 @@ public class FileService {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public OutputStream downloadFile(String fileGdaId) {
+        logger.log(Level.INFO, "");
+        try {
+            return GoogleDriveApi.downloadFile(fileGdaId);
+        } catch (GeneralSecurityException | IOException e) {
+            logger.log(Level.SEVERE, "");
+            e.printStackTrace();
+        }
         return null;
     }
 

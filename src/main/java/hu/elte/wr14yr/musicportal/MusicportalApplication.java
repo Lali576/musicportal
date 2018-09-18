@@ -21,8 +21,12 @@ public class MusicportalApplication implements WebMvcConfigurer {
 	@Autowired
 	private HandlerInterceptor authInterceptor;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
 	@EventListener
     private void seedGenreData(ContextRefreshedEvent event) {
+
         for (String name : Genre.genres) {
             String sql = "SELECT NAME FROM GENRES G WHERE G.NAME = '" + name + "' LIMIT 1";
             List<Genre> g = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
@@ -33,9 +37,6 @@ public class MusicportalApplication implements WebMvcConfigurer {
             }
         }
     }
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	private GenreRepository genreRepository;
