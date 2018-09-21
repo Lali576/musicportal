@@ -41,7 +41,7 @@ public class AlbumService {
             keywordService.createAlbumKeywords(albumKeywords, savedAlbum);
         }
 
-        String albumFolderGdaId = fileService.uploadFolder(savedAlbum.getTitle(), user.getUserFolderGdaId());
+        String albumFolderGdaId = fileService.uploadFolder(savedAlbum.getTitle(), user.getUserAlbumsFolderGdaId());
         savedAlbum.setAlbumFolderGdaId(albumFolderGdaId);
 
         String albumSongsFolderGdaId = fileService.uploadFolder("songs", albumFolderGdaId);

@@ -145,11 +145,11 @@ public class UserService {
         return loggedInUser;
     }
 
-    public User updateDetails(String fullName, Genre favGenre, List<UserKeyword> userKeywords) {
+    public User updateDetails(Country country, Genre favGenre, List<UserKeyword> userKeywords) {
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s  data are going to be updated");
 
-        loggedInUser.setFullName(fullName);
+        loggedInUser.setCountryId(country);
         loggedInUser.setFavGenreId(favGenre);
         loggedInUser = userRepository.save(loggedInUser);
         logger.log(Level.INFO, "User service: user named " +

@@ -1,11 +1,12 @@
 import {Genre} from "./genre";
+import {Country} from "./country";
 
 export class User {
   id: number = 0;
   username: string = "";
   emailAddress: string = "";
   favGenreId: Genre = null;
-  fullName: string = "";
+  country: Country = null;
   biography: string = "";
   userFolderGdaId: string = "";
   iconFileGdaId: string = "";

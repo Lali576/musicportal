@@ -5,11 +5,11 @@
 }
 
 .cover div {
-  display: inline;
+  display: inline-block;
   border: 5px solid rgb(24,107, 160);
   border-radius: 20px;
-  width: 300px;
-  height: 300px;
+  width: 210px;
+  height: 210px;
 }
 
 .cover img {

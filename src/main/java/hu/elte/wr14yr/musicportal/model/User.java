@@ -47,8 +47,9 @@ public class User {
     @JoinColumn(name = "FAV_GENRE_ID")
     private Genre favGenreId;
 
-    @Column(name = "FULL_NAME")
-    private String fullName;
+    @ManyToOne(targetEntity = Country.class, optional = false)
+    @JoinColumn(name = "COUNTRY_ID")
+    private Country countryId;
 
     @Column(name = "BIOGRAPHY")
     private String biography;

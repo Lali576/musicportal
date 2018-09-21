@@ -20,8 +20,10 @@ export class AlbumFormComponent implements OnInit {
   album: Album = new Album();
   albumCoverFile: File = null;
   albumGenre: Genre[] = [];
+  keywords: string[] = [];
   albumKeywords: AlbumKeyword[] = [];
   genres: Genre[] = [];
+  selectedGenres: Genre[] = [];
   displayDialog: boolean;
   song: Song = new Song();
   songFile: File = null;
@@ -143,6 +145,11 @@ export class AlbumFormComponent implements OnInit {
         this.album.type = "EP";
       } else if (this.albumSongs.length >= 7) {
         this.album.type = "LP";
+      }
+      for(let keyword of this.keywords) {
+        let albumKeyword: AlbumKeyword = new AlbumKeyword();
+        albumKeyword.word = keyword;
+        this.albumKeywords.push(albumKeyword);
       }
       this.showMsgInfo();
       this.messageService.add({key: 'toast', severity:'info', summary: this.album.title + ' című album feltöltés alatt', detail:''});

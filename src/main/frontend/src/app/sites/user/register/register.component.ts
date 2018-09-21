@@ -33,12 +33,12 @@ export class RegisterComponent implements OnInit {
     this.genreService.getGenres().subscribe(
       (genres: Genre[]) => {
         this.genres = genres;
+        this.user.favGenreId = this.genres[0];
       }
     )
   }
 
   ngOnInit() {
-    this.user.favGenreId = this.genres[0];
   }
 
   onFileSelected(event) {
@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
 
   onFileRemove() {
     this.userIconFile = null;
-    console.log("You're right...");
+    console.log("You're know you right...");
   }
 
   async submit(f) {

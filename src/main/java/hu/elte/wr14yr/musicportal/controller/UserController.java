@@ -5,6 +5,7 @@ import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
+import hu.elte.wr14yr.musicportal.model.Country;
 import hu.elte.wr14yr.musicportal.model.Genre;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
@@ -121,7 +122,7 @@ public class UserController {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/details'");
 
         logger.log(Level.INFO, "Get parameter 'fullName'");
-        String fullName = request.getParameter("fullName");
+        Country country = mapper.readValue(request.getParameter("country"), Country.class);
 
         logger.log(Level.INFO, "Get parameter 'favGenre'");
         Genre favGenre = mapper.readValue(request.getParameter("favGenre"), Genre.class);
@@ -130,7 +131,7 @@ public class UserController {
         UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords"), UserKeyword[].class);
         List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
-        User updatedUser = userService.updateDetails(fullName, favGenre, userKeywordsList);
+        User updatedUser = userService.updateDetails(country, favGenre, userKeywordsList);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/details'");
 
         return ResponseEntity.ok(updatedUser);

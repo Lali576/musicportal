@@ -6,9 +6,14 @@ import hu.elte.wr14yr.musicportal.repository.SongCommentRepository;
 import hu.elte.wr14yr.musicportal.repository.SongCounterRepository;
 import hu.elte.wr14yr.musicportal.repository.SongLikeRepository;
 import hu.elte.wr14yr.musicportal.repository.SongRepository;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.HTML;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +48,12 @@ public class SongService {
         song.setUser(user);
         song.setAlbum(album);
         song.setGenres(genres);
-
+        try {
+            AudioFile f = AudioFileIO.read(audioFile);
+            song.setDuration(f.getAudioHeader().getTrackLength());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Song savedSong = songRepository.save(song);
         logger.log(Level.INFO, "Song service: new song has been successfully saved in database MusicPortal");
 

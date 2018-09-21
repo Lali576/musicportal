@@ -3,4 +3,5 @@ export class Song {
   title: string = "";
   lyrics: string = "";
   audioFileGdaId = "";
+  duration: number = 0;
 }

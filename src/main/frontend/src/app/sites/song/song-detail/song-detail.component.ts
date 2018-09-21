@@ -18,9 +18,9 @@ export class SongDetailComponent implements OnInit {
   audio = new Audio();
   album: Album = new Album();
   paused = true;
-  elapsed;
+  elapsed = "0:00";
   total;
-  current;
+  current = 0;
   volumeNumber: number = 50;
 
   constructor(
@@ -37,9 +37,9 @@ export class SongDetailComponent implements OnInit {
       await this.songService.getSong(id);
       this.song = this.songService.song;
       this.audio.src = "https://docs.google.com/uc?export=download&id=" + this.song.audioFileGdaId;
-      console.log(this.song.audioFileGdaId);
       this.audio.load();
       this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
+      this.total = this.formatTime(this.song.duration);
       this.audio.volume = this.volumeNumber/100;
     })).subscribe();
 
@@ -98,14 +98,14 @@ export class SongDetailComponent implements OnInit {
   }
 
   handleTimeUpdate(e) {
-    if (isNaN(this.audio.duration)) {
-      return;
-    }
     const elapsed = this.audio.currentTime;
     const duration = this.audio.duration;
     this.current = elapsed/duration;
     this.elapsed = this.formatTime(elapsed);
-    this.total = this.formatTime(duration);
+
+    if(elapsed === this.audio.duration) {
+      this.paused = true;
+    }
   }
 
   formatTime(seconds) {
