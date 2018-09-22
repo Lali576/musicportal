@@ -243,14 +243,6 @@ public class UserService {
 
         keywordService.deleteAllUserKeywordsByUser(loggedInUser);
 
-        /*
-        if(!(loggedInUser.getIconFileGdaId().equals(""))) {
-            logger.log(Level.INFO, "User service: user's icon picture file is going to delete from Google Drive", loggedInUser.getIconFileGdaId());
-            fileService.delete(loggedInUser.getIconFileGdaId());
-            logger.log(Level.INFO, "User service: user's icon picture file has been successfully deleted from Google Drive");
-        }
-        */
-
         logger.log(Level.INFO, "User service: user's storing folder is going to delete from Google Drive", loggedInUser.getUserFolderGdaId());
         fileService.delete(loggedInUser.getUserFolderGdaId());
         logger.log(Level.INFO, "User service: user's storing folder has been successfully deleted from Google Drive");

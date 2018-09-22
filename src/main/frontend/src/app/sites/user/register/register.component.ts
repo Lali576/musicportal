@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
     this.countryService.getCountries().subscribe(
       (countries: Country[]) => {
         this.countries = countries;
-        this.user.country = this.countries[0];
+        this.user.countryId = this.countries[0];
       }
     );
   }

@@ -135,12 +135,6 @@ public class AlbumService {
         songService.deleteAllByAlbum(album);
         keywordService.deleteAllAlbumKeywordsByAlbum(album);
 
-        /*
-        if(!(album.getCoverFileGdaId().equals(""))) {
-            fileService.delete(album.getCoverFileGdaId());
-        }
-        */
-
         fileService.delete(album.getAlbumFolderGdaId());
         albumRepository.deleteById(album.getId());
         logger.log(Level.INFO, "Album service: album titled " +

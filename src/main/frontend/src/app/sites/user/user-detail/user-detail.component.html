@@ -1,10 +1,10 @@
+<p-confirmDialog acceptLabel="Igen" rejectLabel="Nem"></p-confirmDialog>
 <h1 class="display-4">Adataim:</h1>
     <div>
       <img *ngIf="user.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + user.iconFileGdaId}}" class="float-left" width="100px" style="margin: 10px; border-radius: 5px;">
       <img *ngIf="user.iconFileGdaId === ''" class="fas fa-user fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
       <br>
-      <button>
-        Szerkesztés
+      <button pButton type="button" label="Szerkeszt">
       </button>
     </div>
     <table class="table">
@@ -26,6 +26,12 @@
           </td>
         </tr>
         <tr>
+          <th>Ország:</th>
+          <td>
+            {{user.countryId.name}}
+          </td>
+        </tr>
+        <tr>
           <th>
             Kedvenc műfaj:
           </th>
@@ -33,10 +39,19 @@
             {{user.favGenreId.name}}
           </td>
         </tr>
+        <tr>
+          <th>Címkék:</th>
+          <td>
+            <button *ngFor="let userKeyword of user.userKeywords"
+                    pButton type="button"
+                    label="#{{userKeyword.word}}" style="margin-right: 0.5em;"></button>
+          </td>
+        </tr>
       <tr>
         <td>
-          <button (click)="delete()">
-            Töröl
+          <button pButton type="button"
+                  (click)="deleteUserConfirm()"
+                  label="Regisztráció törlés">
           </button>
         </td>
       </tr>

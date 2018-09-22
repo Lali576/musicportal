@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name = "COUNTRIES")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"users"})
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Country {
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(targetEntity = User.class, mappedBy = "country")
+    @OneToMany(targetEntity = User.class, mappedBy = "countryId")
     private List<User> users;
 
     //private String countryFlagFileGdaId;
