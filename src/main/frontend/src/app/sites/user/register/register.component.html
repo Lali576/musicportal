@@ -138,15 +138,20 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Teljes név :
+            Ország :
           </div>
           <div class="ui-grid-col-6">
-           <input name="fullNameText"
-                  pInputText type="text"
-                  pTooltip="Adja meg teljes nevét!"
-                  [(ngModel)]="user.fullName"
-                  #fullNameText="ngModel"
-                  placeholder="Teljes név" />
+            <p-dropdown name="country"
+                        pTooltip="Válassza ki az országát!"
+                        [options]="countries"
+                        [(ngModel)]="user.country"
+                        #country="ngModel"
+                        [autoWidth]="false"
+                        [filter]="true"
+                        scrollHeight="100px"
+                        optionLabel="name"
+                        [required]="false"
+            ></p-dropdown>
           </div>
         </div>
         <div class="ui-grid-row">

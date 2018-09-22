@@ -66,6 +66,7 @@ import { SearchComponent } from './sites/search/search.component';
 import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
 import { SearchSongComponent } from './sites/search/search-song/search-song.component';
 import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
+import {CountryService} from "./service/country.service";
 
 @NgModule({
   declarations: [
@@ -136,6 +137,7 @@ import { SearchPlaylistComponent } from './sites/search/search-playlist/search-p
               PlaylistService,
               SearchService,
               GenreService,
+              CountryService,
               AuthGuard],
   bootstrap: [AppComponent]
 })

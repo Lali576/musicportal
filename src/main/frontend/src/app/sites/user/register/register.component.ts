@@ -6,6 +6,8 @@ import {Genre} from "../../../model/genre";
 import {UserKeyword} from "../../../model/keywords/userkeyword";
 import {GenreService} from "../../../service/genre.service";
 import {Message} from 'primeng/components/common/api';
+import {Country} from "../../../model/country";
+import {CountryService} from "../../../service/country.service";
 
 @Component({
   selector: 'app-register',
@@ -24,10 +26,12 @@ export class RegisterComponent implements OnInit {
   keywords: string[] = [];
   userKeywords: UserKeyword[] = [];
   genres: Genre[] = [];
+  countries: Country[] = [];
 
   constructor(
     private authService: AuthService,
     private genreService: GenreService,
+    private countryService: CountryService,
     private router: Router
   ) {
     this.genreService.getGenres().subscribe(
@@ -35,7 +39,14 @@ export class RegisterComponent implements OnInit {
         this.genres = genres;
         this.user.favGenreId = this.genres[0];
       }
-    )
+    );
+
+    this.countryService.getCountries().subscribe(
+      (countries: Country[]) => {
+        this.countries = countries;
+        this.user.country = this.countries[0];
+      }
+    );
   }
 
   ngOnInit() {

@@ -1,7 +1,7 @@
 package hu.elte.wr14yr.musicportal.controller;
 
-import hu.elte.wr14yr.musicportal.model.Genre;
-import hu.elte.wr14yr.musicportal.repository.GenreRepository;
+import hu.elte.wr14yr.musicportal.model.Country;
+import hu.elte.wr14yr.musicportal.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +12,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/genre")
-public class GenreController {
+@RequestMapping("/api/country")
+public class CountryController {
     @Autowired
-    private GenreRepository genreRepository;
+    private CountryRepository countryRepository;
 
-    private Logger logger = Logger.getLogger(GenreController.class.getName());
+    private Logger logger = Logger.getLogger(CountryController.class.getName());
 
     @GetMapping("/list")
-    public ResponseEntity<Iterable<Genre>> list() {
+    public ResponseEntity<Iterable<Country>> list() {
         logger.log(Level.INFO, "Entrance: endpoint '/list'");
-        Iterable<Genre> genres = genreRepository.findAll();
+        Iterable<Country> countries = countryRepository.findAll();
         logger.log(Level.INFO, "Exit: endpoint '/list'");
 
-        return ResponseEntity.ok(genres);
+        return ResponseEntity.ok(countries);
     }
 }

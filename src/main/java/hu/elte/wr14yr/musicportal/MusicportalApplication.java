@@ -1,6 +1,8 @@
 package hu.elte.wr14yr.musicportal;
 
+import hu.elte.wr14yr.musicportal.model.Country;
 import hu.elte.wr14yr.musicportal.model.Genre;
+import hu.elte.wr14yr.musicportal.repository.CountryRepository;
 import hu.elte.wr14yr.musicportal.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -26,7 +28,6 @@ public class MusicportalApplication implements WebMvcConfigurer {
 
 	@EventListener
     private void seedGenreData(ContextRefreshedEvent event) {
-
         for (String name : Genre.genres) {
             String sql = "SELECT NAME FROM GENRES G WHERE G.NAME = '" + name + "' LIMIT 1";
             List<Genre> g = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
@@ -36,7 +37,20 @@ public class MusicportalApplication implements WebMvcConfigurer {
                 genreRepository.save(genre);
             }
         }
+
+        for (String name : Country.countries) {
+            String sql = "SELECT NAME FROM COUNTRIES C WHERE C.NAME = '" + name + "' LIMIT 1";
+            List<Country> c = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
+            if(c == null || c.size() <= 0) {
+                Country country = new Country();
+                country.setName(name);
+                countryRepository.save(country);
+            }
+        }
     }
+
+    @Autowired
+    private CountryRepository countryRepository;
 
 	@Autowired
 	private GenreRepository genreRepository;

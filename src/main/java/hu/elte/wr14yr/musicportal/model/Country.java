@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,4 +27,21 @@ public class Country {
     private List<User> users;
 
     //private String countryFlagFileGdaId;
+
+    public static List<String> countries = new ArrayList<String>(){{
+        add("Magyarország");
+        add("Nagy-Brittania");
+        add("Németország");
+        add("Franciaország");
+        add("Spanyolország");
+        add("Olaszország");
+        add("USA");
+        add("Kanada");
+        add("Brazília");
+        add("Oroszország");
+        add("India");
+        add("Kína");
+        add("Japán");
+        add("Ausztrália");
+    }};
 }
