@@ -58,9 +58,10 @@ export class UserService {
     ).toPromise();
   }
 
-  updatePassword(id: number, password: string): Promise<User> {
+  updatePassword(id: number, oldPassword: string, newPassword: string): Promise<User> {
     const formData = new FormData();
-    formData.append("password", password);
+    formData.append("oldPassword", oldPassword);
+    formData.append("newPassword", newPassword);
     return this.http.put<User>(
       `api/user/update/${id}/password`,
       formData
@@ -74,8 +75,10 @@ export class UserService {
 
   updateIconFile(id: number, iconFile: File): Promise<User> {
     const formData = new FormData();
-    formData.append(iconFile.name, iconFile, iconFile.name);
-    return this.http.put<User>(
+    if(iconFile !==  null) {
+      formData.append(iconFile.name, iconFile, iconFile.name);
+    }
+    return this.http.post<User>(
       `api/user/update/${id}/icon`,
       formData
     ).pipe(

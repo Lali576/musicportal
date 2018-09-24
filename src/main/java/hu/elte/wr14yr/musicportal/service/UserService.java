@@ -164,26 +164,31 @@ public class UserService {
         return loggedInUser;
     }
 
-    public User updatePassword(String password) {
+    public User updatePassword(String oldPassword, String newPassword) {
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s password is going to be changed");
-        String passSalt = password + loggedInUser.getSaltCode();
 
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(passSalt.getBytes(StandardCharsets.UTF_8));
-            String hashPassword = Base64.getEncoder().encodeToString(hash);
-            loggedInUser.setHashPassword(hashPassword);
-            loggedInUser = userRepository.save(loggedInUser);
-            logger.log(Level.INFO, "User service: user named " +
-                    loggedInUser.getUsername() + "'s password has been changed successfully");
+        logger.log(Level.INFO, "User service: checking old password validation");
 
-            return loggedInUser;
-        } catch(NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        if(isValid(loggedInUser, oldPassword)) {
+            String newPassSalt = newPassword + loggedInUser.getSaltCode();
+
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] hash = digest.digest(newPassSalt.getBytes(StandardCharsets.UTF_8));
+                String hashPassword = Base64.getEncoder().encodeToString(hash);
+                loggedInUser.setHashPassword(hashPassword);
+                loggedInUser = userRepository.save(loggedInUser);
+                logger.log(Level.INFO, "User service: user named " +
+                        loggedInUser.getUsername() + "'s password has been changed successfully");
+            } catch(NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.log(Level.SEVERE, "User service: Error! Old password in not equal!");
         }
 
-        return null;
+        return loggedInUser;
     }
 
     public User changeEmailAddress(String emailAddress) {
@@ -200,8 +205,9 @@ public class UserService {
     public User changeImageFile(File iconFile) {
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s icon image file is going to be changed");
+        String iconFileGdaId = "";
         if(iconFile != null) {
-            String iconFileGdaId = fileService.updateFile(loggedInUser.getIconFileGdaId(), iconFile);
+            iconFileGdaId = fileService.updateFile(loggedInUser.getIconFileGdaId(), iconFile);
             loggedInUser.setIconFileGdaId(iconFileGdaId);
         } else {
             fileService.delete(loggedInUser.getIconFileGdaId());

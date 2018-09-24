@@ -18,10 +18,8 @@ import { UserDetailComponent } from "../sites/user/user-detail/user-detail.compo
 import { SearchComponent } from "../sites/search/search.component";
 import {UserPasswordComponent} from "../sites/user/user-password/user-password.component";
 import {UserEmailComponent} from "../sites/user/user-email/user-email.component";
-import {UserIconComponent} from "../sites/user/user-icon/user-icon.component";
 import {UserBiographyComponent} from "../sites/user/user-biography/user-biography.component";
 import {UserEditComponent} from "../sites/user/user-edit/user-edit.component";
-import {AlbumCoverComponent} from "../sites/album/album-cover/album-cover.component";
 import {AlbumFormComponent} from "../sites/album/album-form/album-form.component";
 import {PlaylistFormComponent} from "../sites/playlist/playlist-form/playlist-form.component";
 
@@ -63,12 +61,6 @@ const routes: Routes = [
     data: {roles: ['USER', 'ARTIST']}
   },
   {
-    path: 'user/:id/update/icon',
-    component: UserIconComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
-  },
-  {
     path: 'user/:id/update/biography',
     component: UserBiographyComponent,
     canActivate: [AuthGuard],
@@ -95,12 +87,6 @@ const routes: Routes = [
   {
     path: 'album/:id/update/details',
     component: AlbumEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
-  },
-  {
-    path: 'album/:id/update/cover',
-    component: AlbumCoverComponent,
     canActivate: [AuthGuard],
     data: {roles: ['ARTIST']}
   },

@@ -14,6 +14,8 @@ import { ConfirmationService } from "primeng/api";
 export class UserDetailComponent implements OnInit {
 
   user: User = new User();
+  userIconFile: File = null;
+  display: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -24,6 +26,25 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.loggedInUser;
+  }
+
+  showDialog() {
+    this.display = true;
+  }
+
+  onFileSelected(event) {
+    this.userIconFile = <File>event.files[0];
+    console.log(this.userIconFile);
+  }
+
+  onFileRemove() {
+    this.userIconFile = null;
+    console.log("You're know you right...");
+  }
+
+  async changeIconFile() {
+    await this.userService.updateIconFile(this.user.id, this.userIconFile);
+    this.user.iconFileGdaId = this.authService.loggedInUser.iconFileGdaId;
   }
 
   async deleteUserConfirm() {

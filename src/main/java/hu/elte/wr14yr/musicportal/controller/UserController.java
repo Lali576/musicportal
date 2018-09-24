@@ -152,15 +152,16 @@ public class UserController {
     @PutMapping("/update/{id}/password")
     public ResponseEntity<User> updatePassword(@PathVariable("id") long id, MultipartHttpServletRequest request) {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/password'");
-        String password = request.getParameter("password");
-        User updatedUser = userService.updatePassword(password);
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        User updatedUser = userService.updatePassword(oldPassword, newPassword);
         logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/password'");
 
         return ResponseEntity.ok(updatedUser);
     }
 
     @Role({ARTIST, USER})
-    @PutMapping("/update/{id}/icon")
+    @PostMapping("/update/{id}/icon")
     public ResponseEntity<User> updateIconFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/icon'");
         MultipartFile multipartFile = null;

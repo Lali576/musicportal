@@ -1,11 +1,26 @@
 <p-confirmDialog acceptLabel="Igen" rejectLabel="Nem"></p-confirmDialog>
 <h1 class="display-4">Adataim:</h1>
     <div>
-      <img *ngIf="user.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + user.iconFileGdaId}}" class="float-left" width="100px" style="margin: 10px; border-radius: 5px;">
+      <img *ngIf="user.iconFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + user.iconFileGdaId}}" width="100px" style="margin: 10px; border-radius: 5px;">
       <img *ngIf="user.iconFileGdaId === ''" class="fas fa-user fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
       <br>
-      <button pButton type="button" label="Szerkeszt">
-      </button>
+      <p-dialog header="Ikon kép szerkesztés" [(visible)]="display" [modal]="true" [responsive]="true" [width]="350" [minWidth]="200" [minY]="70"
+                [maximizable]="true" [baseZIndex]="10000">
+        <p-fileUpload (onSelect)="onFileSelected($event)"
+                      (onClear)="onFileRemove()"
+                      (onRemove)="onFileRemove()"
+                      accept="image/*"
+                      chooseLabel="Kiválasztás"
+                      [showUploadButton]="false"
+                      [showCancelButton]="false">
+
+        </p-fileUpload>
+        <p-footer>
+          <button type="button" pButton icon="pi pi-check" (click)="changeIconFile(); display=false" label="Küld"></button>
+          <button type="button" pButton icon="pi pi-close" (click)="display=false" label="Kilép" class="ui-button-secondary"></button>
+        </p-footer>
+      </p-dialog>
+      <button type="button" (click)="showDialog()" pButton icon="pi pi-info-circle" label="Szerkeszt"></button>
     </div>
     <table class="table">
       <tbody>
