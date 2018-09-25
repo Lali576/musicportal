@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 
-import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 
@@ -14,7 +13,6 @@ import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
 import hu.elte.wr14yr.musicportal.service.PlaylistService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import hu.elte.wr14yr.musicportal.service.UserService;
-import jdk.nashorn.internal.runtime.regexp.joni.ApplyCaseFoldArg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +21,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -97,7 +94,7 @@ public class PlaylistController {
     }
 
     @Role({USER, ARTIST})
-    @PutMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<Playlist> update(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "'");
 

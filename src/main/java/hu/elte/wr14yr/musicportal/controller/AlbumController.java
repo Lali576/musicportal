@@ -6,7 +6,6 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.*;
 import hu.elte.wr14yr.musicportal.model.*;
 
 import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
-import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -110,7 +109,7 @@ public class AlbumController {
     }
 
     @Role({ARTIST})
-    @PutMapping("/update/{id}/details")
+    @PostMapping("/update/{id}/details")
     public ResponseEntity<Album> updateDetails(@PathVariable long id, MultipartHttpServletRequest request) throws IOException, URISyntaxException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "'");
 
@@ -135,7 +134,7 @@ public class AlbumController {
     }
 
     @Role({ARTIST})
-    @PutMapping("/update/{id}/cover")
+    @PostMapping("/update/{id}/cover")
     public ResponseEntity<Album> updateCoverFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/cover'");
         MultipartFile multipartFile = null;

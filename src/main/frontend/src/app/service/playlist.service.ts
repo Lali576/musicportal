@@ -54,7 +54,7 @@ export class PlaylistService {
     formData.append("playlist", JSON.stringify(playlist));
     formData.append("songs", JSON.stringify(songs));
     formData.append("keywords", JSON.stringify(keywords));
-    return this.http.put<Playlist>(
+    return this.http.post<Playlist>(
       `api/playlist/update/${id}`,
       formData
     ).pipe(

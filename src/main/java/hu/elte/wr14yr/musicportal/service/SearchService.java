@@ -38,12 +38,6 @@ public class SearchService {
         return genreRepository.findAllByNameContainsAllIgnoreCase(name);
     }
 
-    /*
-    public Iterable<Keyword> findKeywordByWord(String word) {
-        return keywordRepository.findAllByWordContainsAllIgnoreCase(word);
-    }
-    */
-
     public Iterable<Album> findAlbumByName(String name) {
         return albumRepository.findAllByTitleContainsAllIgnoreCase(name);
     }

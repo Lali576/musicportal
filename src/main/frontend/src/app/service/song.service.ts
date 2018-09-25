@@ -86,7 +86,7 @@ export class SongService {
     formData.append("song", JSON.stringify(song));
     formData.append(audioFile.name, audioFile, audioFile.name);
     formData.append("album", JSON.stringify(album));
-    return this.http.put<Song>(
+    return this.http.post<Song>(
       `api/song/update/${id}`,
       formData
     ).pipe(

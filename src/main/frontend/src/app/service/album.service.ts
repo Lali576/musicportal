@@ -55,7 +55,7 @@ export class AlbumService {
     formData.append("album", JSON.stringify(album));
     formData.append("genres", JSON.stringify(genres));
     formData.append("keywords", JSON.stringify(keywords));
-    return this.http.put<Album>(
+    return this.http.post<Album>(
       `api/album/update/${id}/details`,
       formData
     ).pipe(
@@ -68,7 +68,7 @@ export class AlbumService {
   updateAlbumCover(id: number, coverFile: File): Promise<Album> {
     const formData = new FormData();
     formData.append(coverFile.name, coverFile, coverFile.name);
-    return this.http.put<Album>(
+    return this.http.post<Album>(
       `api/album/update/${id}/cover`,
       formData
     ).pipe(
