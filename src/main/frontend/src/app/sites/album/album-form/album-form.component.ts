@@ -33,7 +33,6 @@ export class AlbumFormComponent implements OnInit {
   albumSongs: Song[] = [];
   albumSongsFiles: File[] = [];
   cols: any[];
-  hu: any;
 
   constructor(
     private albumService: AlbumService,
@@ -50,17 +49,6 @@ export class AlbumFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hu = {
-      firstDayOfWeek: 1,
-      dayNames: [ "hétfő","kedd","szerda","csütörtök","péntek","szombat","vasárnap" ],
-      dayNamesShort: [ "hét","ke","szer","csüt","pén","szo","vas" ],
-      dayNamesMin: [ "H","K","SZ","CS","P","SZ","V" ],
-      monthNames: [ "január","február","március","április","május","június","július","augusztus","szeptember","október","november","december" ],
-      monthNamesShort: [ "jan","feb","már","ápr","máj","jún","júl","aug","szep","okt","nov","dec" ],
-      today: 'Ma',
-      clear: 'Törlés'
-    };
-
     this.cols = [
       { field: 'title', header: 'Cím' },
     ];

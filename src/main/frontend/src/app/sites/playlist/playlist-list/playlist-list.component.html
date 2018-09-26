@@ -1,11 +1,9 @@
-<p-toast [style]="{marginTop: '80px'}"></p-toast>
-<p-confirmDialog></p-confirmDialog>
 <h1 class="first">
-  Lejátszási listáim
+  Lejátszási listák
 </h1>
 <div *ngIf="playlists.length === 0">
   <strong>
-    Magának még nincsenek albumai!
+    Még nincs lej. lista feltöltve!
   </strong>
 </div>
 
@@ -22,29 +20,7 @@
             </a>
           </div>
         </div>
-        <div class="ui-g-6 ui-md-1">
-          <button
-            pButton type="button"
-            [routerLink]="['/playlist', playlist.id, 'update/details']"
-            style="width: 50px; height: 50px; margin-top: 10px;"
-            icon="fas fa-edit fa-2x"></button>
-        </div>
-        <div class="ui-g-6 ui-md-1">
-          <button
-            pButton type="button"
-            (click)="deletePlaylistConfirm(playlist)"
-            style="width: 50px; height: 50px; margin-top: 10px; color: red;"
-            icon="fas fa-trash fa-2x"></button>
-        </div>
       </div>
     </ng-template>
   </p-dataView>
 </div>
-<button
-  routerLink="/playlist/new"
-  pButton type="button"
-  icon="fas fa-plus"
-  class="ui-button-success"
-  label="Új album"
-  style="margin-top: 10px;">
-</button>

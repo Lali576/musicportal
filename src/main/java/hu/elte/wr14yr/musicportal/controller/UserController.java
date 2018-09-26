@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -121,7 +120,7 @@ public class UserController {
     public ResponseEntity<User> updateDetails(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/details'");
 
-        logger.log(Level.INFO, "Get parameter 'fullName'");
+        logger.log(Level.INFO, "Get parameter 'country'");
         Country country = mapper.readValue(request.getParameter("country"), Country.class);
 
         logger.log(Level.INFO, "Get parameter 'favGenre'");

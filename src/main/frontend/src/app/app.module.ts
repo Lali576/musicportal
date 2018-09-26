@@ -17,7 +17,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessagesModule } from 'primeng/messages';
 import { MenubarModule } from 'primeng/menubar';
 import { ToolbarModule } from 'primeng/toolbar';
-import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from "primeng/dialog";
 import { DataViewModule } from 'primeng/dataview';
@@ -28,6 +27,7 @@ import { PickListModule } from 'primeng/picklist';
 import { PasswordModule } from 'primeng/password';
 import { SliderModule } from 'primeng/slider';
 import { ListboxModule } from 'primeng/listbox';
+import { TabViewModule } from "primeng/primeng";
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -114,7 +114,6 @@ import {CountryService} from "./service/country.service";
     MessagesModule,
     MenubarModule,
     ToolbarModule,
-    CalendarModule,
     TableModule,
     DialogModule,
     DataViewModule,
@@ -124,7 +123,8 @@ import {CountryService} from "./service/country.service";
     PickListModule,
     PasswordModule,
     SliderModule,
-    ListboxModule
+    ListboxModule,
+    TabViewModule
   ],
   providers: [AuthService,
               UserService,

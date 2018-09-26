@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ public class AlbumService {
     public Album create(Album album, User user, File coverFile, List<Genre> genres, List<AlbumKeyword> albumKeywords) {
         logger.log(Level.INFO, "Album service: new album is going to be saved in database MusicPortal");
         album.setUser(user);
+        album.setDate(new Date());
         album.setGenres(genres);
 
         Album savedAlbum = albumRepository.save(album);

@@ -172,7 +172,6 @@ public class UserService {
 
         if(isValid(loggedInUser, oldPassword)) {
             String newPassSalt = newPassword + loggedInUser.getSaltCode();
-
             try {
                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
                 byte[] hash = digest.digest(newPassSalt.getBytes(StandardCharsets.UTF_8));
@@ -185,19 +184,26 @@ public class UserService {
                 e.printStackTrace();
             }
         } else {
-            logger.log(Level.SEVERE, "User service: Error! Old password in not equal!");
+            logger.log(Level.SEVERE, "User service: user named " +
+                    loggedInUser.getUsername() + "'s old password is invalid!");
         }
 
         return loggedInUser;
     }
 
-    public User changeEmailAddress(String emailAddress) {
+    public User changeEmailAddress(String newEmailAddress) {
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s email address is going to be changed");
-        loggedInUser.setEmailAddress(emailAddress);
-        loggedInUser = userRepository.save(loggedInUser);
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s email address has been changed successfully");
+        if(!(newEmailAddress.equals(loggedInUser.getEmailAddress()))) {
+            loggedInUser.setEmailAddress(newEmailAddress);
+            loggedInUser = userRepository.save(loggedInUser);
+            logger.log(Level.INFO, "User service: user named " +
+                    loggedInUser.getUsername() + "'s e-mail address has been changed successfully");
+        } else {
+            logger.log(Level.SEVERE, "User service: user named " +
+                    loggedInUser.getUsername() + "'s old e-mail address is equal to the new one!");
+        }
+
 
         return loggedInUser;
     }

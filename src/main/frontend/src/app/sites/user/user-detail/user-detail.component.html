@@ -1,3 +1,4 @@
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
 <p-confirmDialog acceptLabel="Igen" rejectLabel="Nem"></p-confirmDialog>
 <h1 class="display-4">Adataim:</h1>
     <div>
@@ -51,7 +52,7 @@
             Kedvenc műfaj:
           </th>
           <td>
-            {{user.favGenreId.name}}
+            <button pButton type="button" label="{{user.favGenreId.name}}"></button>
           </td>
         </tr>
         <tr>
@@ -59,21 +60,160 @@
           <td>
             <button *ngFor="let userKeyword of user.userKeywords"
                     pButton type="button"
-                    label="#{{userKeyword.word}}" style="margin-right: 0.5em;"></button>
+                    label="#{{userKeyword.word}}"></button>
           </td>
         </tr>
-      <tr>
-        <td>
-          <button pButton type="button"
-                  (click)="deleteUserConfirm()"
-                  label="Regisztráció törlés">
-          </button>
-        </td>
-      </tr>
       </tbody>
     </table>
-<form>
+    <button pButton type="button" label="Adatok szerk.">
+    </button>
+    <button pButton type="button" label="E-mail cím szerk.">
+    </button>
+    <button pButton type="button" (click)="deleteUserConfirm()" label="Regisztráció törlése">
+    </button>
+    <p-tabView>
+      <p-tabPanel header="Biógráfia">
+        {{user.biography}}
+      </p-tabPanel>
+      <p-tabPanel header="Üzenetek">
+        <span>
+          Nincs üzenet!
+        </span>
+      </p-tabPanel>
+      <p-tabPanel header="Albumok">
+        <button
+          routerLink="/album/new"
+          pButton type="button"
+          icon="fas fa-plus"
+          class="ui-button-success"
+          label="Új album"
+          style="margin-top: 10px;">
+        </button>
+        <div *ngIf="userAlbums.length === 0">
+          <strong>
+            Magának még nincsenek albumai!
+          </strong>
+        </div>
+        <div *ngIf="userAlbums.length >= 1">
+          <p-dataView #dv [value]="userAlbums" [paginator]="true" [rows]="10" paginatorPosition="both">
+            <ng-template let-album pTemplate="listItem">
+              <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+                <div class="ui-g-12 ui-md-3" style="text-align:center">
+                  <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="75px" style="border:5px solid black; border-radius: 5px;">
+                  <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-4x" width="75px" style="border:5px solid black; border-radius: 5px;">
+                </div>
+                <div class="ui-g-10 ui-md-7">
+                  <div class="ui-g">
+                    <a [routerLink]="['/album', album.id]" style="color: black;">
+                      <h1 class="first">
+                        {{album.title}}
+                      </h1>
+                    </a>
+                  </div>
+                </div>
+                <div class="ui-g-6 ui-md-1">
+                  <button
+                    pButton type="button"
+                    [routerLink]="['/album', album.id, 'update/details']"
+                    style="width: 50px; height: 50px; margin-top: 10px;"
+                    icon="fas fa-edit fa-2x"></button>
+                </div>
+                <div class="ui-g-6 ui-md-1">
+                  <button
+                    pButton type="button"
+                    (click)="deleteAlbumConfirm(album)"
+                    style="width: 50px; height: 50px; margin-top: 10px;"
+                    icon="fas fa-trash fa-2x"></button>
+                </div>
+              </div>
+            </ng-template>
+          </p-dataView>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Dalok">
+        <div *ngIf="userSongs.length === 0">
+          <strong>
+            Magának még nincsenek saját dalai!
+          </strong>
+        </div>
 
-</form>
+        <div *ngIf="userSongs.length >= 1">
+          <p-dataView #dv [value]="userSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
+            <ng-template let-song pTemplate="listItem">
+              <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+                <div class="ui-g-10 ui-md-7">
+                  <div class="ui-g">
+                    <a [routerLink]="['/song', song.id]" style="color: black;">
+                      <h1 class="first">
+                        {{song.title}}
+                      </h1>
+                    </a>
+                  </div>
+                </div>
+                <div class="ui-g-6 ui-md-1">
+                  <button
+                    pButton type="button"
+                    [routerLink]="['/song', song.id, 'update/details']"
+                    style="width: 50px; height: 50px; margin-top: 10px;"
+                    icon="fas fa-edit fa-2x"></button>
+                </div>
+                <div class="ui-g-6 ui-md-1">
+                  <button
+                    pButton type="button"
+                    (click)="deleteSongConfirm(song)"
+                    style="width: 50px; height: 50px; margin-top: 10px;"
+                    icon="fas fa-trash fa-2x"></button>
+                </div>
+              </div>
+            </ng-template>
+          </p-dataView>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Lej. listák">
+        <button
+          routerLink="/playlist/new"
+          pButton type="button"
+          icon="fas fa-plus"
+          class="ui-button-success"
+          label="Új album"
+          style="margin-top: 10px;">
+        </button>
+        <div *ngIf="userPlaylists.length === 0">
+          <strong>
+            Magának még nincsenek albumai!
+          </strong>
+        </div>
 
-
+        <div *ngIf="userPlaylists.length >= 1">
+          <p-dataView #dv [value]="userPlaylists" [paginator]="true" [rows]="10" paginatorPosition="both">
+            <ng-template let-playlist pTemplate="listItem">
+              <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+                <div class="ui-g-10 ui-md-7">
+                  <div class="ui-g">
+                    <a [routerLink]="['/playlist', playlist.id]" style="color: black;">
+                      <h1 class="first">
+                        {{playlist.name}}
+                      </h1>
+                    </a>
+                  </div>
+                </div>
+                <div class="ui-g-6 ui-md-1">
+                  <button
+                    pButton type="button"
+                    [routerLink]="['/playlist', playlist.id, 'update/details']"
+                    style="width: 50px; height: 50px; margin-top: 10px;"
+                    icon="fas fa-edit fa-2x"></button>
+                </div>
+                <div class="ui-g-6 ui-md-1">
+                  <button
+                    pButton type="button"
+                    (click)="deletePlaylistConfirm(playlist)"
+                    style="width: 50px; height: 50px; margin-top: 10px;"
+                    icon="fas fa-trash fa-2x"></button>
+                </div>
+              </div>
+            </ng-template>
+          </p-dataView>
+        </div>
+      </p-tabPanel>
+    </p-tabView>

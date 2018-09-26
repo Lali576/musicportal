@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <p-pickList [source]="songs" [target]="selectedSongs" [responsive]="true" filterBy="title"
+    <p-pickList [source]="songs" [target]="selectedSongs" sourceHeader="Össz. dal" targetHeader="Kiv. dal" [responsive]="true" filterBy="title"
                 dragdrop="true" dragdropScope="songs" sourceFilterPlaceholder="Search by brand" targetFilterPlaceholder="Search by brand" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
       <ng-template let-song pTemplate="item">
         <div class="ui-helper-clearfix">

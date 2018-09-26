@@ -128,7 +128,5 @@ public class PlaylistController {
 
         playlistService.delete(playlist);
         logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
-
-        //return ResponseEntity.ok().build();
     }
 }

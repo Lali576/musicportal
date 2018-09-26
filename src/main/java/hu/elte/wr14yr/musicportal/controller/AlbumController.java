@@ -2,7 +2,7 @@ package hu.elte.wr14yr.musicportal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.annotation.Role;
-import static hu.elte.wr14yr.musicportal.model.User.Role.*;
+import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import hu.elte.wr14yr.musicportal.model.*;
 
 import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +40,7 @@ public class AlbumController {
 
     @Role({ARTIST})
     @PostMapping("/new")
-    public ResponseEntity<Album> create(MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+    public ResponseEntity<Album> create(MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/new'");
         MultipartFile multipartFile = null;
         File file = null;
@@ -110,7 +109,7 @@ public class AlbumController {
 
     @Role({ARTIST})
     @PostMapping("/update/{id}/details")
-    public ResponseEntity<Album> updateDetails(@PathVariable long id, MultipartHttpServletRequest request) throws IOException, URISyntaxException {
+    public ResponseEntity<Album> updateDetails(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "'");
 
         logger.log(Level.INFO, "Get parameter 'album'");
@@ -166,7 +165,7 @@ public class AlbumController {
 
     @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody void delete(@PathVariable long id) throws IOException {
+    public @ResponseBody void delete(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         Album album = albumService.find(id);
         albumService.delete(album);

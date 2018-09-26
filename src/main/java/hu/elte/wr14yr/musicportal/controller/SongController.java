@@ -3,7 +3,6 @@ package hu.elte.wr14yr.musicportal.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
-import static hu.elte.wr14yr.musicportal.model.User.Role.GUEST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.*;
@@ -175,13 +174,11 @@ public class SongController {
 
     @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody void delete(@PathVariable long id) throws IOException {
+    public @ResponseBody void delete(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         Song song = songService.find(id);
         songService.delete(song);
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
-
-        //return ResponseEntity.ok().build();
     }
 
     @Role({ARTIST, USER})
@@ -253,6 +250,7 @@ public class SongController {
         return ResponseEntity.ok(likesNumbers);
     }
 
+    @Role({ARTIST, USER})
     @PostMapping("/counter/new")
     public ResponseEntity<Integer> createSongCounter(MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/counter/new'");
@@ -272,6 +270,7 @@ public class SongController {
         return  ResponseEntity.ok(counterNumber);
     }
 
+    @Role({ARTIST, USER})
     @PostMapping("/counter/{id}")
     public ResponseEntity<Integer> countSongCounter(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/counter/" + id + "'");
