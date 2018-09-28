@@ -1,7 +1,6 @@
 package hu.elte.wr14yr.musicportal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +13,8 @@ import javax.persistence.*;
         uniqueConstraints = @UniqueConstraint(columnNames = {"SONG_ID", "USER_ID"}))
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"user",
-                        "song"})
+@JsonIgnoreProperties({"song",
+                        "user"})
 public class SongLike {
 
     @Id

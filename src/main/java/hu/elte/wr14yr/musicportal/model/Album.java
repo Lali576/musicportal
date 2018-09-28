@@ -15,8 +15,7 @@ import java.util.List;
 @Table(name = "ALBUMS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"user",
-                        "songs",
+@JsonIgnoreProperties({"songs",
                         "genres",
                         "albumKeywords"})
 public class Album {

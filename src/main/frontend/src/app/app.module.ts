@@ -66,6 +66,12 @@ import { SearchSongComponent } from './sites/search/search-song/search-song.comp
 import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
 import {CountryService} from "./service/country.service";
 
+import { LOCALE_ID } from "@angular/core";
+import { registerLocaleData } from "@angular/common";
+import localeHu from '@angular/common/locales/hu';
+
+registerLocaleData(localeHu);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -134,7 +140,8 @@ import {CountryService} from "./service/country.service";
               SearchService,
               GenreService,
               CountryService,
-              AuthGuard],
+              AuthGuard,
+              {provide: LOCALE_ID, useValue: "hu"}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

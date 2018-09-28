@@ -27,8 +27,6 @@ public class Country {
     @OneToMany(targetEntity = User.class, mappedBy = "countryId")
     private List<User> users;
 
-    //private String countryFlagFileGdaId;
-
     public static List<String> countries = new ArrayList<String>(){{
         add("Magyarország");
         add("Nagy-Brittania");

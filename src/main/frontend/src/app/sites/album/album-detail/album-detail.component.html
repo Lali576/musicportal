@@ -6,11 +6,14 @@
   Album
 </h1>
 <div>
-  <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="100px" style="margin: 10px; border-radius: 5px;">
-  <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
+  <div *ngIf="album.coverFileGdaId === ''; else showCover">
+    <img class="fas fa-compact-disc fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
+  </div>
+  <ng-template #showCover>
+    <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="100px" style="margin: 10px; border-radius: 5px;">
+  </ng-template>
   <br>
-  <button>
-    Szerkesztés
+  <button pButton type="button" label="Szerkeszt">
   </button>
 </div>
 <table class="table">
@@ -28,7 +31,7 @@
       Dátum:
     </th>
     <td>
-
+      {{album.date | date}}
     </td>
   </tr>
   </tbody>
