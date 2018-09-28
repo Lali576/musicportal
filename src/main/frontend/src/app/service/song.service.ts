@@ -61,8 +61,8 @@ export class SongService {
     return this.http.get<Song[]>('/api/song/list').toPromise();
   }
 
-  getSongsByUser(): Promise<Song[]> {
-    return this.http.get<Song[]>('api/song/by-user').toPromise();
+  getSongsByUser(id: number): Promise<Song[]> {
+    return this.http.get<Song[]>(`api/song/by-user/${id}`).toPromise();
   }
 
   getSongsByAlbum(album: Album): Promise<Song[]> {

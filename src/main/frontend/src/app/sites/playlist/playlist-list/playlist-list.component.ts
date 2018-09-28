@@ -16,11 +16,15 @@ export class PlaylistListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.playlistService.getUserPlaylist()
+    this.loadPlaylists();
+  }
+
+  loadPlaylists() {
+    this.playlistService.getAllPlaylist()
       .then(
         (playlists: Playlist[]) => {
           this.playlists = playlists;
         }
-      )
+      );
   }
 }

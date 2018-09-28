@@ -98,10 +98,11 @@ public class AlbumController {
         return ResponseEntity.ok(albums);
     }
 
-    @GetMapping("/by-user")
-    public ResponseEntity<Iterable<Album>> list() {
+    @GetMapping("/by-user/{id}")
+    public ResponseEntity<Iterable<Album>> list(@PathVariable long id) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/'");
-        Iterable<Album> albums = albumService.list(userService.getLoggedInUser());
+
+        Iterable<Album> albums = albumService.list(id);
         logger.log(Level.INFO, "Exit: endpoint '/'");
 
         return ResponseEntity.ok(albums);

@@ -20,7 +20,7 @@ export class SongListComponent implements OnInit {
   }
 
   loadSongs() {
-    this.songService.getSongsByUser()
+    this.songService.getAllSongs()
       .then(
         (songs: Song[]) => {
           this.songs = songs;

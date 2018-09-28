@@ -84,10 +84,10 @@ public class PlaylistController {
         return ResponseEntity.ok(playlist);
     }
 
-    @GetMapping("/by-user")
-    public ResponseEntity<Iterable<Playlist>> list() {
+    @GetMapping("/by-user/{id}")
+    public ResponseEntity<Iterable<Playlist>> list(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/'");
-        Iterable<Playlist> playlist = playlistService.list(userService.getLoggedInUser());
+        Iterable<Playlist> playlist = playlistService.list(id);
         logger.log(Level.INFO, "Exit: endpoint '/'");
 
         return ResponseEntity.ok(playlist);

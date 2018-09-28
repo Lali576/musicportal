@@ -41,8 +41,8 @@ export class PlaylistService {
     ).toPromise();
   }
 
-  getUserPlaylist(): Promise<Playlist[]> {
-    return this.http.get<Playlist[]>('api/playlist/by-user').toPromise();
+  getUserPlaylist(id: number): Promise<Playlist[]> {
+    return this.http.get<Playlist[]>(`api/playlist/by-user/${id}`).toPromise();
   }
 
   getAllPlaylist(): Promise<Playlist[]> {

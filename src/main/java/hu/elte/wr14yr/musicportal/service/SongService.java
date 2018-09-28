@@ -76,11 +76,11 @@ public class SongService {
         return songRepository.findAll();
     }
 
-    public Iterable<Song> list(User loggedInUser) {
-        logger.log(Level.INFO, "Song service: user named " +
-                loggedInUser.getUsername() + "'s songs are going to be listed");
+    public Iterable<Song> list(long id) {
+        logger.log(Level.INFO, "Song service: user with id " +
+                id + "'s songs are going to be listed");
 
-        return songRepository.findAllByUser(loggedInUser);
+        return songRepository.findAllByUserId(id);
     }
 
     public Iterable<Song> listByAlbum(Album album) {

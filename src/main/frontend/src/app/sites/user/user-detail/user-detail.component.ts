@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from "../../../model/user";
 import { AuthService } from "../../../service/auth.service";
 import { UserService } from "../../../service/user.service";
-import { Router } from "@angular/router";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {Album} from "../../../model/album";
 import {Song} from "../../../model/song";
@@ -10,6 +10,7 @@ import {Playlist} from "../../../model/playlist";
 import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";
 import {PlaylistService} from "../../../service/playlist.service";
+import {switchMap} from "rxjs/internal/operators";
 
 @Component({
   selector: 'app-user-detail',
@@ -34,15 +35,22 @@ export class UserDetailComponent implements OnInit {
     private playlistService: PlaylistService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.user = this.authService.loggedInUser;
-    this.loadUserMessages();
-    this.loadAlbums();
-    this.loadSongs();
-    this.loadPlaylists();
+    this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
+      const id = +params.get('id');
+      await this.userService.getUser(id).then(
+        (user: User) => {
+          this.user = user;
+          this.loadUserMessages();
+          this.loadAlbums();
+          this.loadSongs();
+          this.loadPlaylists();
+        });
+    })).subscribe();
   }
 
   showDialog() {
@@ -87,7 +95,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadAlbums() {
-    this.albumService.getUserAlbums()
+    this.albumService.getUserAlbums(this.user.id)
       .then(
         (albums: Album[]) => {
           this.userAlbums = albums;
@@ -115,7 +123,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadSongs() {
-    this.songService.getSongsByUser()
+    this.songService.getSongsByUser(this.user.id)
       .then(
         (songs: Song[]) => {
           this.userSongs = songs;
@@ -143,7 +151,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadPlaylists() {
-    this.playlistService.getUserPlaylist()
+    this.playlistService.getUserPlaylist(this.user.id)
       .then(
         (playlists: Playlist[]) => {
           this.userPlaylists = playlists;

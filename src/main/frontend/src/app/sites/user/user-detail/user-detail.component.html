@@ -72,7 +72,7 @@
     <button pButton type="button" (click)="deleteUserConfirm()" label="Regisztráció törlése">
     </button>
     <p-tabView>
-      <p-tabPanel header="Biógráfia">
+      <p-tabPanel header="Biógráfia" *ngIf="user.role === 'ARTIST'">
         {{user.biography}}
       </p-tabPanel>
       <p-tabPanel header="Üzenetek">
@@ -80,7 +80,7 @@
           Nincs üzenet!
         </span>
       </p-tabPanel>
-      <p-tabPanel header="Albumok">
+      <p-tabPanel header="Albumok" *ngIf="user.role === 'ARTIST'">
         <button
           routerLink="/album/new"
           pButton type="button"
@@ -130,7 +130,7 @@
           </p-dataView>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="Dalok">
+      <p-tabPanel header="Dalok" *ngIf="user.role === 'ARTIST'">
         <div *ngIf="userSongs.length === 0">
           <strong>
             Magának még nincsenek saját dalai!

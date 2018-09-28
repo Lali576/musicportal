@@ -44,11 +44,11 @@ public class PlaylistService {
         return playlistRepository.findAll();
     }
 
-    public Iterable<Playlist> list(User user) {
-        logger.log(Level.INFO, "Playlist service: user named " +
-                user.getUsername() + "'s playlist are going to be listed");
+    public Iterable<Playlist> list(long id) {
+        logger.log(Level.INFO, "Playlist service: user with id " +
+                id + "'s playlist are going to be listed");
 
-        return playlistRepository.findAllByUser(user);
+        return playlistRepository.findAllByUserId(id);
     }
 
     public Playlist find(long id) {
@@ -82,7 +82,7 @@ public class PlaylistService {
     public void deleteAllByUser(User user) {
         logger.log(Level.INFO, "Playlist service: user named " +
                 user.getUsername() + "'s playlist are going to be deleted");
-        Iterable<Playlist> userPlaylist = list(user);
+        Iterable<Playlist> userPlaylist = list(user.getId());
         for(Playlist playlist : userPlaylist) {
             delete(playlist);
         }

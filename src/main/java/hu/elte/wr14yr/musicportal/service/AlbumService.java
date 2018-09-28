@@ -69,11 +69,11 @@ public class AlbumService {
         return albumRepository.findAll();
     }
 
-    public Iterable<Album> list(User loggedInUser) {
-        logger.log(Level.INFO, "Album service: user named " +
-                loggedInUser.getUsername() + "'s albums are going to be listed");
+    public Iterable<Album> list(long id) {
+        logger.log(Level.INFO, "Album service: user with id " +
+                id + "'s albums are going to be listed");
 
-        return albumRepository.findAllByUser(loggedInUser);
+        return albumRepository.findAllByUserId(id);
     }
 
     public Album find(long id) {
@@ -123,7 +123,7 @@ public class AlbumService {
     public void deleteAllByUser(User user) {
         logger.log(Level.INFO, "Album service: user named " +
                 user.getUsername() + "'s albums are going to be deleted");
-        Iterable<Album> userAlbums = list(user);
+        Iterable<Album> userAlbums = list(user.getId());
         for(Album album : userAlbums) {
             delete(album);
         }

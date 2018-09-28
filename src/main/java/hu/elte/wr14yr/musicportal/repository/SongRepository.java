@@ -20,7 +20,7 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByAlbum(Album album);
 
-    List<Song> findAllByUser(User user);
+    List<Song> findAllByUserId(long id);
 
     List<Song> findAllByPlaylist(Playlist playlist);
 

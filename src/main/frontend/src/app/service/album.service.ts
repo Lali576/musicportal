@@ -46,8 +46,8 @@ export class AlbumService {
     return this.http.get<Album[]>('api/album/list').toPromise()
   }
 
-  getUserAlbums(): Promise<Album[]> {
-    return this.http.get<Album[]>('api/album/by-user').toPromise();
+  getUserAlbums(id: number): Promise<Album[]> {
+    return this.http.get<Album[]>(`api/album/by-user/${id}`).toPromise();
   }
 
   updateAlbumDetails(id: number, album: Album, genres: Genre[], keywords: AlbumKeyword[]): Promise<Album> {

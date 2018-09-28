@@ -20,25 +20,13 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     List<Album> findAllByTitleContainsAllIgnoreCase(String name);
 
-    List<Album> findAllByUser(User user);
+    List<Album> findAllByUserId(long id);
 
     List<Album> findAllByGenres(Genre genre);
 
     List<Album> findAllByAlbumKeywords(List<AlbumKeyword> albumKeywords);
 
     Album findAlbumById(Long id);
-
-    /*
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    @Query(value = "UPDATE ALBUMS SET ALBUM_FOLDER_GDA_ID = :ALBUM_FOLDER_GDA_ID WHERE ID = :ID", nativeQuery = true)
-    void updateFolderGdaId(@Param("ID") long id, @Param("ALBUM_FOLDER_GDA_ID") String folderGdaId);
-
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    @Query(value = "UPDATE ALBUMS SET COVER_FILE_GDA_ID = :COVER_FILE_GDA_ID WHERE ID = :ID", nativeQuery = true)
-    void updateFileGdaId(@Param("ID") long id, @Param("COVER_FILE_GDA_ID") String fileGdaId);
-    */
 
     @Override
     void deleteById(Long id);
