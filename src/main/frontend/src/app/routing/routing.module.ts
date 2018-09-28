@@ -22,6 +22,8 @@ import {UserBiographyComponent} from "../sites/user/user-biography/user-biograph
 import {UserEditComponent} from "../sites/user/user-edit/user-edit.component";
 import {AlbumFormComponent} from "../sites/album/album-form/album-form.component";
 import {PlaylistFormComponent} from "../sites/playlist/playlist-form/playlist-form.component";
+import {AlbumSongsComponent} from "../sites/album/album-songs/album-songs.component";
+import {PlaylistSongsComponent} from "../sites/playlist/playlist-song/playlist-song.component";
 
 const routes: Routes = [
   {
@@ -80,9 +82,11 @@ const routes: Routes = [
   },
   {
     path: 'album/:id',
-    component: AlbumDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    component: AlbumDetailComponent
+  },
+  {
+    path: 'album/:id/songs',
+    component: AlbumSongsComponent
   },
   {
     path: 'album/:id/update/details',
@@ -98,9 +102,7 @@ const routes: Routes = [
   },
   {
     path: 'song/:id',
-    component: SongDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    component: SongDetailComponent
   },
   {
     path: 'song/:id/edit',
@@ -122,9 +124,11 @@ const routes: Routes = [
   },
   {
     path: 'playlist/:id',
-    component: PlaylistDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER', 'GUEST']}
+    component: PlaylistDetailComponent
+  },
+  {
+    path: 'playlist/:id/songs',
+    component: PlaylistSongsComponent
   },
   {
     path: 'playlist/:id/edit',

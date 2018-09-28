@@ -69,6 +69,8 @@ import {CountryService} from "./service/country.service";
 import { LOCALE_ID } from "@angular/core";
 import { registerLocaleData } from "@angular/common";
 import localeHu from '@angular/common/locales/hu';
+import { AlbumSongsComponent } from './sites/album/album-songs/album-songs.component';
+import { PlaylistSongsComponent } from './sites/playlist/playlist-song/playlist-song.component';
 
 registerLocaleData(localeHu);
 
@@ -99,7 +101,9 @@ registerLocaleData(localeHu);
     PlaylistFormComponent,
     UserPasswordComponent,
     UserEmailComponent,
-    UserBiographyComponent
+    UserBiographyComponent,
+    AlbumSongsComponent,
+    PlaylistSongsComponent
   ],
   imports: [
     BrowserModule,
