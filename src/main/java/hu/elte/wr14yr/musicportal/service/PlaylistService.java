@@ -9,6 +9,7 @@ import hu.elte.wr14yr.musicportal.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ public class PlaylistService {
     public Playlist create(Playlist playlist, User user, List<Song> songs, List<PlaylistKeyword> playlistKeywords) {
         logger.log(Level.INFO, "Playlist service: new playlist is going to be saved in database MusicPortal");
         playlist.setUser(user);
+        playlist.setDate(new Date());
         playlist.setSongs(songs);
         Playlist savedPlaylist = playlistRepository.save(playlist);
         logger.log(Level.INFO, "Playlist service: new playlist has been successfully saved in database MusicPortal");
@@ -44,18 +46,18 @@ public class PlaylistService {
         return playlistRepository.findAll();
     }
 
-    public Iterable<Playlist> listByUser(long id) {
-        logger.log(Level.INFO, "Playlist service: user with id " +
-                id + "'s playlist are going to be listed");
-
-        return playlistRepository.findAllByUserId(id);
-    }
-
     public Iterable<Playlist> listFirstFive() {
         logger.log(Level.INFO, "Playlist service: first five playlists ordered " +
                 "by their dates are going to be listed");
 
         return playlistRepository.findFirst5ByOrderByDateAsc();
+    }
+
+    public Iterable<Playlist> listByUser(long id) {
+        logger.log(Level.INFO, "Playlist service: user with id " +
+                id + "'s playlist are going to be listed");
+
+        return playlistRepository.findAllByUserId(id);
     }
 
     public Playlist find(long id) {

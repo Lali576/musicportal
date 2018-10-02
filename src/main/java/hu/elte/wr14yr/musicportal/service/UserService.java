@@ -145,6 +145,13 @@ public class UserService {
         return loggedInUser;
     }
 
+    public User getUser(Long id) {
+        logger.log(Level.INFO, "User service: user with id " +
+                id + " is going to be searched");
+
+        return userRepository.findUserById(id);
+    }
+
     public User updateDetails(Country country, Genre favGenre, List<UserKeyword> userKeywords) {
         logger.log(Level.INFO, "User service: user named " +
                 loggedInUser.getUsername() + "'s  data are going to be updated");

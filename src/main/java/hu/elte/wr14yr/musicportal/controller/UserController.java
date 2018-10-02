@@ -202,8 +202,9 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> find(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
-        User foundUser = userService.getLoggedInUser();
+        User foundUser = userService.getUser(id);
         logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
+
         return ResponseEntity.ok(foundUser);
     }
 

@@ -104,20 +104,20 @@ public class SongController {
         return ResponseEntity.ok(songs);
     }
 
-    @GetMapping("/by-user/{id}")
-    public ResponseEntity<Iterable<Song>> listByUser(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/by-user/" + id + "'");
-        Iterable<Song> songs = songService.listByUser(id);
-        logger.log(Level.INFO, "Exit: endpoint '/by-user/" + id + "'");
-
-        return ResponseEntity.ok(songs);
-    }
-
     @GetMapping("/list-first-five")
     public ResponseEntity<Iterable<Song>>  listFirstFive() {
         logger.log(Level.INFO, "Entrance: endpoint '/list-first-five'");
         Iterable<Song> songs = songService.listFirstFive();
         logger.log(Level.INFO, "Exit: endpoint '/list-first-five'");
+
+        return ResponseEntity.ok(songs);
+    }
+
+    @GetMapping("/by-user/{id}")
+    public ResponseEntity<Iterable<Song>> listByUser(@PathVariable long id) {
+        logger.log(Level.INFO, "Entrance: endpoint '/by-user/" + id + "'");
+        Iterable<Song> songs = songService.listByUser(id);
+        logger.log(Level.INFO, "Exit: endpoint '/by-user/" + id + "'");
 
         return ResponseEntity.ok(songs);
     }

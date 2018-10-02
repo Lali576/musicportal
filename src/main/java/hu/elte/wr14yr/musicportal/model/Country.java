@@ -24,7 +24,7 @@ public class Country {
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "ICON_FILE_GDA_ID", unique = false, nullable = true)
+    @Column(name = "ICON_FILE_GDA_ID")
     private String iconFileGdaId;
 
     @OneToMany(targetEntity = User.class, mappedBy = "countryId")

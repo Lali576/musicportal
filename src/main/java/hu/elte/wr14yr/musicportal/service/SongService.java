@@ -76,18 +76,18 @@ public class SongService {
         return songRepository.findAll();
     }
 
-    public Iterable<Song> listByUser(long id) {
-        logger.log(Level.INFO, "Song service: user with id " +
-                id + "'s songs are going to be listed");
-
-        return songRepository.findAllByUserId(id);
-    }
-
     public Iterable<Song> listFirstFive() {
         logger.log(Level.INFO, "Song service: first five songs ordered " +
                 "by their counted song counters are going to be listed");
 
         return songRepository.findFirst5ByCountBySongCounter();
+    }
+
+    public Iterable<Song> listByUser(long id) {
+        logger.log(Level.INFO, "Song service: user with id " +
+                id + "'s songs are going to be listed");
+
+        return songRepository.findAllByUserId(id);
     }
 
     public Iterable<Song> listByAlbum(Album album) {

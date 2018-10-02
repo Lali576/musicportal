@@ -70,18 +70,18 @@ public class AlbumService {
         return albumRepository.findAll();
     }
 
-    public Iterable<Album> listByUser(long id) {
-        logger.log(Level.INFO, "Album service: user with id " +
-                id + "'s albums are going to be listed");
-
-        return albumRepository.findAllByUserId(id);
-    }
-
     public Iterable<Album> listFirstFive() {
         logger.log(Level.INFO, "Album service: first five albums ordered " +
                 "by their dates are going to be listed");
 
         return albumRepository.findFirst5ByOrderByDateAsc();
+    }
+
+    public Iterable<Album> listByUser(long id) {
+        logger.log(Level.INFO, "Album service: user with id " +
+                id + "'s albums are going to be listed");
+
+        return albumRepository.findAllByUserId(id);
     }
 
     public Album find(long id) {

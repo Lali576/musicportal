@@ -13,9 +13,9 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     List<Playlist> findAllByNameContainsAllIgnoreCase(String name);
 
-    List<Playlist> findAllByUserId(Long id);
-
     List<Playlist> findFirst5ByOrderByDateAsc();
+
+    List<Playlist> findAllByUserId(Long id);
 
     List<Playlist> findAllByPlaylistKeywords(List<PlaylistKeyword> playlistKeywords);
 

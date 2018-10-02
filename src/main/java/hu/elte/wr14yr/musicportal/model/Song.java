@@ -57,7 +57,7 @@ public class Song {
     private List<SongLike> songLikes;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
-    private List<Playlist> playlist;
+    private List<Playlist> playlists;
 
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
     private List<Genre> genres;

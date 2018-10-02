@@ -10,6 +10,4 @@ public interface CountryRepository extends CrudRepository<Country, Long> {
     Country save(Country country);
 
     List<Country> findAll();
-
-    List<Country> findAllByNameContainsAllIgnoreCase(String name);
 }

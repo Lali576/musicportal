@@ -18,26 +18,19 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
+    List<Song> findFirst5ByCountBySongCounter();
+
     List<Song> findAllByAlbum(Album album);
 
     List<Song> findAllByUserId(long id);
 
-    List<Song> findFirst5ByCountBySongCounter();
-
     List<Song> findAllByPlaylist(Playlist playlist);
 
-    List<Song> findAllByGenres(Genre genre);
+    List<Song> findAllByGenres(List<Genre> genres);
 
     List<Song> findAllBySongKeywords(List<SongKeyword> songKeywords);
 
     Song findSongById(long id);
-
-    /*
-    @Modifying(clearAutomatically = true)
-    @Transactional
-    @Query(value = "UPDATE SONGS SET AUDIO_FILE_GDA_ID = :AUDIO_FILE_GDA_ID WHERE ID = :ID", nativeQuery = true)
-    void updateAudioFileGdaId(@Param("ID") long id, @Param("AUDIO_FILE_GDA_ID") String audioFileGdaId);
-    */
 
     @Override
     void deleteById(Long id);

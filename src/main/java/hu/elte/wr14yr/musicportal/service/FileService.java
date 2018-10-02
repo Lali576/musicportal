@@ -17,7 +17,7 @@ public class FileService {
 
     public String uploadFile(java.io.File file, String userFolderGdaId) {
         logger.log(Level.INFO, "Trying to upload file named " + file.getName() + "within folder with id " + userFolderGdaId, file);
-        String gdaId = null;
+        String gdaId;
         try {
             gdaId = GoogleDriveApi.uploadFile(file, userFolderGdaId);
 
@@ -45,7 +45,7 @@ public class FileService {
 
     public String uploadFolder(String username, String folderGdaId) {
         logger.log(Level.INFO, "Trying to create folder within folder with id " + folderGdaId);
-        String gdaId = null;
+        String gdaId;
         try {
             gdaId = GoogleDriveApi.uploadFolder(username, folderGdaId);
 
