@@ -24,6 +24,9 @@ public class Country {
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
+    @Column(name = "ICON_FILE_GDA_ID", unique = false, nullable = true)
+    private String iconFileGdaId;
+
     @OneToMany(targetEntity = User.class, mappedBy = "countryId")
     private List<User> users;
 

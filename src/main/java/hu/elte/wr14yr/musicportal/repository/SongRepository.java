@@ -22,6 +22,8 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByUserId(long id);
 
+    List<Song> findFirst5ByCountBySongCounter();
+
     List<Song> findAllByPlaylist(Playlist playlist);
 
     List<Song> findAllByGenres(Genre genre);

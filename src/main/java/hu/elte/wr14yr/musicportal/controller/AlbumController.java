@@ -99,11 +99,20 @@ public class AlbumController {
     }
 
     @GetMapping("/by-user/{id}")
-    public ResponseEntity<Iterable<Album>> list(@PathVariable long id) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/'");
+    public ResponseEntity<Iterable<Album>> listByUser(@PathVariable long id) throws IOException {
+        logger.log(Level.INFO, "Entrance: endpoint '/by-user/" + id + "'");
 
-        Iterable<Album> albums = albumService.list(id);
-        logger.log(Level.INFO, "Exit: endpoint '/'");
+        Iterable<Album> albums = albumService.listByUser(id);
+        logger.log(Level.INFO, "Exit: endpoint '/by-user/" + id + "'");
+
+        return ResponseEntity.ok(albums);
+    }
+
+    @GetMapping("/list-first-five")
+    public ResponseEntity<Iterable<Album>> listFirstFive() {
+        logger.log(Level.INFO, "Entrance: endpoint '/first-five'");
+        Iterable<Album> albums = albumService.listFirstFive();
+        logger.log(Level.INFO, "Exit: endpoint '/first-five'");
 
         return ResponseEntity.ok(albums);
     }

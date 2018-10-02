@@ -105,16 +105,25 @@ public class SongController {
     }
 
     @GetMapping("/by-user/{id}")
-    public ResponseEntity<Iterable<Song>> list(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/'");
-        Iterable<Song> songs = songService.list(id);
-        logger.log(Level.INFO, "Exit: endpoint '/'");
+    public ResponseEntity<Iterable<Song>> listByUser(@PathVariable long id) {
+        logger.log(Level.INFO, "Entrance: endpoint '/by-user/" + id + "'");
+        Iterable<Song> songs = songService.listByUser(id);
+        logger.log(Level.INFO, "Exit: endpoint '/by-user/" + id + "'");
+
+        return ResponseEntity.ok(songs);
+    }
+
+    @GetMapping("/list-first-five")
+    public ResponseEntity<Iterable<Song>>  listFirstFive() {
+        logger.log(Level.INFO, "Entrance: endpoint '/list-first-five'");
+        Iterable<Song> songs = songService.listFirstFive();
+        logger.log(Level.INFO, "Exit: endpoint '/list-first-five'");
 
         return ResponseEntity.ok(songs);
     }
 
     @PostMapping("/by-album")
-    public ResponseEntity<Iterable<Song>> songsByAlbum(MultipartHttpServletRequest request) throws IOException {
+    public ResponseEntity<Iterable<Song>> listByAlbum(MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/by-album'");
 
         logger.log(Level.INFO, "Get parameter 'album'");
@@ -127,7 +136,7 @@ public class SongController {
     }
 
     @PostMapping("/by-playlist")
-    public ResponseEntity<Iterable<Song>> songsByPlaylist(MultipartHttpServletRequest request) throws IOException {
+    public ResponseEntity<Iterable<Song>> listByPlaylist(MultipartHttpServletRequest request) throws IOException {
         logger.log(Level.INFO, "Entrance: endpoint '/by-playlist'");
 
         logger.log(Level.INFO, "Get parameter 'playlist'");

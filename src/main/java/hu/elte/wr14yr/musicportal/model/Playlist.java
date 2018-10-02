@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,9 @@ public class Playlist {
     @ManyToOne(targetEntity = User.class, optional = false)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
+
+    @Column(name = "DATE", nullable = false)
+    private Date date;
 
     @JoinTable(name = "SONG_PLAYLIST", joinColumns = @JoinColumn(name = "PLAYLIST_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))

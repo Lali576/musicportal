@@ -6,6 +6,7 @@ import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.Collections;
 import java.util.Date;
@@ -64,16 +65,23 @@ public class AlbumService {
     }
 
     public Iterable<Album> listAll() {
-        logger.log(Level.INFO, "Every album in database MusicPortal are going to be listed");
+        logger.log(Level.INFO, "Album service: every album in database MusicPortal are going to be listed");
 
         return albumRepository.findAll();
     }
 
-    public Iterable<Album> list(long id) {
+    public Iterable<Album> listByUser(long id) {
         logger.log(Level.INFO, "Album service: user with id " +
                 id + "'s albums are going to be listed");
 
         return albumRepository.findAllByUserId(id);
+    }
+
+    public Iterable<Album> listFirstFive() {
+        logger.log(Level.INFO, "Album service: first five albums ordered " +
+                "by their dates are going to be listed");
+
+        return albumRepository.findFirst5ByOrderByDateAsc();
     }
 
     public Album find(long id) {
@@ -123,7 +131,7 @@ public class AlbumService {
     public void deleteAllByUser(User user) {
         logger.log(Level.INFO, "Album service: user named " +
                 user.getUsername() + "'s albums are going to be deleted");
-        Iterable<Album> userAlbums = list(user.getId());
+        Iterable<Album> userAlbums = listByUser(user.getId());
         for(Album album : userAlbums) {
             delete(album);
         }

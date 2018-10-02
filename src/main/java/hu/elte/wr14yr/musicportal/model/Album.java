@@ -31,13 +31,13 @@ public class Album {
     @Column(name = "DATE", nullable = false)
     private Date date;
 
-    @Column(name = "ALBUM_FOLDER_GDA_ID")
+    @Column(name = "ALBUM_FOLDER_GDA_ID", unique = true)
     private String albumFolderGdaId;
 
-    @Column(name = "ALBUM_SONGS_FOLDER_GDA_ID")
+    @Column(name = "ALBUM_SONGS_FOLDER_GDA_ID", unique = true)
     private String albumSongsFolderGdaId;
 
-    @Column(name = "ALBUM_COVER_FOLDER_GDA_ID")
+    @Column(name = "ALBUM_COVER_FOLDER_GDA_ID", unique = true)
     private String albumCoverFolderGdaId;
 
     @Column(name = "COVER_FILE_GDA_ID")

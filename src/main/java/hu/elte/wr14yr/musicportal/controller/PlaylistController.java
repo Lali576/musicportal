@@ -34,9 +34,6 @@ public class PlaylistController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private SongService songService;
-
     private ObjectMapper mapper = new ObjectMapper();
 
     private Logger logger = Logger.getLogger(PlaylistController.class.getName());
@@ -78,17 +75,26 @@ public class PlaylistController {
     @GetMapping("/list")
     public ResponseEntity<Iterable<Playlist>> listAll() {
         logger.log(Level.INFO, "Entrance: endpoint '/list'");
-        Iterable<Playlist> playlist = playlistService.listAll();
+        Iterable<Playlist> playlists = playlistService.listAll();
         logger.log(Level.INFO, "Exit: endpoint '/list'");
 
-        return ResponseEntity.ok(playlist);
+        return ResponseEntity.ok(playlists);
+    }
+
+    @GetMapping("/list-first-five")
+    public ResponseEntity<Iterable<Playlist>> listFirstFive() {
+        logger.log(Level.INFO, "Entrance: endpoint '/list-first-five'");
+        Iterable<Playlist> playlists = playlistService.listFirstFive();
+        logger.log(Level.INFO, "Exit: endpoint '/list-first-five'");
+
+        return ResponseEntity.ok(playlists);
     }
 
     @GetMapping("/by-user/{id}")
     public ResponseEntity<Iterable<Playlist>> list(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/'");
-        Iterable<Playlist> playlist = playlistService.list(id);
-        logger.log(Level.INFO, "Exit: endpoint '/'");
+        logger.log(Level.INFO, "Entrance: endpoint '/by-user/" + id + "'");
+        Iterable<Playlist> playlist = playlistService.listByUser(id);
+        logger.log(Level.INFO, "Exit: endpoint '/by-user/" + id + "'");
 
         return ResponseEntity.ok(playlist);
     }
