@@ -18,7 +18,6 @@ import { UserDetailComponent } from "../sites/user/user-detail/user-detail.compo
 import { SearchComponent } from "../sites/search/search.component";
 import {UserPasswordComponent} from "../sites/user/user-password/user-password.component";
 import {UserEmailComponent} from "../sites/user/user-email/user-email.component";
-import {UserBiographyComponent} from "../sites/user/user-biography/user-biography.component";
 import {UserEditComponent} from "../sites/user/user-edit/user-edit.component";
 import {AlbumFormComponent} from "../sites/album/album-form/album-form.component";
 import {PlaylistFormComponent} from "../sites/playlist/playlist-form/playlist-form.component";
@@ -63,16 +62,8 @@ const routes: Routes = [
     data: {roles: ['USER', 'ARTIST']}
   },
   {
-    path: 'user/:id/update/biography',
-    component: UserBiographyComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
-  },
-  {
     path: 'album/list',
-    component: AlbumListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
+    component: AlbumListComponent
   },
   {
     path: 'album/new',
@@ -96,9 +87,7 @@ const routes: Routes = [
   },
   {
     path: 'song/list',
-    component: SongListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
+    component: SongListComponent
   },
   {
     path: 'song/:id',
@@ -112,9 +101,7 @@ const routes: Routes = [
   },
   {
     path: 'playlist/list',
-    component: PlaylistListComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER']}
+    component: PlaylistListComponent
   },
   {
     path: 'playlist/new',

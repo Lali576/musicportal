@@ -47,7 +47,6 @@ import { UserDetailComponent } from './sites/user/user-detail/user-detail.compon
 import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
 import { UserPasswordComponent } from './sites/user/user-password/user-password.component';
 import { UserEmailComponent } from './sites/user/user-email/user-email.component';
-import { UserBiographyComponent } from './sites/user/user-biography/user-biography.component';
 import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
 import { AlbumListComponent } from './sites/album/album-list/album-list.component';
 import { AlbumDetailComponent } from './sites/album/album-detail/album-detail.component';
@@ -101,7 +100,6 @@ registerLocaleData(localeHu);
     PlaylistFormComponent,
     UserPasswordComponent,
     UserEmailComponent,
-    UserBiographyComponent,
     AlbumSongsComponent,
     PlaylistSongsComponent
   ],
