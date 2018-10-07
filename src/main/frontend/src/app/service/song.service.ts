@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Song} from "../model/song";
-import {Observable} from "rxjs/index";
 import {Album} from "../model/album";
 import {Playlist} from "../model/playlist";
-import {GenreService} from "./genre.service";
 import {Genre} from "../model/genre";
 import {SongKeyword} from "../model/keywords/songkeyword";
 import {tap} from "rxjs/internal/operators";
@@ -79,6 +77,10 @@ export class SongService {
     return this.http.post<Song[]>(
           'api/song/by-playlist',
               formData).toPromise();
+  }
+
+  getFirstFiveSongs(): Promise<Song[]> {
+    return this.http.get<Song[]>('api/song/list-first-five').toPromise();
   }
 
   updateSong(id: number, song: Song, audioFile: File, album:Album): Promise<Song> {

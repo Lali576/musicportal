@@ -5,11 +5,14 @@ import {ActivatedRoute, ParamMap} from "@angular/router";
 import {PlaylistService} from "../../../service/playlist.service";
 import {SongService} from "../../../service/song.service";
 import {switchMap} from "rxjs/internal/operators";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {AuthService} from "../../../service/auth.service";
 
 @Component({
   selector: 'app-playlist-detail',
   templateUrl: './playlist-detail.component.html',
-  styleUrls: ['./playlist-detail.component.css']
+  styleUrls: ['./playlist-detail.component.css'],
+  providers: [MessageService, ConfirmationService]
 })
 export class PlaylistDetailComponent implements OnInit {
 
@@ -19,7 +22,10 @@ export class PlaylistDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private playlistService: PlaylistService,
-    private songService: SongService
+    private songService: SongService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -27,7 +33,6 @@ export class PlaylistDetailComponent implements OnInit {
       const id = +params.get('id');
       await this.playlistService.getPlaylist(id);
       this.playlist = this.playlistService.playlist;
-      console.log(this.playlist.name);
       this.loadSongs();
     })).subscribe();
   }
@@ -39,5 +44,24 @@ export class PlaylistDetailComponent implements OnInit {
           this.songs = songs;
         }
       );
+  }
+
+  deleteSongConfirm(song: Song) {
+    this.confirmationService.confirm({
+      message: "Biztos szeretné törölni az alábbi dalt: " + song.title + " ?",
+      header: 'Dal törlés',
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.deleteSong(song);
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  async deleteSong(song) {
+    await this.songService.deleteSong(song);
+    this.messageService.add({severity:'success', summary: song.title + ' című dal sikeresen törölve', detail:''});
+    this.loadSongs();
   }
 }

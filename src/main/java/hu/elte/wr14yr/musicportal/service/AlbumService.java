@@ -144,7 +144,6 @@ public class AlbumService {
                 album.getTitle() + " is going to be deleted from database MusicPortal");
         songService.deleteAllByAlbum(album);
         keywordService.deleteAllAlbumKeywordsByAlbum(album);
-
         fileService.delete(album.getAlbumFolderGdaId());
         albumRepository.deleteById(album.getId());
         logger.log(Level.INFO, "Album service: album titled " +

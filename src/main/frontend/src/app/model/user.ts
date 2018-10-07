@@ -1,5 +1,6 @@
 import {Genre} from "./genre";
 import {Country} from "./country";
+import {UserKeyword} from "./keywords/userkeyword";
 
 export class User {
   id: number = 0;
@@ -12,5 +13,6 @@ export class User {
   userAlbumsFolderGdaId: string = "";
   userIconFolderGdaId: string = "";
   iconFileGdaId: string = "";
+  userKeywords: UserKeyword[] = [];
   role: string = "GUEST";
 }

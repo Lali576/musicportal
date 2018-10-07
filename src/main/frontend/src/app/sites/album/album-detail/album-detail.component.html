@@ -13,27 +13,53 @@
     <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="100px" style="margin: 10px; border-radius: 5px;">
   </ng-template>
   <br>
-  <button pButton type="button" label="Szerkeszt">
+  <button *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === album.user.id)" pButton type="button" label="Szerkeszt">
   </button>
 </div>
 <table class="table">
   <tbody>
-  <tr>
-    <th>
-      Cím:
-    </th>
-    <td>
-      {{album.title}}
-    </td>
-  </tr>
-  <tr>
-    <th>
-      Dátum:
-    </th>
-    <td>
-      {{album.date | date}}
-    </td>
-  </tr>
+    <tr>
+      <th>
+        Cím:
+      </th>
+      <td>
+        {{album.title}}
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Feltöltő:
+      </th>
+      <td>
+        <a [routerLink]="['/user', album.user.id]" style="color: dodgerblue;">
+          {{album.user.username}}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Dátum:
+      </th>
+      <td>
+        {{album.date | date}}
+      </td>
+    </tr>
+    <tr>
+      <th>Műfajok:</th>
+      <td>
+        <button *ngFor="let albumKeyword of album."
+                pButton type="button"
+                label="#{{albumKeyword.word}}"></button>
+      </td>
+    </tr>
+    <tr>
+      <th>Címkék:</th>
+      <td>
+        <button *ngFor="let userKeyword of user.userKeywords"
+                pButton type="button"
+                label="#{{userKeyword.word}}"></button>
+      </td>
+    </tr>
   </tbody>
 </table>
 <p-dataView *ngIf="albumSongs.length >= 1" #dv [value]="albumSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
@@ -48,18 +74,18 @@
           </a>
         </div>
       </div>
-      <div class="ui-g-6 ui-md-1">
+      <div class="ui-g-6 ui-md-1" *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === album.user.id)">
         <button
           pButton type="button"
           [routerLink]="['/song', song.id, 'update/details']"
           style="width: 30px; height: 30px; margin-top: 10px;"
           icon="fas fa-edit"></button>
       </div>
-      <div class="ui-g-6 ui-md-1">
+      <div class="ui-g-6 ui-md-1" *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === album.user.id)">
         <button
           pButton type="button"
           (click)="deleteSongConfirm(song)"
-          style="width: 30px; height: 30px; margin-top: 10px; color: red;"
+          style="width: 30px; height: 30px; margin-top: 10px;"
           icon="fas fa-trash"></button>
       </div>
     </div>

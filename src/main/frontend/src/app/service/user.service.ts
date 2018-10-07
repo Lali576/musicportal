@@ -24,6 +24,10 @@ export class UserService {
     private authService: AuthService
   ) {}
 
+  getUserKeywords(id: number) {
+
+  }
+
   updateUser(id: number, fullName: string, favGenre: Genre, keywords: UserKeyword[]): Promise<User> {
     console.log("Try to update details for user named " +
       this.authService.loggedInUser.username + " with new details");

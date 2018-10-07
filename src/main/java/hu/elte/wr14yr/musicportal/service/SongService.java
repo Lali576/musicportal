@@ -80,7 +80,7 @@ public class SongService {
         logger.log(Level.INFO, "Song service: first five songs ordered " +
                 "by their counted song counters are going to be listed");
 
-        return songRepository.findFirst5ByCountBySongCounter();
+        return songRepository.findFirst5ByOrderByIdAsc();
     }
 
     public Iterable<Song> listByUser(long id) {
@@ -101,7 +101,7 @@ public class SongService {
         logger.log(Level.INFO, "Song service: playlist named " +
                 playlist.getName() + "'s songs are going to be listed");
 
-        return songRepository.findAllByPlaylist(playlist);
+        return songRepository.findAllByPlaylists(playlist);
     }
 
     public Song find(long id) {

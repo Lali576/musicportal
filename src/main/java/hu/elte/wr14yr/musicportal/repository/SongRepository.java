@@ -18,13 +18,13 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
-    List<Song> findFirst5ByCountBySongCounter();
+    List<Song> findFirst5ByOrderByIdAsc();
 
     List<Song> findAllByAlbum(Album album);
 
     List<Song> findAllByUserId(long id);
 
-    List<Song> findAllByPlaylist(Playlist playlist);
+    List<Song> findAllByPlaylists(Playlist playlist);
 
     List<Song> findAllByGenres(List<Genre> genres);
 

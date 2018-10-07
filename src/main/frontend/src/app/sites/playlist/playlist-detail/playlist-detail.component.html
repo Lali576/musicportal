@@ -1,8 +1,40 @@
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog></p-confirmDialog>
 <button pButton routerLink="/playlist/list" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
 <h1 class="first">
-  {{playlist.name}}
+  Lejátszási lista
 </h1>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>
+        Név:
+      </th>
+      <td>
+        {{playlist.name}}
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Feltöltő:
+      </th>
+      <td>
+        <a [routerLink]="['/user', playlist.user.id]" style="color: dodgerblue;">
+          {{playlist.user.username}}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Dátum:
+      </th>
+      <td>
+        {{playlist.date | date}}
+      </td>
+    </tr>
+  </tbody>
+</table>
 <p-dataView *ngIf="songs.length >= 1" #dv [value]="songs" [paginator]="true" [rows]="10" paginatorPosition="both">
   <ng-template let-song pTemplate="listItem">
     <div class="ui-g" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
@@ -15,18 +47,18 @@
           </a>
         </div>
       </div>
-      <div class="ui-g-6 ui-md-1">
+      <div class="ui-g-6 ui-md-1" *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === playlist.user.id)">
         <button
           pButton type="button"
           [routerLink]="['/song', song.id, 'update/details']"
           style="width: 30px; height: 30px; margin-top: 10px;"
           icon="fas fa-edit"></button>
       </div>
-      <div class="ui-g-6 ui-md-1">
+      <div class="ui-g-6 ui-md-1" *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === playlist.user.id)">
         <button
           pButton type="button"
           (click)="deleteSongConfirm(song)"
-          style="width: 30px; height: 30px; margin-top: 10px; color: red;"
+          style="width: 30px; height: 30px; margin-top: 10px;"
           icon="fas fa-trash"></button>
       </div>
     </div>

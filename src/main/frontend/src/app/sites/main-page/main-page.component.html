@@ -1,3 +1,32 @@
 <h1 class="first">
   Music Portal
 </h1>
+<div>
+  <h2 class="first">Legfrissebb albumok</h2>
+  <div *ngIf="firstFiveAlbums.length === 0; else showFirstFiveAlbums">
+    Jelenleg nincs feltöltve album!
+  </div>
+  <ng-template #showFirstFiveAlbums>
+    <ul *ngFor="let album of firstFiveAlbums">
+      <li>{{album.title + " - " + album.user.username + " " + (album.date|date)}}</li>
+    </ul>
+  </ng-template>
+  <h2 class="first">Legfrissebb lej. listák</h2>
+  <div *ngIf="firstFivePlaylists.length === 0; else showFirstFivePlaylists">
+    Jelenleg nincs feltöltve lej. lista!
+  </div>
+  <ng-template #showFirstFivePlaylists>
+    <ul *ngFor="let playlist of firstFivePlaylists">
+      <li>{{playlist.name + " - " + playlist.user.username + " " + (playlist.date|date)}}</li>
+    </ul>
+  </ng-template>
+  <h2 class="first">Leghallgatottabb dalok</h2>
+  <div *ngIf="firstFiveSongs.length === 0; else showFirstFiveSongs">
+    Jelenleg nincs feltöltve dal!
+  </div>
+  <ng-template #showFirstFiveSongs>
+    <ul *ngFor="let song of firstFiveSongs">
+      <li>{{song.title + " - " + song.album.title}}</li>
+    </ul>
+  </ng-template>
+</div>

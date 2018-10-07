@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs/index";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Playlist} from "../model/playlist";
-import {AuthService} from "./auth.service";
 import {Song} from "../model/song";
 import {PlaylistKeyword} from "../model/keywords/playlistkeyword";
 import {tap} from "rxjs/internal/operators";
@@ -41,12 +39,16 @@ export class PlaylistService {
     ).toPromise();
   }
 
+  getAllPlaylist(): Promise<Playlist[]> {
+    return this.http.get<Playlist[]>('api/playlist/list').toPromise();
+  }
+
   getUserPlaylist(id: number): Promise<Playlist[]> {
     return this.http.get<Playlist[]>(`api/playlist/by-user/${id}`).toPromise();
   }
 
-  getAllPlaylist(): Promise<Playlist[]> {
-    return this.http.get<Playlist[]>('api/playlist').toPromise();
+  getFirstFivePlaylists(): Promise<Playlist[]> {
+    return this.http.get<Playlist[]>('api/playlist/list-first-five').toPromise();
   }
 
   updatePlaylist(id: number, playlist: Playlist, songs: Song[], keywords: PlaylistKeyword[]): Promise<Playlist> {

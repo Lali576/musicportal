@@ -6,6 +6,7 @@ import {AlbumService} from "../../../service/album.service";
 import {switchMap} from "rxjs/internal/operators";
 import {SongService} from "../../../service/song.service";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {AuthService} from "../../../service/auth.service";
 
 @Component({
   selector: 'app-album-detail',
@@ -22,7 +23,8 @@ export class AlbumDetailComponent implements OnInit {
     private albumService: AlbumService,
     private songService: SongService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {

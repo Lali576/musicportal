@@ -17,9 +17,7 @@ import java.util.List;
 @JsonIgnoreProperties({"songComments",
                         "songCounters",
                         "songLikes",
-                        "playlist",
-                        "genres",
-                        "songKeywords"})
+                        "playlist"})
 public class Song {
 
     @Id
