@@ -47,7 +47,7 @@
     <tr>
       <th>Műfajok:</th>
       <td>
-        <button *ngFor="let albumKeyword of album."
+        <button *ngFor="let albumKeyword of album"
                 pButton type="button"
                 label="#{{albumKeyword.word}}"></button>
       </td>
@@ -55,9 +55,9 @@
     <tr>
       <th>Címkék:</th>
       <td>
-        <button *ngFor="let userKeyword of user.userKeywords"
+        <button *ngFor="let albumKeyword of album.albumKeywords"
                 pButton type="button"
-                label="#{{userKeyword.word}}"></button>
+                label="#{{albumKeyword.word}}"></button>
       </td>
     </tr>
   </tbody>

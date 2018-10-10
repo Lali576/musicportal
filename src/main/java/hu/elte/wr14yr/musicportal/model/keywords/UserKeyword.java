@@ -1,9 +1,9 @@
 package hu.elte.wr14yr.musicportal.model.keywords;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import hu.elte.wr14yr.musicportal.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,16 +13,8 @@ import javax.persistence.*;
 @Table(name = "USER_KEYWORDS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"user"})
-public class UserKeyword {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
-    private long id;
-
-    @Column(name = "WORD", nullable = false)
-    private String word;
+@EqualsAndHashCode(callSuper = true)
+public class UserKeyword extends Keyword {
 
     @ManyToOne(targetEntity = User.class, optional = false)
     @JoinColumn(name = "USER_ID")

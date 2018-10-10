@@ -3,6 +3,7 @@ package hu.elte.wr14yr.musicportal.model.keywords;
 import hu.elte.wr14yr.musicportal.model.Album;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,15 +13,8 @@ import javax.persistence.*;
 @Table(name = "ALBUM_KEYWORDS")
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumKeyword {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
-    private long id;
-
-    @Column(name = "WORD", nullable = false)
-    private String word;
+@EqualsAndHashCode(callSuper = true)
+public class AlbumKeyword extends Keyword {
 
     @ManyToOne(targetEntity = Album.class, optional = false)
     @JoinColumn(name = "ALBUM_ID")
