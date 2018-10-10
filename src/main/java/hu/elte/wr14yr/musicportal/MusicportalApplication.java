@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
+import java.util.Map;
 
 @EnableWebMvc
 @SpringBootApplication
@@ -38,7 +39,8 @@ public class MusicportalApplication implements WebMvcConfigurer {
             }
         }
 
-        for (String name : Country.countries) {
+        for (Map.Entry<String, String> entry : Country.countries.entrySet()) {
+            String name = entry.getKey();
             String sql = "SELECT NAME FROM COUNTRIES C WHERE C.NAME = '" + name + "' LIMIT 1";
             List<Country> c = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
             if(c == null || c.size() <= 0) {

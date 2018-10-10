@@ -22,7 +22,7 @@ public class CountryController {
     @GetMapping("/list")
     public ResponseEntity<Iterable<Country>> list() {
         logger.log(Level.INFO, "Entrance: endpoint '/list'");
-        Iterable<Country> countries = countryRepository.findAll();
+        Iterable<Country> countries = countryRepository.findAllByOrderByName();
         logger.log(Level.INFO, "Exit: endpoint '/list'");
 
         return ResponseEntity.ok(countries);

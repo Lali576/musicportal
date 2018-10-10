@@ -9,5 +9,5 @@ public interface CountryRepository extends CrudRepository<Country, Long> {
     @Override
     Country save(Country country);
 
-    List<Country> findAll();
+    List<Country> findAllByOrderByName();
 }
