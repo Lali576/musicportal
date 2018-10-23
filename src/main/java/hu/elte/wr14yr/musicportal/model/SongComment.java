@@ -13,6 +13,8 @@ import java.util.Date;
 @Table(name = "SONG_COMMENTS")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"user",
+                        "song"})
 public class SongComment {
 
     @Id

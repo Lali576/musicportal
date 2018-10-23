@@ -14,7 +14,9 @@ import java.util.List;
 @Table(name = "SONGS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"songComments",
+@JsonIgnoreProperties({"genres",
+                        "songKeywords",
+                        "songComments",
                         "songCounters",
                         "songLikes",
                         "playlist"})
@@ -55,7 +57,7 @@ public class Song {
     private List<SongLike> songLikes;
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
-    private List<Playlist> playlists;
+    private List<Playlist> playlist;
 
     @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
     private List<Genre> genres;

@@ -23,7 +23,7 @@ import java.util.List;
                         "songLikes",
                         "userToMessages",
                         "userFromMessages",
-                        "playlists"})
+                        "playlist"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,7 +87,7 @@ public class User {
     private List<UserMessage> userFromMessages;
 
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
-    private List<Playlist> playlists;
+    private List<Playlist> playlist;
 
     @OneToMany(targetEntity = UserKeyword.class, mappedBy = "user")
     private List<UserKeyword> userKeywords;

@@ -6,9 +6,7 @@ import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.io.File;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,13 +30,13 @@ public class AlbumService {
     private Logger logger = Logger.getLogger(AlbumService.class.getName());
 
     public Album create(Album album, User user, File coverFile, List<Genre> genres, List<AlbumKeyword> albumKeywords) {
-        logger.log(Level.INFO, "Album service: new album is going to be saved in database MusicPortal");
+        logger.info("Album service: new album is going to be saved in database MusicPortal");
         album.setUser(user);
         album.setDate(new Date());
         album.setGenres(genres);
 
         Album savedAlbum = albumRepository.save(album);
-        logger.log(Level.INFO, "Album service: new album has been successfully saved in database MusicPortal");
+        logger.info("Album service: new album has been successfully saved in database MusicPortal");
 
         if(albumKeywords != null) {
             keywordService.createAlbumKeywords(albumKeywords, savedAlbum);
@@ -59,61 +57,53 @@ public class AlbumService {
         }
 
         savedAlbum = albumRepository.save(savedAlbum);
-        logger.log(Level.INFO, "Album service: new album has been updated with folder and file id's");
+        logger.info("Album service: new album has been updated with folder and file id's");
 
         return savedAlbum;
     }
 
     public Iterable<Album> listAll() {
-        logger.log(Level.INFO, "Album service: every album in database MusicPortal are going to be listed");
+        logger.info("Album service: every album in database MusicPortal are going to be listed");
 
         return albumRepository.findAll();
     }
 
     public Iterable<Album> listFirstFive() {
-        logger.log(Level.INFO, "Album service: first five albums ordered " +
-                "by their dates are going to be listed");
+        logger.info("Album service: first five albums ordered by their dates are going to be listed");
 
         return albumRepository.findFirst5ByOrderByDateAsc();
     }
 
     public Iterable<Album> listByUser(long id) {
-        logger.log(Level.INFO, "Album service: user with id " +
-                id + "'s albums are going to be listed");
+        logger.info(String.format("Album service: user with id %d's albums are going to be listed", id));
 
         return albumRepository.findAllByUserId(id);
     }
 
     public Album find(long id) {
-        logger.log(Level.INFO, "Album service: album with id " +
-                id + " is going to be searched");
+        logger.info(String.format("Album service: album with id %d is going to be searched", id));
         Album album = albumRepository.findAlbumById(id);
-        logger.log(Level.INFO, "Album service: album with id "
-                + id + " has been found successfully");
+        logger.info(String.format("Album service: album with id %d has been found successfully", id));
 
         return album;
     }
 
     public Album updateDetails(Album album, List<Genre> genres, List<AlbumKeyword> albumKeywords) {
-        logger.log(Level.INFO, "Album service: album titled " +
-                album.getTitle() + " is going to be updated");
+        logger.info(String.format("Album service: album titled %s is going to be updated", album.getTitle()));
         album.setGenres(genres);
         album = albumRepository.save(album);
-        logger.log(Level.INFO, "Album service: album titled " +
-                album.getTitle() + " has been updated successfully");
-
         keywordService.deleteAllAlbumKeywordsByAlbum(album);
 
         if(albumKeywords != null) {
             keywordService.createAlbumKeywords(albumKeywords, album);
         }
+        logger.info(String.format("Album service: album titled %s has been updated successfully", album.getTitle()));
 
         return album;
     }
 
     public Album changeCoverFile(Album album, File coverFile) {
-        logger.log(Level.INFO, "Album service: album titled " +
-                album.getTitle() + "'s cover image is going to be changed");
+        logger.info(String.format("Album service: album titled %s's cover image is going to be changed",album.getTitle()));
         if(coverFile != null) {
             String newCoverFileGdaId = fileService.updateFile(album.getCoverFileGdaId(), coverFile);
             album.setCoverFileGdaId(newCoverFileGdaId);
@@ -122,8 +112,7 @@ public class AlbumService {
             album.setCoverFileGdaId(null);
         }
         album = albumRepository.save(album);
-        logger.log(Level.INFO, "Album service: album titled " +
-                album.getTitle() + "'s cover image has been changed successfully");
+        logger.info(String.format("Album service: album titled %s's cover image has been changed successfully", album.getTitle()));
 
         return album;
     }

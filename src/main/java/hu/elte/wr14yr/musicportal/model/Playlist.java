@@ -12,10 +12,11 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "PLAYLISTS")
+@Table(name = "PLAYLIST")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"songs"})
+@JsonIgnoreProperties({"songs",
+                        "playlistKeywords"})
 public class Playlist {
 
     @Id
