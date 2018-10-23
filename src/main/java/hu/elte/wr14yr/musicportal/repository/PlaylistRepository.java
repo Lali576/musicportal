@@ -15,9 +15,9 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     List<Playlist> findFirst5ByOrderByDateAsc();
 
-    List<Playlist> findAllByUserId(Long id);
+    List<Playlist> findAllByUserId(long id);
 
-    List<Playlist> findAllByPlaylistKeywords(List<PlaylistKeyword> playlistKeywords);
+    List<Playlist> findAllByPlaylistKeyword(PlaylistKeyword playlistKeyword);
 
     Playlist findPlaylistById(Long id);
 

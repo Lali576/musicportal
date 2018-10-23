@@ -24,9 +24,9 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     List<Album> findAllByUserId(long id);
 
-    List<Album> findAllByGenres(List<Genre> genre);
+    List<Album> findAllByGenre(Genre genre);
 
-    List<Album> findAllByAlbumKeywords(List<AlbumKeyword> albumKeywords);
+    List<Album> findAllByAlbumKeyword(AlbumKeyword albumKeyword);
 
     Album findAlbumById(Long id);
 

@@ -10,8 +10,6 @@ public interface PlaylistKeywordRepository extends CrudRepository<PlaylistKeywor
     @Override
     PlaylistKeyword save(PlaylistKeyword playlistKeyword);
 
-    List<PlaylistKeyword> findAllByWordContainsAllIgnoreCase(String keyword);
-
     List<PlaylistKeyword> findAllByPlaylist(Playlist playlist);
 
     @Override

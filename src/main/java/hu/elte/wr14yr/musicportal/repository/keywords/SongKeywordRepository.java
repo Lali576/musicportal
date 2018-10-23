@@ -10,8 +10,6 @@ public interface SongKeywordRepository extends CrudRepository<SongKeyword, Long>
     @Override
     SongKeyword save(SongKeyword songKeyword);
 
-    List<SongKeyword> findAllByWordContainsAllIgnoreCase(String keyword);
-
     List<SongKeyword> findAllBySong(Song song);
 
     @Override

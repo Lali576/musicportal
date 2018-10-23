@@ -10,6 +10,4 @@ public interface GenreRepository extends CrudRepository<Genre, Long> {
     Genre save(Genre genre);
 
     List<Genre> findAll();
-
-    List<Genre> findAllByNameContainsAllIgnoreCase(String name);
 }

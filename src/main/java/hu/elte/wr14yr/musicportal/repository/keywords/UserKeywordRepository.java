@@ -9,8 +9,6 @@ public interface UserKeywordRepository extends CrudRepository<UserKeyword, Long>
     @Override
     UserKeyword save(UserKeyword userKeyword);
 
-    List<UserKeyword> findAllByWordContainsAllIgnoreCase(String keyword);
-
     List<UserKeyword> findByUser(User user);
 
     @Override

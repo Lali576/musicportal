@@ -32,28 +32,22 @@ public class SearchService {
 
     private Logger logger = Logger.getLogger(SearchService.class.getName());
 
-    public Iterable<Genre> findGenreByName(String name) {
-        logger.log(Level.INFO, "Search service: genres with name " +
-                name + " are going to be searched");
-        return genreRepository.findAllByNameContainsAllIgnoreCase(name);
-    }
-
     public Iterable<Album> findAlbumsByTitle(String title) {
         logger.log(Level.INFO, "Search service: albums with title " +
                 title + " are going to be searched");
         return albumRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Album> findAlbumByAlbumKeywords(List<AlbumKeyword> albumKeywords) {
-        logger.log(Level.INFO, "Search service: albums with current album keywords are going to be searched", albumKeywords);
+    public Iterable<Album> findAlbumByAlbumKeyword(AlbumKeyword albumKeyword) {
+        logger.log(Level.INFO, "Search service: albums with current album keywords are going to be searched", albumKeyword);
 
-        return albumRepository.findAllByAlbumKeywords(albumKeywords);
+        return albumRepository.findAllByAlbumKeyword(albumKeyword);
     }
 
-    public Iterable<Album> findAlbumsByGenre(List<Genre> genres) {
-        logger.log(Level.INFO, "Search service: albums with current genres are going to be searched", genres);
+    public Iterable<Album> findAlbumsByGenre(Genre genre) {
+        logger.log(Level.INFO, "Search service: albums with current genres are going to be searched", genre);
 
-        return albumRepository.findAllByGenres(genres);
+        return albumRepository.findAllByGenre(genre);
     }
 
     public Iterable<Song> findSongsByTitle(String title) {
@@ -63,16 +57,16 @@ public class SearchService {
         return songRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Song> findSongsBySongKeywords(List<SongKeyword> songKeywords) {
-        logger.log(Level.INFO, "Search service: users with current user keywords are going to be searched", songKeywords);
+    public Iterable<Song> findSongsBySongKeywords(SongKeyword songKeyword) {
+        logger.log(Level.INFO, "Search service: users with current user keywords are going to be searched", songKeyword);
 
-        return songRepository.findAllBySongKeywords(songKeywords);
+        return songRepository.findAllBySongKeyword(songKeyword);
     }
 
-    public Iterable<Song> findSongsByGenres(List<Genre> genres) {
-        logger.log(Level.INFO, "Search service: songs with current genres are going to be searched", genres);
+    public Iterable<Song> findSongsByGenre(Genre genre) {
+        logger.log(Level.INFO, "Search service: songs with current genres are going to be searched", genre);
 
-        return songRepository.findAllByGenres(genres);
+        return songRepository.findAllByGenre(genre);
     }
 
     public Iterable<Playlist> findPlaylistByName(String name) {
@@ -81,10 +75,10 @@ public class SearchService {
 
         return playlistRepository.findAllByNameContainsAllIgnoreCase(name);
     }
-    public Iterable<Playlist> findPlaylistByPlaylistKeywords(List<PlaylistKeyword> playlistKeywords) {
-        logger.log(Level.INFO, "Search service: playlists with current playlist keywords are going to be searched", playlistKeywords);
+    public Iterable<Playlist> findPlaylistByPlaylistKeyword(PlaylistKeyword playlistKeyword) {
+        logger.log(Level.INFO, "Search service: playlists with current playlist keywords are going to be searched", playlistKeyword);
 
-        return playlistRepository.findAllByPlaylistKeywords(playlistKeywords);
+        return playlistRepository.findAllByPlaylistKeyword(playlistKeyword);
     }
 
     public Iterable<User> findUsersByUsername(String username) {
@@ -94,9 +88,9 @@ public class SearchService {
         return userRepository.findAllByUsernameContainsAllIgnoreCase(username);
     }
 
-    public Iterable<User> findUsersByUserKeywords(List<UserKeyword> userKeywords) {
-        logger.log(Level.INFO, "Search service: users with current user keywords are going to be searched", userKeywords);
+    public Iterable<User> findUsersByUserKeyword(UserKeyword userKeyword) {
+        logger.log(Level.INFO, "Search service: users with current user keywords are going to be searched", userKeyword);
 
-        return userRepository.findAllByUserKeywords(userKeywords);
+        return userRepository.findAllByUserKeyword(userKeyword);
     }
 }

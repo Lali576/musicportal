@@ -10,8 +10,6 @@ public interface AlbumKeywordRepository extends CrudRepository<AlbumKeyword, Lon
     @Override
     AlbumKeyword save(AlbumKeyword albumKeyword);
 
-    List<AlbumKeyword> findAllByWordContainsAllIgnoreCase(String keyword);
-
     List<AlbumKeyword> findAllByAlbum(Album album);
 
     @Override
