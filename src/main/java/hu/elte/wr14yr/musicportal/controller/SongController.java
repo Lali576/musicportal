@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RestController
@@ -44,13 +43,15 @@ public class SongController {
     @Role({ARTIST})
     @PostMapping("/new")
     public ResponseEntity<Song> create(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/new'");
+        logger.info("Song controller: enter endpoint '/new'");
+
         MultipartFile multipartFile = null;
         File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
-        logger.log(Level.INFO, "Get file parameter");
+        logger.info("Song controller: get file parameter");
+
         while (iterator.hasNext()) {
             multipartFile = request.getFile(iterator.next());
         }
@@ -59,91 +60,108 @@ public class SongController {
             file = fileService.convertToFile(multipartFile);
         }
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter  'song'");
+
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
-        logger.log(Level.INFO, "Get current logged in user");
+        logger.info("Song controller: get current logged in user");
+
         User user = userService.getLoggedInUser();
 
-        logger.log(Level.INFO, "Get parameter 'album'");
+        logger.info("Song controller: get parameter  'album'");
+
         Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
-        logger.log(Level.INFO, "Get parameter 'genres'");
+        logger.info("Song controller: get parameter  'genres'");
+
         Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
-        logger.log(Level.INFO, "Get parameter 'keywords'");
-        SongKeyword[] songKeywordsArray = mapper.readValue(request.getParameter("keywords"), SongKeyword[].class);
+        logger.info("Song controller: get parameter  'songKeywords'");
+
+        SongKeyword[] songKeywordsArray = mapper.readValue(request.getParameter("songKeywords"), SongKeyword[].class);
         List<SongKeyword> songKeywordsList = Arrays.asList(songKeywordsArray);
 
         Song savedSong = songService.create(song, user, album, file, genresList, songKeywordsList);
-        logger.log(Level.INFO, "Exit: endpoint '/new'");
 
         if(file != null) {
             file.delete();
         }
+
+        logger.info("Song controller: exit endpoint '/new'");
 
         return ResponseEntity.ok(savedSong);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Song> find(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
+        logger.info(String.format("Song controller: enter endpoint '/%s'", id));
+
         Song foundSong  = songService.find(id);
-        logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
+
+        logger.info(String.format("Song controller: exit endpoint '/%s'", id));
 
         return ResponseEntity.ok(foundSong);
     }
 
     @GetMapping("/list")
     public ResponseEntity<Iterable<Song>> listAll() {
-        logger.log(Level.INFO, "Entrance: endpoint '/list'");
+        logger.info("Song controller: enter endpoint '/list'");
+
         Iterable<Song> songs = songService.listAll();
-        logger.log(Level.INFO, "Exit: endpoint '/list'");
+
+        logger.info("Song controller: exit endpoint '/list'");
 
         return ResponseEntity.ok(songs);
     }
 
     @GetMapping("/list-first-five")
     public ResponseEntity<Iterable<Song>>  listFirstFive() {
-        logger.log(Level.INFO, "Entrance: endpoint '/list-first-five'");
+        logger.info("Song controller: enter endpoint '/list-first-five'");
+
         Iterable<Song> songs = songService.listFirstFive();
-        logger.log(Level.INFO, "Exit: endpoint '/list-first-five'");
+
+        logger.info("Song controller: enter endpoint '/list-first-five'");
 
         return ResponseEntity.ok(songs);
     }
 
     @GetMapping("/by-user/{id}")
     public ResponseEntity<Iterable<Song>> listByUser(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/by-user/" + id + "'");
+        logger.info(String.format("Song controller: enter endpoint '/by-user/%s'", id));
+
         Iterable<Song> songs = songService.listByUser(id);
-        logger.log(Level.INFO, "Exit: endpoint '/by-user/" + id + "'");
+
+        logger.info(String.format("Song controller: exit endpoint '/by-user/%s'", id));
 
         return ResponseEntity.ok(songs);
     }
 
     @PostMapping("/by-album")
     public ResponseEntity<Iterable<Song>> listByAlbum(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/by-album'");
+        logger.info("Song controller: enter endpoint '/by-album'");
 
-        logger.log(Level.INFO, "Get parameter 'album'");
+        logger.info("Song controller: ger parameter 'album'");
+
         Album album = mapper.readValue(request.getParameter("album"), Album.class);
-
         Iterable<Song> songs = songService.listByAlbum(album);
-        logger.log(Level.INFO, "Exit: endpoint '/by-album'");
+
+        logger.info("Song controller: exit endpoint '/by-album'");
 
         return ResponseEntity.ok(songs);
     }
 
     @PostMapping("/by-playlist")
     public ResponseEntity<Iterable<Song>> listByPlaylist(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/by-playlist'");
+        logger.info("Song controller: enter endpoint '/by-playlist'");
 
-        logger.log(Level.INFO, "Get parameter 'playlist'");
+        logger.info("Song controller: get parameter 'playlist'");
+
         Playlist playlist = mapper.readValue(request.getParameter("playlist"), Playlist.class);
 
         Iterable<Song> songs = songService.listByPlaylist(playlist);
-        logger.log(Level.INFO, "Entrance: endpoint '/by-playlist'");
+
+        logger.info("Song controller: enter endpoint '/by-playlist'");
 
         return ResponseEntity.ok(songs);
     }
@@ -151,13 +169,15 @@ public class SongController {
     @Role({ARTIST})
     @PutMapping("/update/{id}")
     public ResponseEntity<Song> update(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "'");
+        logger.info(String.format("Song controller: enter endpoint '/update/%s'", id));
+
         MultipartFile multipartFile = null;
         File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
-        logger.log(Level.INFO, "Get file parameter");
+        logger.info("Song controller: get file parameter");
+
         while (iterator.hasNext()) {
             multipartFile = request.getFile(iterator.next());
         }
@@ -166,17 +186,25 @@ public class SongController {
             file = fileService.convertToFile(multipartFile);
         }
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter 'song'");
+
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
-        logger.log(Level.INFO, "Get current logged in user");
+        logger.info("Song controller: get current logged in user");
+
         User user = userService.getLoggedInUser();
 
-        logger.log(Level.INFO, "Get parameter 'album'");
+        logger.info("Song controller: get parameter 'album'");
+
         Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
         Song updatedSong = songService.update(song,album,user,file);
-        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "'");
+
+        if(file != null) {
+            file.delete();
+        }
+
+        logger.info(String.format("Song controller: exit endpoint '/update/%s'", id));
 
         return ResponseEntity.ok(updatedSong);
     }
@@ -184,28 +212,32 @@ public class SongController {
     @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
     public @ResponseBody void delete(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
+        logger.info(String.format("Song controller: enter endpoint '/delete/%s'", id));
+
         Song song = songService.find(id);
         songService.delete(song);
-        logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
+
+        logger.info(String.format("Song controller: exit endpoint '/delete/%s'", id));
     }
 
     @Role({ARTIST, USER})
     @PostMapping("/comments/new")
     public ResponseEntity<Iterable<SongComment>> createSongComment(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/comment/new'");
+        logger.info("Song controller: enter endpoint '/comment/new");
 
-        logger.log(Level.INFO, "Get parameter 'songComment'");
+        logger.info("Song controller: get parameter 'songComment'");
         SongComment songComment = mapper.readValue(request.getParameter("songComment"), SongComment.class);
 
-        logger.log(Level.INFO, "Get current logged in user");
+        logger.info("Song controller: get current logged in user");
         User user = userService.getLoggedInUser();
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter 'song'");
+
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
         Iterable<SongComment> songComments = songService.createSongComment(songComment, user, song);
-        logger.log(Level.INFO, "Exit: endpoint '/comment/new'");
+
+        logger.info("Song controller: exit endpoint '/comment/new'");
 
         return ResponseEntity.ok(songComments);
     }
@@ -213,13 +245,15 @@ public class SongController {
     @Role({ARTIST, USER})
     @PostMapping("/comments/{id}")
     public ResponseEntity<Iterable<SongComment>> listSongComments(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/comments/" + id + "'");
+        logger.info(String.format("Song controller: enter endpoint '/comments/%s'", id));
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter 'song'");
+
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
         Iterable<SongComment> songComments = songService.listSongComments(song);
-        logger.log(Level.INFO, "Entrance: endpoint '/comments/" + id + "'");
+
+        logger.info(String.format("Song controller: exit endpoint '/comment/%s'", id));
 
         return ResponseEntity.ok(songComments);
     }
@@ -227,20 +261,25 @@ public class SongController {
     @Role({ARTIST, USER})
     @PostMapping("/like/new")
     public ResponseEntity<Integer> createSongLike(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/like/new'");
+        logger.info("Song controller: enter endpoint '/like/new'");
+
         ObjectMapper mapper = new ObjectMapper();
 
-        logger.log(Level.INFO, "Get parameter 'songLike'");
+        logger.info("Song controller: get parameter 'songLike'");
+
         SongLike songLike = mapper.readValue(request.getParameter("songLike"), SongLike.class);
 
-        logger.log(Level.INFO, "Get current logged in user");
+        logger.info("Song controller: get current logged in user");
+
         User user = userService.getLoggedInUser();
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter 'song'");
+
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
         int likeNumber = songService.saveSongLike(songLike, user, song);
-        logger.log(Level.INFO, "Exit: endpoint '/like/new'");
+
+        logger.info("Song controller: exit endpoint '/like/new'");
 
         return  ResponseEntity.ok(likeNumber);
     }
@@ -248,13 +287,15 @@ public class SongController {
     @Role({ARTIST, USER})
     @PostMapping("/like/{id}")
     public ResponseEntity<int[]> countSongLikes(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/like/" + id + "'");
+        logger.info(String.format("Song controller: enter endpoint '/like/%s'", id));
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter 'song'");
+
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
         int[] likesNumbers = songService.countLikesDivided(song);
-        logger.log(Level.INFO, "Entrance: endpoint '/like/" + id + "'");
+
+        logger.info(String.format("Song controller: exit endpoint '/like/%s'", id));
 
         return ResponseEntity.ok(likesNumbers);
     }
@@ -262,19 +303,23 @@ public class SongController {
     @Role({ARTIST, USER})
     @PostMapping("/counter/new")
     public ResponseEntity<Integer> createSongCounter(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/counter/new'");
+        logger.info("Song controller: enter endpoint '/counter/new'");
 
-        logger.log(Level.INFO, "Get parameter 'songCounter'");
+        logger.info("Song controller: get parameter 'songCounter'");
+
         SongCounter songCounter = mapper.readValue(request.getParameter("songCounter"), SongCounter.class);
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter 'song'");
+
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
-        logger.log(Level.INFO, "Get current logged in user");
+        logger.info("Song controller: get current logged in user");
+
         User user = userService.getLoggedInUser();
 
         int counterNumber = songService.saveSongCounter(songCounter, song, user);
-        logger.log(Level.INFO, "Entrance: endpoint '/counter/new'");
+
+        logger.info("Song controller: exit endpoint '/counter/new'");
 
         return  ResponseEntity.ok(counterNumber);
     }
@@ -282,13 +327,15 @@ public class SongController {
     @Role({ARTIST, USER})
     @PostMapping("/counter/{id}")
     public ResponseEntity<Integer> countSongCounter(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/counter/" + id + "'");
+        logger.info(String.format("Song controller: enter endpoint '/counter/%s'", id));
 
-        logger.log(Level.INFO, "Get parameter 'song'");
+        logger.info("Song controller: get parameter 'song'");
+
         Song  song = mapper.readValue(request.getParameter("song"), Song.class);
 
         int counterNumber = songService.countSongCounterNumber(song);
-        logger.log(Level.INFO, "Exit: endpoint '/counter/" + id + "'");
+
+        logger.info(String.format("Song controller: exit endpoint '/counter/%s'", id));
 
         return ResponseEntity.ok(counterNumber);
     }

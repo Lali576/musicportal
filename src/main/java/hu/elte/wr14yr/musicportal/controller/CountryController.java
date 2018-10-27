@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RestController
@@ -21,9 +20,11 @@ public class CountryController {
 
     @GetMapping("/list")
     public ResponseEntity<Iterable<Country>> list() {
-        logger.log(Level.INFO, "Entrance: endpoint '/list'");
+        logger.info("Country controller: enter endpoint '/list'");
+
         Iterable<Country> countries = countryRepository.findAllByOrderByName();
-        logger.log(Level.INFO, "Exit: endpoint '/list'");
+
+        logger.info("Country controller: exit endpoint '/list'");
 
         return ResponseEntity.ok(countries);
     }

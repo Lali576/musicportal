@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RestController
@@ -43,22 +42,27 @@ public class UserController {
 
     @GetMapping("/login/get")
     public ResponseEntity<User> getLoginUser() {
-        logger.log(Level.INFO, "Entrance: endpoint '/login/get'");
+        logger.info("User controller: enter endpoint '/login/get'");
+
         User user = (userService.isLoggedIn()) ? userService.getLoggedInUser() : null;
-        logger.log(Level.INFO, "Exit: endpoint '/login/get'");
+
+        logger.info("User controller: exit endpoint '/login/get'");
+
 
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/register'");
+        logger.info("User controller: enter endpoint '/register'");
+
         MultipartFile multipartFile = null;
         File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
-        logger.log(Level.INFO, "Get file parameter");
+        logger.info("User controller: get file parameter");
+
         while (iterator.hasNext()) {
             multipartFile = request.getFile(iterator.next());
         }
@@ -67,13 +71,16 @@ public class UserController {
             file = fileService.convertToFile(multipartFile);
         }
 
-        logger.log(Level.INFO, "Get parameter 'user'");
+        logger.info("User controller: get parameter 'user'");
+
         User user = mapper.readValue(request.getParameter("user"), User.class);
 
-        logger.log(Level.INFO, "Get parameter 'password'");
+        logger.info("User controller: get parameter 'password'");
+
         String password = request.getParameter("password");
 
-        logger.log(Level.INFO, "Get parameter 'keywords'");
+        logger.info("User controller: get parameter 'userKeywords'");
+
         UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserKeyword[].class);
         List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
@@ -82,24 +89,30 @@ public class UserController {
         if(file != null) {
             file.delete();
         }
-        logger.log(Level.INFO, "Exit: endpoint '/register'");
+
+        logger.info("User controller: exit endpoint '/register'");
 
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(MultipartHttpServletRequest request) {
-        logger.log(Level.INFO, "Entrance: endpoint '/login'");
+        logger.info("User controller: enter endpoint '/login'");
+
         try {
-            logger.log(Level.INFO, "Get parameter 'username'");
+            logger.info("User controller: get parameter 'username'");
+
             String username = request.getParameter("username");
-            logger.log(Level.INFO, "Get parameter 'password'");
+
+            logger.info("User controller: get parameter 'password'");
+
             String password = request.getParameter("password");
-            logger.log(Level.INFO, "Exit: endpoint '/login'");
+
+            logger.info("User controller: exit endpoint '/login'");
 
             return ResponseEntity.ok(userService.login(username, password));
         } catch (UserNotValidException e) {
-            logger.log(Level.SEVERE, "Required user was not found!");
+            logger.severe("User controller: required user was not found");
 
             return ResponseEntity.badRequest().build();
         }
@@ -108,9 +121,11 @@ public class UserController {
     @Role({ARTIST, USER})
     @GetMapping("/logout")
     public ResponseEntity logout() {
-        logger.log(Level.INFO, "Entrance: endpoint '/logout'");
+        logger.info("User controller: enter endpoint '/logout'");
+
         userService.logout();
-        logger.log(Level.INFO, "Exit: endpoint '/logout'");
+
+        logger.info("User controller: exit endpoint '/logout'");
 
         return ResponseEntity.status(204).build();
     }
@@ -118,20 +133,24 @@ public class UserController {
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}/details")
     public ResponseEntity<User> updateDetails(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/details'");
+        logger.info(String.format("User controller: enter endpoint '/update/%s/details'", id));
 
-        logger.log(Level.INFO, "Get parameter 'country'");
+        logger.info("User controller: get parameter 'country'");
+
         Country country = mapper.readValue(request.getParameter("country"), Country.class);
 
-        logger.log(Level.INFO, "Get parameter 'favGenre'");
+        logger.info("User controller: get parameter 'favGenre'");
+
         Genre favGenre = mapper.readValue(request.getParameter("favGenre"), Genre.class);
 
-        logger.log(Level.INFO, "Get parameter 'keywords'");
-        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("keywords"), UserKeyword[].class);
+        logger.info("User controller: get parameter 'userKeywords'");
+
+        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserKeyword[].class);
         List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
 
         User updatedUser = userService.updateDetails(country, favGenre, userKeywordsList);
-        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/details'");
+
+        logger.info(String.format("User controller: exit endpoint '/update/%s/details'", id));
 
         return ResponseEntity.ok(updatedUser);
     }
@@ -139,10 +158,12 @@ public class UserController {
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}/email")
     public ResponseEntity<User> updateEmailAddress(@PathVariable("id") long id, MultipartHttpServletRequest request) {
-        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/email'");
+        logger.info(String.format("User controller: enter endpoint '/update/%s/email'", id));
+
         String emailAddress = request.getParameter("emailAddress");
         User updatedUser = userService.changeEmailAddress(emailAddress);
-        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/email'");
+
+        logger.info(String.format("User controller: exit endpoint '/update/%s/email'", id));
 
         return ResponseEntity.ok(updatedUser);
     }
@@ -150,11 +171,13 @@ public class UserController {
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}/password")
     public ResponseEntity<User> updatePassword(@PathVariable("id") long id, MultipartHttpServletRequest request) {
-        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/password'");
+        logger.info(String.format("User controller: enter endpoint '/update/%s/password'", id));
+
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         User updatedUser = userService.updatePassword(oldPassword, newPassword);
-        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/password'");
+
+        logger.info(String.format("User controller: exit endpoint '/update/%s/password'", id));
 
         return ResponseEntity.ok(updatedUser);
     }
@@ -162,13 +185,15 @@ public class UserController {
     @Role({ARTIST, USER})
     @PostMapping("/update/{id}/icon")
     public ResponseEntity<User> updateIconFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/icon'");
+        logger.info(String.format("User controller: enter endpoint '/update/%s/icon'", id));
+
         MultipartFile multipartFile = null;
         File file = null;
 
         Iterator<String> iterator = request.getFileNames();
 
-        logger.log(Level.INFO, "Get file parameter");
+        logger.info("User controller: get file parameter");
+
         while (iterator.hasNext()) {
             multipartFile = request.getFile(iterator.next());
         }
@@ -182,7 +207,8 @@ public class UserController {
         if(file != null) {
             file.delete();
         }
-        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/icon'");
+
+        logger.info(String.format("User controller: exit endpoint '/update/%s/icon'", id));
 
         return ResponseEntity.ok(updatedUser);
     }
@@ -190,10 +216,12 @@ public class UserController {
     @Role({ARTIST, USER})
     @PutMapping("/update/{id}/biography")
     public ResponseEntity<User> updateBiography(@PathVariable("id") long id, MultipartHttpServletRequest request) {
-        logger.log(Level.INFO, "Entrance: endpoint '/update/" + id + "/biography'");
+        logger.info(String.format("User controller: enter endpoint '/update/%s/biography'", id));
+
         String biography = request.getParameter("biography");
         User updatedUser = userService.updateBiography(biography);
-        logger.log(Level.INFO, "Exit: endpoint '/update/" + id + "/biography'");
+
+        logger.info(String.format("User controller: exit endpoint '/update/%s/biography'", id));
 
         return ResponseEntity.ok(updatedUser);
     }
@@ -201,43 +229,49 @@ public class UserController {
     @Role({ARTIST, USER})
     @GetMapping("/{id}")
     public ResponseEntity<User> find(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/" + id + "'");
+        logger.info(String.format("User controller: enter endpoint '/%s'", id));
+
         User foundUser = userService.getUser(id);
-        logger.log(Level.INFO, "Exit: endpoint '/" + id + "'");
+
+        logger.info(String.format("User controller: exit endpoint '/%s'", id));
 
         return ResponseEntity.ok(foundUser);
     }
 
     @Role({ARTIST, USER})
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable long id) {
-        logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
+    public @ResponseBody void delete(@PathVariable long id) {
+        logger.info(String.format("User controller: enter endpoint '/delete/%s'", id));
+
         userService.delete(id);
-        logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
-        return ResponseEntity.ok().build();
-    }
-
-    @Role({ARTIST, USER})
-    @GetMapping("/messages/{id}")
-    public ResponseEntity<Iterable<UserMessage>> listUserMessages(@PathVariable("id") long id) {
-        logger.log(Level.INFO, "Entrance: endpoint 'messages'");
-        Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
-        logger.log(Level.INFO, "Exit: endpoint 'messages'");
-
-        return ResponseEntity.ok(userMessages);
+        logger.info(String.format("User controller: enter endpoint '/delete/%s'", id));
     }
 
     @Role({ARTIST, USER})
     @PostMapping("/messages/new")
     public ResponseEntity<Iterable<UserMessage>> createUserMessage(MultipartHttpServletRequest request) throws IOException {
-        logger.log(Level.INFO, "Entrance: endpoint 'messages/new'");
+        logger.info("User controller: enter endpoint '/messages/new'");
 
-        logger.log(Level.INFO, "Get parameter 'userMessage'");
+        logger.info("User controller: get parameter 'userMessage'");
+
         UserMessage userMessage = mapper.readValue(request.getParameter("userMessage"), UserMessage.class);
 
         Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
-        logger.log(Level.INFO, "Exit: endpoint 'messages/new'");
+
+        logger.info("User controller: enter endpoint '/messages/new'");
+
+        return ResponseEntity.ok(userMessages);
+    }
+
+    @Role({ARTIST, USER})
+    @GetMapping("/messages/{id}")
+    public ResponseEntity<Iterable<UserMessage>> listUserMessages(@PathVariable("id") long id) {
+        logger.info(String.format("User controller: enter endpoint '/messages/%s'", id));
+
+        Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
+
+        logger.info(String.format("User controller: exit endpoint '/messages/%s'", id));
 
         return ResponseEntity.ok(userMessages);
     }
