@@ -210,12 +210,12 @@ public class UserController {
 
     @Role({ARTIST, USER})
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody void delete(@PathVariable long id) {
+    public ResponseEntity delete(@PathVariable long id) {
         logger.log(Level.INFO, "Entrance: endpoint '/delete/" + id + "'");
         userService.delete(id);
         logger.log(Level.INFO, "Exit: endpoint '/delete/" + id + "'");
 
-        //return ResponseEntity.status(204).build();
+        return ResponseEntity.ok().build();
     }
 
     @Role({ARTIST, USER})

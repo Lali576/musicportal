@@ -51,7 +51,8 @@ public class UserService {
     private User loggedInUser = null;
 
     public User register(User user, String password, File iconFile, List<UserKeyword> userKeywords) {
-        logger.log(Level.INFO, "User service: new user is going to be saved in database MusicPortal");
+        logger.info("User service: new user is going to be saved in database MusicPortal");
+
         SecureRandom rand = new SecureRandom();
         byte[] salt = new byte[64];
         rand.nextBytes(salt);
@@ -71,10 +72,11 @@ public class UserService {
             e.printStackTrace();
             return null;
         }
-        logger.log(Level.INFO, "User service: password has been salted and hashed successfully");
+
+        logger.info("User service: password has been salted and hashed successfully");
 
         loggedInUser = userRepository.save(user);
-        logger.log(Level.INFO, "User service: new user has been successfully saved in database MusicPortal");
+        logger.info("User service: new user has been successfully saved in database MusicPortal");
 
         if(userKeywords != null) {
             keywordService.createUserKeywords(userKeywords, loggedInUser);
@@ -95,28 +97,32 @@ public class UserService {
         }
 
         loggedInUser = userRepository.save(loggedInUser);
-        logger.log(Level.INFO, "User service: new user has been updated with folder and file id's");
+        logger.info("User service: new user has been updated with folder and file id's");
 
         return loggedInUser;
     }
 
     public User login(String username, String password) throws UserNotValidException {
-        logger.log(Level.INFO, "User service: trying to login with username " + username);
+        logger.info(String.format("User service: trying to login with username %s", username));
+
         Optional<User> loginUser = userRepository.findByUsername(username);
         if(loginUser.isPresent()) {
-            logger.log(Level.INFO, "User service: User with username " + username + " was found");
-            logger.log(Level.INFO, "User service: trying to check password correction");
+            logger.info(String.format("User service: User with username %s was found", username));
+
+            logger.info("User service: trying to check password correction");
+
             if(isValid(loginUser.get(), password)) {
                 loggedInUser = loginUser.get();
-                logger.log(Level.INFO, "User service: user with username " +
-                        loggedInUser.getUsername() + " is valid, logging in was successful");
+
+                logger.info(String.format("User service: user with username %s" +
+                        " is valid, logging in was successful", loggedInUser.getUsername()));
 
                 return loggedInUser;
             }
         }
 
-        logger.log(Level.WARNING, "User service: User with username " +
-                username + " was not found! Logging in was unsuccessful");
+        logger.warning(String.format("User service: User with username was not found! Logging in was unsuccessful", username));
+
         throw new UserNotValidException();
     }
 
@@ -136,31 +142,33 @@ public class UserService {
     }
 
     public boolean isLoggedIn() {
-        logger.log(Level.INFO, "User service: checking: is user logged in at the current session");
+        logger.info("User service: checking: is user logged in at the current session");
+
         return loggedInUser != null;
     }
 
     public User getLoggedInUser() {
-        logger.log(Level.INFO, "User service: getting current logged in user named " + loggedInUser.getUsername());
+        logger.info(String.format("User service: getting current logged in user named %s", loggedInUser.getUsername()));
+
         return loggedInUser;
     }
 
     public User getUser(Long id) {
-        logger.log(Level.INFO, "User service: user with id " +
-                id + " is going to be searched");
+        logger.info(String.format("User service: user with id %s is going to be searched", id));
 
         return userRepository.findUserById(id);
     }
 
     public User updateDetails(Country country, Genre favGenre, List<UserKeyword> userKeywords) {
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s  data are going to be updated");
+        logger.info(String.format("User service: user named %s" +
+                "'s  data are going to be updated", loggedInUser.getUsername()));
 
         loggedInUser.setCountryId(country);
         loggedInUser.setFavGenreId(favGenre);
         loggedInUser = userRepository.save(loggedInUser);
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s data has been updated successfully");
+
+        logger.info(String.format("User service: user named %s" +
+                "'s data has been updated successfully", loggedInUser.getUsername()));
 
         keywordService.deleteAllUserKeywordsByUser(loggedInUser);
 
@@ -172,10 +180,10 @@ public class UserService {
     }
 
     public User updatePassword(String oldPassword, String newPassword) {
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s password is going to be changed");
+        logger.info(String.format("User service: user named %s" +
+                "'s password is going to be changed", loggedInUser.getUsername()));
 
-        logger.log(Level.INFO, "User service: checking old password validation");
+        logger.info("User service: checking old password validation");
 
         if(isValid(loggedInUser, oldPassword)) {
             String newPassSalt = newPassword + loggedInUser.getSaltCode();
@@ -185,27 +193,30 @@ public class UserService {
                 String hashPassword = Base64.getEncoder().encodeToString(hash);
                 loggedInUser.setHashPassword(hashPassword);
                 loggedInUser = userRepository.save(loggedInUser);
-                logger.log(Level.INFO, "User service: user named " +
-                        loggedInUser.getUsername() + "'s password has been changed successfully");
+
+                logger.info(String.format("User service: user named %s" +
+                        "'s password has been changed successfully", loggedInUser.getUsername()));
             } catch(NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
         } else {
-            logger.log(Level.SEVERE, "User service: user named " +
-                    loggedInUser.getUsername() + "'s old password is invalid!");
+            logger.severe(String.format("User service: user named %s" +
+                    "'s old password is invalid!", loggedInUser.getUsername()));
         }
 
         return loggedInUser;
     }
 
     public User changeEmailAddress(String newEmailAddress) {
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s email address is going to be changed");
+        logger.info(String.format("User service: user named %s" +
+                "'s email address is going to be changed", loggedInUser.getUsername()));
+
         if(!(newEmailAddress.equals(loggedInUser.getEmailAddress()))) {
             loggedInUser.setEmailAddress(newEmailAddress);
             loggedInUser = userRepository.save(loggedInUser);
-            logger.log(Level.INFO, "User service: user named " +
-                    loggedInUser.getUsername() + "'s e-mail address has been changed successfully");
+
+            logger.info(String.format("User service: user named %s" +
+                    "'s e-mail address has been changed successfully", loggedInUser.getUsername()));
         } else {
             logger.log(Level.SEVERE, "User service: user named " +
                     loggedInUser.getUsername() + "'s old e-mail address is equal to the new one!");
@@ -216,43 +227,54 @@ public class UserService {
     }
 
     public User changeImageFile(File iconFile) {
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s icon image file is going to be changed");
-        String iconFileGdaId = "";
-        if(iconFile != null) {
-            iconFileGdaId = fileService.updateFile(loggedInUser.getIconFileGdaId(), iconFile);
-            loggedInUser.setIconFileGdaId(iconFileGdaId);
+        logger.info(String.format("User service: user named %s" +
+                "'s icon image file is going to be changed", loggedInUser.getUsername()));
+
+        if(loggedInUser.getIconFileGdaId().equals("")) {
+            if(iconFile.exists()) {
+                String iconFileGdaId = fileService.uploadFile(iconFile, loggedInUser.getUserIconFolderGdaId());
+                loggedInUser.setIconFileGdaId(iconFileGdaId);
+            }
         } else {
-            fileService.delete(loggedInUser.getIconFileGdaId());
-            loggedInUser.setIconFileGdaId(null);
+            if(iconFile.exists()) {
+                fileService.updateFile(loggedInUser.getIconFileGdaId(), iconFile);
+            } else {
+                fileService.delete(loggedInUser.getIconFileGdaId());
+                loggedInUser.setIconFileGdaId("");
+            }
         }
+
         loggedInUser = userRepository.save(loggedInUser);
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s icon image file has been changed successfully");
+
+        logger.info(String.format("User service: user named %s" +
+                "'s icon image file has been changed successfully", loggedInUser.getUsername()));
 
         return loggedInUser;
     }
 
     public User updateBiography(String biography) {
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s biography is going to be updated");
+        logger.info(String.format("User service: user named %s" +
+                "'s biography is going to be updated", loggedInUser.getUsername()));
+
         loggedInUser.setEmailAddress(biography);
         loggedInUser = userRepository.save(loggedInUser);
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + "'s biography has been updated successfully");
+
+        logger.info(String.format("User service: user named %s" +
+                "'s biography has been updated successfully", loggedInUser.getUsername()));
 
         return loggedInUser;
     }
 
     public void logout() {
-        logger.log(Level.INFO, "User service: logout current user named " + loggedInUser.getUsername());
+        logger.info(String.format("User service: logout current user named %s", loggedInUser.getUsername()));
+
         loggedInUser = null;
-        logger.log(Level.INFO, "User service: previous login user was logged out");
+
+        logger.info("User service: previous login user was logged out");
     }
 
     public void delete(long id) {
-        logger.log(Level.INFO, "User service: user named " +
-                loggedInUser.getUsername() + " is going to be deleted");
+        logger.info(String.format("User service: user named %s is going to be deleted", loggedInUser.getUsername()));
 
         albumService.deleteAllByUser(loggedInUser);
 
@@ -262,29 +284,41 @@ public class UserService {
 
         keywordService.deleteAllUserKeywordsByUser(loggedInUser);
 
-        logger.log(Level.INFO, "User service: user's storing folder is going to delete from Google Drive", loggedInUser.getUserFolderGdaId());
-        fileService.delete(loggedInUser.getUserFolderGdaId());
-        logger.log(Level.INFO, "User service: user's storing folder has been successfully deleted from Google Drive");
+        logger.info("User service: user's storing folder is going to delete from Google Drive");
 
-        logger.log(Level.INFO, "User service: user with id number " + id + " is going to delete from database MusicPortal");
+        fileService.delete(loggedInUser.getUserFolderGdaId());
+
+        logger.info("User service: user's storing folder has been successfully deleted from Google Drive");
+
+        logger.info(String.format("User service: user with id number %s" +
+                " is going to delete from database MusicPortal", id));
+
         userRepository.deleteById(id);
-        logger.log(Level.INFO, "User service: user with id number " + id + " has been successfully deleted from database MusicPortal");
+
+        logger.info(String.format("User service: user with id number %s" +
+                " has been successfully deleted from database MusicPortal", id));
+
 
         loggedInUser = null;
     }
 
     public Iterable<UserMessage> createUserMessage(UserMessage userMessage) {
-        logger.log(Level.INFO, "User service: new user message has started to be saved" +
-                "\n(from " + userMessage.getUserFrom().getUsername() + " to " + userMessage.getUserTo().getUsername() + ")");
+        logger.info(String.format("User service: new user message has started to be saved(from %s to %s )",
+                userMessage.getUserFrom().getUsername(),
+                userMessage.getUserTo().getUsername()));
+
         userMessage.setDate(new Date());
         UserMessage savedUserMessage = userMessageRepository.save(userMessage);
-        logger.log(Level.INFO, "User service: new user message has been saved successfully");
+
+        logger.info("User service: new user message has been saved successfully");
 
         return userMessageRepository.findAllByUserTo(savedUserMessage.getUserTo());
     }
 
     public Iterable<UserMessage> listUserMessages(User user) {
-        logger.log(Level.INFO, "User service: user messages for user named " + user.getUsername() + " are going to be listed");
+        logger.info(String.format("User service: user messages for user named %s" +
+                " are going to be listed", user.getUsername()));
+
         return userMessageRepository.findAllByUserTo(user);
     }
 }

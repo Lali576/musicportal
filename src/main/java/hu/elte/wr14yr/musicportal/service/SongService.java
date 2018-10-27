@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 @Service
 public class SongService {
@@ -44,18 +45,22 @@ public class SongService {
     private Logger logger = Logger.getLogger(SongService.class.getName());
 
     public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres, List<SongKeyword> songKeywords) {
-        logger.log(Level.INFO, "Song service: new song is going to be saved in database MusicPortal");
+        logger.info("Song service: new song is going to be saved in database MusicPortal");
+
         song.setUser(user);
         song.setAlbum(album);
         song.setGenres(genres);
+
         try {
             AudioFile f = AudioFileIO.read(audioFile);
             song.setDuration(f.getAudioHeader().getTrackLength());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         Song savedSong = songRepository.save(song);
-        logger.log(Level.INFO, "Song service: new song has been successfully saved in database MusicPortal");
+
+        logger.info("Song service: new song has been successfully saved in database MusicPortal");
 
         if(songKeywords != null) {
             keywordService.createSongKeywords(songKeywords, savedSong);
@@ -65,134 +70,138 @@ public class SongService {
 
         savedSong.setAudioFileGdaId(audioFileGdaId);
         savedSong = songRepository.save(savedSong);
-        logger.log(Level.INFO, "Song service: new song has been updated with file id");
+
+        logger.info("Song service: new song has been updated with file id");
 
         return savedSong;
     }
 
     public Iterable<Song> listAll() {
-        logger.log(Level.INFO, "Song service: every song in database MusicPortal are going to be listed");
+        logger.info("Song service: every song in database MusicPortal are going to be listed");
 
         return songRepository.findAll();
     }
 
     public Iterable<Song> listFirstFive() {
-        logger.log(Level.INFO, "Song service: first five songs ordered " +
+        logger.info("Song service: first five songs ordered " +
                 "by their counted song counters are going to be listed");
 
         return songRepository.findFirst5ByOrderByIdAsc();
     }
 
     public Iterable<Song> listByUser(long id) {
-        logger.log(Level.INFO, "Song service: user with id " +
-                id + "'s songs are going to be listed");
+        logger.info(String.format("Song service: user with id %s's songs are going to be listed", id));
 
         return songRepository.findAllByUserId(id);
     }
 
     public Iterable<Song> listByAlbum(Album album) {
-        logger.log(Level.INFO, "Song service: album titled " +
-                album.getTitle() + "'s songs are going to be listed");
+        logger.info(String.format("Song service: album titled %s's songs are going to be listed", album.getTitle()));
 
         return songRepository.findAllByAlbum(album);
     }
 
     public Iterable<Song> listByPlaylist(Playlist playlist) {
-        logger.log(Level.INFO, "Song service: playlist named " +
-                playlist.getName() + "'s songs are going to be listed");
+        logger.info(String.format("Song service: playlist named %s's songs are going to be listed", playlist.getName()));
 
         return songRepository.findAllByPlaylists(playlist);
     }
 
     public Song find(long id) {
-        logger.log(Level.INFO, "Song service: song with id " +
-                id + " is going to be searched");
+        logger.info(String.format("Song service: song with id %s is going to be searched", id));
+
         Song song = songRepository.findSongById(id);
-        logger.log(Level.INFO, "Song service: song with id " +
-                id + " has been found successfully");
+
+        logger.info(String.format("Song service: song with id %s has been found successfully", id));
 
         return song;
     }
 
     public Song update(Song song, Album album, User user, File audioFile) {
-        logger.log(Level.INFO, "Song service: song titled " +
-                song.getTitle() + " is going to be updated");
+        logger.info(String.format("Song service: song titled %s is going to be updated", song.getTitle()));
+
         song.setUser(user);
         song.setAlbum(album);
         String newAudioFileGdaId = fileService.updateFile(song.getAudioFileGdaId(), audioFile);
         song.setAudioFileGdaId(newAudioFileGdaId);
         song = songRepository.save(song);
-        logger.log(Level.INFO, "Song service: song titled " +
-                song.getTitle() + " has been updated successfully");
+
+        logger.info(String.format("Song service: song titled %s has been updated successfully", song.getTitle()));
 
         return song;
     }
 
     public void deleteAllByAlbum(Album album) {
-        logger.log(Level.INFO, "Song service: album titled " +
-                album.getTitle() + "'s songs are going to be deleted");
+        logger.info(String.format("Song service: album titled %s's songs are going to be deleted", album.getTitle()));
+
         Iterable<Song> albumSongs = listByAlbum(album);
-        for (Song song : albumSongs) {
-            delete(song);
-        }
-        logger.log(Level.INFO, "Song service: album titled " +
-                album.getTitle() + "'s songs have been deleted successfully");
+        StreamSupport.stream(albumSongs.spliterator(), false).forEach(
+                s -> delete(s)
+            );
+
+        logger.info(String.format("Song service: album titled %s's songs have been deleted successfully", album.getTitle()));
     }
 
     public void delete(Song song) {
-        logger.log(Level.INFO, "Song service: song titled " +
-                song.getTitle() + " is going to be deleted from database MusicPortal");
+        logger.info(String.format("Song service: song titled %s" +
+                " is going to be deleted from database MusicPortal", song.getTitle()));
+
         songCommentRepository.deleteAllBySong(song);
         songCounterRepository.deleteAllBySong(song);
         songLikeRepository.deleteAllBySong(song);
         keywordService.deleteAllSongKeywordsBySong(song);
         fileService.delete(song.getAudioFileGdaId());
         songRepository.deleteById(song.getId());
-        logger.log(Level.INFO, "Song service: song titled " +
-                song.getTitle() + " has been successfully deleted from database MusicPortal");
+
+        logger.info(String.format("Song service: song titled %s" +
+                " has been successfully deleted from database MusicPortal", song.getTitle()));
     }
 
     public Iterable<SongComment> createSongComment(SongComment songComment, User user, Song song) {
-        logger.log(Level.INFO, "Song service: new song comment for song titled " +
-                song.getTitle() + " is going to be saved");
+        logger.info(String.format("Song service: new song comment for song titled %s" +
+                " is going to be saved", song.getTitle()));
+
         songComment.setUser(user);
         songComment.setSong(song);
         SongComment savedSongComment = songCommentRepository.save(songComment);
-        logger.log(Level.INFO, "Song service: new song comment for song titled " +
-                song.getTitle() + " has been saved successfully");
+
+        logger.info(String.format("Song service: new song comment for song titled %s" +
+                " has been saved successfully", song.getTitle()));
 
         return songCommentRepository.findAllBySong(savedSongComment.getSong());
     }
 
     public Iterable<SongComment> listSongComments(Song song) {
-        logger.log(Level.INFO, "Song service: song titled " +
-                song.getTitle() + "'s comments are going to be listed");
+        logger.info(String.format("Song service: song titled %s's comments are going to be listed", song.getTitle()));
 
         return songCommentRepository.findAllBySong(song);
     }
 
     public int saveSongLike(SongLike songLike, User user, Song song) {
-        logger.log(Level.INFO, "Song service: new like material for song titled " +
-                song.getTitle() + " is going to be saved");
+        logger.info(String.format("Song service: new like material for song titled %s" +
+                " is going to be saved", song.getTitle()));
+
         songLike.setUser(user);
         songLike.setSong(song);
         SongLike savedSongLike = songLikeRepository.save(songLike);
+
         if(savedSongLike.getType().equals(SongLike.Type.LIKE)) {
-            logger.log(Level.INFO, "Song service: new like material for song titled " +
-                    song.getTitle() + " has been saved successfully");
+            logger.info(String.format("Song service: new like material for song titled %s" +
+                    " has been saved successfully", song.getTitle()));
 
             return songLikeRepository.countAllBySongAndRoleLike(savedSongLike.getId());
         } else {
-            logger.log(Level.INFO, "Song service: new dislike material for song titled " +
-                    song.getTitle() + " has been saved successfully");
+            logger.info(String.format("Song service: new dislike material for song titled %s" +
+                    " has been saved successfully", song.getTitle()));
 
             return songLikeRepository.countAllBySongAndRoleDislike(savedSongLike.getId());
         }
     }
 
     public int[] countLikesDivided(Song song) {
-        logger.log(Level.INFO, "Song service: likes for song titled " +
-                song.getTitle() + " are going to be counted");
+        logger.info(String.format("Song service: likes for song titled %s" +
+                " are going to be counted", song.getTitle()));
+
         int[] counts = new int[2];
         counts[0] = songLikeRepository.countAllBySongAndRoleLike(song.getId());
         counts[1] = songLikeRepository.countAllBySongAndRoleDislike(song.getId());
@@ -201,22 +210,24 @@ public class SongService {
     }
 
     public int saveSongCounter(SongCounter songCounter, Song song, User user) {
-        logger.log(Level.INFO, "Song service: new song counter material for song titled " +
-                song.getTitle() + " is going to be saved");
+        logger.info(String.format("Song service: new song counter material for song titled %s" +
+                " is going to be saved", song.getTitle()));
+
         songCounter.setSong(song);
         if (!(user.getRole().equals(User.Role.USER))) {
             songCounter.setUser(user);
         }
         SongCounter savedSongCounter = songCounterRepository.save(songCounter);
-        logger.log(Level.INFO, "Song service: new song counter material for song titled " +
-                song.getTitle() + " has been saved successfully");
+
+        logger.info(String.format("Song service: new song counter material for song titled %s" +
+                " has been saved successfully", song.getTitle()));
 
         return songCounterRepository.countAllBySong(savedSongCounter.getSong());
     }
 
     public int countSongCounterNumber(Song song) {
-        logger.log(Level.INFO, "Song service: counters for song titled " +
-                song.getTitle() + " is going to be counted");
+        logger.info(String.format("Song service: counters for song titled %s" +
+                " is going to be counted", song.getTitle()));
 
         return songCounterRepository.countAllBySong(song);
     }

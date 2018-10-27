@@ -12,9 +12,12 @@ import hu.elte.wr14yr.musicportal.repository.keywords.AlbumKeywordRepository;
 import hu.elte.wr14yr.musicportal.repository.keywords.PlaylistKeywordRepository;
 import hu.elte.wr14yr.musicportal.repository.keywords.SongKeywordRepository;
 import hu.elte.wr14yr.musicportal.repository.keywords.UserKeywordRepository;
+import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,91 +39,107 @@ public class KeywordService {
 
     private Logger logger = Logger.getLogger(KeywordService.class.getName());
 
-    public void createUserKeywords(List<UserKeyword> userKeywords, User user) {
-        logger.log(Level.INFO, " Keyword service: user keywords for user named " +
-                user.getUsername() + " are going to be saved in database MusicPortal");
-        for (UserKeyword userKeyword : userKeywords) {
-            userKeyword.setUser(user);
-            userKeywordRepository.save(userKeyword);
-        }
-        logger.log(Level.INFO, " Keyword service: user keywords for user named " +
-                user.getUsername() + " have been successfully saved in database MusicPortal");
+    void createUserKeywords(List<UserKeyword> userKeywords, User user) throws DataAccessException, ConstraintViolationException, DataException {
+        logger.info(String.format("Keyword service: user keywords for user named %s" +
+                " are going to be saved in database MusicPortal", user.getUsername()));
+
+        userKeywords.stream().forEach(k -> {
+            k.setUser(user);
+            userKeywordRepository.save(k);
+        });
+
+        logger.info(String.format("Keyword service: user keywords for user named %s" +
+                " have been successfully saved in database MusicPortal", user.getUsername()));
     }
 
-    public void createAlbumKeywords(List<AlbumKeyword> albumKeywords, Album album) {
-        logger.log(Level.INFO, " Keyword service: album keywords for album titled " +
-                album.getTitle() + " are going to be saved in database MusicPortal");
-        for (AlbumKeyword albumKeyword : albumKeywords) {
-            albumKeyword.setAlbum(album);
-            albumKeywordRepository.save(albumKeyword);
-        }
-        logger.log(Level.INFO, " Keyword service: album keywords for album titled " +
-                album.getTitle() + " have been successfully saved in database MusicPortal");
+    void createAlbumKeywords(List<AlbumKeyword> albumKeywords, Album album) {
+        logger.info(String.format("Keyword service: album keywords for album titled %s" +
+                " are going to be saved in database MusicPortal", album.getTitle()));
+
+        albumKeywords.stream().forEach(k -> {
+            k.setAlbum(album);
+            albumKeywordRepository.save(k);
+        });
+
+        logger.info(String.format("Keyword service: album keywords for album titled %s" +
+                " have been successfully saved in database MusicPortal", album.getTitle()));
     }
 
-    public void createSongKeywords(List<SongKeyword> songKeywords, Song song) {
-        logger.log(Level.INFO, " Keyword service: song keywords for song titled " +
-                song.getTitle() + " are going to be saved in database MusicPortal");
-        for (SongKeyword songKeyword : songKeywords) {
-            songKeyword.setSong(song);
-            songKeywordRepository.save(songKeyword);
-        }
-        logger.log(Level.INFO, " Keyword service: song keywords for song titled " +
-                song.getTitle() + " have been successfully saved in database MusicPortal");
+    void createSongKeywords(List<SongKeyword> songKeywords, Song song) {
+        logger.info(String.format("Keyword service: song keywords for song titled %s" +
+                " are going to be saved in database MusicPortal", song.getTitle()));
+
+        songKeywords.stream().forEach(k -> {
+            k.setSong(song);
+            songKeywordRepository.save(k);
+        });
+
+        logger.info(String.format("Keyword service: song keywords for song titled %s" +
+                " have been successfully saved in database MusicPortal", song.getTitle()));
     }
 
-    public void createPlaylistKeywords(List<PlaylistKeyword> playlistKeywords, Playlist playlist) {
-        logger.log(Level.INFO, " Keyword service: playlist keywords for playlist named " +
-                playlist.getName() + " are going to be saved in database MusicPortal");
-        for (PlaylistKeyword playlistKeyword : playlistKeywords) {
-            playlistKeyword.setPlaylist(playlist);
-            playlistKeywordRepository.save(playlistKeyword);
-        }
-        logger.log(Level.INFO, " Keyword service: playlist keywords for playlist named " +
-                playlist.getName() + " have been successfully saved in database MusicPortal");
+    void createPlaylistKeywords(List<PlaylistKeyword> playlistKeywords, Playlist playlist) {
+        logger.info(String.format("Keyword service: playlist keywords for playlist named %s" +
+                " are going to be saved in database MusicPortal", playlist.getName()));
+
+        playlistKeywords.stream().forEach(k -> {
+            k.setPlaylist(playlist);
+            playlistKeywordRepository.save(k);
+        });
+
+        logger.info(String.format("Keyword service: playlist keywords for playlist named %s" +
+                " have been successfully saved in database MusicPortal", playlist.getName()));
     }
 
-    public void deleteAllUserKeywordsByUser(User user) {
-        logger.log(Level.INFO, " Keyword service: playlist keywords for user named " +
-                user.getUsername() + " are going to be deleted from database MusicPortal");
+    void deleteAllUserKeywordsByUser(User user) {
+        logger.info(String.format("Keyword service: playlist keywords for user named %s" +
+                " are going to be deleted from database MusicPortal", user.getUsername()));
+
         List<UserKeyword> userKeywords = userKeywordRepository.findByUser(user);
-        for (UserKeyword userKeyword: userKeywords) {
-            userKeywordRepository.deleteById(userKeyword.getId());
-        }
-        logger.log(Level.INFO, " Keyword service: playlist keywords for user named " +
-                user.getUsername() + " have been successfully deleted from database MusicPortal");
+        userKeywords.stream().forEach(k ->
+            userKeywordRepository.deleteById(k.getId())
+        );
+
+        logger.info(String.format("Keyword service: playlist keywords for user named %s" +
+                " have been successfully deleted from database MusicPortal", user.getUsername()));
     }
 
-    public void deleteAllAlbumKeywordsByAlbum(Album album) {
-        logger.log(Level.INFO, " Keyword service: album keywords for album titled " +
-                album.getTitle() + " are going to be deleted from database MusicPortal");
+    void deleteAllAlbumKeywordsByAlbum(Album album) {
+        logger.info(String.format("Keyword service: album keywords for album titled %s" +
+                " are going to be deleted from database MusicPortal", album.getTitle()));
+
         List<AlbumKeyword> albumKeywords = albumKeywordRepository.findAllByAlbum(album);
-        for (AlbumKeyword albumKeyword : albumKeywords) {
-            albumKeywordRepository.deleteById(albumKeyword.getId());
-        }
-        logger.log(Level.INFO, " Keyword service: album keywords for album titled " +
-                album.getTitle() + " have been successfully deleted from database MusicPortal");
+        albumKeywords.stream().forEach(k ->
+            albumKeywordRepository.deleteById(k.getId())
+        );
+
+        logger.info(String.format("Keyword service: album keywords for album titled %s" +
+                " have been successfully deleted from database MusicPortal", album.getTitle()));
     }
 
-    public void deleteAllSongKeywordsBySong(Song song) {
-        logger.log(Level.INFO, " Keyword service: song keywords for song titled " +
-                song.getTitle() + " are going to be deleted from database MusicPortal");
+    void deleteAllSongKeywordsBySong(Song song) {
+        logger.info(String.format("Keyword service: song keywords for song titled %s" +
+                " are going to be deleted from database MusicPortal", song.getTitle()));
+
         List<SongKeyword> songKeywords = songKeywordRepository.findAllBySong(song);
-        for (SongKeyword songKeyword : songKeywords) {
-            songKeywordRepository.deleteById(songKeyword.getId());
-        }
-        logger.log(Level.INFO, " Keyword service: song keywords for song titled " +
-                song.getTitle() + " have been successfully deleted from database MusicPortal");
+        songKeywords.stream().forEach(k ->
+            songKeywordRepository.deleteById(k.getId())
+        );
+
+        logger.info(String.format("Keyword service: song keywords for song titled %s" +
+                " have been successfully deleted from database MusicPortal", song.getTitle()));
     }
 
-    public void deleteAllPlaylistKeywordsByPlaylist(Playlist playlist) {
-        logger.log(Level.INFO, " Keyword service: playlist keywords for playlist named " +
-                playlist.getName() + " are going to be deleted from database MusicPortal");
+    void deleteAllPlaylistKeywordsByPlaylist(Playlist playlist) {
+        logger.info(String.format("Keyword service: playlist keywords for playlist named %s" +
+                " are going to be deleted from database MusicPortal", playlist.getName()));
+
         List<PlaylistKeyword> playlistKeywords = playlistKeywordRepository.findAllByPlaylist(playlist);
-        for (PlaylistKeyword playlistKeyword : playlistKeywords) {
-            playlistKeywordRepository.deleteById(playlistKeyword.getId());
-        }
-        logger.log(Level.INFO, " Keyword service: playlist keywords for playlist named " +
-                playlist.getName() + " have been successfully deleted from database MusicPortal");
+        playlistKeywords.stream().forEach(k ->
+            playlistKeywordRepository.deleteById(k.getId())
+        );
+
+        logger.info(String.format("Keyword service: playlist keywords for playlist named %s" +
+                " have been successfully deleted from database MusicPortal", playlist.getName()));
     }
 }

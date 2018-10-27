@@ -6,13 +6,17 @@ import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
 import hu.elte.wr14yr.musicportal.repository.PlaylistRepository;
 import hu.elte.wr14yr.musicportal.repository.SongRepository;
+import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PlaylistService {
@@ -25,59 +29,58 @@ public class PlaylistService {
 
     private Logger logger = Logger.getLogger(PlaylistService.class.getName());
 
-    public Playlist create(Playlist playlist, User user, List<Song> songs, List<PlaylistKeyword> playlistKeywords) {
-        logger.log(Level.INFO, "Playlist service: new playlist is going to be saved in database MusicPortal");
+    public Playlist create(Playlist playlist, User user, List<Song> songs, List<PlaylistKeyword> playlistKeywords) throws DataAccessException, ConstraintViolationException, DataException {
+        logger.info("Playlist service: new playlist is going to be saved in database MusicPortal");
+
         playlist.setUser(user);
         playlist.setDate(new Date());
         playlist.setSongs(songs);
         Playlist savedPlaylist = playlistRepository.save(playlist);
-        logger.log(Level.INFO, "Playlist service: new playlist has been successfully saved in database MusicPortal");
 
         if(playlistKeywords != null) {
             keywordService.createPlaylistKeywords(playlistKeywords, savedPlaylist);
         }
 
+        logger.info("Playlist service: new playlist has been successfully saved in database MusicPortal");
+
         return savedPlaylist;
     }
 
     public Iterable<Playlist> listAll() {
-        logger.log(Level.INFO, "Playlist service: every playlist in database MusicPortal are going to be listed");
+        logger.info("Playlist service: every playlist in database MusicPortal are going to be listed");
 
         return playlistRepository.findAll();
     }
 
     public Iterable<Playlist> listFirstFive() {
-        logger.log(Level.INFO, "Playlist service: first five playlists ordered " +
+        logger.info("Playlist service: first five playlists ordered " +
                 "by their dates are going to be listed");
 
         return playlistRepository.findFirst5ByOrderByDateAsc();
     }
 
     public Iterable<Playlist> listByUser(long id) {
-        logger.log(Level.INFO, "Playlist service: user with id " +
-                id + "'s playlist are going to be listed");
+        logger.info(String.format("Playlist service: user with id %s's playlist are going to be listed", id));
 
         return playlistRepository.findAllByUserId(id);
     }
 
     public Playlist find(long id) {
-        logger.log(Level.INFO, "Playlist service: playlist with id " +
-                id + " is going to be searched");
+        logger.info(String.format("Playlist service: playlist with id %s is going to be searched", id));
+
         Playlist playlist = playlistRepository.findPlaylistById(id);
-        logger.log(Level.INFO, "Playlist service: playlist with id " +
-                id + " has been found successfully");
+
+        logger.info(String.format("Playlist service: playlist with id %s has been found successfully", id));
 
         return playlist;
     }
 
-    public Playlist update(Playlist playlist, List<Song> songs, User user, List<PlaylistKeyword> playlistKeywords) {
-        logger.log(Level.INFO, "Playlist service: playlist named " +
-                playlist.getName() + " is going to be updated");
+    public Playlist update(Playlist playlist, List<Song> songs, User user, List<PlaylistKeyword> playlistKeywords) throws DataAccessException, ConstraintViolationException, DataException {
+        logger.info(String.format("Playlist service: playlist named %s is going to be updated", playlist.getName()));
+
         playlist.setUser(user);
         playlist.setSongs(songs);
         playlist = playlistRepository.save(playlist);
-        logger.log(Level.INFO, "Playlist service: playlist named " +
-                playlist.getName() + " has been updated successfully");
 
         keywordService.deleteAllPlaylistKeywordsByPlaylist(playlist);
 
@@ -85,26 +88,30 @@ public class PlaylistService {
             keywordService.createPlaylistKeywords(playlistKeywords, playlist);
         }
 
+        logger.info(String.format("Playlist service: playlist named %s has been updated successfully", playlist.getName()));
+
         return playlist;
     }
 
-    public void deleteAllByUser(User user) {
-        logger.log(Level.INFO, "Playlist service: user named " +
-                user.getUsername() + "'s playlist are going to be deleted");
+    public void deleteAllByUser(User user) throws DataAccessException, ConstraintViolationException, DataException {
+        logger.info(String.format("Playlist service: user named %s's playlist are going to be deleted", user.getUsername()));
+
         Iterable<Playlist> userPlaylist = listByUser(user.getId());
-        for(Playlist playlist : userPlaylist) {
-            delete(playlist);
-        }
-        logger.log(Level.INFO, "Playlist service: user named " +
-                user.getUsername() + "'s playlist have been deleted successfully");
+        StreamSupport.stream(userPlaylist.spliterator(), false).forEach(
+                    p -> delete(p)
+                );
+
+        logger.info(String.format("Playlist service: user named %s's playlist have been deleted successfully", user.getUsername()));
     }
 
-    public void delete(Playlist playlist) {
-        logger.log(Level.INFO, "Playlist service: playlist named " +
-                playlist.getName() + " is going to be deleted from database MusicPortal");
+    public void delete(Playlist playlist) throws DataAccessException, ConstraintViolationException, DataException {
+        logger.info(String.format("Playlist service: playlist named %s" +
+                " is going to be deleted from database MusicPortal", playlist.getName()));
+
         keywordService.deleteAllPlaylistKeywordsByPlaylist(playlist);
         playlistRepository.deleteById(playlist.getId());
-        logger.log(Level.INFO, "Playlist service: playlist named " +
-                playlist.getName() + " has been successfully from database MusicPortal");
+
+        logger.info(String.format("Playlist service: playlist named %s" +
+                " has been successfully from database MusicPortal", playlist.getName()));
     }
 }
