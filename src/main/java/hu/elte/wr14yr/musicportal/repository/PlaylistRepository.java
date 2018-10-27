@@ -17,7 +17,7 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     List<Playlist> findAllByUserId(long id);
 
-    List<Playlist> findAllByPlaylistKeyword(PlaylistKeyword playlistKeyword);
+    List<Playlist> findAllByPlaylistKeywords(PlaylistKeyword playlistKeyword);
 
     Playlist findPlaylistById(Long id);
 

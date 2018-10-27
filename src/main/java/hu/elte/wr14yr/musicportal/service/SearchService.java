@@ -39,13 +39,13 @@ public class SearchService {
     public Iterable<Album> findAlbumByAlbumKeyword(AlbumKeyword albumKeyword) {
         logger.info("Search service: albums with current album keywords are going to be searched");
 
-        return albumRepository.findAllByAlbumKeyword(albumKeyword);
+        return albumRepository.findAllByAlbumKeywords(albumKeyword);
     }
 
     public Iterable<Album> findAlbumsByGenre(Genre genre) {
         logger.info("Search service: albums with current genres are going to be searched");
 
-        return albumRepository.findAllByGenre(genre);
+        return albumRepository.findAllByGenres(genre);
     }
 
     public Iterable<Song> findSongsByTitle(String title) {
@@ -57,13 +57,13 @@ public class SearchService {
     public Iterable<Song> findSongsBySongKeywords(SongKeyword songKeyword) {
         logger.info("Search service: users with current user keywords are going to be searched");
 
-        return songRepository.findAllBySongKeyword(songKeyword);
+        return songRepository.findAllBySongKeywords(songKeyword);
     }
 
     public Iterable<Song> findSongsByGenre(Genre genre) {
         logger.info("Search service: songs with current genres are going to be searched");
 
-        return songRepository.findAllByGenre(genre);
+        return songRepository.findAllByGenres(genre);
     }
 
     public Iterable<Playlist> findPlaylistByName(String name) {
@@ -74,7 +74,7 @@ public class SearchService {
     public Iterable<Playlist> findPlaylistByPlaylistKeyword(PlaylistKeyword playlistKeyword) {
         logger.info("Search service: playlists with current playlist keywords are going to be searched");
 
-        return playlistRepository.findAllByPlaylistKeyword(playlistKeyword);
+        return playlistRepository.findAllByPlaylistKeywords(playlistKeyword);
     }
 
     public Iterable<User> findUsersByUsername(String username) {
@@ -86,6 +86,6 @@ public class SearchService {
     public Iterable<User> findUsersByUserKeyword(UserKeyword userKeyword) {
         logger.info("Search service: users with current user keywords are going to be searched");
 
-        return userRepository.findAllByUserKeyword(userKeyword);
+        return userRepository.findAllByUserKeywords(userKeyword);
     }
 }

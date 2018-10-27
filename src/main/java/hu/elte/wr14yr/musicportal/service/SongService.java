@@ -104,7 +104,7 @@ public class SongService {
     public Iterable<Song> listByPlaylist(Playlist playlist) {
         logger.info(String.format("Song service: playlist named %s's songs are going to be listed", playlist.getName()));
 
-        return songRepository.findAllByPlaylists(playlist);
+        return songRepository.findAllByPlaylist(playlist);
     }
 
     public Song find(long id) {

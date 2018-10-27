@@ -31,8 +31,8 @@ public class Country {
     @OneToMany(targetEntity = User.class, mappedBy = "countryId")
     private List<User> users;
 
-    public static Map<String, String> countries;
+    public static Map<String, String> countries = new HashMap<>();
     static {
-        countries.put("", "");
+        countries.put("Magyarország", "");
     }
 }
