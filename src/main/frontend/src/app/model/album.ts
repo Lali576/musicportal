@@ -1,5 +1,4 @@
 import {User} from "./user";
-import {AlbumTag} from "./Tags/albumtag";
 
 export class Album {
   id: number = 0;
@@ -10,6 +9,5 @@ export class Album {
   albumCoverFolderGdaId: string = "";
   coverFileGdaId: string = "";
   user: User = null;
-  albumTags: AlbumTag[] = [];
   type: string = "SINGLE";
 }

@@ -89,10 +89,10 @@ public class TagService {
                 " have been successfully saved in database MusicPortal", playlist.getName()));
     }
 
-    public List<UserTag> listUserTagsByUser(final User user) {
-        logger.info(String.format("Tag service: user named %s's tags are going to be listed", user.getUsername()));
+    public List<UserTag> listUserTagsByUser(final long id) {
+        logger.info(String.format("Tag service: user with id %s's tags are going to be listed", id));
 
-        return userTagRepository.findAllByUser(user);
+        return userTagRepository.findAllByUserId(id);
     }
 
     public List<AlbumTag> listAlbumTagsByAlbum(final Album album) {
@@ -112,17 +112,17 @@ public class TagService {
 
         return playlistTagRepository.findAllByPlaylist(playlist);}
 
-    void deleteAllUserTagsByUser(User user) {
-        logger.info(String.format("Tag service: user tags for user named %s" +
-                " are going to be deleted from database MusicPortal", user.getUsername()));
+    void deleteAllUserTagsByUser(long id) {
+        logger.info(String.format("Tag service: user tags for user with id %s" +
+                " are going to be deleted from database MusicPortal", id));
 
-        List<UserTag> userTags = userTagRepository.findAllByUser(user);
+        List<UserTag> userTags = userTagRepository.findAllByUserId(id);
         userTags.stream().forEach(t->
             userTagRepository.deleteById(t.getId())
         );
 
-        logger.info(String.format("Tag service: user tags for user named %s" +
-                " have been successfully deleted from database MusicPortal", user.getUsername()));
+        logger.info(String.format("Tag service: user tags for user with id %s" +
+                " have been successfully deleted from database MusicPortal",id));
     }
 
     void deleteAllAlbumTagsByAlbum(Album album) {

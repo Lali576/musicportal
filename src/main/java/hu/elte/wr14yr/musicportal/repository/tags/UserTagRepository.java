@@ -9,7 +9,7 @@ public interface UserTagRepository extends CrudRepository<UserTag, Long> {
     @Override
     UserTag save(UserTag userTag);
 
-    List<UserTag> findAllByUser(User user);
+    List<UserTag> findAllByUserId(long id);
 
     @Override
     void deleteById(Long id);

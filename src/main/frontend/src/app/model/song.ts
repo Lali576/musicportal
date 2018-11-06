@@ -1,6 +1,5 @@
 import {Album} from "./album";
 import {User} from "./user";
-import {SongTag} from "./Tags/songtag";
 
 export class Song {
   id: number = 0;
@@ -10,5 +9,4 @@ export class Song {
   duration: number = 0;
   album: Album = null;
   user: User = null;
-  songTags: SongTag[] = [];
 }

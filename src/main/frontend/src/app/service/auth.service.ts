@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {User} from "../model/user";
 import {tap} from "rxjs/operators";
 import {UserTag} from "../model/Tags/usertag";
-
-const httpOptions = {
-  headers: new HttpHeaders(
-    {'Content-Type': 'application/json'})
-}
 
 @Injectable()
 export class AuthService {
@@ -25,7 +20,7 @@ export class AuthService {
     this.http.get<User>('api/user/get').subscribe(
       (user : User) => {
         if (user !== null) {
-          console.log("Logged in user found with name " + user.username)
+          console.log("Logged in user found with name " + user.username);
           this.loggedInUser = user;
           this.isLoggedIn = true;
         }
@@ -73,12 +68,12 @@ export class AuthService {
   }
 
   logout() {
-    console.log("Try to log out user with username " + this.loggedInUser.username)
+    console.log("Try to log out user with username " + this.loggedInUser.username);
     return this.http.get(
       'api/user/logout'
     ).pipe(
       tap(() => {
-        console.log("Logged in user has been successfully logged out")
+        console.log("Logged in user has been successfully logged out");
         this.loggedInUser = new User();
         this.isLoggedIn = false;
       })

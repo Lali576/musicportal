@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {User} from "../model/user";
 import {Genre} from "../model/genre";
 import {UserMessage} from "../model/usermessage";
 import {AuthService} from "./auth.service";
 import {tap} from "rxjs/internal/operators";
 import {UserTag} from "../model/Tags/usertag";
-
-const httpOptions = {
-  headers: new HttpHeaders(
-    {'Content-Type': 'application/json'}
-  )
-}
 
 @Injectable()
 export class UserService {
@@ -24,17 +18,13 @@ export class UserService {
     private authService: AuthService
   ) {}
 
-  getUserTags(id: number) {
-
-  }
-
-  updateUser(id: number, fullName: string, favGenre: Genre, Tags: UserTag[]): Promise<User> {
+  updateUser(id: number, fullName: string, favGenre: Genre, userTags: UserTag[]): Promise<User> {
     console.log("Try to update details for user named " +
       this.authService.loggedInUser.username + " with new details");
     const formData = new FormData();
     formData.append("fullName", fullName);
     formData.append("favGenre", JSON.stringify(favGenre));
-    formData.append("Tags", JSON.stringify(Tags));
+    formData.append("userTags", JSON.stringify(userTags));
     return this.http.put<User>(
       `api/user/update/${id}/details`,
       formData
@@ -113,7 +103,7 @@ export class UserService {
 
   deleteUser(id: number) {
     console.log("Try to delete user named " + this.authService.loggedInUser.username);
-    return this.http.delete(`api/user/delete/${id}`, httpOptions).pipe(
+    return this.http.delete(`api/user/delete/${id}`).pipe(
       tap(() => {
         console.log("Deleting user named " + this.authService.loggedInUser.username + " was successful");
         this.authService.isLoggedIn = false;

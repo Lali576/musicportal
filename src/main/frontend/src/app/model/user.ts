@@ -1,6 +1,5 @@
 import {Genre} from "./genre";
 import {Country} from "./country";
-import {UserTag} from "./Tags/usertag";
 
 export class User {
   id: number = 0;
@@ -13,6 +12,5 @@ export class User {
   userAlbumsFolderGdaId: string = "";
   userIconFolderGdaId: string = "";
   iconFileGdaId: string = "";
-  userTags: UserTag[] = [];
   role: string = "GUEST";
 }

@@ -168,7 +168,7 @@ public class UserService {
         logger.info(String.format("User service: user named %s" +
                 "'s data has been updated successfully", loggedInUser.getUsername()));
 
-        tagService.deleteAllUserTagsByUser(loggedInUser);
+        tagService.deleteAllUserTagsByUser(loggedInUser.getId());
 
         if(userTags != null) {
             tagService.createUserTags(userTags, loggedInUser);
@@ -280,7 +280,7 @@ public class UserService {
 
         userMessageRepository.deleteAllByUserFrom(loggedInUser);
 
-        tagService.deleteAllUserTagsByUser(loggedInUser);
+        tagService.deleteAllUserTagsByUser(loggedInUser.getId());
 
         logger.info("User service: user's storing folder is going to delete from Google Drive");
 

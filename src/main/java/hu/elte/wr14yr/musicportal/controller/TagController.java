@@ -12,6 +12,7 @@ import hu.elte.wr14yr.musicportal.model.tags.UserTag;
 import hu.elte.wr14yr.musicportal.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,13 +71,11 @@ public class TagController {
         return ResponseEntity.ok(playlistTags);
     }
 
-    @PostMapping("/list-by-user")
-    public ResponseEntity<Iterable<UserTag>> listUserTagsByAlbum(MultipartHttpServletRequest request) throws IOException {
+    @PostMapping("/list-by-user/{id}")
+    public ResponseEntity<Iterable<UserTag>> listUserTagsByAlbum(@PathVariable long id) {
         logger.info("Tag controller: enter endpoint '/list-by-user'");
 
-        User user = mapper.readValue(request.getParameter("user"), User.class);
-
-        Iterable<UserTag> userTags = tagService.listUserTagsByUser(user);
+        Iterable<UserTag> userTags = tagService.listUserTagsByUser(id);
 
         logger.info("Tag controller: exit endpoint '/list-by-user'");
 

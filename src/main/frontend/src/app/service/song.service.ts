@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Song} from "../model/song";
 import {Album} from "../model/album";
 import {Playlist} from "../model/playlist";
@@ -9,12 +9,6 @@ import {tap} from "rxjs/internal/operators";
 import {SongComment} from "../model/songcomment";
 import {SongLike} from "../model/songlike";
 import {SongCounter} from "../model/songcounter";
-
-const httpOptions = {
-  headers: new HttpHeaders(
-    {'Content-Type': 'application/json'}
-  )
-}
 
 @Injectable()
 export class SongService {
@@ -33,13 +27,13 @@ export class SongService {
     this.audio = new Audio();
   }
 
-  addSong(song: Song, audioFile: File, album: Album, genres: Genre[], Tags: SongTag[]): Promise<Song> {
+  addSong(song: Song, audioFile: File, album: Album, genres: Genre[], songTags: SongTag[]): Promise<Song> {
     const formData = new FormData();
     formData.append("song", JSON.stringify(song));
     formData.append(audioFile.name, audioFile, audioFile.name);
     formData.append("album", JSON.stringify(album));
     formData.append("genres", JSON.stringify(genres));
-    formData.append("Tags", JSON.stringify(Tags));
+    formData.append("songTags", JSON.stringify(songTags));
     return this.http.post<Song>(
       'api/song/new',
       formData
@@ -100,7 +94,7 @@ export class SongService {
 
   deleteSong(song: Song) {
     console.log("Try to delete song titled " + song.title);
-    var id: number = song.id;
+    let id: number = song.id;
     return this.http.delete(
       `api/song/delete/${id}`).pipe(
       tap(() => {
@@ -146,7 +140,11 @@ export class SongService {
       formData
     ).pipe(
       tap((likeTypeNumber: number) => {
-        //
+        if(songLike.type == 'LIKE') {
+          this.likeNumber = likeTypeNumber;
+        } else {
+          this.dislikeNumber = likeTypeNumber;
+        }
       })
     ).toPromise();
   }

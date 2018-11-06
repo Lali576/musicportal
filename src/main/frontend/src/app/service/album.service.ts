@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Album} from "../model/album";
-import {Genre} from "../model/genre";
-import {AlbumTag} from "../model/Tags/albumtag";
-import {tap} from "rxjs/internal/operators";
-
-const httpOptions = {
-  headers: new HttpHeaders(
-    {'Content-Type': 'application/json'}
-  )
-}
+import { HttpClient } from "@angular/common/http";
+import { Album } from "../model/album";
+import { Genre } from "../model/genre";
+import { AlbumTag } from "../model/Tags/albumtag";
+import { tap } from "rxjs/internal/operators";
 
 @Injectable()
 export class AlbumService {
@@ -20,14 +14,14 @@ export class AlbumService {
     private http: HttpClient,
   ) { }
 
-  addAlbum(album: Album, coverFile: File, genres: Genre[], Tags: AlbumTag[]): Promise<Album> {
+  addAlbum(album: Album, coverFile: File, genres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
     if(coverFile !== null) {
       formData.append(coverFile.name, coverFile, coverFile.name);
     }
     formData.append("genres", JSON.stringify(genres));
-    formData.append("Tags", JSON.stringify(Tags));
+    formData.append("albumTags", JSON.stringify(albumTags));
     return this.http.post<Album>(
       `api/album/new`,
       formData
@@ -54,11 +48,11 @@ export class AlbumService {
     return this.http.get<Album[]>('api/album/list-first-five').toPromise();
   }
 
-  updateAlbumDetails(id: number, album: Album, genres: Genre[], Tags: AlbumTag[]): Promise<Album> {
+  updateAlbumDetails(id: number, album: Album, genres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
     formData.append("genres", JSON.stringify(genres));
-    formData.append("Tags", JSON.stringify(Tags));
+    formData.append("albumTags", JSON.stringify(albumTags));
     return this.http.post<Album>(
       `api/album/update/${id}/details`,
       formData
@@ -69,9 +63,12 @@ export class AlbumService {
     ).toPromise();
   }
 
-  updateAlbumCover(id: number, coverFile: File): Promise<Album> {
+  updateAlbumCover(id: number, album: Album, coverFile: File): Promise<Album> {
     const formData = new FormData();
-    formData.append(coverFile.name, coverFile, coverFile.name);
+    formData.append("album", JSON.stringify(album));
+    if(coverFile !== null) {
+      formData.append(coverFile.name, coverFile, coverFile.name);
+    }
     return this.http.post<Album>(
       `api/album/update/${id}/cover`,
       formData
@@ -84,7 +81,7 @@ export class AlbumService {
 
   deleteAlbum(album: Album) {
     console.log("Try to delete album titled " + album.title);
-    var id: number = album.id;
+    let id: number = album.id;
     return this.http.delete(
       `api/album/delete/${id}`).pipe(
       tap(() => {
