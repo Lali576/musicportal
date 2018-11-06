@@ -229,12 +229,12 @@ public class UserService {
                 "'s icon image file is going to be changed", loggedInUser.getUsername()));
 
         if(loggedInUser.getIconFileGdaId().equals("")) {
-            if(iconFile.exists()) {
+            if(iconFile != null) {
                 String iconFileGdaId = fileService.uploadFile(iconFile, loggedInUser.getUserIconFolderGdaId());
                 loggedInUser.setIconFileGdaId(iconFileGdaId);
             }
         } else {
-            if(iconFile.exists()) {
+            if(iconFile != null) {
                 fileService.updateFile(loggedInUser.getIconFileGdaId(), iconFile);
             } else {
                 fileService.delete(loggedInUser.getIconFileGdaId());

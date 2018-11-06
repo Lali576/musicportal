@@ -56,7 +56,7 @@ public class AlbumService {
         String albumCoverFolderGdaId = fileService.uploadFolder("cover", albumFolderGdaId);
         savedAlbum.setAlbumCoverFolderGdaId(albumCoverFolderGdaId);
 
-        if(coverFile.exists()) {
+        if(coverFile != null) {
             String coverFileGdaId = fileService.uploadFile(coverFile, albumCoverFolderGdaId);
             savedAlbum.setCoverFileGdaId(coverFileGdaId);
         }
@@ -118,12 +118,12 @@ public class AlbumService {
         logger.info(String.format("Album service: album titled %s's cover image is going to be changed",album.getTitle()));
 
         if(album.getCoverFileGdaId().equals("")) {
-            if(coverFile.exists()) {
+            if(coverFile != null) {
                 String coverFileGdaId = fileService.uploadFile(coverFile, album.getAlbumCoverFolderGdaId());
                 album.setCoverFileGdaId(coverFileGdaId);
             }
         } else {
-            if(coverFile.exists()) {
+            if(coverFile != null) {
                 fileService.updateFile(album.getCoverFileGdaId(), coverFile);
             } else {
                 fileService.delete(album.getCoverFileGdaId());
