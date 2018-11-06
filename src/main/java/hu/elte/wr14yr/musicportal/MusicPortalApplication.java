@@ -19,7 +19,7 @@ import java.util.Map;
 
 @EnableWebMvc
 @SpringBootApplication
-public class MusicportalApplication implements WebMvcConfigurer {
+public class MusicPortalApplication implements WebMvcConfigurer {
 
 	@Autowired
 	private HandlerInterceptor authInterceptor;
@@ -65,6 +65,6 @@ public class MusicportalApplication implements WebMvcConfigurer {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(MusicportalApplication.class, args);
+		SpringApplication.run(MusicPortalApplication.class, args);
 	}
 }

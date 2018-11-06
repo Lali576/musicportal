@@ -14,7 +14,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
-import hu.elte.wr14yr.musicportal.MusicportalApplication;
+import hu.elte.wr14yr.musicportal.MusicPortalApplication;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
@@ -32,7 +32,7 @@ public class GoogleDriveApi {
     public static final String MAIN_FOLDER_ID = "1QoToG71iVMPyH9XCYI2BgzDJcSvgknSQ";
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        InputStream in = MusicportalApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = MusicPortalApplication.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(

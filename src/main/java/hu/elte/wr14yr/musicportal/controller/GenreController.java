@@ -44,19 +44,20 @@ public class GenreController {
 
         Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
-        Iterable<Genre> genres = genreRepository.findAllByAlbum(album);
+        Iterable<Genre> genres = genreRepository.findAllByAlbums(album);
 
         logger.info("Genre controller: exit endpoint '/list-by-album'");
 
         return ResponseEntity.ok(genres);
     }
 
+    @PostMapping("/list-by-song")
     public ResponseEntity<Iterable<Genre>> listBySong(MultipartHttpServletRequest request) throws IOException {
         logger.info("Genre controller: enter endpoint '/list-by-song'");
 
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
-        Iterable<Genre> genres = genreRepository.findAllBySong(song);
+        Iterable<Genre> genres = genreRepository.findAllBySongs(song);
 
         logger.info("Genre controller: exit endpoint '/list-by-song'");
 
