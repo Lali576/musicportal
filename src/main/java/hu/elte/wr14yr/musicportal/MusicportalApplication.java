@@ -41,11 +41,13 @@ public class MusicportalApplication implements WebMvcConfigurer {
 
         for (Map.Entry<String, String> entry : Country.countries.entrySet()) {
             String name = entry.getKey();
+            String iconFileURL = entry.getValue();
             String sql = "SELECT NAME FROM COUNTRIES C WHERE C.NAME = '" + name + "' LIMIT 1";
             List<Country> c = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
             if(c == null || c.size() <= 0) {
                 Country country = new Country();
                 country.setName(name);
+                country.setIconFileURL(iconFileURL);
                 countryRepository.save(country);
             }
         }
