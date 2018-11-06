@@ -33,8 +33,8 @@ public class SearchService {
         return albumRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Album> findAlbumByAlbumKeyword(AlbumTag albumTag) {
-        logger.info("Search service: albums with current album keywords are going to be searched");
+    public Iterable<Album> findAlbumByAlbumTag(AlbumTag albumTag) {
+        logger.info("Search service: albums with current album tag are going to be searched");
 
         return albumRepository.findAllByAlbumTags(albumTag);
     }
@@ -51,8 +51,8 @@ public class SearchService {
         return songRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Song> findSongsBySongKeywords(SongTag songTag) {
-        logger.info("Search service: users with current user keywords are going to be searched");
+    public Iterable<Song> findSongsBySongTag(SongTag songTag) {
+        logger.info("Search service: users with current user tag are going to be searched");
 
         return songRepository.findAllBySongTags(songTag);
     }
@@ -68,8 +68,8 @@ public class SearchService {
 
         return playlistRepository.findAllByNameContainsAllIgnoreCase(name);
     }
-    public Iterable<Playlist> findPlaylistByPlaylistKeyword(PlaylistTag playlistTag) {
-        logger.info("Search service: playlists with current playlist keywords are going to be searched");
+    public Iterable<Playlist> findPlaylistByPlaylistTag(PlaylistTag playlistTag) {
+        logger.info("Search service: playlists with current playlist tag are going to be searched");
 
         return playlistRepository.findAllByPlaylistTags(playlistTag);
     }
@@ -80,8 +80,8 @@ public class SearchService {
         return userRepository.findAllByUsernameContainsAllIgnoreCase(username);
     }
 
-    public Iterable<User> findUsersByUserKeyword(UserTag userTag) {
-        logger.info("Search service: users with current user keywords are going to be searched");
+    public Iterable<User> findUsersByUserTag(UserTag userTag) {
+        logger.info("Search service: users with current user tag are going to be searched");
 
         return userRepository.findAllByUserTags(userTag);
     }

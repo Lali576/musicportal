@@ -5,7 +5,7 @@ import {SongService} from "../../../service/song.service";
 import {Message, MessageService} from "primeng/api";
 import {PlaylistService} from "../../../service/playlist.service";
 import {Router} from "@angular/router";
-import {PlaylistKeyword} from "../../../model/keywords/playlistkeyword";
+import {PlaylistTag} from "../../../model/Tags/playlisttag";
 
 @Component({
   selector: 'app-playlist-form',
@@ -17,8 +17,8 @@ export class PlaylistFormComponent implements OnInit {
   playlist: Playlist = new Playlist();
   songs: Song[] = [];
   selectedSongs: Song[] = [];
-  keywords: string[] = [];
-  playlistKeywords: PlaylistKeyword[] = [];
+  Tags: string[] = [];
+  playlistTags: PlaylistTag[] = [];
   msgs: Message[] = [];
 
   constructor(
@@ -41,7 +41,7 @@ export class PlaylistFormComponent implements OnInit {
     try {
       console.log(this.playlist);
       this.showMsgInfo();
-      this.playlist = await this.playlistServive.addPlaylist(this.playlist, this.selectedSongs, this.playlistKeywords);
+      this.playlist = await this.playlistServive.addPlaylist(this.playlist, this.selectedSongs, this.playlistTags);
       this.showMsgSuccess();
       await  new Promise( resolve => setTimeout(resolve, 1000) );
       this.router.navigate(['/playlist/list']);

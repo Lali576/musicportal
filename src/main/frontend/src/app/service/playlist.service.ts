@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Playlist} from "../model/playlist";
 import {Song} from "../model/song";
-import {PlaylistKeyword} from "../model/keywords/playlistkeyword";
+import {PlaylistTag} from "../model/Tags/playlisttag";
 import {tap} from "rxjs/internal/operators";
 
 const httpOptions = {
@@ -20,11 +20,11 @@ export class PlaylistService {
     private http: HttpClient,
   ) { }
 
-  addPlaylist(playlist: Playlist, songs: Song[], keywords: PlaylistKeyword[]): Promise<Playlist> {
+  addPlaylist(playlist: Playlist, songs: Song[], Tags: PlaylistTag[]): Promise<Playlist> {
     const formData = new FormData();
     formData.append("playlist", JSON.stringify(playlist));
     formData.append("songs", JSON.stringify(songs));
-    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("Tags", JSON.stringify(Tags));
     return this.http.post<Playlist>(
       `api/playlist/new`,
       formData
@@ -51,11 +51,11 @@ export class PlaylistService {
     return this.http.get<Playlist[]>('api/playlist/list-first-five').toPromise();
   }
 
-  updatePlaylist(id: number, playlist: Playlist, songs: Song[], keywords: PlaylistKeyword[]): Promise<Playlist> {
+  updatePlaylist(id: number, playlist: Playlist, songs: Song[], Tags: PlaylistTag[]): Promise<Playlist> {
     const formData = new FormData();
     formData.append("playlist", JSON.stringify(playlist));
     formData.append("songs", JSON.stringify(songs));
-    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("Tags", JSON.stringify(Tags));
     return this.http.post<Playlist>(
       `api/playlist/update/${id}`,
       formData

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Album} from "../model/album";
 import {Genre} from "../model/genre";
-import {AlbumKeyword} from "../model/keywords/albumkeyword";
+import {AlbumTag} from "../model/Tags/albumtag";
 import {tap} from "rxjs/internal/operators";
 
 const httpOptions = {
@@ -20,14 +20,14 @@ export class AlbumService {
     private http: HttpClient,
   ) { }
 
-  addAlbum(album: Album, coverFile: File, genres: Genre[], keywords: AlbumKeyword[]): Promise<Album> {
+  addAlbum(album: Album, coverFile: File, genres: Genre[], Tags: AlbumTag[]): Promise<Album> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
     if(coverFile !== null) {
       formData.append(coverFile.name, coverFile, coverFile.name);
     }
     formData.append("genres", JSON.stringify(genres));
-    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("Tags", JSON.stringify(Tags));
     return this.http.post<Album>(
       `api/album/new`,
       formData
@@ -54,11 +54,11 @@ export class AlbumService {
     return this.http.get<Album[]>('api/album/list-first-five').toPromise();
   }
 
-  updateAlbumDetails(id: number, album: Album, genres: Genre[], keywords: AlbumKeyword[]): Promise<Album> {
+  updateAlbumDetails(id: number, album: Album, genres: Genre[], Tags: AlbumTag[]): Promise<Album> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
     formData.append("genres", JSON.stringify(genres));
-    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("Tags", JSON.stringify(Tags));
     return this.http.post<Album>(
       `api/album/update/${id}/details`,
       formData

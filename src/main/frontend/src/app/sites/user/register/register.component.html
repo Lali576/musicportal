@@ -202,9 +202,9 @@
             Kulcsszavak :
           </div>
           <div class="ui-grid-col-6">
-            <p-chips name="userKeywordsChips"
-                     [(ngModel)]="keywords"
-                     #userKeywords = "ngModel"
+            <p-chips name="userTagsChips"
+                     [(ngModel)]="Tags"
+                     #userTags = "ngModel"
                      >
               <ng-template let-item pTemplate="item">
                 #{{item}}<i style="margin-right:2em"></i>

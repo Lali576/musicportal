@@ -47,17 +47,17 @@
     <tr>
       <th>Műfajok:</th>
       <td>
-        <button *ngFor="let albumKeyword of album"
+        <button *ngFor="let albumTag of album"
                 pButton type="button"
-                label="#{{albumKeyword.word}}"></button>
+                label="#{{albumTag.word}}"></button>
       </td>
     </tr>
     <tr>
       <th>Címkék:</th>
       <td>
-        <button *ngFor="let albumKeyword of album.albumTags"
+        <button *ngFor="let albumTag of album.albumTags"
                 pButton type="button"
-                label="#{{albumKeyword.word}}"></button>
+                label="#{{albumTag.word}}"></button>
       </td>
     </tr>
   </tbody>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Album} from "../../../model/album";
 import {Song} from "../../../model/song";
-import {AlbumKeyword} from "../../../model/keywords/albumkeyword";
+import {AlbumTag} from "../../../model/Tags/albumtag";
 import {GenreService} from "../../../service/genre.service";
 import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";
@@ -20,8 +20,8 @@ export class AlbumFormComponent implements OnInit {
   album: Album = new Album();
   albumCoverFile: File = null;
   albumGenre: Genre[] = [];
-  keywords: string[] = [];
-  albumTags: AlbumKeyword[] = [];
+  Tags: string[] = [];
+  albumTags: AlbumTag[] = [];
   genres: Genre[] = [];
   selectedGenres: Genre[] = [];
   displayDialog: boolean;
@@ -134,10 +134,10 @@ export class AlbumFormComponent implements OnInit {
       } else if (this.albumSongs.length >= 7) {
         this.album.type = "LP";
       }
-      for(let keyword of this.keywords) {
-        let albumKeyword: AlbumKeyword = new AlbumKeyword();
-        albumKeyword.word = keyword;
-        this.albumTags.push(albumKeyword);
+      for(let tag of this.Tags) {
+        let albumTag: AlbumTag = new AlbumTag();
+        albumTag.word = tag;
+        this.albumTags.push(albumTag);
       }
       this.showMsgInfo();
       this.messageService.add({key: 'toast', severity:'info', summary: this.album.title + ' című album feltöltés alatt', detail:''});

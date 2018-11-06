@@ -5,7 +5,7 @@ import {Genre} from "../model/genre";
 import {UserMessage} from "../model/usermessage";
 import {AuthService} from "./auth.service";
 import {tap} from "rxjs/internal/operators";
-import {UserKeyword} from "../model/keywords/userkeyword";
+import {UserTag} from "../model/Tags/usertag";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -24,17 +24,17 @@ export class UserService {
     private authService: AuthService
   ) {}
 
-  getUserKeywords(id: number) {
+  getUserTags(id: number) {
 
   }
 
-  updateUser(id: number, fullName: string, favGenre: Genre, keywords: UserKeyword[]): Promise<User> {
+  updateUser(id: number, fullName: string, favGenre: Genre, Tags: UserTag[]): Promise<User> {
     console.log("Try to update details for user named " +
       this.authService.loggedInUser.username + " with new details");
     const formData = new FormData();
     formData.append("fullName", fullName);
     formData.append("favGenre", JSON.stringify(favGenre));
-    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("Tags", JSON.stringify(Tags));
     return this.http.put<User>(
       `api/user/update/${id}/details`,
       formData

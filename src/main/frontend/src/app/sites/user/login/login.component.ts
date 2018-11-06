@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
-import {Keyword} from "../../../model/keywords/keyword";
+import {Tag} from "../../../model/Tags/tag";
 import {Message} from "primeng/api";
 
 @Component({
@@ -14,8 +14,8 @@ export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
   msgs: Message[] = [];
-  keyword: Keyword = new Keyword();
-  keywords: Keyword[] = [];
+  tag: Tag = new Tag();
+  Tags: Tag[] = [];
 
   constructor(
     private authService: AuthService,

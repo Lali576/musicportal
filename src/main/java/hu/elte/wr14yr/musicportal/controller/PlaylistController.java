@@ -54,12 +54,12 @@ public class PlaylistController {
         Song[] songsArray = mapper.readValue(request.getParameter("songs"), Song[].class);
         List<Song> songsList = Arrays.asList(songsArray);
 
-        logger.info("Playlist controller: get parameter 'playlistKeywords'");
+        logger.info("Playlist controller: get parameter 'playlistTags'");
 
-        PlaylistTag[] playlistKeywordsArray = mapper.readValue(request.getParameter("playlistKeywords"), PlaylistTag[].class);
-        List<PlaylistTag> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
+        PlaylistTag[] playlistTagsArray = mapper.readValue(request.getParameter("playlistTags"), PlaylistTag[].class);
+        List<PlaylistTag> playlistTagsList = Arrays.asList(playlistTagsArray);
 
-        Playlist savedPlaylist = playlistService.create(playlist, user, songsList, playlistKeywordsList);
+        Playlist savedPlaylist = playlistService.create(playlist, user, songsList, playlistTagsList);
 
         logger.info("Playlist controller: exit endpoint '/new'");
 
@@ -128,12 +128,12 @@ public class PlaylistController {
         Song[] songsArray = mapper.readValue(request.getParameter("songs"), Song[].class);
         List<Song> songsList = Arrays.asList(songsArray);
 
-        logger.info("Playlist controller: get parameter 'playlistKeywords'");
+        logger.info("Playlist controller: get parameter 'playlistTags'");
 
-        PlaylistTag[] playlistKeywordsArray = mapper.readValue(request.getParameter("playlistKeywords"), PlaylistTag[].class);
-        List<PlaylistTag> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
+        PlaylistTag[] playlistTagsArray = mapper.readValue(request.getParameter("playlistTags"), PlaylistTag[].class);
+        List<PlaylistTag> playlistTagsList = Arrays.asList(playlistTagsArray);
 
-        Playlist updatedPlaylist = playlistService.update(playlist, songsList, user, playlistKeywordsList);
+        Playlist updatedPlaylist = playlistService.update(playlist, songsList, user, playlistTagsList);
 
         logger.info(String.format("Playlist controller: exit endpoint '/update/%s'", id));
 

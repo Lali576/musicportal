@@ -58,9 +58,9 @@
         <tr>
           <th>Címkék:</th>
           <td>
-            <button *ngFor="let userKeyword of user.userKeywords"
+            <button *ngFor="let userTag of user.userTags"
                     pButton type="button"
-                    label="#{{userKeyword.word}}"></button>
+                    label="#{{userTag.word}}"></button>
           </td>
         </tr>
       </tbody>

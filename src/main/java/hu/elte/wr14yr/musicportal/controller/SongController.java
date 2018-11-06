@@ -77,12 +77,12 @@ public class SongController {
         Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
-        logger.info("Song controller: get parameter  'songKeywords'");
+        logger.info("Song controller: get parameter  'songTags'");
 
-        SongTag[] songKeywordsArray = mapper.readValue(request.getParameter("songKeywords"), SongTag[].class);
-        List<SongTag> songKeywordsList = Arrays.asList(songKeywordsArray);
+        SongTag[] songTagsArray = mapper.readValue(request.getParameter("songTags"), SongTag[].class);
+        List<SongTag> songTagsList = Arrays.asList(songTagsArray);
 
-        Song savedSong = songService.create(song, user, album, file, genresList, songKeywordsList);
+        Song savedSong = songService.create(song, user, album, file, genresList, songTagsList);
 
         if(file != null) {
             file.delete();

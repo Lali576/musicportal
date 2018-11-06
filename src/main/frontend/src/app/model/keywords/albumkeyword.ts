@@ -1,5 +1,5 @@
-import {Keyword} from './keyword'
+import {Tag} from './tag'
 
-export class AlbumKeyword extends Keyword {
+export class AlbumTag extends Tag {
 
 }

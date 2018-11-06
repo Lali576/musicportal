@@ -11,7 +11,7 @@ import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";
 import {PlaylistService} from "../../../service/playlist.service";
 import {switchMap} from "rxjs/internal/operators";
-import {UserKeyword} from "../../../model/keywords/userkeyword";
+import {UserTag} from "../../../model/Tags/usertag";
 
 @Component({
   selector: 'app-user-detail',
@@ -26,7 +26,7 @@ export class UserDetailComponent implements OnInit {
   userSongs: Song[] = [];
   userPlaylists: Playlist[] = [];
   userIconFile: File = null;
-  userKeywords: UserKeyword[] = [];
+  userTags: UserTag[] = [];
   display: boolean = false;
 
   constructor(

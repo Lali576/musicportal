@@ -79,12 +79,12 @@ public class UserController {
 
         String password = request.getParameter("password");
 
-        logger.info("User controller: get parameter 'userKeywords'");
+        logger.info("User controller: get parameter 'userTags'");
 
-        UserTag[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserTag[].class);
-        List<UserTag> userKeywordsList = Arrays.asList(userKeywordsArray);
+        UserTag[] userTagsArray = mapper.readValue(request.getParameter("userTags"), UserTag[].class);
+        List<UserTag> userTagsList = Arrays.asList(userTagsArray);
 
-        User savedUser = userService.register(user, password, file, userKeywordsList);
+        User savedUser = userService.register(user, password, file, userTagsList);
 
         if(file != null) {
             file.delete();
@@ -143,12 +143,12 @@ public class UserController {
 
         Genre favGenre = mapper.readValue(request.getParameter("favGenre"), Genre.class);
 
-        logger.info("User controller: get parameter 'userKeywords'");
+        logger.info("User controller: get parameter 'userTags'");
 
-        UserTag[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserTag[].class);
-        List<UserTag> userKeywordsList = Arrays.asList(userKeywordsArray);
+        UserTag[] userTagsArray = mapper.readValue(request.getParameter("userTags"), UserTag[].class);
+        List<UserTag> userTagsList = Arrays.asList(userTagsArray);
 
-        User updatedUser = userService.updateDetails(country, favGenre, userKeywordsList);
+        User updatedUser = userService.updateDetails(country, favGenre, userTagsList);
 
         logger.info(String.format("User controller: exit endpoint '/update/%s/details'", id));
 

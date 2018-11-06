@@ -3,7 +3,7 @@ import {User} from "../../../model/user";
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
 import {Genre} from "../../../model/genre";
-import {UserKeyword} from "../../../model/keywords/userkeyword";
+import {UserTag} from "../../../model/Tags/usertag";
 import {GenreService} from "../../../service/genre.service";
 import {Message} from 'primeng/components/common/api';
 import {Country} from "../../../model/country";
@@ -23,8 +23,8 @@ export class RegisterComponent implements OnInit {
   msgs: Message[] = [];
   isArtist: boolean = false;
   userIconFile: File = null;
-  keywords: string[] = [];
-  userKeywords: UserKeyword[] = [];
+  Tags: string[] = [];
+  userTags: UserTag[] = [];
   genres: Genre[] = [];
   countries: Country[] = [];
 
@@ -72,13 +72,13 @@ export class RegisterComponent implements OnInit {
       } else {
         this.user.role = "USER";
       }
-      for(let keyword of this.keywords) {
-        let userKeyword: UserKeyword = new UserKeyword();
-        userKeyword.word = keyword;
-        this.userKeywords.push(userKeyword);
+      for(let tag of this.Tags) {
+        let userTag: UserTag = new UserTag();
+        userTag.word = tag;
+        this.userTags.push(userTag);
       }
       this.showMsgInfo();
-      await this.authService.register(this.user, this.password, this.userIconFile, this.userKeywords);
+      await this.authService.register(this.user, this.password, this.userIconFile, this.userTags);
       console.log("successful registration");
       this.showMsgSuccess();
       console.log("Try to login with user named " + this.authService.loggedInUser.username + " and with number id" + this.authService.loggedInUser.id);

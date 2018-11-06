@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "../model/user";
 import {tap} from "rxjs/operators";
-import {UserKeyword} from "../model/keywords/userkeyword";
+import {UserTag} from "../model/Tags/usertag";
 
 const httpOptions = {
   headers: new HttpHeaders(
@@ -34,7 +34,7 @@ export class AuthService {
     );
   }
 
-  register(user: User, password: string, iconFile: File, keywords: UserKeyword[]) {
+  register(user: User, password: string, iconFile: File, Tags: UserTag[]) {
     console.log("Try to register user with name...");
     const formData = new FormData();
     formData.append("user", JSON.stringify(user));
@@ -42,7 +42,7 @@ export class AuthService {
     if(iconFile !==  null) {
       formData.append(iconFile.name, iconFile, iconFile.name);
     }
-    formData.append("userKeywords", JSON.stringify(keywords));
+    formData.append("userTags", JSON.stringify(Tags));
     return this.http.post<User>(
       'api/user/register',
       formData

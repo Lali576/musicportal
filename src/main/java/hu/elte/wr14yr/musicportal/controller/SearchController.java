@@ -37,14 +37,14 @@ public class SearchController {
         return ResponseEntity.ok(foundAlbums);
     }
 
-    @PostMapping("/albums/keyword")
-    public ResponseEntity<Iterable<Album>> findAlbumByKeyword(MultipartHttpServletRequest request) throws IOException {
-        logger.info("Search controller: enter endpoint '/albums/keyword'");
+    @PostMapping("/albums/tag")
+    public ResponseEntity<Iterable<Album>> findAlbumByTag(MultipartHttpServletRequest request) throws IOException {
+        logger.info("Search controller: enter endpoint '/albums/tag'");
 
-        AlbumTag albumKeyword = mapper.readValue(request.getParameter("keyword"), AlbumTag.class);
-        Iterable<Album> foundAlbums = searchService.findAlbumByAlbumKeyword(albumKeyword);
+        AlbumTag albumTag = mapper.readValue(request.getParameter("tag"), AlbumTag.class);
+        Iterable<Album> foundAlbums = searchService.findAlbumByAlbumTag(albumTag);
 
-        logger.info("Search controller: exit endpoint '/albums/keyword'");
+        logger.info("Search controller: exit endpoint '/albums/tag'");
 
         return ResponseEntity.ok(foundAlbums);
     }
@@ -72,14 +72,14 @@ public class SearchController {
         return ResponseEntity.ok(foundSongs);
     }
 
-    @PostMapping("/songs/keyword")
-    public ResponseEntity<Iterable<Song>> findSongByKeyword(MultipartHttpServletRequest request) throws IOException {
-        logger.info("Search controller: enter endpoint '/songs/keyword'");
+    @PostMapping("/songs/tag")
+    public ResponseEntity<Iterable<Song>> findSongByTag(MultipartHttpServletRequest request) throws IOException {
+        logger.info("Search controller: enter endpoint '/songs/tag'");
 
-        SongTag songKeyword = mapper.readValue(request.getParameter("songKeyword"), SongTag.class);
-        Iterable<Song> foundSongs = searchService.findSongsBySongKeywords(songKeyword);
+        SongTag songTag = mapper.readValue(request.getParameter("songTag"), SongTag.class);
+        Iterable<Song> foundSongs = searchService.findSongsBySongTag(songTag);
 
-        logger.info("Search controller: exit endpoint '/songs/keyword'");
+        logger.info("Search controller: exit endpoint '/songs/tag'");
 
         return ResponseEntity.ok(foundSongs);
     }
@@ -107,14 +107,14 @@ public class SearchController {
         return ResponseEntity.ok(foundPlaylists);
     }
 
-    @PostMapping("/playlists/keyword")
-    public ResponseEntity<Iterable<Playlist>> findPlaylistByKeyword(MultipartHttpServletRequest request) throws IOException {
-        logger.info("Search controller enter endpoint '/playlists/keyword'");
+    @PostMapping("/playlists/tag")
+    public ResponseEntity<Iterable<Playlist>> findPlaylistByTag(MultipartHttpServletRequest request) throws IOException {
+        logger.info("Search controller enter endpoint '/playlists/tag'");
 
-        PlaylistTag playlistKeyword = mapper.readValue(request.getParameter("playlistKeyword"), PlaylistTag.class);
-        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByPlaylistKeyword(playlistKeyword);
+        PlaylistTag playlistTag = mapper.readValue(request.getParameter("playlistTag"), PlaylistTag.class);
+        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByPlaylistTag(playlistTag);
 
-        logger.info("Search controller exit endpoint '/playlists/keyword'");
+        logger.info("Search controller exit endpoint '/playlists/tag'");
 
         return ResponseEntity.ok(foundPlaylists);
     }
@@ -131,14 +131,14 @@ public class SearchController {
     }
 
 
-    @PostMapping("/users/keyword")
-    public ResponseEntity<Iterable<User>> findUserByKeyword(MultipartHttpServletRequest request) throws IOException {
-        logger.info("Search controller: enter '/users/keyword'");
+    @PostMapping("/users/tag")
+    public ResponseEntity<Iterable<User>> findUserByTag(MultipartHttpServletRequest request) throws IOException {
+        logger.info("Search controller: enter '/users/tag'");
 
-        UserTag userKeyword = mapper.readValue(request.getParameter("userKeyword"), UserTag.class);
-        Iterable<User> foundUsers = searchService.findUsersByUserKeyword(userKeyword);
+        UserTag userTag = mapper.readValue(request.getParameter("userTag"), UserTag.class);
+        Iterable<User> foundUsers = searchService.findUsersByUserTag(userTag);
 
-        logger.info("Search controller: exit '/users/keyword'");
+        logger.info("Search controller: exit '/users/tag'");
 
         return ResponseEntity.ok(foundUsers);
     }

@@ -1,5 +1,5 @@
 import {User} from "./user";
-import {AlbumKeyword} from "./keywords/albumkeyword";
+import {AlbumTag} from "./Tags/albumtag";
 
 export class Album {
   id: number = 0;
@@ -10,6 +10,6 @@ export class Album {
   albumCoverFolderGdaId: string = "";
   coverFileGdaId: string = "";
   user: User = null;
-  albumTags: AlbumKeyword[] = [];
+  albumTags: AlbumTag[] = [];
   type: string = "SINGLE";
 }
