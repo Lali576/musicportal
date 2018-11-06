@@ -7,26 +7,98 @@
     Jelenleg nincs feltöltve album!
   </div>
   <ng-template #showFirstFiveAlbums>
-    <ul *ngFor="let album of firstFiveAlbums">
-      <li>{{album.title + " - " + album.user.username + " " + (album.date|date)}}</li>
-    </ul>
+    <p-carousel headerText="" [value]="firstFiveAlbums">
+      <ng-template let-album pTemplate="item">
+        <div class="ui-grid ui-grid-responsive">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <img src=""/>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Cím
+            </div>
+            <div class="ui-grid-col-6">
+              {{album.title}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <button pButton
+                      type="button"
+                      icon="fas fa-search"
+                      ></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
   </ng-template>
   <h2 class="first">Legfrissebb lej. listák</h2>
   <div *ngIf="firstFivePlaylists.length === 0; else showFirstFivePlaylists">
     Jelenleg nincs feltöltve lej. lista!
   </div>
   <ng-template #showFirstFivePlaylists>
-    <ul *ngFor="let playlist of firstFivePlaylists">
-      <li>{{playlist.name + " - " + playlist.user.username + " " + (playlist.date|date)}}</li>
-    </ul>
+    <p-carousel headerText="" [value]="firstFivePlaylists">
+      <ng-template let-playlist pTemplate="item">
+        <div class="ui-grid ui-grid-responsive">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <img src=""/>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Név
+            </div>
+            <div class="ui-grid-col-6">
+              {{playlist.name}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <button pButton
+                      type="button"
+                      icon="fas fa-search"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
   </ng-template>
   <h2 class="first">Leghallgatottabb dalok</h2>
   <div *ngIf="firstFiveSongs.length === 0; else showFirstFiveSongs">
     Jelenleg nincs feltöltve dal!
   </div>
   <ng-template #showFirstFiveSongs>
-    <ul *ngFor="let song of firstFiveSongs">
-      <li>{{song.title + " - " + song.album.title}}</li>
-    </ul>
+    <p-carousel headerText="" [value]="firstFiveSongs">
+      <ng-template let-song pTemplate="item">
+        <div class="ui-grid ui-grid-responsive">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <img src=""/>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Cím
+            </div>
+            <div class="ui-grid-col-6">
+              {{song.title}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <button pButton
+                      type="button"
+                      icon="fas fa-search"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
   </ng-template>
 </div>

@@ -1,22 +1,22 @@
 <p-toolbar>
   <div class="ui-toolbar-group-left">
-    <button pButton type="button" routerLink="/" icon="fas fa-music" label="Music Portal" style="margin-left: .25em;"></button>
-    <button pButton type="button" routerLink="/album/list" label="Albumok" style="margin-left: .25em;"></button>
-    <button pButton type="button" routerLink="/song/list" label="Dalok" style="margin-left: .25em;"></button>
-    <button pButton type="button" routerLink="/playlist/list" label="Lej. listák" style="margin-left: .25em;"></button>
+    <button pButton type="button" routerLink="/" icon="fas fa-music" label="Music Portal"></button>
+    <button pButton type="button" routerLink="/album/list" label="Albumok"></button>
+    <button pButton type="button" routerLink="/song/list" label="Dalok"></button>
+    <button pButton type="button" routerLink="/playlist/list" label="Lej. listák"></button>
   </div>
 
   <div class="ui-toolbar-group-right">
     <div *ngIf="!authService.isLoggedIn">
       <input pInputText type="text" placeholder="Keresés" style="margin-left:.25em;"/>
-      <button pButton type="button" routerLink="/login" label="Bejelentkezés" icon="fas fa-sign-in-alt" style="margin-left:.25em;"></button>
-      <button pButton type="button" routerLink="/register" label="Regisztráció" icon="fas fa-user" style="margin-left:.25em;"></button>
+      <button pButton type="button" routerLink="/login" label="Bejelentkezés" icon="fas fa-sign-in-alt"></button>
+      <button pButton type="button" routerLink="/register" label="Regisztráció" icon="fas fa-user"></button>
     </div>
     <div *ngIf="authService.isLoggedIn">
-      <input pInputText type="text" placeholder="Keresés" style="margin-left:.25em;"/>
+      <input pInputText type="text" placeholder="Keresés"/>
       <button pButton type="button" [routerLink]="['/user', authService.loggedInUser.id]" label="{{authService.loggedInUser.username}}" icon="fas fa-user">
       </button>
-      <button pButton type="button" (click)="logout()" label="Kijelentkezés" icon="fas fa-sign-out-alt" style="margin-left:.25em;"></button>
+      <button pButton type="button" (click)="logout()" label="Kijelentkezés" icon="fas fa-sign-out-alt"></button>
     </div>
   </div>
 </p-toolbar>

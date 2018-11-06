@@ -14,7 +14,7 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByTitleContainsAllIgnoreCase(String title);
 
-    List<Song> findFirst5ByOrderByIdAsc();
+    List<Song> findFirst5ByOrderByTitleAsc();
 
     List<Song> findAllByAlbum(Album album);
 

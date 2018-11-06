@@ -5,6 +5,7 @@ import {Song} from "../../model/song";
 import {AlbumService} from "../../service/album.service";
 import {PlaylistService} from "../../service/playlist.service";
 import {SongService} from "../../service/song.service";
+import {delay} from "rxjs/operators";
 
 @Component({
   selector: 'app-main-page',
@@ -55,5 +56,4 @@ export class MainPageComponent implements OnInit {
         }
       );
   }
-
 }
