@@ -89,25 +89,25 @@ public class TagService {
                 " have been successfully saved in database MusicPortal", playlist.getName()));
     }
 
-    List<UserTag> listUserTagsByUser(final User user) {
+    public List<UserTag> listUserTagsByUser(final User user) {
         logger.info(String.format("Tag service: user named %s's tags are going to be listed", user.getUsername()));
 
         return userTagRepository.findAllByUser(user);
     }
 
-    List<AlbumTag> listAlbumTags(final Album album) {
+    public List<AlbumTag> listAlbumTagsByAlbum(final Album album) {
         logger.info(String.format("Tag service: album titled %s's tags are going to be listed", album.getTitle()));
 
         return albumTagRepository.findAllByAlbum(album);
     }
 
-    List<SongTag> ligSongTags(final Song song) {
+    public List<SongTag> listSongTagsBySong(final Song song) {
         logger.info(String.format("Tag service: song titled %s's tags are going to be listed", song.getTitle()));
 
         return songTagRepository.findAllBySong(song);
     }
 
-    List<PlaylistTag> listPlaylistTags(final Playlist playlist) {
+    public List<PlaylistTag> listPlaylistTagsByPlaylist(final Playlist playlist) {
         logger.info(String.format("Tag service: playlist named %s's tags are going to be listed", playlist.getName()));
 
         return playlistTagRepository.findAllByPlaylist(playlist);}
