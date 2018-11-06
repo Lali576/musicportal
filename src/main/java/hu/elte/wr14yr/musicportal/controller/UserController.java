@@ -9,7 +9,7 @@ import hu.elte.wr14yr.musicportal.model.Country;
 import hu.elte.wr14yr.musicportal.model.Genre;
 import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.UserMessage;
-import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.UserTag;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -81,8 +81,8 @@ public class UserController {
 
         logger.info("User controller: get parameter 'userKeywords'");
 
-        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserKeyword[].class);
-        List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
+        UserTag[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserTag[].class);
+        List<UserTag> userKeywordsList = Arrays.asList(userKeywordsArray);
 
         User savedUser = userService.register(user, password, file, userKeywordsList);
 
@@ -145,8 +145,8 @@ public class UserController {
 
         logger.info("User controller: get parameter 'userKeywords'");
 
-        UserKeyword[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserKeyword[].class);
-        List<UserKeyword> userKeywordsList = Arrays.asList(userKeywordsArray);
+        UserTag[] userKeywordsArray = mapper.readValue(request.getParameter("userKeywords"), UserTag[].class);
+        List<UserTag> userKeywordsList = Arrays.asList(userKeywordsArray);
 
         User updatedUser = userService.updateDetails(country, favGenre, userKeywordsList);
 

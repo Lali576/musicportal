@@ -5,7 +5,7 @@ import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import hu.elte.wr14yr.musicportal.model.*;
 
-import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.AlbumTag;
 import hu.elte.wr14yr.musicportal.service.AlbumService;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -66,16 +66,16 @@ public class AlbumController {
         Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
-        logger.info("Album controller get parameter 'albumKeywords");
+        logger.info("Album controller get parameter 'albumTags");
 
-        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("albumKeywords"), AlbumKeyword[].class);
-        List<AlbumKeyword> albumKeywordsList = Arrays.asList(albumKeywordsArray);
+        AlbumTag[] albumTagsArray = mapper.readValue(request.getParameter("albumTags"), AlbumTag[].class);
+        List<AlbumTag> albumTagsList = Arrays.asList(albumTagsArray);
 
         logger.info("Album controller: ger current logged in user");
 
         User user = userService.getLoggedInUser();
 
-        Album savedAlbum = albumService.create(album, user, file, genresList, albumKeywordsList);
+        Album savedAlbum = albumService.create(album, user, file, genresList, albumTagsList);
 
         logger.info("Album controller exit endpoint '/new'");
 
@@ -148,12 +148,12 @@ public class AlbumController {
         Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
-        logger.info("Album controller: get parameter 'albumKeywords'");
+        logger.info("Album controller: get parameter 'albumTags'");
 
-        AlbumKeyword[] albumKeywordsArray = mapper.readValue(request.getParameter("albumKeywords"), AlbumKeyword[].class);
-        List<AlbumKeyword> albumKeywordsList = Arrays.asList(albumKeywordsArray);
+        AlbumTag[] albumTagsArray = mapper.readValue(request.getParameter("albumTags"), AlbumTag[].class);
+        List<AlbumTag> albumTagsList = Arrays.asList(albumTagsArray);
 
-        Album updatedAlbum = albumService.updateDetails(album, genresList, albumKeywordsList);
+        Album updatedAlbum = albumService.updateDetails(album, genresList, albumTagsList);
 
         logger.info(String.format("Album controller: exit endpoint '/update/%s'", id));
 

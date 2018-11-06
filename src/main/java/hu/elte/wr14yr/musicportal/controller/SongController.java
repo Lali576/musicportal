@@ -6,7 +6,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.SongTag;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -79,8 +79,8 @@ public class SongController {
 
         logger.info("Song controller: get parameter  'songKeywords'");
 
-        SongKeyword[] songKeywordsArray = mapper.readValue(request.getParameter("songKeywords"), SongKeyword[].class);
-        List<SongKeyword> songKeywordsList = Arrays.asList(songKeywordsArray);
+        SongTag[] songKeywordsArray = mapper.readValue(request.getParameter("songKeywords"), SongTag[].class);
+        List<SongTag> songKeywordsList = Arrays.asList(songKeywordsArray);
 
         Song savedSong = songService.create(song, user, album, file, genresList, songKeywordsList);
 

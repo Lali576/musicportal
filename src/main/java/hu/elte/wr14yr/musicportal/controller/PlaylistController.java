@@ -9,7 +9,7 @@ import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 
 import hu.elte.wr14yr.musicportal.model.Song;
 import hu.elte.wr14yr.musicportal.model.User;
-import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.PlaylistTag;
 import hu.elte.wr14yr.musicportal.service.PlaylistService;
 import hu.elte.wr14yr.musicportal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +56,8 @@ public class PlaylistController {
 
         logger.info("Playlist controller: get parameter 'playlistKeywords'");
 
-        PlaylistKeyword[] playlistKeywordsArray = mapper.readValue(request.getParameter("playlistKeywords"), PlaylistKeyword[].class);
-        List<PlaylistKeyword> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
+        PlaylistTag[] playlistKeywordsArray = mapper.readValue(request.getParameter("playlistKeywords"), PlaylistTag[].class);
+        List<PlaylistTag> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
 
         Playlist savedPlaylist = playlistService.create(playlist, user, songsList, playlistKeywordsList);
 
@@ -130,8 +130,8 @@ public class PlaylistController {
 
         logger.info("Playlist controller: get parameter 'playlistKeywords'");
 
-        PlaylistKeyword[] playlistKeywordsArray = mapper.readValue(request.getParameter("playlistKeywords"), PlaylistKeyword[].class);
-        List<PlaylistKeyword> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
+        PlaylistTag[] playlistKeywordsArray = mapper.readValue(request.getParameter("playlistKeywords"), PlaylistTag[].class);
+        List<PlaylistTag> playlistKeywordsList = Arrays.asList(playlistKeywordsArray);
 
         Playlist updatedPlaylist = playlistService.update(playlist, songsList, user, playlistKeywordsList);
 

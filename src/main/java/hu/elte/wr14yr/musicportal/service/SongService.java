@@ -1,23 +1,18 @@
 package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.SongTag;
 import hu.elte.wr14yr.musicportal.repository.SongCommentRepository;
 import hu.elte.wr14yr.musicportal.repository.SongCounterRepository;
 import hu.elte.wr14yr.musicportal.repository.SongLikeRepository;
 import hu.elte.wr14yr.musicportal.repository.SongRepository;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.HTML;
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
@@ -40,11 +35,11 @@ public class SongService {
     private FileService fileService;
 
     @Autowired
-    private KeywordService keywordService;
+    private TagService tagService;
 
     private Logger logger = Logger.getLogger(SongService.class.getName());
 
-    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres, List<SongKeyword> songKeywords) {
+    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres, List<SongTag> songTags) {
         logger.info("Song service: new song is going to be saved in database MusicPortal");
 
         song.setUser(user);
@@ -62,8 +57,8 @@ public class SongService {
 
         logger.info("Song service: new song has been successfully saved in database MusicPortal");
 
-        if(songKeywords != null) {
-            keywordService.createSongKeywords(songKeywords, savedSong);
+        if(songTags != null) {
+            tagService.createSongTags(songTags, savedSong);
         }
 
         String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumSongsFolderGdaId());
@@ -149,7 +144,7 @@ public class SongService {
         songCommentRepository.deleteAllBySong(song);
         songCounterRepository.deleteAllBySong(song);
         songLikeRepository.deleteAllBySong(song);
-        keywordService.deleteAllSongKeywordsBySong(song);
+        tagService.deleteAllSongTagsBySong(song);
         fileService.delete(song.getAudioFileGdaId());
         songRepository.deleteById(song.getId());
 

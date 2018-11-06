@@ -1,7 +1,7 @@
 package hu.elte.wr14yr.musicportal.repository;
 
 import hu.elte.wr14yr.musicportal.model.Playlist;
-import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.PlaylistTag;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     List<Playlist> findAllByUserId(long id);
 
-    List<Playlist> findAllByPlaylistKeywords(PlaylistKeyword playlistKeyword);
+    List<Playlist> findAllByPlaylistTags(PlaylistTag playlistTag);
 
     Playlist findPlaylistById(Long id);
 

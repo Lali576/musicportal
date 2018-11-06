@@ -1,4 +1,4 @@
-package hu.elte.wr14yr.musicportal.model.keywords;
+package hu.elte.wr14yr.musicportal.model.tags;
 
 import hu.elte.wr14yr.musicportal.model.User;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,11 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "USER_KEYWORDS")
+@Table(name = "USER_TAGS")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserKeyword extends Keyword {
+public class UserTag extends Tag {
 
     @ManyToOne(targetEntity = User.class, optional = false)
     @JoinColumn(name = "USER_ID")

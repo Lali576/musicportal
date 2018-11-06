@@ -1,16 +1,13 @@
 package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
-import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
-import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
-import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.*;
+import hu.elte.wr14yr.musicportal.model.tags.PlaylistTag;
+import hu.elte.wr14yr.musicportal.model.tags.SongTag;
 import hu.elte.wr14yr.musicportal.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
@@ -36,10 +33,10 @@ public class SearchService {
         return albumRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Album> findAlbumByAlbumKeyword(AlbumKeyword albumKeyword) {
+    public Iterable<Album> findAlbumByAlbumKeyword(AlbumTag albumTag) {
         logger.info("Search service: albums with current album keywords are going to be searched");
 
-        return albumRepository.findAllByAlbumKeywords(albumKeyword);
+        return albumRepository.findAllByAlbumTags(albumTag);
     }
 
     public Iterable<Album> findAlbumsByGenre(Genre genre) {
@@ -54,10 +51,10 @@ public class SearchService {
         return songRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Song> findSongsBySongKeywords(SongKeyword songKeyword) {
+    public Iterable<Song> findSongsBySongKeywords(SongTag songTag) {
         logger.info("Search service: users with current user keywords are going to be searched");
 
-        return songRepository.findAllBySongKeywords(songKeyword);
+        return songRepository.findAllBySongTags(songTag);
     }
 
     public Iterable<Song> findSongsByGenre(Genre genre) {
@@ -71,10 +68,10 @@ public class SearchService {
 
         return playlistRepository.findAllByNameContainsAllIgnoreCase(name);
     }
-    public Iterable<Playlist> findPlaylistByPlaylistKeyword(PlaylistKeyword playlistKeyword) {
+    public Iterable<Playlist> findPlaylistByPlaylistKeyword(PlaylistTag playlistTag) {
         logger.info("Search service: playlists with current playlist keywords are going to be searched");
 
-        return playlistRepository.findAllByPlaylistKeywords(playlistKeyword);
+        return playlistRepository.findAllByPlaylistTags(playlistTag);
     }
 
     public Iterable<User> findUsersByUsername(String username) {
@@ -83,9 +80,9 @@ public class SearchService {
         return userRepository.findAllByUsernameContainsAllIgnoreCase(username);
     }
 
-    public Iterable<User> findUsersByUserKeyword(UserKeyword userKeyword) {
+    public Iterable<User> findUsersByUserKeyword(UserTag userTag) {
         logger.info("Search service: users with current user keywords are going to be searched");
 
-        return userRepository.findAllByUserKeywords(userKeyword);
+        return userRepository.findAllByUserTags(userTag);
     }
 }

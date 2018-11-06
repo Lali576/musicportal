@@ -3,7 +3,7 @@ package hu.elte.wr14yr.musicportal.service;
 import hu.elte.wr14yr.musicportal.exception.UserNotValidException;
 import hu.elte.wr14yr.musicportal.gda.GoogleDriveApi;
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.UserTag;
 import hu.elte.wr14yr.musicportal.repository.UserMessageRepository;
 import hu.elte.wr14yr.musicportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -35,7 +33,7 @@ public class UserService {
     private UserMessageRepository userMessageRepository;
 
     @Autowired
-    private KeywordService keywordService;
+    private TagService tagService;
 
     @Autowired
     private AlbumService albumService;
@@ -50,7 +48,7 @@ public class UserService {
 
     private User loggedInUser = null;
 
-    public User register(User user, String password, File iconFile, List<UserKeyword> userKeywords) {
+    public User register(User user, String password, File iconFile, List<UserTag> userTags) {
         logger.info("User service: new user is going to be saved in database MusicPortal");
 
         SecureRandom rand = new SecureRandom();
@@ -78,8 +76,8 @@ public class UserService {
         loggedInUser = userRepository.save(user);
         logger.info("User service: new user has been successfully saved in database MusicPortal");
 
-        if(userKeywords != null) {
-            keywordService.createUserKeywords(userKeywords, loggedInUser);
+        if(userTags != null) {
+            tagService.createUserTags(userTags, loggedInUser);
         }
 
         String userFolderGdaId = fileService.uploadFolder(loggedInUser.getUsername(), GoogleDriveApi.MAIN_FOLDER_ID);
@@ -159,7 +157,7 @@ public class UserService {
         return userRepository.findUserById(id);
     }
 
-    public User updateDetails(Country country, Genre favGenre, List<UserKeyword> userKeywords) {
+    public User updateDetails(Country country, Genre favGenre, List<UserTag> userTags) {
         logger.info(String.format("User service: user named %s" +
                 "'s  data are going to be updated", loggedInUser.getUsername()));
 
@@ -170,10 +168,10 @@ public class UserService {
         logger.info(String.format("User service: user named %s" +
                 "'s data has been updated successfully", loggedInUser.getUsername()));
 
-        keywordService.deleteAllUserKeywordsByUser(loggedInUser);
+        tagService.deleteAllUserTagsByUser(loggedInUser);
 
-        if(userKeywords != null) {
-            keywordService.createUserKeywords(userKeywords, loggedInUser);
+        if(userTags != null) {
+            tagService.createUserTags(userTags, loggedInUser);
         }
 
         return loggedInUser;
@@ -282,7 +280,7 @@ public class UserService {
 
         userMessageRepository.deleteAllByUserFrom(loggedInUser);
 
-        keywordService.deleteAllUserKeywordsByUser(loggedInUser);
+        tagService.deleteAllUserTagsByUser(loggedInUser);
 
         logger.info("User service: user's storing folder is going to delete from Google Drive");
 

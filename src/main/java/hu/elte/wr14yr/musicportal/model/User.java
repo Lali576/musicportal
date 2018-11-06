@@ -1,7 +1,7 @@
 package hu.elte.wr14yr.musicportal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.UserTag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,8 @@ import java.util.List;
                         "songLikes",
                         "userToMessages",
                         "userFromMessages",
-                        "playlist"})
+                        "playlist",
+                        "userTags"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -89,8 +90,8 @@ public class User {
     @OneToMany(targetEntity = Playlist.class, mappedBy = "user")
     private List<Playlist> playlist;
 
-    @OneToMany(targetEntity = UserKeyword.class, mappedBy = "user")
-    private List<UserKeyword> userKeywords;
+    @OneToMany(targetEntity = UserTag.class, mappedBy = "user")
+    private List<UserTag> userTags;
 
     @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)

@@ -1,4 +1,4 @@
-package hu.elte.wr14yr.musicportal.model.keywords;
+package hu.elte.wr14yr.musicportal.model.tags;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @MappedSuperclass
-public class Keyword {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

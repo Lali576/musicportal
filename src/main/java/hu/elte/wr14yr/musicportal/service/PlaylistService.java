@@ -3,9 +3,8 @@ package hu.elte.wr14yr.musicportal.service;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.Song;
 import hu.elte.wr14yr.musicportal.model.User;
-import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.PlaylistTag;
 import hu.elte.wr14yr.musicportal.repository.PlaylistRepository;
-import hu.elte.wr14yr.musicportal.repository.SongRepository;
 import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
@@ -25,11 +23,11 @@ public class PlaylistService {
     private PlaylistRepository playlistRepository;
 
     @Autowired
-    private KeywordService keywordService;
+    private TagService tagService;
 
     private Logger logger = Logger.getLogger(PlaylistService.class.getName());
 
-    public Playlist create(Playlist playlist, User user, List<Song> songs, List<PlaylistKeyword> playlistKeywords) throws DataAccessException, ConstraintViolationException, DataException {
+    public Playlist create(Playlist playlist, User user, List<Song> songs, List<PlaylistTag> playlistTags) throws DataAccessException, ConstraintViolationException, DataException {
         logger.info("Playlist service: new playlist is going to be saved in database MusicPortal");
 
         playlist.setUser(user);
@@ -37,8 +35,8 @@ public class PlaylistService {
         playlist.setSongs(songs);
         Playlist savedPlaylist = playlistRepository.save(playlist);
 
-        if(playlistKeywords != null) {
-            keywordService.createPlaylistKeywords(playlistKeywords, savedPlaylist);
+        if(playlistTags != null) {
+            tagService.createPlaylistTags(playlistTags, savedPlaylist);
         }
 
         logger.info("Playlist service: new playlist has been successfully saved in database MusicPortal");
@@ -75,17 +73,17 @@ public class PlaylistService {
         return playlist;
     }
 
-    public Playlist update(Playlist playlist, List<Song> songs, User user, List<PlaylistKeyword> playlistKeywords) throws DataAccessException, ConstraintViolationException, DataException {
+    public Playlist update(Playlist playlist, List<Song> songs, User user, List<PlaylistTag> playlistTags) throws DataAccessException, ConstraintViolationException, DataException {
         logger.info(String.format("Playlist service: playlist named %s is going to be updated", playlist.getName()));
 
         playlist.setUser(user);
         playlist.setSongs(songs);
         playlist = playlistRepository.save(playlist);
 
-        keywordService.deleteAllPlaylistKeywordsByPlaylist(playlist);
+        tagService.deleteAllPlaylistTagsByPlaylist(playlist);
 
-        if(playlistKeywords != null) {
-            keywordService.createPlaylistKeywords(playlistKeywords, playlist);
+        if(playlistTags != null) {
+            tagService.createPlaylistTags(playlistTags, playlist);
         }
 
         logger.info(String.format("Playlist service: playlist named %s has been updated successfully", playlist.getName()));
@@ -108,7 +106,7 @@ public class PlaylistService {
         logger.info(String.format("Playlist service: playlist named %s" +
                 " is going to be deleted from database MusicPortal", playlist.getName()));
 
-        keywordService.deleteAllPlaylistKeywordsByPlaylist(playlist);
+        tagService.deleteAllPlaylistTagsByPlaylist(playlist);
         playlistRepository.deleteById(playlist.getId());
 
         logger.info(String.format("Playlist service: playlist named %s" +

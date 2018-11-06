@@ -10,6 +10,6 @@ export class Album {
   albumCoverFolderGdaId: string = "";
   coverFileGdaId: string = "";
   user: User = null;
-  albumKeywords: AlbumKeyword[] = [];
+  albumTags: AlbumKeyword[] = [];
   type: string = "SINGLE";
 }

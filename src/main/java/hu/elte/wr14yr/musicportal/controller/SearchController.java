@@ -3,10 +3,9 @@ package hu.elte.wr14yr.musicportal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
-import hu.elte.wr14yr.musicportal.model.keywords.PlaylistKeyword;
-import hu.elte.wr14yr.musicportal.model.keywords.SongKeyword;
-import hu.elte.wr14yr.musicportal.model.keywords.UserKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.*;
+import hu.elte.wr14yr.musicportal.model.tags.PlaylistTag;
+import hu.elte.wr14yr.musicportal.model.tags.UserTag;
 import hu.elte.wr14yr.musicportal.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +41,7 @@ public class SearchController {
     public ResponseEntity<Iterable<Album>> findAlbumByKeyword(MultipartHttpServletRequest request) throws IOException {
         logger.info("Search controller: enter endpoint '/albums/keyword'");
 
-        AlbumKeyword albumKeyword = mapper.readValue(request.getParameter("keyword"), AlbumKeyword.class);
+        AlbumTag albumKeyword = mapper.readValue(request.getParameter("keyword"), AlbumTag.class);
         Iterable<Album> foundAlbums = searchService.findAlbumByAlbumKeyword(albumKeyword);
 
         logger.info("Search controller: exit endpoint '/albums/keyword'");
@@ -77,7 +76,7 @@ public class SearchController {
     public ResponseEntity<Iterable<Song>> findSongByKeyword(MultipartHttpServletRequest request) throws IOException {
         logger.info("Search controller: enter endpoint '/songs/keyword'");
 
-        SongKeyword songKeyword = mapper.readValue(request.getParameter("songKeyword"), SongKeyword.class);
+        SongTag songKeyword = mapper.readValue(request.getParameter("songKeyword"), SongTag.class);
         Iterable<Song> foundSongs = searchService.findSongsBySongKeywords(songKeyword);
 
         logger.info("Search controller: exit endpoint '/songs/keyword'");
@@ -112,7 +111,7 @@ public class SearchController {
     public ResponseEntity<Iterable<Playlist>> findPlaylistByKeyword(MultipartHttpServletRequest request) throws IOException {
         logger.info("Search controller enter endpoint '/playlists/keyword'");
 
-        PlaylistKeyword playlistKeyword = mapper.readValue(request.getParameter("playlistKeyword"), PlaylistKeyword.class);
+        PlaylistTag playlistKeyword = mapper.readValue(request.getParameter("playlistKeyword"), PlaylistTag.class);
         Iterable<Playlist> foundPlaylists = searchService.findPlaylistByPlaylistKeyword(playlistKeyword);
 
         logger.info("Search controller exit endpoint '/playlists/keyword'");
@@ -136,7 +135,7 @@ public class SearchController {
     public ResponseEntity<Iterable<User>> findUserByKeyword(MultipartHttpServletRequest request) throws IOException {
         logger.info("Search controller: enter '/users/keyword'");
 
-        UserKeyword userKeyword = mapper.readValue(request.getParameter("userKeyword"), UserKeyword.class);
+        UserTag userKeyword = mapper.readValue(request.getParameter("userKeyword"), UserTag.class);
         Iterable<User> foundUsers = searchService.findUsersByUserKeyword(userKeyword);
 
         logger.info("Search controller: exit '/users/keyword'");

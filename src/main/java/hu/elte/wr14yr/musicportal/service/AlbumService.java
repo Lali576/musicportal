@@ -1,7 +1,7 @@
 package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.keywords.AlbumKeyword;
+import hu.elte.wr14yr.musicportal.model.tags.AlbumTag;
 import hu.elte.wr14yr.musicportal.repository.AlbumRepository;
 import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ public class AlbumService {
     private FileService fileService;
 
     @Autowired
-    private KeywordService keywordService;
+    private TagService tagService;
 
     private Logger logger = Logger.getLogger(AlbumService.class.getName());
 
-    public Album create(Album album, User user, File coverFile, List<Genre> genres, List<AlbumKeyword> albumKeywords) throws DataAccessException, ConstraintViolationException, DataException {
+    public Album create(Album album, User user, File coverFile, List<Genre> genres, List<AlbumTag> albumTags) throws DataAccessException, ConstraintViolationException, DataException {
         logger.info("Album service: new album is going to be saved in database MusicPortal");
 
         album.setUser(user);
@@ -43,8 +43,8 @@ public class AlbumService {
 
         logger.info("Album service: new album has been successfully saved in database MusicPortal");
 
-        if(!(albumKeywords.isEmpty())) {
-            keywordService.createAlbumKeywords(albumKeywords, savedAlbum);
+        if(!(albumTags.isEmpty())) {
+            tagService.createAlbumTags(albumTags, savedAlbum);
         }
 
         String albumFolderGdaId = fileService.uploadFolder(savedAlbum.getTitle(), user.getUserAlbumsFolderGdaId());
@@ -96,17 +96,17 @@ public class AlbumService {
         return album;
     }
 
-    public Album updateDetails(Album album, List<Genre> genres, List<AlbumKeyword> albumKeywords) throws DataAccessException, ConstraintViolationException, DataException {
+    public Album updateDetails(Album album, List<Genre> genres, List<AlbumTag> albumTags) throws DataAccessException, ConstraintViolationException, DataException {
         logger.info(String.format("Album service: album titled %s is going to be updated", album.getTitle()));
 
         album.setGenres(genres);
 
         album = albumRepository.save(album);
 
-        keywordService.deleteAllAlbumKeywordsByAlbum(album);
+        tagService.deleteAllAlbumTagsByAlbum(album);
 
-        if(!(albumKeywords.isEmpty())) {
-            keywordService.createAlbumKeywords(albumKeywords, album);
+        if(!(albumTags.isEmpty())) {
+            tagService.createAlbumTags(albumTags, album);
         }
 
         logger.info(String.format("Album service: album titled %s has been updated successfully", album.getTitle()));
@@ -153,7 +153,7 @@ public class AlbumService {
 
         songService.deleteAllByAlbum(album);
 
-        keywordService.deleteAllAlbumKeywordsByAlbum(album);
+        tagService.deleteAllAlbumTagsByAlbum(album);
 
         fileService.delete(album.getAlbumFolderGdaId());
 
