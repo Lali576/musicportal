@@ -85,7 +85,7 @@
           <div class="ui-grid-col-6">
             <input name="passwordText"
                    pPassword type="password"
-                   promptLabel=""
+                   promptLabel="Jelszó erősség"
                    weakLabel="Gyenge"
                    mediumLabel="Közepes"
                    strongLabel="Erős"
@@ -115,7 +115,7 @@
           <div class="ui-grid-col-6">
             <input name="passwordConfirmText"
                    pPassword type="password"
-                   promptLabel=""
+                   promptLabel="Jelszó erősség"
                    weakLabel="Gyenge"
                    mediumLabel="Közepes"
                    strongLabel="Erős"
@@ -152,6 +152,20 @@
                         optionLabel="name"
                         [required]="false"
             ></p-dropdown>
+            <!--
+            <p-dropdown name="country" [options]="countries" [(ngModel)]="user.countryId" #country="ngModel" [style]="{'width':'300px'}" filter="true">
+              <ng-template let-item pTemplate="selectedItem">
+                <img src="https://www.countryflags.io/{{item.iconFileURL}}" style="vertical-align:middle" />
+                <span style="vertical-align:middle; margin-left: .5em">{{item.name}}</span>
+              </ng-template>
+              <ng-template let-country pTemplate="item">
+                <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                  <img src="https://www.countryflags.io/{{country.iconFileURL}}" style="position:absolute;top:1px;left:5px"/>
+                  <div style="font-size:14px;float:right;margin-top:4px">{{country.name}}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            -->
           </div>
         </div>
         <div class="ui-grid-row">

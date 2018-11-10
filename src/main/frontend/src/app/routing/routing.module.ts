@@ -39,9 +39,7 @@ const routes: Routes = [
   },
   {
     path: 'user/:id',
-    component: UserDetailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
+    component: UserDetailComponent
   },
   {
     path: 'user/:id/update/details',

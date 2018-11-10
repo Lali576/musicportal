@@ -226,7 +226,6 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @Role({ARTIST, USER})
     @GetMapping("/{id}")
     public ResponseEntity<User> find(@PathVariable long id) {
         logger.info(String.format("User controller: enter endpoint '/%s'", id));

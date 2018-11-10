@@ -12,7 +12,10 @@
         <div class="ui-grid ui-grid-responsive">
           <div class="ui-grid-row">
             <div class="ui-grid-col-12">
-              <img src=""/>
+              <img class="fas fa-compact-disc fa-5x" *ngIf="album.coverFileGdaId === ''; else showAlbumCover"/>
+              <ng-template #showAlbumCover>
+                <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="100px">
+              </ng-template>
             </div>
           </div>
           <div class="ui-grid-row">
@@ -24,10 +27,29 @@
             </div>
           </div>
           <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Feltöltő
+            </div>
+            <div class="ui-grid-col-6">
+              <a [routerLink]="['/user', album.user.id]">
+                {{album.user.username}}
+              </a>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Dátum
+            </div>
+            <div class="ui-grid-col-6">
+              {{album.date | date}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
             <div class="ui-grid-col-12">
               <button pButton
                       type="button"
                       icon="fas fa-search"
+                      [routerLink]="['/album', album.id]"
                       ></button>
             </div>
           </div>
@@ -45,7 +67,7 @@
         <div class="ui-grid ui-grid-responsive">
           <div class="ui-grid-row">
             <div class="ui-grid-col-12">
-              <img src=""/>
+              <img class="fas fa-play fa-5x"/>
             </div>
           </div>
           <div class="ui-grid-row">
@@ -57,10 +79,21 @@
             </div>
           </div>
           <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Feltöltő
+            </div>
+            <div class="ui-grid-col-6">
+              <a [routerLink]="['/user', playlist.user.id]">
+                {{playlist.user.username}}
+              </a>
+            </div>
+          </div>
+          <div class="ui-grid-row">
             <div class="ui-grid-col-12">
               <button pButton
                       type="button"
                       icon="fas fa-search"
+                      [routerLink]="['/playlist', playlist.id]"
               ></button>
             </div>
           </div>
@@ -78,7 +111,10 @@
         <div class="ui-grid ui-grid-responsive">
           <div class="ui-grid-row">
             <div class="ui-grid-col-12">
-              <img src=""/>
+              <img class="fas fa-music fa-5x" *ngIf="song.album.coverFileGdaId === ''; else showAlbumCover"/>
+              <ng-template #showAlbumCover>
+                <img src="{{'https://docs.google.com/uc?export=download&id=' + song.album.coverFileGdaId}}" width="100px">
+              </ng-template>
             </div>
           </div>
           <div class="ui-grid-row">
@@ -90,10 +126,29 @@
             </div>
           </div>
           <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Album
+            </div>
+            <div class="ui-grid-col-6">
+              {{song.album.title}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              Feltöltő
+            </div>
+            <div class="ui-grid-col-6">
+              <a [routerLink]="['/user', song.user.id]">
+                {{song.user.username}}
+              </a>
+            </div>
+          </div>
+          <div class="ui-grid-row">
             <div class="ui-grid-col-12">
               <button pButton
                       type="button"
                       icon="fas fa-search"
+                      [routerLink]="['/song', song.id]"
               ></button>
             </div>
           </div>
