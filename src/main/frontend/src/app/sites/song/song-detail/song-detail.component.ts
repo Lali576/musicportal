@@ -6,6 +6,7 @@ import {SongService} from "../../../service/song.service";
 import {switchMap} from "rxjs/internal/operators";
 import {AlbumService} from "../../../service/album.service";
 import {Album} from "../../../model/album";
+import {AlbumTag} from "../../../model/tags/albumtag";
 
 @Component({
   selector: 'app-song-detail',
@@ -17,6 +18,7 @@ export class SongDetailComponent implements OnInit {
   song: Song = new Song();
   audio = new Audio();
   album: Album = new Album();
+  albumTags: AlbumTag[] = [];
   paused = true;
   elapsed = "0:00";
   total;
@@ -44,6 +46,16 @@ export class SongDetailComponent implements OnInit {
     })).subscribe();
 
     this.album = this.albumService.album;
+    this.loadAlbumTags();
+  }
+
+  loadAlbumTags() {
+    this.albumService.getAlbumTags(this.album)
+      .then(
+        (albumTags: AlbumTag[]) => {
+          this.albumTags = albumTags;
+        }
+      );
   }
 
   handleVolumeChange(e) {

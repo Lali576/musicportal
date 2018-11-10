@@ -60,7 +60,7 @@ export class SongService {
   getSongsByAlbum(album: Album): Promise<Song[]> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
-     return this.http.post<Song[]>(
+    return this.http.post<Song[]>(
        'api/song/by-album',
             formData).toPromise();
   }

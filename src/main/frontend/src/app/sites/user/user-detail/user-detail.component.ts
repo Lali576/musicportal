@@ -24,13 +24,13 @@ export class UserDetailComponent implements OnInit {
   user: User = new User();
   userAlbums: Album[] = [];
   userSongs: Song[] = [];
-  userPlaylists: Playlist[] = [];
+  userPlaylist: Playlist[] = [];
   userIconFile: File = null;
   userTags: UserTag[] = [];
   display: boolean = false;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private userService: UserService,
     private albumService: AlbumService,
     private songService: SongService,
@@ -47,6 +47,7 @@ export class UserDetailComponent implements OnInit {
       await this.userService.getUser(id).then(
         (user: User) => {
           this.user = user;
+          this.loadUserTags();
           this.loadUserMessages();
           this.loadAlbums();
           this.loadSongs();
@@ -90,6 +91,15 @@ export class UserDetailComponent implements OnInit {
   async deleteUser() {
     await this.userService.deleteUser(this.user.id);
     this.router.navigate(['/login']);
+  }
+
+  loadUserTags() {
+    this.userService.getUserTags(this.user.id)
+      .then(
+        (userTags: UserTag[]) => {
+          this.userTags = userTags;
+        }
+      );
   }
 
   loadUserMessages() {
@@ -155,8 +165,8 @@ export class UserDetailComponent implements OnInit {
   loadPlaylists() {
     this.playlistService.getUserPlaylist(this.user.id)
       .then(
-        (playlists: Playlist[]) => {
-          this.userPlaylists = playlists;
+        (playlist: Playlist[]) => {
+          this.userPlaylist = playlist;
         }
       )
   }

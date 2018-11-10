@@ -55,9 +55,14 @@
     <tr>
       <th>Címkék:</th>
       <td>
-        <button *ngFor="let albumTag of albumTags"
-                pButton type="button"
-                label="#{{albumTag.word}}"></button>
+        <div *ngIf="albumTags.length === 0; else showUserTags">
+          <i>Nincsenek megadva címkék</i>
+        </div>
+        <ng-template #showUserTags>
+          <button *ngFor="let albumTag of albumTags"
+                  pButton type="button"
+                  label="#{{albumTag.word}}"></button>
+        </ng-template>
       </td>
     </tr>
   </tbody>

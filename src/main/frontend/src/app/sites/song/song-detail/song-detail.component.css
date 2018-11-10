@@ -152,3 +152,12 @@
   border-radius: 2px;
   background-size: 35px 20px, 100% 100%, 100% 100%;
 }
+
+.tag_button_div {
+  margin: 20px 0px;
+  text-align: center;
+}
+
+.tag_button {
+  margin-right: .5em;
+}

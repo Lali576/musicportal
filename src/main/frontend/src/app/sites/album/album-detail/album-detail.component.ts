@@ -7,6 +7,7 @@ import {switchMap} from "rxjs/internal/operators";
 import {SongService} from "../../../service/song.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {AuthService} from "../../../service/auth.service";
+import {AlbumTag} from "../../../model/tags/albumtag";
 
 @Component({
   selector: 'app-album-detail',
@@ -16,6 +17,7 @@ import {AuthService} from "../../../service/auth.service";
 })
 export class AlbumDetailComponent implements OnInit {
   album: Album = new Album();
+  albumTags: AlbumTag[] = [];
   albumSongs: Song[] = [];
 
   constructor(
@@ -32,6 +34,7 @@ export class AlbumDetailComponent implements OnInit {
       const id = +params.get('id');
       await this.albumService.getAlbum(id);
       this.album = this.albumService.album;
+      this.loadAlbumTags();
       this.loadSongs();
     })).subscribe();
   }
@@ -53,6 +56,15 @@ export class AlbumDetailComponent implements OnInit {
     await this.songService.deleteSong(song);
     this.messageService.add({severity:'success', summary: song.title + ' című dal sikeresen törölve', detail:''});
     this.loadSongs();
+  }
+
+  loadAlbumTags() {
+    this.albumService.getAlbumTags(this.album)
+      .then(
+        (albumTags: AlbumTag[]) => {
+          this.albumTags = albumTags;
+        }
+      );
   }
 
   loadSongs() {

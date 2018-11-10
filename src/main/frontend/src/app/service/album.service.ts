@@ -4,6 +4,7 @@ import { Album } from "../model/album";
 import { Genre } from "../model/genre";
 import { AlbumTag } from "../model/Tags/albumtag";
 import { tap } from "rxjs/internal/operators";
+import {UserTag} from "../model/tags/usertag";
 
 @Injectable()
 export class AlbumService {
@@ -33,6 +34,15 @@ export class AlbumService {
       tap((album: Album) => {
         this.album = album;
       })
+    ).toPromise();
+  }
+
+  getAlbumTags(album: Album): Promise<AlbumTag[]> {
+    const formData = new FormData();
+    formData.append("album", JSON.stringify(album));
+    return this.http.post<AlbumTag[]>(
+      'api/tag/list-by-album',
+      formData
     ).toPromise();
   }
 
