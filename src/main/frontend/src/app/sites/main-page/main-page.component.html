@@ -19,16 +19,20 @@
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Cím
+            <div class="ui-grid-col-6">
+              <b>
+                Cím
+              </b>
             </div>
             <div class="ui-grid-col-6">
               {{album.title}}
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Feltöltő
+            <div class="ui-grid-col-6">
+              <b>
+                Feltöltő
+              </b>
             </div>
             <div class="ui-grid-col-6">
               <a [routerLink]="['/user', album.user.id]">
@@ -37,8 +41,10 @@
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Dátum
+            <div class="ui-grid-col-6">
+              <b>
+                Dátum
+              </b>
             </div>
             <div class="ui-grid-col-6">
               {{album.date | date}}
@@ -71,16 +77,20 @@
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Név
+            <div class="ui-grid-col-6">
+              <b>
+                Név
+              </b>
             </div>
             <div class="ui-grid-col-6">
               {{playlist.name}}
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Feltöltő
+            <div class="ui-grid-col-6">
+              <b>
+                Feltöltő
+              </b>
             </div>
             <div class="ui-grid-col-6">
               <a [routerLink]="['/user', playlist.user.id]">
@@ -118,24 +128,30 @@
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Cím
+            <div class="ui-grid-col-6">
+              <b>
+                Cím
+              </b>
             </div>
             <div class="ui-grid-col-6">
               {{song.title}}
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Album
+            <div class="ui-grid-col-6">
+              <b>
+                Album
+              </b>
             </div>
             <div class="ui-grid-col-6">
               {{song.album.title}}
             </div>
           </div>
           <div class="ui-grid-row list-element-row">
-            <div class="ui-grid-col-6 list-element-label">
-              Feltöltő
+            <div class="ui-grid-col-6">
+              <b>
+                Feltöltő
+              </b>
             </div>
             <div class="ui-grid-col-6">
               <a [routerLink]="['/user', song.user.id]">
