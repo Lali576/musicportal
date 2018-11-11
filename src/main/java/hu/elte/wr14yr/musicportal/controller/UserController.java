@@ -214,7 +214,7 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PutMapping("/update/{id}/biography")
+    @PostMapping("/update/{id}/biography")
     public ResponseEntity<User> updateBiography(@PathVariable("id") long id, MultipartHttpServletRequest request) {
         logger.info(String.format("User controller: enter endpoint '/update/%s/biography'", id));
 

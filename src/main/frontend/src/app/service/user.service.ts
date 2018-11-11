@@ -11,7 +11,6 @@ import {UserTag} from "../model/Tags/usertag";
 export class UserService {
 
   user: User = new User();
-  userMessages: UserMessage[];
 
   constructor(
     private http: HttpClient,
@@ -86,7 +85,7 @@ export class UserService {
   updateBiography(id: number, biography: string): Promise<User> {
     const formData = new FormData();
     formData.append("biography", biography);
-    return this.http.put<User>(
+    return this.http.post<User>(
       `api/user/update/${id}/biography`,
       formData
     ).pipe(
@@ -112,24 +111,18 @@ export class UserService {
     ).toPromise();
   }
 
-  getUserMessages(id: number) {
-    return this.http.get<UserMessage[]>(`api/user/messages/${id}`).subscribe(
-      (userMessages: UserMessage[]) => {
-        this.userMessages = userMessages;
-      }
-    );
+  getUserMessages(id: number): Promise<UserMessage[]> {
+    return this.http.get<UserMessage[]>(
+      `api/user/messages/${id}`
+    ).toPromise();
   }
 
-  addUserMessages(userMessage: UserMessage) {
+  addUserMessages(userMessage: UserMessage): Promise<UserMessage[]> {
     const formData = new FormData();
     formData.append("userMessage", JSON.stringify(userMessage));
     return this.http.post<UserMessage[]>(
       'api/user/messages/new',
       formData
-    ).pipe(
-      tap((userMessages: UserMessage[]) => {
-        this.userMessages = userMessages;
-      })
     ).toPromise();
   }
 }

@@ -254,7 +254,7 @@ public class UserService {
         logger.info(String.format("User service: user named %s" +
                 "'s biography is going to be updated", loggedInUser.getUsername()));
 
-        loggedInUser.setEmailAddress(biography);
+        loggedInUser.setBiography(biography);
         loggedInUser = userRepository.save(loggedInUser);
 
         logger.info(String.format("User service: user named %s" +

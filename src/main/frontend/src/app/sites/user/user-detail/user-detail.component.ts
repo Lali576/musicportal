@@ -13,6 +13,7 @@ import {PlaylistService} from "../../../service/playlist.service";
 import {switchMap} from "rxjs/internal/operators";
 import {UserTag} from "../../../model/Tags/usertag";
 import {TagService} from "../../../service/tag.service";
+import {UserMessage} from "../../../model/usermessage";
 
 @Component({
   selector: 'app-user-detail',
@@ -28,7 +29,9 @@ export class UserDetailComponent implements OnInit {
   userPlaylist: Playlist[] = [];
   userIconFile: File = null;
   userTags: UserTag[] = [];
-  display: boolean = false;
+  userMessages: UserMessage[] = [];
+  iconEditDisplay: boolean = false;
+  bioEditDisplay: boolean = false;
 
   constructor(
     public authService: AuthService,
@@ -58,8 +61,17 @@ export class UserDetailComponent implements OnInit {
     })).subscribe();
   }
 
-  showDialog() {
-    this.display = true;
+  showIconDialog() {
+    this.iconEditDisplay = true;
+  }
+
+  showBioDialog() {
+    this.bioEditDisplay = true;
+  }
+
+  async changeBiography() {
+    await this.userService.updateBiography(this.user.id, this.user.biography);
+    this.user.biography = this.authService.loggedInUser.biography;
   }
 
   onFileSelected(event) {
@@ -105,7 +117,12 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadUserMessages() {
-    this.userService.getUserMessages(this.user.id);
+    this.userService.getUserMessages(this.user.id)
+      .then(
+        (userMessages: UserMessage[]) => {
+          this.userMessages = userMessages;
+        }
+      );
   }
 
   loadAlbums() {
@@ -187,7 +204,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   async deletePlaylist(playlist) {
-    await this.playlistService.deletePlaylist(playlist)
+    await this.playlistService.deletePlaylist(playlist);
     this.messageService.add({severity:'success', summary: playlist.title + ' nevű lej. lista sikeresen törölve', detail:''});
     this.loadPlaylists();
   }

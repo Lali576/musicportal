@@ -2,12 +2,14 @@
 <p-confirmDialog acceptLabel="Igen" rejectLabel="Nem"></p-confirmDialog>
 <h1 class="display-4">Felhasználói adatok:</h1>
     <div>
-      <img *ngIf="user.iconFileGdaId === ''; else showUserIcon" class="fas fa-user fa-4x">
+      <div *ngIf="user.iconFileGdaId === ''; else showUserIcon">
+        <img src="" class="fas fa-user fa-4x icon_img">
+      </div>
       <ng-template #showUserIcon>
-        <img src="{{'https://docs.google.com/uc?export=download&id=' + user.iconFileGdaId}}">
+        <img src="{{'https://docs.google.com/uc?export=download&id=' + user.iconFileGdaId}}" class="icon_img">
       </ng-template>
       <br>
-      <p-dialog header="Ikon kép szerkesztés" [(visible)]="display" [modal]="true" [responsive]="true" [width]="350" [minWidth]="200" [minY]="70"
+      <p-dialog header="Ikon kép szerkesztés" [(visible)]="iconEditDisplay" [modal]="true" [responsive]="true" [width]="350" [minWidth]="200" [minY]="70"
                 [maximizable]="true" [baseZIndex]="10000">
         <p-fileUpload (onSelect)="onFileSelected($event)"
                       (onClear)="onFileRemove()"
@@ -19,11 +21,16 @@
 
         </p-fileUpload>
         <p-footer>
-          <button type="button" pButton icon="fas fa-check" (click)="changeIconFile(); display=false" label="Küld"></button>
-          <button type="button" pButton icon="fas fa-close" (click)="display=false" label="Kilép" class="ui-button-secondary"></button>
+          <button type="button" pButton icon="fas fa-check" (click)="changeIconFile(); this.iconEditDisplay = false;" label="Küld"></button>
+          <button type="button" pButton icon="fas fa-times" (click)="iconEditDisplay=false" label="Kilép"></button>
         </p-footer>
       </p-dialog>
-      <button *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)" type="button" (click)="showDialog()" pButton icon="fas fa-info-circle" label="Szerkeszt"></button>
+      <button
+        *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)"
+        type="button" pButton
+        (click)="showIconDialog()"
+        label="Szerkeszt">
+      </button>
     </div>
     <table class="table">
       <tbody>
@@ -66,6 +73,7 @@
             <ng-template #showUserTags>
               <button *ngFor="let userTag of userTags"
                       pButton type="button"
+                      class="tag_button"
                       label="#{{userTag.word}}"></button>
             </ng-template>
           </td>
@@ -82,15 +90,43 @@
     </div>
     <p-tabView>
       <p-tabPanel header="Biógráfia" *ngIf="user.role === 'ARTIST'">
-        {{user.biography}}
+        <button
+          *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)"
+          type="button" pButton
+          (click)="showBioDialog()"
+          label="Szerkeszt">
+        </button>
+        <p-dialog header="Biógráfia szerkesztés" [(visible)]="bioEditDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
+                  [maximizable]="true" [baseZIndex]="10000">
+          <p-editor [(ngModel)]="user.biography" [style]="{'height':'320px'}"></p-editor>
+          <p-footer>
+            <button type="button" pButton icon="fas fa-check" (click)="changeBiography(); this.bioEditDisplay = false;" label="Mentés"></button>
+            <button type="button" pButton icon="fas fa-times" (click)="bioEditDisplay=false" label="Kilép"></button>
+          </p-footer>
+        </p-dialog>
+        <div *ngIf="user.biography === ''; else showBiography">
+          <i>
+            Az felhasználónak nincs még biógráfiája!
+          </i>
+        </div>
+        <ng-template #showBiography>
+          <div [innerHtml]="user.biography">
+          </div>
+        </ng-template>
       </p-tabPanel>
       <p-tabPanel header="Üzenetek">
-        <span>
-          Nincs üzenet!
-        </span>
+        <div *ngIf="userMessages.length === 0; else showUserMessages">
+          <i>
+            Az felhasználónak még nincsenek üzenetei!
+          </i>
+        </div>
+        <ng-template #showUserMessages>
+
+        </ng-template>
       </p-tabPanel>
       <p-tabPanel header="Albumok" *ngIf="user.role === 'ARTIST'">
         <button
+          ngClass="new_make_button"
           *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)"
           routerLink="/album/new"
           pButton type="button"
@@ -99,18 +135,22 @@
           label="Új album"
           style="margin-top: 10px;">
         </button>
-        <div *ngIf="userAlbums.length === 0">
+        <div *ngIf="userAlbums.length === 0; else showUserAlbums">
           <strong>
-            Magának még nincsenek albumai!
+            A felhasználónak még nincsenek albumai!
           </strong>
         </div>
-        <div *ngIf="userAlbums.length >= 1">
+        <ng-template #showUserAlbums>
           <p-dataView #dv [value]="userAlbums" [paginator]="true" [rows]="10" paginatorPosition="both">
             <ng-template let-album pTemplate="listItem">
-              <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
-                <div class="ui-g-12 ui-md-3" style="text-align:center">
-                  <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}">
-                  <img *ngIf="album.coverFileGdaId === ''" class="fas fa-compact-disc fa-4x album_cover">
+              <div class="ui-g list_element">
+                <div class="ui-g-12 ui-md-3">
+                  <div *ngIf="album.coverFileGdaId === ''; else showAlbumCover">
+                    <img src="" class="fas fa-compact-disc fa-4x album_cover list_element_img">
+                  </div>
+                  <ng-template #showAlbumCover>
+                    <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" class="list_element_img">
+                  </ng-template>
                 </div>
                 <div class="ui-g-10 ui-md-7">
                   <div class="ui-g">
@@ -140,19 +180,26 @@
               </div>
             </ng-template>
           </p-dataView>
-        </div>
+        </ng-template>
       </p-tabPanel>
       <p-tabPanel header="Dalok" *ngIf="user.role === 'ARTIST'">
-        <div *ngIf="userSongs.length === 0">
+        <div *ngIf="userSongs.length === 0; else showUserSongs">
           <strong>
-            Magának még nincsenek saját dalai!
+            A felhasználónak még nincsenek dalai!
           </strong>
         </div>
-
-        <div *ngIf="userSongs.length >= 1">
+        <ng-template #showUserSongs>
           <p-dataView #dv [value]="userSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
             <ng-template let-song pTemplate="listItem">
-              <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+              <div class="ui-g list_element">
+                <div class="ui-g-12 ui-md-3">
+                  <div *ngIf="song.album.coverFileGdaId === ''; else showAlbumCover">
+                    <img src="" class="fas fa-compact-disc fa-4x album_cover list_element_img">
+                  </div>
+                  <ng-template #showAlbumCover>
+                    <img src="{{'https://docs.google.com/uc?export=download&id=' + song.album.coverFileGdaId}}" class="list_element_img">
+                  </ng-template>
+                </div>
                 <div class="ui-g-10 ui-md-7">
                   <div class="ui-g">
                     <a [routerLink]="['/song', song.id]">
@@ -181,28 +228,28 @@
               </div>
             </ng-template>
           </p-dataView>
-        </div>
+        </ng-template>
       </p-tabPanel>
       <p-tabPanel header="Lej. listák">
         <button
+          ngClass="new_make_button"
           *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)"
           routerLink="/playlist/new"
           pButton type="button"
           icon="fas fa-plus"
           class="ui-button-success"
-          label="Új album"
+          label="Új lej. lista"
           style="margin-top: 10px;">
         </button>
-        <div *ngIf="userPlaylist.length === 0">
+        <div *ngIf="userPlaylist.length === 0; else showUserPlaylist">
           <strong>
-            Magának még nincsenek albumai!
+            A felhasználónak még nincsenek lej. listái!
           </strong>
         </div>
-
-        <div *ngIf="userPlaylist.length >= 1">
+        <ng-template #showUserPlaylist>
           <p-dataView #dv [value]="userPlaylist" [paginator]="true" [rows]="10" paginatorPosition="both">
             <ng-template let-playlist pTemplate="listItem">
-              <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+              <div class="ui-g list_element">
                 <div class="ui-g-10 ui-md-7">
                   <div class="ui-g">
                     <a [routerLink]="['/playlist', playlist.id]">
@@ -231,6 +278,6 @@
               </div>
             </ng-template>
           </p-dataView>
-        </div>
+        </ng-template>
       </p-tabPanel>
     </p-tabView>

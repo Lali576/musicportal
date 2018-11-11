@@ -29,6 +29,7 @@ import { SliderModule } from 'primeng/slider';
 import { ListboxModule } from 'primeng/listbox';
 import { TabViewModule } from "primeng/primeng";
 import { CarouselModule } from "primeng/primeng";
+import { EditorModule } from 'primeng/editor';
 
 import { AuthGuard } from "./auth.guard";
 import { UserService } from "./service/user.service";
@@ -134,7 +135,8 @@ registerLocaleData(localeHu);
     SliderModule,
     ListboxModule,
     TabViewModule,
-    CarouselModule
+    CarouselModule,
+    EditorModule
   ],
   providers: [AuthService,
               UserService,
