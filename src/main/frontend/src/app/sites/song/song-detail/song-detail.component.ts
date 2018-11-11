@@ -7,6 +7,7 @@ import {switchMap} from "rxjs/internal/operators";
 import {AlbumService} from "../../../service/album.service";
 import {Album} from "../../../model/album";
 import {AlbumTag} from "../../../model/tags/albumtag";
+import {TagService} from "../../../service/tag.service";
 
 @Component({
   selector: 'app-song-detail',
@@ -29,6 +30,7 @@ export class SongDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private songService: SongService,
     private albumService: AlbumService,
+    private tagService: TagService,
     private location: Location
   ) {
   }
@@ -50,7 +52,7 @@ export class SongDetailComponent implements OnInit {
   }
 
   loadAlbumTags() {
-    this.albumService.getAlbumTags(this.album)
+    this.tagService.getTagsByAlbum(this.album)
       .then(
         (albumTags: AlbumTag[]) => {
           this.albumTags = albumTags;

@@ -101,10 +101,6 @@ export class UserService {
     return this.http.get<User>(`api/user/${id}`).toPromise();
   }
 
-  getUserTags(id: number): Promise<UserTag[]> {
-    return this.http.get<UserTag[]>(`api/tag/list-by-user/${id}`).toPromise();
-  }
-
   deleteUser(id: number) {
     console.log("Try to delete user named " + this.authService.loggedInUser.username);
     return this.http.delete(`api/user/delete/${id}`).pipe(

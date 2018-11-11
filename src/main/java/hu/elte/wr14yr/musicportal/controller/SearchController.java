@@ -41,7 +41,7 @@ public class SearchController {
     public ResponseEntity<Iterable<Album>> findAlbumByTag(MultipartHttpServletRequest request) throws IOException {
         logger.info("Search controller: enter endpoint '/albums/tag'");
 
-        AlbumTag albumTag = mapper.readValue(request.getParameter("tag"), AlbumTag.class);
+        AlbumTag albumTag = mapper.readValue(request.getParameter("albumTag"), AlbumTag.class);
         Iterable<Album> foundAlbums = searchService.findAlbumByAlbumTag(albumTag);
 
         logger.info("Search controller: exit endpoint '/albums/tag'");

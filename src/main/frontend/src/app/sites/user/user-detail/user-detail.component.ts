@@ -12,6 +12,7 @@ import {SongService} from "../../../service/song.service";
 import {PlaylistService} from "../../../service/playlist.service";
 import {switchMap} from "rxjs/internal/operators";
 import {UserTag} from "../../../model/Tags/usertag";
+import {TagService} from "../../../service/tag.service";
 
 @Component({
   selector: 'app-user-detail',
@@ -35,6 +36,7 @@ export class UserDetailComponent implements OnInit {
     private albumService: AlbumService,
     private songService: SongService,
     private playlistService: PlaylistService,
+    private tagService: TagService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
@@ -94,7 +96,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadUserTags() {
-    this.userService.getUserTags(this.user.id)
+    this.tagService.getTagsByUser(this.user.id)
       .then(
         (userTags: UserTag[]) => {
           this.userTags = userTags;

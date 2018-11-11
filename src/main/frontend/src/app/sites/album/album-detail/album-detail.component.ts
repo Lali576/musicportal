@@ -8,6 +8,7 @@ import {SongService} from "../../../service/song.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {AuthService} from "../../../service/auth.service";
 import {AlbumTag} from "../../../model/tags/albumtag";
+import {TagService} from "../../../service/tag.service";
 
 @Component({
   selector: 'app-album-detail',
@@ -24,6 +25,7 @@ export class AlbumDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private albumService: AlbumService,
     private songService: SongService,
+    private tagService: TagService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     public authService: AuthService
@@ -59,7 +61,7 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   loadAlbumTags() {
-    this.albumService.getAlbumTags(this.album)
+    this.tagService.getTagsByAlbum(this.album)
       .then(
         (albumTags: AlbumTag[]) => {
           this.albumTags = albumTags;

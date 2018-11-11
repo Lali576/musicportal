@@ -4,6 +4,8 @@ import {Playlist} from "../model/playlist";
 import {Song} from "../model/song";
 import {PlaylistTag} from "../model/Tags/playlisttag";
 import {tap} from "rxjs/internal/operators";
+import {Album} from "../model/album";
+import {AlbumTag} from "../model/tags/albumtag";
 
 @Injectable()
 export class PlaylistService {
