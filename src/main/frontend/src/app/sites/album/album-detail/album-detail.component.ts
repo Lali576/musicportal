@@ -9,6 +9,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {AuthService} from "../../../service/auth.service";
 import {AlbumTag} from "../../../model/tags/albumtag";
 import {TagService} from "../../../service/tag.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-album-detail',
@@ -28,7 +29,8 @@ export class AlbumDetailComponent implements OnInit {
     private tagService: TagService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    public authService: AuthService
+    public authService: AuthService,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -76,5 +78,9 @@ export class AlbumDetailComponent implements OnInit {
           this.albumSongs = songs;
         }
       );
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

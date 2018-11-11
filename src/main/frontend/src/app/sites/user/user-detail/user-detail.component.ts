@@ -29,6 +29,7 @@ export class UserDetailComponent implements OnInit {
   userPlaylist: Playlist[] = [];
   userIconFile: File = null;
   userTags: UserTag[] = [];
+  userEditBiography: string = "";
   userMessages: UserMessage[] = [];
   iconEditDisplay: boolean = false;
   bioEditDisplay: boolean = false;
@@ -53,6 +54,7 @@ export class UserDetailComponent implements OnInit {
         (user: User) => {
           this.user = user;
           this.loadUserTags();
+          this.userEditBiography = this.user.biography;
           this.loadUserMessages();
           this.loadAlbums();
           this.loadSongs();
@@ -70,8 +72,9 @@ export class UserDetailComponent implements OnInit {
   }
 
   async changeBiography() {
-    await this.userService.updateBiography(this.user.id, this.user.biography);
+    await this.userService.updateBiography(this.user.id, this.userEditBiography);
     this.user.biography = this.authService.loggedInUser.biography;
+    this.userEditBiography = this.user.biography;
   }
 
   onFileSelected(event) {

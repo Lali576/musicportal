@@ -1,5 +1,8 @@
 <button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
+<h1 class="first" style="text-align: center">
+  {{song.album.title}}
+</h1>
 <div class="cover">
   <div>
     <img *ngIf="album.coverFileGdaId !== ''" src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}">
@@ -93,6 +96,27 @@
             label="#{{albumTag.word}}"></button>
   </ng-template>
 </div>
-<div class="lyrics">
+<h3 style="text-align: center">
+  Szöveg
+</h3>
+<div class="lyrics" style="text-align: center">
+  <div *ngIf="song.lyrics === ''; else showSongLyrics">
+    <i>Ennek a dalnak még nincs megadva dalszöveg!</i>
+  </div>
+  <ng-template #showSongLyrics>
+    <div style="text-align: center" [innerHtml]="song.lyrics"></div>
+  </ng-template>
+</div>
+<h3 style="text-align: center">
+  Kommentek
+</h3>
+<div style="text-align: center">
+  <div *ngIf="songComments.length === 0; else showSongComments">
+    <i>
+      Ehhez a dalhoz még nem írtak kommentet!
+    </i>
+  </div>
+  <ng-template #showSongComments>
 
+  </ng-template>
 </div>

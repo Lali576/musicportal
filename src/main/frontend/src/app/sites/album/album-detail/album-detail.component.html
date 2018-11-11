@@ -1,6 +1,6 @@
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
 <p-confirmDialog></p-confirmDialog>
-<button pButton routerLink="/album/list" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
+<button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
 <h1 class="first">
   Album

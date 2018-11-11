@@ -80,7 +80,7 @@
         </tr>
       </tbody>
     </table>
-    <div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)">
+    <div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)" class="edit_buttons">
       <button pButton type="button" label="Adatok szerk.">
       </button>
       <button pButton type="button" label="E-mail cím szerk.">
@@ -98,7 +98,7 @@
         </button>
         <p-dialog header="Biógráfia szerkesztés" [(visible)]="bioEditDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
                   [maximizable]="true" [baseZIndex]="10000">
-          <p-editor [(ngModel)]="user.biography" [style]="{'height':'320px'}"></p-editor>
+          <p-editor [(ngModel)]="userEditBiography" [style]="{'height':'320px'}"></p-editor>
           <p-footer>
             <button type="button" pButton icon="fas fa-check" (click)="changeBiography(); this.bioEditDisplay = false;" label="Mentés"></button>
             <button type="button" pButton icon="fas fa-times" (click)="bioEditDisplay=false" label="Kilép"></button>

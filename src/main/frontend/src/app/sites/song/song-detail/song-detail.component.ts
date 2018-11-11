@@ -8,6 +8,7 @@ import {AlbumService} from "../../../service/album.service";
 import {Album} from "../../../model/album";
 import {AlbumTag} from "../../../model/tags/albumtag";
 import {TagService} from "../../../service/tag.service";
+import {SongComment} from "../../../model/songcomment";
 
 @Component({
   selector: 'app-song-detail',
@@ -20,6 +21,7 @@ export class SongDetailComponent implements OnInit {
   audio = new Audio();
   album: Album = new Album();
   albumTags: AlbumTag[] = [];
+  songComments: SongComment[] = [];
   paused = true;
   elapsed = "0:00";
   total;
