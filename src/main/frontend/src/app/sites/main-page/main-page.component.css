@@ -1,1 +1,23 @@
+h2 {
+  margin-top: 20px;
+}
 
+.list-element {
+  text-align: center;
+}
+
+.list-element-row {
+  padding: 5px;
+}
+
+.list-element-label {
+  font-weight: bold;
+}
+
+.list-element-img {
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  border: solid 5px dodgerblue;
+  border-radius: 10px;
+}

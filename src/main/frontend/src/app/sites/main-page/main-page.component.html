@@ -4,30 +4,30 @@
 <div>
   <h2 class="first">Legfrissebb albumok</h2>
   <div *ngIf="firstFiveAlbums.length === 0; else showFirstFiveAlbums">
-    Jelenleg nincs feltöltve album!
+    <i>Jelenleg nincs feltöltve album!</i>
   </div>
   <ng-template #showFirstFiveAlbums>
     <p-carousel headerText="" [value]="firstFiveAlbums">
       <ng-template let-album pTemplate="item">
-        <div class="ui-grid ui-grid-responsive">
-          <div class="ui-grid-row">
+        <div class="ui-grid ui-grid-responsive list-element">
+          <div class="ui-grid-row list-element-row">
             <div class="ui-grid-col-12">
-              <img class="fas fa-compact-disc fa-5x" *ngIf="album.coverFileGdaId === ''; else showAlbumCover"/>
+              <img src="" class="fas fa-compact-disc fa-5x list-element-img" *ngIf="album.coverFileGdaId === ''; else showAlbumCover"/>
               <ng-template #showAlbumCover>
-                <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="100px">
+                <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" class="list-element-img">
               </ng-template>
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Cím
             </div>
             <div class="ui-grid-col-6">
               {{album.title}}
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Feltöltő
             </div>
             <div class="ui-grid-col-6">
@@ -36,19 +36,19 @@
               </a>
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Dátum
             </div>
             <div class="ui-grid-col-6">
               {{album.date | date}}
             </div>
           </div>
-          <div class="ui-grid-row">
+          <div class="ui-grid-row list-element-row">
             <div class="ui-grid-col-12">
               <button pButton
                       type="button"
-                      icon="fas fa-search"
+                      icon="fas fa-angle-double-right fa-2x"
                       [routerLink]="['/album', album.id]"
                       ></button>
             </div>
@@ -57,29 +57,29 @@
       </ng-template>
     </p-carousel>
   </ng-template>
-  <h2 class="first">Legfrissebb lej. listák</h2>
+  <h2 class="first">Legfrissebb lejátszási listák</h2>
   <div *ngIf="firstFivePlaylists.length === 0; else showFirstFivePlaylists">
-    Jelenleg nincs feltöltve lej. lista!
+    <i>Jelenleg nincs feltöltve lejátszási lista!</i>
   </div>
   <ng-template #showFirstFivePlaylists>
     <p-carousel headerText="" [value]="firstFivePlaylists">
       <ng-template let-playlist pTemplate="item">
-        <div class="ui-grid ui-grid-responsive">
-          <div class="ui-grid-row">
+        <div class="ui-grid ui-grid-responsive list-element">
+          <div class="ui-grid-row list-element-row">
             <div class="ui-grid-col-12">
-              <img class="fas fa-play fa-5x"/>
+              <img src="" class="fas fa-play fa-5x list-element-img"/>
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Név
             </div>
             <div class="ui-grid-col-6">
               {{playlist.name}}
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Feltöltő
             </div>
             <div class="ui-grid-col-6">
@@ -88,11 +88,11 @@
               </a>
             </div>
           </div>
-          <div class="ui-grid-row">
+          <div class="ui-grid-row list-element-row">
             <div class="ui-grid-col-12">
               <button pButton
                       type="button"
-                      icon="fas fa-search"
+                      icon="fas fa-angle-double-right fa-2x"
                       [routerLink]="['/playlist', playlist.id]"
               ></button>
             </div>
@@ -103,38 +103,38 @@
   </ng-template>
   <h2 class="first">Leghallgatottabb dalok</h2>
   <div *ngIf="firstFiveSongs.length === 0; else showFirstFiveSongs">
-    Jelenleg nincs feltöltve dal!
+    <i>Jelenleg nincs feltöltve dal!</i>
   </div>
   <ng-template #showFirstFiveSongs>
     <p-carousel headerText="" [value]="firstFiveSongs">
       <ng-template let-song pTemplate="item">
-        <div class="ui-grid ui-grid-responsive">
-          <div class="ui-grid-row">
+        <div class="ui-grid ui-grid-responsive list-element">
+          <div class="ui-grid-row list-element-row">
             <div class="ui-grid-col-12">
-              <img class="fas fa-music fa-5x" *ngIf="song.album.coverFileGdaId === ''; else showAlbumCover"/>
+              <img src="" class="fas fa-music fa-5x list-element-img" *ngIf="song.album.coverFileGdaId === ''; else showAlbumCover"/>
               <ng-template #showAlbumCover>
-                <img src="{{'https://docs.google.com/uc?export=download&id=' + song.album.coverFileGdaId}}" width="100px">
+                <img src="{{'https://docs.google.com/uc?export=download&id=' + song.album.coverFileGdaId}}" class="list-element-img">
               </ng-template>
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Cím
             </div>
             <div class="ui-grid-col-6">
               {{song.title}}
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Album
             </div>
             <div class="ui-grid-col-6">
               {{song.album.title}}
             </div>
           </div>
-          <div class="ui-grid-row">
-            <div class="ui-grid-col-6">
+          <div class="ui-grid-row list-element-row">
+            <div class="ui-grid-col-6 list-element-label">
               Feltöltő
             </div>
             <div class="ui-grid-col-6">
@@ -143,11 +143,11 @@
               </a>
             </div>
           </div>
-          <div class="ui-grid-row">
+          <div class="ui-grid-row list-element-row">
             <div class="ui-grid-col-12">
               <button pButton
                       type="button"
-                      icon="fas fa-search"
+                      icon="fas fa-angle-double-right fa-2x"
                       [routerLink]="['/song', song.id]"
               ></button>
             </div>
