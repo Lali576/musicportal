@@ -5,7 +5,9 @@
       <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Felhasználónév *:
+            <b>
+              Felhasználónév *:
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <input name="usernameText"
@@ -32,7 +34,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            E-mail cím *:
+            <b>
+              E-mail cím *:
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <input name="emailAddressText"
@@ -57,7 +61,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            E-mail cím megerősítés *:
+            <b>
+              E-mail cím megerősítés *:
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <input name="emailAddressConfirmText"
@@ -68,7 +74,8 @@
                    placeholder="E-mail cím megerősítés"
                    required
                    pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
-                   minlength="5" />
+                   minlength="5"
+                   (invalid)="user.emailAddress !== emailAddressConfirm"/>
           </div>
           <div class="ui-grid-col-4">
             <p-message
@@ -80,7 +87,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Jelszó *:
+            <b>
+              Jelszó *:
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <input name="passwordText"
@@ -102,7 +111,7 @@
             <p-message
               severity="error"
               [text]="passwordText.errors['required'] ? 'Adja meg a jelszót!' :
-              passwordText.errors['minlength'] ? 'A megadott jelszó kevesebb, mint 5 karakter!' :
+              passwordText.errors['minlength'] ? 'A megadott jelszó kevesebb, mint 6 karakter!' :
               passwordText.errors['maxlenght'] ? 'A megadott jelszó több, mint 15 karakter!' : ''"
               *ngIf="passwordText.invalid&&passwordText.dirty">
             </p-message>
@@ -110,7 +119,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Jelszó megerősítés *:
+            <b>
+              Jelszó megerősítés *:
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <input name="passwordConfirmText"
@@ -126,7 +137,8 @@
                    required
                    pattern="[0-9A-Za-z@$_!.]*"
                    minlength="6"
-                   maxlength="15"/>
+                   maxlength="15"
+                   (invalid)="passwordText.value !== passwordConfirmText.value"/>
           </div>
           <div class="ui-grid-col-4">
             <p-message
@@ -138,7 +150,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Ország :
+            <b>
+              Ország :
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <p-dropdown name="country"
@@ -170,7 +184,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Ikon kép :
+            <b>
+              Ikon kép :
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <p-fileUpload
@@ -188,7 +204,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Kedvenc műfaj *:
+            <b>
+              Kedvenc műfaj *:
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <p-dropdown name="favGenreId"
@@ -213,7 +231,9 @@
         </div>
         <div class="ui-grid-row">
           <div class="ui-grid-col-2">
-            Kulcsszavak :
+            <b>
+              Kulcsszavak :
+            </b>
           </div>
           <div class="ui-grid-col-6">
             <p-chips name="userTagsChips"
@@ -221,7 +241,7 @@
                      #userTags = "ngModel"
                      >
               <ng-template let-item pTemplate="item">
-                #{{item}}<i style="margin-right:2em"></i>
+                #{{item}}<i style="margin-right: .2em"></i>
               </ng-template>
             </p-chips>
           </div>
