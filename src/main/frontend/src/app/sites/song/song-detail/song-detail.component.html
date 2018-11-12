@@ -99,13 +99,29 @@
 <h3 style="text-align: center">
   Szöveg
 </h3>
-<div class="lyrics" style="text-align: center">
-  <div *ngIf="song.lyrics === ''; else showSongLyrics">
-    <i>Ennek a dalnak még nincs megadva dalszöveg!</i>
+<div style="text-align: center">
+  <button
+    *ngIf="(authService.isLoggedIn)"
+    type="button" pButton
+    (click)="showLyricsDialog()"
+    label="Szerkeszt">
+  </button>
+  <p-dialog header="Dalszöveg szerkesztés" [(visible)]="lyricsEditDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <p-editor [(ngModel)]="songEditLyrics" [style]="{'height':'320px'}"></p-editor>
+    <p-footer>
+      <button type="button" pButton icon="fas fa-check" (click)="changeLyrics(); lyricsEditDisplay = false;" label="Mentés"></button>
+      <button type="button" pButton icon="fas fa-times" (click)="lyricsEditDisplay=false" label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
+  <div class="lyrics">
+    <div *ngIf="song.lyrics === ''; else showSongLyrics">
+      <i>Ennek a dalnak még nincs megadva dalszöveg!</i>
+    </div>
+    <ng-template #showSongLyrics>
+      <div style="text-align: center" [innerHtml]="song.lyrics"></div>
+    </ng-template>
   </div>
-  <ng-template #showSongLyrics>
-    <div style="text-align: center" [innerHtml]="song.lyrics"></div>
-  </ng-template>
 </div>
 <h3 style="text-align: center">
   Kommentek

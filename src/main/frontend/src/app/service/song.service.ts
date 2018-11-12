@@ -92,6 +92,16 @@ export class SongService {
     ).toPromise();
   }
 
+  updateLyrics(id: number, song: Song, lyrics: string): Promise<Song> {
+    const formData = new FormData();
+    formData.append("song", JSON.stringify(song));
+    formData.append("lyrics", lyrics);
+    return this.http.post<Song>(
+      `api/song/update/${id}/lyrics`,
+      formData
+    ).toPromise();
+  }
+
   deleteSong(song: Song) {
     console.log("Try to delete song titled " + song.title);
     let id: number = song.id;

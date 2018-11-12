@@ -1,6 +1,7 @@
 package hu.elte.wr14yr.musicportal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
@@ -167,7 +168,7 @@ public class SongController {
     }
 
     @Role({ARTIST})
-    @PutMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<Song> update(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
         logger.info(String.format("Song controller: enter endpoint '/update/%s'", id));
 
@@ -207,6 +208,20 @@ public class SongController {
         logger.info(String.format("Song controller: exit endpoint '/update/%s'", id));
 
         return ResponseEntity.ok(updatedSong);
+    }
+
+    @Role({ARTIST})
+    @PostMapping("/update/{id}/lyrics")
+    public ResponseEntity<Song> updateLyrics(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
+
+        Song song = mapper.readValue(request.getParameter("song"), Song.class);
+
+        String lyrics = request.getParameter("lyrics");
+
+        Song updatedSong = songService.updateLyrics(song, lyrics);
+
+        return ResponseEntity.ok(updatedSong);
+
     }
 
     @Role({ARTIST})

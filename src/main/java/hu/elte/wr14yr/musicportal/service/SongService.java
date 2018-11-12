@@ -127,6 +127,14 @@ public class SongService {
         return song;
     }
 
+    public Song updateLyrics(Song song, String lyrics) {
+        song.setLyrics(lyrics);
+
+        song = songRepository.save(song);
+
+        return song;
+    }
+
     public void deleteAllByAlbum(Album album) {
         logger.info(String.format("Song service: album titled %s's songs are going to be deleted", album.getTitle()));
 

@@ -4,13 +4,11 @@ import {Song} from "../../../model/song";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {SongService} from "../../../service/song.service";
 import {switchMap} from "rxjs/internal/operators";
-import {AlbumService} from "../../../service/album.service";
 import {Album} from "../../../model/album";
 import {AlbumTag} from "../../../model/tags/albumtag";
 import {TagService} from "../../../service/tag.service";
 import {SongComment} from "../../../model/songcomment";
 import {AuthService} from "../../../service/auth.service";
-import {UserMessage} from "../../../model/usermessage";
 
 @Component({
   selector: 'app-song-detail',
@@ -24,8 +22,10 @@ export class SongDetailComponent implements OnInit {
   album: Album = new Album();
   albumTags: AlbumTag[] = [];
   songComments: SongComment[] = [];
+  songEditLyrics: string = "";
   tempCommentText: string = "";
   commentDisplay: boolean = false;
+  lyricsEditDisplay: boolean = false;
   paused = true;
   elapsed = "0:00";
   total;
@@ -35,7 +35,6 @@ export class SongDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private songService: SongService,
-    private albumService: AlbumService,
     private tagService: TagService,
     private authService: AuthService,
     private location: Location
@@ -52,14 +51,13 @@ export class SongDetailComponent implements OnInit {
       this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
       this.total = this.formatTime(this.song.duration);
       this.audio.volume = this.volumeNumber/100;
-      this.album = this.albumService.album;
-      //this.loadAlbumTags();
+      this.loadAlbumTags();
       this.loadSongComments();
     })).subscribe();
   }
 
   loadAlbumTags() {
-    this.tagService.getTagsByAlbum(this.album)
+    this.tagService.getTagsByAlbum(this.song.album)
       .then(
         (albumTags: AlbumTag[]) => {
           this.albumTags = albumTags;
@@ -78,6 +76,10 @@ export class SongDetailComponent implements OnInit {
 
   showCommentDialog() {
     this.commentDisplay = true;
+  }
+
+  showLyricsDialog() {
+    this.lyricsEditDisplay = true;
   }
 
   handleVolumeChange(e) {
@@ -148,6 +150,15 @@ export class SongDetailComponent implements OnInit {
     seconds = Math.floor(seconds%60);
     seconds = (seconds >= 10) ? seconds : "0" + seconds;
     return minutes + ":" + seconds;
+  }
+
+  async changeLyrics() {
+    this.songService.updateLyrics(this.song.id, this.song, this.songEditLyrics).then(
+      (song: Song) => {
+        this.song = song;
+        this.songEditLyrics = this.song.lyrics;
+      }
+    );
   }
 
   async sendComment() {

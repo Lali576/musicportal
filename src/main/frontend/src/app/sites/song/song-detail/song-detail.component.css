@@ -189,3 +189,14 @@
   min-height: 60px;
   border: solid 1px #000;
 }
+
+.lyrics {
+  text-align: center;
+  border: solid 1px #000;
+  min-width: 500px;
+  height: auto;
+}
+
+button {
+  margin: 10px 0px;
+}
