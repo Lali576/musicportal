@@ -53,6 +53,7 @@
         <tr>
           <th>Ország:</th>
           <td>
+            <img src="{{'https://www.countryflags.io/' + user.countryId.iconFileURL}}" />
             {{user.countryId.name}}
           </td>
         </tr>
@@ -100,7 +101,7 @@
                   [maximizable]="true" [baseZIndex]="10000">
           <p-editor [(ngModel)]="userEditBiography" [style]="{'height':'320px'}"></p-editor>
           <p-footer>
-            <button type="button" pButton icon="fas fa-check" (click)="changeBiography(); this.bioEditDisplay = false;" label="Mentés"></button>
+            <button type="button" pButton icon="fas fa-check" (click)="changeBiography(); bioEditDisplay = false;" label="Mentés"></button>
             <button type="button" pButton icon="fas fa-times" (click)="bioEditDisplay=false" label="Kilép"></button>
           </p-footer>
         </p-dialog>
@@ -115,13 +116,63 @@
         </ng-template>
       </p-tabPanel>
       <p-tabPanel header="Üzenetek">
+        <button
+          *ngIf="(authService.isLoggedIn)"
+          type="button" pButton
+          (click)="showMessageDialog()"
+          label="Új üzenet">
+        </button>
+        <p-dialog header="Üzenet írás" [(visible)]="messageDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
+                  [maximizable]="true" [baseZIndex]="10000">
+          <p-editor [(ngModel)]="tempMessageText" [style]="{'height':'320px'}"></p-editor>
+          <p-footer>
+            <button type="button" pButton icon="fas fa-check" (click)="sendMessage(); messageDisplay = false;" label="Küldés"></button>
+            <button type="button" pButton icon="fas fa-times" (click)="tempMessageText='';messageDisplay=false" label="Kilép"></button>
+          </p-footer>
+        </p-dialog>
         <div *ngIf="userMessages.length === 0; else showUserMessages">
           <i>
             Az felhasználónak még nincsenek üzenetei!
           </i>
         </div>
         <ng-template #showUserMessages>
-
+          <p-dataView #dv [value]="userMessages" [paginator]="true" [rows]="10" paginatorPosition="both">
+            <ng-template let-message pTemplate="listItem">
+              <div class="ui-g list_element">
+                <div class="ui-g-12 ui-md-3">
+                  <div *ngIf="message.userFrom.iconFileGdaId === ''; else showUserIcon">
+                    <img src="" class="fas fa-user fa-4x icon_img">
+                  </div>
+                  <ng-template #showUserIcon>
+                    <img src="{{'https://docs.google.com/uc?export=download&id=' + message.userFrom.iconFileGdaId}}" class="list_element_img">
+                  </ng-template>
+                </div>
+                <div class="ui-g-10 ui-md-7">
+                  <div class="ui-g">
+                    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
+                      <div class="ui-grid-row">
+                        <div>
+                          <h6 class="first">
+                            <a [routerLink]="['/user', message.userFrom.id]">
+                              {{message.userFrom.username}}
+                            </a>
+                            <i>
+                              {{" - " + (message.date | date:'medium')}}
+                            </i>
+                          </h6>
+                        </div>
+                      </div>
+                      <div class="ui-grid-row">
+                        <div class="user_message">
+                          <p [innerHtml]=message.textMessage></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </p-dataView>
         </ng-template>
       </p-tabPanel>
       <p-tabPanel header="Albumok" *ngIf="user.role === 'ARTIST'">

@@ -248,27 +248,30 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PostMapping("/messages/new")
-    public ResponseEntity<Iterable<UserMessage>> createUserMessage(MultipartHttpServletRequest request) throws IOException {
-        logger.info("User controller: enter endpoint '/messages/new'");
+    @PostMapping("/messages/new/{id}")
+    public ResponseEntity<Iterable<UserMessage>> createUserMessage(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
+        logger.info(String.format("User controller: enter endpoint '/messages/%s'", id));
 
         logger.info("User controller: get parameter 'userMessage'");
 
         UserMessage userMessage = mapper.readValue(request.getParameter("userMessage"), UserMessage.class);
 
+        userMessage.setUserFrom(userService.getLoggedInUser());
+
+        userMessage.setUserTo(userService.getUser(id));
+
         Iterable<UserMessage> userMessages = userService.createUserMessage(userMessage);
 
-        logger.info("User controller: enter endpoint '/messages/new'");
+        logger.info(String.format("User controller: enter endpoint '/messages/new/%s'", id));
 
         return ResponseEntity.ok(userMessages);
     }
 
-    @Role({ARTIST, USER})
     @GetMapping("/messages/{id}")
     public ResponseEntity<Iterable<UserMessage>> listUserMessages(@PathVariable("id") long id) {
         logger.info(String.format("User controller: enter endpoint '/messages/%s'", id));
 
-        Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getLoggedInUser());
+        Iterable<UserMessage> userMessages = userService.listUserMessages(userService.getUser(id));
 
         logger.info(String.format("User controller: exit endpoint '/messages/%s'", id));
 

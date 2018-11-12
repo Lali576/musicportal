@@ -30,9 +30,11 @@ export class UserDetailComponent implements OnInit {
   userIconFile: File = null;
   userTags: UserTag[] = [];
   userEditBiography: string = "";
+  tempMessageText: string = "";
   userMessages: UserMessage[] = [];
   iconEditDisplay: boolean = false;
   bioEditDisplay: boolean = false;
+  messageDisplay: boolean = false;
 
   constructor(
     public authService: AuthService,
@@ -71,10 +73,26 @@ export class UserDetailComponent implements OnInit {
     this.bioEditDisplay = true;
   }
 
+  showMessageDialog() {
+    this.messageDisplay = true;
+  }
+
   async changeBiography() {
     await this.userService.updateBiography(this.user.id, this.userEditBiography);
     this.user.biography = this.authService.loggedInUser.biography;
     this.userEditBiography = this.user.biography;
+  }
+
+  async sendMessage() {
+    let userMessage: UserMessage = new UserMessage();
+    userMessage.textMessage = this.tempMessageText;
+    this.tempMessageText = "";
+    let userToId = this.user.id;
+    await this.userService.addUserMessages(userToId, userMessage).then(
+      (userMessages: UserMessage[]) => {
+        this.userMessages = userMessages;
+      }
+    );
   }
 
   onFileSelected(event) {

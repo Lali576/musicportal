@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
@@ -158,6 +159,7 @@ public class SongService {
 
         songComment.setUser(user);
         songComment.setSong(song);
+        songComment.setDate(new Date());
         SongComment savedSongComment = songCommentRepository.save(songComment);
 
         logger.info(String.format("Song service: new song comment for song titled %s" +

@@ -34,4 +34,16 @@ a:hover {
   margin-bottom: 5px;
 }
 
+h6 {
+  text-decoration: underline;
+}
+
+.user_message {
+  text-align: left;
+  width: 500px;
+  height: auto;
+  min-height: 60px;
+  border: solid 1px #000;
+}
+
 

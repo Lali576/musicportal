@@ -9,6 +9,8 @@ import {Album} from "../../../model/album";
 import {AlbumTag} from "../../../model/tags/albumtag";
 import {TagService} from "../../../service/tag.service";
 import {SongComment} from "../../../model/songcomment";
+import {AuthService} from "../../../service/auth.service";
+import {UserMessage} from "../../../model/usermessage";
 
 @Component({
   selector: 'app-song-detail',
@@ -22,6 +24,8 @@ export class SongDetailComponent implements OnInit {
   album: Album = new Album();
   albumTags: AlbumTag[] = [];
   songComments: SongComment[] = [];
+  tempCommentText: string = "";
+  commentDisplay: boolean = false;
   paused = true;
   elapsed = "0:00";
   total;
@@ -33,6 +37,7 @@ export class SongDetailComponent implements OnInit {
     private songService: SongService,
     private albumService: AlbumService,
     private tagService: TagService,
+    private authService: AuthService,
     private location: Location
   ) {
   }
@@ -47,10 +52,10 @@ export class SongDetailComponent implements OnInit {
       this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
       this.total = this.formatTime(this.song.duration);
       this.audio.volume = this.volumeNumber/100;
+      this.album = this.albumService.album;
+      //this.loadAlbumTags();
+      this.loadSongComments();
     })).subscribe();
-
-    this.album = this.albumService.album;
-    this.loadAlbumTags();
   }
 
   loadAlbumTags() {
@@ -60,6 +65,19 @@ export class SongDetailComponent implements OnInit {
           this.albumTags = albumTags;
         }
       );
+  }
+
+  loadSongComments() {
+    this.songService.getSongComments(this.song.id, this.song)
+      .then(
+        (songComments: SongComment[]) => {
+          this.songComments = songComments;
+        }
+      );
+  }
+
+  showCommentDialog() {
+    this.commentDisplay = true;
   }
 
   handleVolumeChange(e) {
@@ -130,6 +148,17 @@ export class SongDetailComponent implements OnInit {
     seconds = Math.floor(seconds%60);
     seconds = (seconds >= 10) ? seconds : "0" + seconds;
     return minutes + ":" + seconds;
+  }
+
+  async sendComment() {
+    let songComment: SongComment = new SongComment();
+    songComment.textMessage = this.tempCommentText;
+    this.tempCommentText = "";
+    await this.songService.addSongComment(songComment, this.song).then(
+      (songComments: SongComment[]) => {
+        this.songComments = songComments;
+      }
+    );
   }
 
   goBack() {

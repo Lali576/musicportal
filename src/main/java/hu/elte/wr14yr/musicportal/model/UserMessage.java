@@ -13,8 +13,7 @@ import java.util.Date;
 @Table(name = "USER_MESSAGES")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"userTo",
-                        "userFrom"})
+@JsonIgnoreProperties({"userTo"})
 public class UserMessage {
 
     @Id

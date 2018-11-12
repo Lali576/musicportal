@@ -117,11 +117,11 @@ export class UserService {
     ).toPromise();
   }
 
-  addUserMessages(userMessage: UserMessage): Promise<UserMessage[]> {
+  addUserMessages(id: number, userMessage: UserMessage): Promise<UserMessage[]> {
     const formData = new FormData();
     formData.append("userMessage", JSON.stringify(userMessage));
     return this.http.post<UserMessage[]>(
-      'api/user/messages/new',
+      `api/user/messages/new/${id}`,
       formData
     ).toPromise();
   }

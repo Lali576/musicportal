@@ -117,6 +117,56 @@
     </i>
   </div>
   <ng-template #showSongComments>
-
+    <p-dataView #dv [value]="songComments" [paginator]="true" [rows]="10" paginatorPosition="both">
+      <ng-template let-comment pTemplate="listItem">
+        <div class="ui-g list_element">
+          <div class="ui-g-12 ui-md-3">
+            <div *ngIf="comment.user.iconFileGdaId === ''; else showUserIcon">
+              <img src="" class="fas fa-user fa-4x icon_img">
+            </div>
+            <ng-template #showUserIcon>
+              <img src="{{'https://docs.google.com/uc?export=download&id=' + comment.user.iconFileGdaId}}" class="list_element_img">
+            </ng-template>
+          </div>
+          <div class="ui-g-10 ui-md-7">
+            <div class="ui-g">
+              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
+                <div class="ui-grid-row">
+                  <div>
+                    <h6 class="first">
+                      <a [routerLink]="['/user', comment.user.id]">
+                        {{comment.user.username}}
+                      </a>
+                      <i>
+                        {{" - " + (comment.date | date:'medium')}}
+                      </i>
+                    </h6>
+                  </div>
+                </div>
+                <div class="ui-grid-row">
+                  <div class="song_comment">
+                    <p [innerHtml]=comment.textMessage></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
   </ng-template>
+  <button
+    *ngIf="(authService.isLoggedIn)"
+    type="button" pButton
+    (click)="showCommentDialog()"
+    label="Új komment">
+  </button>
+  <p-dialog header="Komment írás" [(visible)]="commentDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <p-editor [(ngModel)]="tempCommentText" [style]="{'height':'320px'}"></p-editor>
+    <p-footer>
+      <button type="button" pButton icon="fas fa-check" (click)="sendComment(); commentDisplay = false;" label="Mentés"></button>
+      <button type="button" pButton icon="fas fa-times" (click)="tempCommentText='';commentDisplay=false" label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
 </div>

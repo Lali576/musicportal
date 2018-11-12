@@ -223,7 +223,7 @@ public class SongController {
     @Role({ARTIST, USER})
     @PostMapping("/comments/new")
     public ResponseEntity<Iterable<SongComment>> createSongComment(MultipartHttpServletRequest request) throws IOException {
-        logger.info("Song controller: enter endpoint '/comment/new");
+        logger.info("Song controller: enter endpoint '/comments/new");
 
         logger.info("Song controller: get parameter 'songComment'");
         SongComment songComment = mapper.readValue(request.getParameter("songComment"), SongComment.class);
@@ -237,12 +237,11 @@ public class SongController {
 
         Iterable<SongComment> songComments = songService.createSongComment(songComment, user, song);
 
-        logger.info("Song controller: exit endpoint '/comment/new'");
+        logger.info("Song controller: exit endpoint '/comments/new'");
 
         return ResponseEntity.ok(songComments);
     }
 
-    @Role({ARTIST, USER})
     @PostMapping("/comments/{id}")
     public ResponseEntity<Iterable<SongComment>> listSongComments(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.info(String.format("Song controller: enter endpoint '/comments/%s'", id));
@@ -253,7 +252,7 @@ public class SongController {
 
         Iterable<SongComment> songComments = songService.listSongComments(song);
 
-        logger.info(String.format("Song controller: exit endpoint '/comment/%s'", id));
+        logger.info(String.format("Song controller: exit endpoint '/comments/%s'", id));
 
         return ResponseEntity.ok(songComments);
     }
