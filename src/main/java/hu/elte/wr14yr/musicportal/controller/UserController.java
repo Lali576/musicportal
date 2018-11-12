@@ -131,7 +131,7 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PutMapping("/update/{id}/details")
+    @PostMapping("/update/{id}/details")
     public ResponseEntity<User> updateDetails(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.info(String.format("User controller: enter endpoint '/update/%s/details'", id));
 
@@ -156,7 +156,7 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PutMapping("/update/{id}/email")
+    @PostMapping("/update/{id}/email")
     public ResponseEntity<User> updateEmailAddress(@PathVariable("id") long id, MultipartHttpServletRequest request) {
         logger.info(String.format("User controller: enter endpoint '/update/%s/email'", id));
 
@@ -169,7 +169,7 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PutMapping("/update/{id}/password")
+    @PostMapping("/update/{id}/password")
     public ResponseEntity<User> updatePassword(@PathVariable("id") long id, MultipartHttpServletRequest request) {
         logger.info(String.format("User controller: enter endpoint '/update/%s/password'", id));
 

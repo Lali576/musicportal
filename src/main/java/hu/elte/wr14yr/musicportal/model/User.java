@@ -51,7 +51,7 @@ public class User {
     @JoinColumn(name = "COUNTRY_ID")
     private Country countryId;
 
-    @Column(name = "BIOGRAPHY")
+    @Column(name = "BIOGRAPHY", columnDefinition = "TEXT")
     private String biography;
 
     @Column(name = "USER_FOLDER_GDA_ID", unique = true)
