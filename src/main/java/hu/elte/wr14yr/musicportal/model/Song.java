@@ -30,7 +30,7 @@ public class Song {
     @Column(name = "TITLE", unique = true, nullable = false)
     private String title;
 
-    @Column(name = "LYRICS")
+    @Column(name = "LYRICS", columnDefinition = "LONGTEXT")
     private String lyrics;
 
     @Column(name = "AUDIO_FILE_GDA_ID")
