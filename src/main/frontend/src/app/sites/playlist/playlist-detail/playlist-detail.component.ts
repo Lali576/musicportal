@@ -7,6 +7,8 @@ import {SongService} from "../../../service/song.service";
 import {switchMap} from "rxjs/internal/operators";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {AuthService} from "../../../service/auth.service";
+import {PlaylistTag} from "../../../model/tags/playlisttag";
+import {TagService} from "../../../service/tag.service";
 
 @Component({
   selector: 'app-playlist-detail',
@@ -17,12 +19,14 @@ import {AuthService} from "../../../service/auth.service";
 export class PlaylistDetailComponent implements OnInit {
 
   playlist: Playlist = new Playlist();
+  playlistTags: PlaylistTag[] = [];
   songs: Song[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private playlistService: PlaylistService,
     private songService: SongService,
+    private tagService: TagService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     public authService: AuthService
@@ -34,7 +38,17 @@ export class PlaylistDetailComponent implements OnInit {
       await this.playlistService.getPlaylist(id);
       this.playlist = this.playlistService.playlist;
       this.loadSongs();
+      this.loadPlaylistTags;
     })).subscribe();
+  }
+
+  loadPlaylistTags() {
+    this.tagService.getTagsByPlaylist(this.playlist)
+      .then(
+        (playlistTags: PlaylistTag[]) => {
+          this.playlistTags = playlistTags;
+        }
+      )
   }
 
   loadSongs() {

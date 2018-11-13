@@ -27,15 +27,6 @@ export class TagService {
     ).toPromise();
   }
 
-  getTagsBySong(song: Song): Promise<SongTag[]> {
-    const formData = new FormData();
-    formData.append("song", JSON.stringify(song));
-    return this.http.post<SongTag[]>(
-      'api/tag/list-by-song',
-      formData
-    ).toPromise();
-  }
-
   getTagsByPlaylist(playlist: Playlist): Promise<PlaylistTag[]> {
     const formData = new FormData();
     formData.append("playlist", JSON.stringify(playlist));
