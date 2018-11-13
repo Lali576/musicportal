@@ -11,13 +11,34 @@
   <p-dataView #dv [value]="playlists" [paginator]="true" [rows]="10" paginatorPosition="both">
     <ng-template let-playlist pTemplate="listItem">
       <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+        <div class="ui-g-12 ui-md-3" style="text-align:center">
+          <div>
+            <img src="" class="fas fa-play fa-4x list_element_img">
+          </div>
+        </div>
         <div class="ui-g-10 ui-md-7">
           <div class="ui-g">
-            <a [routerLink]="['/playlist', playlist.id]" style="color: black;">
-              <h1 class="first">
-                {{playlist.name}}
-              </h1>
-            </a>
+            <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
+              <div class="ui-grid-row">
+                <h3>
+                  <a [routerLink]="['/playlist', playlist.id]">
+                    {{playlist.name}}
+                  </a>
+                </h3>
+              </div>
+              <div class="ui-grid-row">
+                <h4>
+                  <a [routerLink]="['/user', playlist.user.id]">
+                    {{playlist.user.username}}
+                  </a>
+                </h4>
+              </div>
+              <div>
+                <h4>
+                  {{playlist.date | date}}
+                </h4>
+              </div>
+            </div>
           </div>
         </div>
       </div>

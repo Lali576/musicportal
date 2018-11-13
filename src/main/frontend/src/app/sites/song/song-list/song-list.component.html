@@ -13,7 +13,7 @@
       <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
         <div class="ui-g-12 ui-md-3" style="text-align:center">
           <div *ngIf="song.album.coverFileGdaId === ''; else showAlbumCover">
-            <img src="" class="fas fa-compact-disc fa-4x album_cover list_element_img">
+            <img src="" class="fas fa-compact-disc fa-4x list_element_img">
           </div>
           <ng-template #showAlbumCover>
             <img src="{{'https://docs.google.com/uc?export=download&id=' + song.album.coverFileGdaId}}" class="list_element_img">
