@@ -1,7 +1,9 @@
 .icon_img {
   width: 100px;
   margin: 10px;
-  border-radius: 5px;
+  padding: 0px;
+  border: solid 5px dodgerblue;
+  border-radius: 10px;
 }
 
 .tag_button, .edit_buttons button {
@@ -42,5 +44,3 @@ a:hover {
   border: solid 1px #000;
   word-wrap: break-word;
 }
-
-
