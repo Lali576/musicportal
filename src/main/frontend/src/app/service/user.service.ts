@@ -6,6 +6,7 @@ import {UserMessage} from "../model/usermessage";
 import {AuthService} from "./auth.service";
 import {tap} from "rxjs/internal/operators";
 import {UserTag} from "../model/Tags/usertag";
+import {Country} from "../model/country";
 
 @Injectable()
 export class UserService {
@@ -17,14 +18,17 @@ export class UserService {
     private authService: AuthService
   ) {}
 
-  updateUser(id: number, fullName: string, favGenre: Genre, userTags: UserTag[]): Promise<User> {
+  updateUser(id: number, countryId: Country, favGenre: Genre, userTags: UserTag[]): Promise<User> {
     console.log("Try to update details for user named " +
       this.authService.loggedInUser.username + " with new details");
     const formData = new FormData();
-    formData.append("fullName", fullName);
+    console.log(countryId);
+    console.log(favGenre);
+    console.log(userTags);
+    formData.append("country", JSON.stringify(countryId));
     formData.append("favGenre", JSON.stringify(favGenre));
     formData.append("userTags", JSON.stringify(userTags));
-    return this.http.put<User>(
+    return this.http.post<User>(
       `api/user/update/${id}/details`,
       formData
     ).pipe(
@@ -40,7 +44,7 @@ export class UserService {
   updateEmail(id: number, emailAddress: string): Promise<User> {
     const formData = new FormData();
     formData.append("emailAddress", emailAddress);
-    return this.http.put<User>(
+    return this.http.post<User>(
       `api/user/update/${id}/email`,
       formData
     ).pipe(
@@ -55,7 +59,7 @@ export class UserService {
     const formData = new FormData();
     formData.append("oldPassword", oldPassword);
     formData.append("newPassword", newPassword);
-    return this.http.put<User>(
+    return this.http.post<User>(
       `api/user/update/${id}/password`,
       formData
     ).pipe(

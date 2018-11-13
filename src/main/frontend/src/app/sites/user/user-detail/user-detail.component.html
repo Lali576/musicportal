@@ -82,8 +82,75 @@
       </tbody>
     </table>
     <div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)" class="edit_buttons">
-      <button pButton type="button" label="Adatok szerk.">
+      <button pButton type="button" label="Adatok szerk." (click)="showDetailsDialog()">
       </button>
+      <p-dialog header="Adatok szerkesztése" [(visible)]="detailsEditDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
+                [maximizable]="true" [baseZIndex]="10000">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <b>
+                Ország :
+              </b>
+            </div>
+            <div class="ui-grid-col-6">
+              <p-dropdown name="country"
+                          pTooltip="Válassza ki az országát!"
+                          [options]="countries"
+                          [(ngModel)]="userEditCountryId"
+                          #country="ngModel"
+                          [autoWidth]="false"
+                          [filter]="true"
+                          scrollHeight="100px"
+                          optionLabel="name"
+                          [required]="false"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <b>
+                Kedvenc műfaj *:
+              </b>
+            </div>
+            <div class="ui-grid-col-6">
+              <p-dropdown name="favGenreId"
+                          pTooltip="Válassza ki a kedvenc zenei műfaját!"
+                          [options]="genres"
+                          [(ngModel)]="userEditGenreId"
+                          #favGenre="ngModel"
+                          [autoWidth]="false"
+                          [filter]="true"
+                          scrollHeight="100px"
+                          optionLabel="name"
+                          [required]="false"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              <b>
+                Címkék :
+              </b>
+            </div>
+            <div class="ui-grid-col-6">
+              <p-chips name="userTagsChips"
+                       [(ngModel)]="userEditUserTags"
+                       #userTags = "ngModel">
+                <ng-template let-item pTemplate="item">
+                  #{{item}}<i style="margin-right: .2em"></i>
+                </ng-template>
+              </p-chips>
+            </div>
+            <div class="ui-grid-col-4">
+            </div>
+          </div>
+        </div>
+        <p-footer>
+          <button type="button" pButton icon="fas fa-check" (click)="changeDetails(); detailsEditDisplay = false;" label="Mentés"></button>
+          <button type="button" pButton icon="fas fa-times" (click)="detailsEditDisplay=false" label="Kilép"></button>
+        </p-footer>
+      </p-dialog>
       <button pButton type="button" label="E-mail cím szerk.">
       </button>
       <button pButton type="button" (click)="deleteUserConfirm()" label="Regisztráció törlése">
