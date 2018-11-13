@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Location} from '@angular/common';
 import { User } from "../../../model/user";
 import { AuthService } from "../../../service/auth.service";
 import { UserService } from "../../../service/user.service";
@@ -64,7 +65,8 @@ export class UserDetailComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -287,5 +289,9 @@ export class UserDetailComponent implements OnInit {
           this.genres = genres;
         }
       )
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
