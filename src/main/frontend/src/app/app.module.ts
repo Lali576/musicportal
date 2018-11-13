@@ -46,7 +46,6 @@ import { MainPageComponent } from './sites/main-page/main-page.component';
 import { RegisterComponent } from './sites/user/register/register.component';
 import { LoginComponent } from './sites/user/login/login.component';
 import { UserDetailComponent } from './sites/user/user-detail/user-detail.component';
-import { UserEditComponent } from './sites/user/user-edit/user-edit.component';
 import { UserPasswordComponent } from './sites/user/user-password/user-password.component';
 import { UserEmailComponent } from './sites/user/user-email/user-email.component';
 import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
@@ -78,7 +77,6 @@ registerLocaleData(localeHu);
 @NgModule({
   declarations: [
     AppComponent,
-    UserEditComponent,
     UserDetailComponent,
     LoginComponent,
     MainPageComponent,
