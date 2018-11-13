@@ -208,7 +208,7 @@
               <div class="ui-g list_element">
                 <div class="ui-g-12 ui-md-3">
                   <div *ngIf="message.userFrom.iconFileGdaId === ''; else showUserIcon">
-                    <img src="" class="fas fa-user fa-4x icon_img">
+                    <img src="" class="fas fa-user fa-4x icon_img list_element_img">
                   </div>
                   <ng-template #showUserIcon>
                     <img src="{{'https://docs.google.com/uc?export=download&id=' + message.userFrom.iconFileGdaId}}" class="list_element_img">
