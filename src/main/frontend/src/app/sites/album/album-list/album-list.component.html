@@ -1,12 +1,12 @@
 <h1 class="first">
   Albumok
 </h1>
-<div *ngIf="albums.length === 0">
+<div *ngIf="albums.length === 0; else showAlbums">
   <strong>
     Még nincs album feltöltve!
   </strong>
 </div>
-<div *ngIf="albums.length >= 1">
+<ng-template #showAlbums>
   <p-dataView #dv [value]="albums" [paginator]="true" [rows]="10" paginatorPosition="both">
     <ng-template let-album pTemplate="listItem">
       <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
@@ -20,14 +20,30 @@
         </div>
         <div class="ui-g-10 ui-md-7">
           <div class="ui-g">
-            <a [routerLink]="['/album', album.id]">
-              <h1 class="first">
-                {{album.title}}
-              </h1>
-            </a>
+            <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
+              <div class="ui-grid-row">
+                <h3>
+                  <a [routerLink]="['/album', album.id]">
+                    {{album.title}}
+                  </a>
+                </h3>
+              </div>
+              <div class="ui-grid-row">
+                <h4>
+                  <a [routerLink]="['/user', album.user.id]">
+                    {{album.user.username}}
+                  </a>
+                </h4>
+              </div>
+              <div>
+                <h4>
+                  {{album.date | date}}
+                </h4>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </ng-template>
   </p-dataView>
-</div>
+</ng-template>
