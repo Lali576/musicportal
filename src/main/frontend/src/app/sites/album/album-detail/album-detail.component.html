@@ -7,13 +7,36 @@
 </h1>
 <div>
   <div *ngIf="album.coverFileGdaId === ''; else showCover">
-    <img class="fas fa-compact-disc fa-4x" width="100px" style="margin: 10px; border-radius: 5px;">
+    <img class="fas fa-compact-disc fa-4x cover_img">
   </div>
   <ng-template #showCover>
-    <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" width="100px" style="margin: 10px; border-radius: 5px;">
+    <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" class="cover_img">
   </ng-template>
   <br>
-  <button *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === album.user.id)" pButton type="button" label="Szerkeszt">
+  <p-dialog header="Borító kép szerkesztés" [(visible)]="coverEditDisplay" [modal]="true" [responsive]="true" [width]="350"
+            [minWidth]="200" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <p-fileUpload (onSelect)="onFileSelected($event)"
+                  (onClear)="onFileRemove()"
+                  (onRemove)="onFileRemove()"
+                  accept="image/*"
+                  chooseLabel="Kiválasztás"
+                  [showUploadButton]="false"
+                  [showCancelButton]="false">
+
+    </p-fileUpload>
+    <p-footer>
+      <button type="button" pButton icon="fas fa-check" (click)="changeCoverFile(); coverEditDisplay = false;"
+              label="Küld"></button>
+      <button type="button" pButton icon="fas fa-times" (click)="coverEditDisplay=false" label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
+  <button
+    *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === album.user.id)"
+    pButton type="button"
+    (click)="showCoverDialog()"
+    label="Szerkeszt"
+    style="margin: 5px 0px">
   </button>
 </div>
 <table class="table">
@@ -45,11 +68,24 @@
       </td>
     </tr>
     <tr>
+      <th>
+        Típus:
+      </th>
+      <td>
+        {{album.type}}
+      </td>
+    </tr>
+    <tr>
       <th>Műfajok:</th>
       <td>
-        <button *ngFor="let albumTag of album"
-                pButton type="button"
-                label="#{{albumTag.word}}"></button>
+        <div *ngIf="albumGenres.length === 0; else showAlbumGenres">
+          <i>Nincsenek megadva műfajok</i>
+        </div>
+        <ng-template>
+          <button *ngFor="let albumGenre of albumGenres"
+                  pButton type="button"
+                  label="{{albumGenre.word}}"></button>
+        </ng-template>
       </td>
     </tr>
     <tr>
@@ -72,7 +108,7 @@
     <div class="ui-g-12" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
       <div class="ui-g-10 ui-md-7">
         <div class="ui-g">
-          <a [routerLink]="['/song', song.id]" style="color: black;">
+          <a [routerLink]="['/song', song.id]">
             <h4 class="first">
               {{song.title}}
             </h4>

@@ -10,6 +10,9 @@ import {AuthService} from "../../../service/auth.service";
 import {AlbumTag} from "../../../model/tags/albumtag";
 import {TagService} from "../../../service/tag.service";
 import {Location} from "@angular/common";
+import {Genre} from "../../../model/genre";
+import {GenreService} from "../../../service/genre.service";
+import {UserTag} from "../../../model/tags/usertag";
 
 @Component({
   selector: 'app-album-detail',
@@ -19,13 +22,24 @@ import {Location} from "@angular/common";
 })
 export class AlbumDetailComponent implements OnInit {
   album: Album = new Album();
+  albumGenres: Genre[] = [];
   albumTags: AlbumTag[] = [];
   albumSongs: Song[] = [];
+
+  albumCoverFile: File = null;
+  albumEditGenres: Genre[] = [];
+  albumEditAlbumTags: string[] = [];
+
+  coverEditDisplay: boolean = false;
+  detailsEditDisplay: boolean = false;
+
+  genres: Genre[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private albumService: AlbumService,
     private songService: SongService,
+    private genreService: GenreService,
     private tagService: TagService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -38,9 +52,66 @@ export class AlbumDetailComponent implements OnInit {
       const id = +params.get('id');
       await this.albumService.getAlbum(id);
       this.album = this.albumService.album;
+      this.loadAlbumGenres();
       this.loadAlbumTags();
       this.loadSongs();
     })).subscribe();
+  }
+
+  loadAlbumGenres() {
+    this.genreService.getGenresByAlbum(this.album)
+      .then(
+        (genres: Genre[]) => {
+          this.albumGenres = genres;
+        }
+      )
+  }
+
+  loadAlbumTags() {
+    this.tagService.getTagsByAlbum(this.album)
+      .then(
+        (albumTags: AlbumTag[]) => {
+          this.albumTags = albumTags;
+        }
+      );
+  }
+
+  loadSongs() {
+    this.songService.getSongsByAlbum(this.album)
+      .then(
+        (songs: Song[]) => {
+          this.albumSongs = songs;
+        }
+      );
+  }
+
+  onFileSelected(event) {
+    this.albumCoverFile = <File>event.files[0];
+    console.log(this.albumCoverFile);
+  }
+
+  onFileRemove() {
+    this.albumCoverFile = null;
+    console.log("You're know you right...");
+  }
+
+  async changeCoverFile() {
+    await this.albumService.updateAlbumCover(this.album.id, this.album, this.albumCoverFile);
+    this.album.coverFileGdaId = this.albumService.album.coverFileGdaId;
+  }
+
+  async changeDetails() {
+    let albumTags: AlbumTag[] = [];
+
+    for(let tag of this.albumEditAlbumTags) {
+      let albumTag: AlbumTag = new AlbumTag();
+      albumTag.word = tag;
+      albumTags.push(albumTag);
+    }
+    await this.albumService.updateAlbumDetails(this.album.id, this.album, null, albumTags);
+    this.album = this.albumService.album;
+    this.loadAlbumGenres();
+    this.loadAlbumTags();
   }
 
   deleteSongConfirm(song: Song) {
@@ -62,22 +133,21 @@ export class AlbumDetailComponent implements OnInit {
     this.loadSongs();
   }
 
-  loadAlbumTags() {
-    this.tagService.getTagsByAlbum(this.album)
-      .then(
-        (albumTags: AlbumTag[]) => {
-          this.albumTags = albumTags;
-        }
-      );
+  showCoverDialog() {
+    this.coverEditDisplay = true;
   }
 
-  loadSongs() {
-    this.songService.getSongsByAlbum(this.album)
-      .then(
-        (songs: Song[]) => {
-          this.albumSongs = songs;
+  showDetailsDialog() {
+    this.loadGenres();
+  }
+
+  loadGenres() {
+    this.genreService.getGenres()
+      .subscribe(
+        (genres: Genre[]) => {
+          this.genres = genres;
         }
-      );
+      )
   }
 
   goBack() {
