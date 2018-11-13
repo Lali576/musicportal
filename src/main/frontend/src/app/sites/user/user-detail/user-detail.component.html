@@ -33,7 +33,8 @@
     *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)"
     type="button" pButton
     (click)="showIconDialog()"
-    label="Szerkeszt">
+    label="Szerkeszt"
+    style="margin: 5px 0px">
   </button>
 </div>
 <table class="table">
@@ -115,7 +116,7 @@
       <div class="ui-grid-row">
         <div class="ui-grid-col-2">
           <b>
-            Kedvenc műfaj *:
+            Kedvenc műfaj :
           </b>
         </div>
         <div class="ui-grid-col-6">
@@ -168,7 +169,8 @@
       *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)"
       type="button" pButton
       (click)="showBioDialog()"
-      label="Szerkeszt">
+      label="Szerkeszt"
+      class="new_make_button">
     </button>
     <p-dialog header="Biógráfia szerkesztés" [(visible)]="bioEditDisplay" [modal]="true" [responsive]="true"
               [width]="600" [minWidth]="400" [minY]="70"
@@ -186,7 +188,7 @@
       </i>
     </div>
     <ng-template #showBiography>
-      <div [innerHtml]="user.biography">
+      <div [innerHtml]="user.biography" class="biography">
       </div>
     </ng-template>
   </p-tabPanel>
@@ -195,7 +197,8 @@
       *ngIf="(authService.isLoggedIn)"
       type="button" pButton
       (click)="showMessageDialog()"
-      label="Új üzenet">
+      label="Új üzenet"
+      class="new_make_button">
     </button>
     <p-dialog header="Üzenet írás" [(visible)]="messageDisplay" [modal]="true" [responsive]="true" [width]="600"
               [minWidth]="400" [minY]="70"
