@@ -147,7 +147,7 @@ export class AlbumFormComponent implements OnInit {
         try {
           this.messageService.add({key: 'toast', severity:'info', summary: this.albumSongs[i].title + ' című dal feltöltés alatt', detail:''});
           console.log("Try to upload song titled " + this.albumSongs[i].title);
-          await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenre, this.albumTags);
+          await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenre);
           this.messageService.add({key: 'toast', severity:'success', summary: this.albumSongs[i].title + ' című dal sikeresen feltöltve', detail:''});
           console.log("Uploading song titled " + this.albumSongs[i].title + " was successful");
         } catch (e) {

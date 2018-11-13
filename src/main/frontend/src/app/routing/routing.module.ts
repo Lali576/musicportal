@@ -4,7 +4,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { MainPageComponent } from "../sites/main-page/main-page.component";
 import { AlbumListComponent } from "../sites/album/album-list/album-list.component";
 import { AuthGuard } from "../auth.guard";
-import { AlbumEditComponent } from "../sites/album/album-edit/album-edit.component";
 import { AlbumDetailComponent } from "../sites/album/album-detail/album-detail.component";
 import { SongListComponent } from "../sites/song/song-list/song-list.component";
 import { SongEditComponent } from "../sites/song/song-edit/song-edit.component";
@@ -69,12 +68,6 @@ const routes: Routes = [
   {
     path: 'album/:id/songs',
     component: AlbumSongsComponent
-  },
-  {
-    path: 'album/:id/update/details',
-    component: AlbumEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
   },
   {
     path: 'song/list',

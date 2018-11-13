@@ -51,7 +51,6 @@ import { UserEmailComponent } from './sites/user/user-email/user-email.component
 import { AlbumFormComponent } from './sites/album/album-form/album-form.component';
 import { AlbumListComponent } from './sites/album/album-list/album-list.component';
 import { AlbumDetailComponent } from './sites/album/album-detail/album-detail.component';
-import { AlbumEditComponent } from './sites/album/album-edit/album-edit.component';
 import { SongListComponent } from './sites/song/song-list/song-list.component';
 import { SongDetailComponent } from './sites/song/song-detail/song-detail.component';
 import { SongEditComponent } from './sites/song/song-edit/song-edit.component';
@@ -81,7 +80,6 @@ registerLocaleData(localeHu);
     LoginComponent,
     MainPageComponent,
     MenuComponent,
-    AlbumEditComponent,
     AlbumListComponent,
     AlbumDetailComponent,
     PlaylistListComponent,

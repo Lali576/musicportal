@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.elte.wr14yr.musicportal.model.Album;
 import hu.elte.wr14yr.musicportal.model.Playlist;
 import hu.elte.wr14yr.musicportal.model.Song;
-import hu.elte.wr14yr.musicportal.model.User;
 import hu.elte.wr14yr.musicportal.model.tags.AlbumTag;
 import hu.elte.wr14yr.musicportal.model.tags.PlaylistTag;
-import hu.elte.wr14yr.musicportal.model.tags.SongTag;
 import hu.elte.wr14yr.musicportal.model.tags.UserTag;
 import hu.elte.wr14yr.musicportal.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,19 +38,6 @@ public class TagController {
         logger.info("Tag controller: exit endpoint '/list-by-album'");
 
         return ResponseEntity.ok(albumTags);
-    }
-
-    @PostMapping("/list-by-song")
-    public ResponseEntity<Iterable<SongTag>> listSongTagsBySong(MultipartHttpServletRequest request) throws IOException {
-        logger.info("Tag controller: enter endpoint '/list-by-song'");
-
-        Song song = mapper.readValue(request.getParameter("song"), Song.class);
-
-        Iterable<SongTag> songTags = tagService.listSongTagsBySong(song);
-
-        logger.info("Tag controller: exit endpoint '/list-by-song'");
-
-        return ResponseEntity.ok(songTags);
     }
 
     @PostMapping("/list-by-playlist")

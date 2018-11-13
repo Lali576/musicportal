@@ -2,11 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Album} from "../model/album";
 import {AlbumTag} from "../model/tags/albumtag";
-import {Song} from "../model/song";
-import {SongTag} from "../model/tags/songtag";
 import {Playlist} from "../model/playlist";
 import {PlaylistTag} from "../model/tags/playlisttag";
-import {User} from "../model/user";
 import {UserTag} from "../model/tags/usertag";
 
 @Injectable({

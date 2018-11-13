@@ -4,7 +4,6 @@ import {Song} from "../model/song";
 import {Album} from "../model/album";
 import {Playlist} from "../model/playlist";
 import {Genre} from "../model/genre";
-import {SongTag} from "../model/Tags/songtag";
 import {tap} from "rxjs/internal/operators";
 import {SongComment} from "../model/songcomment";
 import {SongLike} from "../model/songlike";
@@ -27,13 +26,12 @@ export class SongService {
     this.audio = new Audio();
   }
 
-  addSong(song: Song, audioFile: File, album: Album, genres: Genre[], songTags: SongTag[]): Promise<Song> {
+  addSong(song: Song, audioFile: File, album: Album, genres: Genre[]): Promise<Song> {
     const formData = new FormData();
     formData.append("song", JSON.stringify(song));
     formData.append(audioFile.name, audioFile, audioFile.name);
     formData.append("album", JSON.stringify(album));
     formData.append("genres", JSON.stringify(genres));
-    formData.append("songTags", JSON.stringify(songTags));
     return this.http.post<Song>(
       'api/song/new',
       formData

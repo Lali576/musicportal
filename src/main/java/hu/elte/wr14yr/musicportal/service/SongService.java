@@ -1,7 +1,6 @@
 package hu.elte.wr14yr.musicportal.service;
 
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.tags.SongTag;
 import hu.elte.wr14yr.musicportal.repository.SongCommentRepository;
 import hu.elte.wr14yr.musicportal.repository.SongCounterRepository;
 import hu.elte.wr14yr.musicportal.repository.SongLikeRepository;
@@ -40,7 +39,7 @@ public class SongService {
 
     private Logger logger = Logger.getLogger(SongService.class.getName());
 
-    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres, List<SongTag> songTags) {
+    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres) {
         logger.info("Song service: new song is going to be saved in database MusicPortal");
 
         song.setUser(user);
@@ -57,10 +56,6 @@ public class SongService {
         Song savedSong = songRepository.save(song);
 
         logger.info("Song service: new song has been successfully saved in database MusicPortal");
-
-        if(songTags != null) {
-            tagService.createSongTags(songTags, savedSong);
-        }
 
         String audioFileGdaId = fileService.uploadFile(audioFile, album.getAlbumSongsFolderGdaId());
 
@@ -153,7 +148,6 @@ public class SongService {
         songCommentRepository.deleteAllBySong(song);
         songCounterRepository.deleteAllBySong(song);
         songLikeRepository.deleteAllBySong(song);
-        tagService.deleteAllSongTagsBySong(song);
         fileService.delete(song.getAudioFileGdaId());
         songRepository.deleteById(song.getId());
 

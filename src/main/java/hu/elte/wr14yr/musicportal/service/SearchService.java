@@ -3,7 +3,6 @@ package hu.elte.wr14yr.musicportal.service;
 import hu.elte.wr14yr.musicportal.model.*;
 import hu.elte.wr14yr.musicportal.model.tags.*;
 import hu.elte.wr14yr.musicportal.model.tags.PlaylistTag;
-import hu.elte.wr14yr.musicportal.model.tags.SongTag;
 import hu.elte.wr14yr.musicportal.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,12 +48,6 @@ public class SearchService {
         logger.info(String.format("Search service: songs with title %s are going to be searched", title));
 
         return songRepository.findAllByTitleContainsAllIgnoreCase(title);
-    }
-
-    public Iterable<Song> findSongsBySongTag(SongTag songTag) {
-        logger.info("Search service: users with current user tag are going to be searched");
-
-        return songRepository.findAllBySongTags(songTag);
     }
 
     public Iterable<Song> findSongsByGenre(Genre genre) {

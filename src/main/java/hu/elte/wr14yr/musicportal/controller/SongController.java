@@ -1,13 +1,11 @@
 package hu.elte.wr14yr.musicportal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import hu.elte.wr14yr.musicportal.annotation.Role;
 import static hu.elte.wr14yr.musicportal.model.User.Role.ARTIST;
 import static hu.elte.wr14yr.musicportal.model.User.Role.USER;
 
 import hu.elte.wr14yr.musicportal.model.*;
-import hu.elte.wr14yr.musicportal.model.tags.SongTag;
 import hu.elte.wr14yr.musicportal.service.FileService;
 import hu.elte.wr14yr.musicportal.service.SongService;
 import hu.elte.wr14yr.musicportal.service.UserService;
@@ -80,10 +78,7 @@ public class SongController {
 
         logger.info("Song controller: get parameter  'songTags'");
 
-        SongTag[] songTagsArray = mapper.readValue(request.getParameter("songTags"), SongTag[].class);
-        List<SongTag> songTagsList = Arrays.asList(songTagsArray);
-
-        Song savedSong = songService.create(song, user, album, file, genresList, songTagsList);
+        Song savedSong = songService.create(song, user, album, file, genresList);
 
         if(file != null) {
             file.delete();
