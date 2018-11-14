@@ -4,17 +4,12 @@
   margin: 0px;
 }
 
-.cover div {
+.cover img {
   display: inline-block;
   border: 5px solid rgb(24,107, 160);
   border-radius: 20px;
   width: 210px;
   height: 210px;
-}
-
-.cover img {
-  width: 200px;
-  height: 200px;
 }
 
 .details {
@@ -160,6 +155,15 @@
 
 .tag_button {
   margin-right: .5em;
+}
+
+.counter_container {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.counter_container i {
+  margin-right: 1em;
 }
 
 .list_element {

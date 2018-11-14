@@ -22,6 +22,7 @@ export class SongDetailComponent implements OnInit {
   album: Album = new Album();
   albumTags: AlbumTag[] = [];
   songComments: SongComment[] = [];
+  songCounterNumber: number = 0;
   songEditLyrics: string = "";
   tempCommentText: string = "";
   commentDisplay: boolean = false;
@@ -53,6 +54,7 @@ export class SongDetailComponent implements OnInit {
       this.total = this.formatTime(this.song.duration);
       this.audio.volume = this.volumeNumber/100;
       this.loadAlbumTags();
+      this.loadSongCounterNumber();
       this.loadSongComments();
     })).subscribe();
   }
@@ -64,6 +66,15 @@ export class SongDetailComponent implements OnInit {
           this.albumTags = albumTags;
         }
       );
+  }
+
+  loadSongCounterNumber() {
+    this.songService.countSongCounters(this.song.id, this.song)
+      .then(
+        (songCounterNumber: number) => {
+          this.songCounterNumber = songCounterNumber;
+        }
+      )
   }
 
   loadSongComments() {
@@ -101,6 +112,8 @@ export class SongDetailComponent implements OnInit {
     if(this.paused) {
       this.audio.play();
       this.paused = false;
+
+      this.addSongCounter();
     }
   }
 
@@ -160,6 +173,14 @@ export class SongDetailComponent implements OnInit {
         this.songEditLyrics = this.song.lyrics;
       }
     );
+  }
+
+  async addSongCounter() {
+    await this.songService.addSongCounter(this.song).then(
+      (songCounterNumber: number) => {
+        this.songCounterNumber = songCounterNumber;
+      }
+    )
   }
 
   async sendComment() {

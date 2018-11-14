@@ -20,7 +20,7 @@ export class SongService {
 
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.audio = new Audio();
   }
