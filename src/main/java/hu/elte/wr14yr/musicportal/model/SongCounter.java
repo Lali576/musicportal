@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "SONG_COUNTERS",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"SONG_ID", "USER_ID", "IP_ADDRESS"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"SONG_ID", "USER_ID"}))
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"user",
@@ -28,7 +28,4 @@ public class SongCounter {
     @JoinColumn(name = "USER_ID")
     @ManyToOne(targetEntity = User.class)
     private User user;
-
-    @Column(name = "IP_ADDRESS", nullable = false)
-    private String ipAddress;
 }
