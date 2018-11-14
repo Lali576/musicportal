@@ -314,10 +314,6 @@ public class SongController {
     public ResponseEntity<Integer> createSongCounter(MultipartHttpServletRequest request) throws IOException {
         logger.info("Song controller: enter endpoint '/counter/new'");
 
-        logger.info("Song controller: get parameter 'songCounter'");
-
-        SongCounter songCounter = mapper.readValue(request.getParameter("songCounter"), SongCounter.class);
-
         logger.info("Song controller: get parameter 'song'");
 
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
@@ -326,7 +322,7 @@ public class SongController {
 
         User user = userService.getLoggedInUser();
 
-        int counterNumber = songService.saveSongCounter(songCounter, song, user);
+        int counterNumber = songService.saveSongCounter(song, user);
 
         logger.info("Song controller: exit endpoint '/counter/new'");
 

@@ -208,14 +208,16 @@ public class SongService {
         return counts;
     }
 
-    public int saveSongCounter(SongCounter songCounter, Song song, User user) {
+    public int saveSongCounter(Song song, User user) {
         logger.info(String.format("Song service: new song counter material for song titled %s" +
                 " is going to be saved", song.getTitle()));
 
+        SongCounter songCounter = new SongCounter();
+
         songCounter.setSong(song);
-        if (!(user.getRole().equals(User.Role.USER))) {
-            songCounter.setUser(user);
-        }
+
+        songCounter.setUser(user);
+
         SongCounter savedSongCounter = songCounterRepository.save(songCounter);
 
         logger.info(String.format("Song service: new song counter material for song titled %s" +

@@ -7,7 +7,6 @@ import {Genre} from "../model/genre";
 import {tap} from "rxjs/internal/operators";
 import {SongComment} from "../model/songcomment";
 import {SongLike} from "../model/songlike";
-import {SongCounter} from "../model/songcounter";
 
 @Injectable()
 export class SongService {
@@ -171,9 +170,8 @@ export class SongService {
     ).toPromise();
   }
 
-  addSongCounter(songCounter: SongCounter, song: Song) {
+  addSongCounter(song: Song) {
     const formData = new FormData();
-    formData.append("songCounter", JSON.stringify(songCounter));
     formData.append("song", JSON.stringify(song));
     return this.http.post<number>(
       'api/song/counter/new',
