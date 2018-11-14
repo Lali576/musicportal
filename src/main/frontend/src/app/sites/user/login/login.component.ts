@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
-import {Tag} from "../../../model/Tags/tag";
 import {Message} from "primeng/api";
 
 @Component({
@@ -14,8 +13,6 @@ export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
   msgs: Message[] = [];
-  tag: Tag = new Tag();
-  Tags: Tag[] = [];
 
   constructor(
     private authService: AuthService,
@@ -31,14 +28,14 @@ export class LoginComponent implements OnInit {
       return;
     }
     try {
-      this.showMsgInfo()
+      this.showMsgInfo();
       await this.authService.login(this.username, this.password);
-      this.showMsgSuccess()
+      this.showMsgSuccess();
       console.log("Successful logging");
       this.router.navigate(['/user', this.authService.loggedInUser.id]);
     } catch (e) {
-      this.showMsgError()
-      console.log("Error! Unsuccessful logging")
+      this.showMsgError();
+      console.log("Error! Unsuccessful logging");
       console.log(e);
     }
   }

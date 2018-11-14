@@ -154,7 +154,7 @@
 }
 
 .tag_button_div {
-  margin: 20px 0px;
+  margin: 20px 0;
   text-align: center;
 }
 
@@ -195,8 +195,10 @@
   border: solid 1px #000;
   min-width: 500px;
   height: auto;
+  max-height: 300px;
+  overflow: auto;
 }
 
-button {
-  margin: 10px 0px;
+.make_button {
+  margin-bottom: 10px;
 }

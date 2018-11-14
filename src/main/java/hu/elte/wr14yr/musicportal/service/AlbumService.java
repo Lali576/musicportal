@@ -119,6 +119,7 @@ public class AlbumService {
 
         if(album.getCoverFileGdaId().equals("")) {
             if(coverFile != null) {
+                fileService.delete(album.getCoverFileGdaId());
                 String coverFileGdaId = fileService.uploadFile(coverFile, album.getAlbumCoverFolderGdaId());
                 album.setCoverFileGdaId(coverFileGdaId);
             }

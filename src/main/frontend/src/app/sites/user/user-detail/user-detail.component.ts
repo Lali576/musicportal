@@ -75,6 +75,8 @@ export class UserDetailComponent implements OnInit {
       await this.userService.getUser(id).then(
         (user: User) => {
           this.user = user;
+          this.userEditCountryId = this.user.countryId;
+          this.userEditGenreId = this.user.favGenreId;
           this.userEditBiography = this.user.biography;
           this.loadUserTags();
           this.loadUserMessages();
@@ -90,8 +92,16 @@ export class UserDetailComponent implements OnInit {
       .then(
         (userTags: UserTag[]) => {
           this.userTags = userTags;
+          this.loadEditUserTags();
         }
       );
+  }
+
+  loadEditUserTags() {
+    for(let userTag of this.userTags) {
+      let word: string = userTag.word;
+      this.userEditUserTags.push(word);
+    }
   }
 
   loadUserMessages() {

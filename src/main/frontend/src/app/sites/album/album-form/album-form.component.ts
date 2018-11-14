@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Album} from "../../../model/album";
 import {Song} from "../../../model/song";
-import {AlbumTag} from "../../../model/Tags/albumtag";
+import {AlbumTag} from "../../../model/tags/albumtag";
 import {GenreService} from "../../../service/genre.service";
 import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";

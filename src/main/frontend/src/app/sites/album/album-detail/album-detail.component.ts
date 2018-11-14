@@ -13,6 +13,7 @@ import {Location} from "@angular/common";
 import {Genre} from "../../../model/genre";
 import {GenreService} from "../../../service/genre.service";
 import {UserTag} from "../../../model/tags/usertag";
+import {delay} from "q";
 
 @Component({
   selector: 'app-album-detail',

@@ -90,7 +90,7 @@
   <button pButton type="button" label="Adatok szerk." (click)="showDetailsDialog()">
   </button>
   <p-dialog header="Adatok szerkesztése" [(visible)]="detailsEditDisplay" [modal]="true" [responsive]="true"
-            [width]="600" [minWidth]="400" [minY]="70"
+            [width]="800" [minWidth]="400" [minY]="70"
             [maximizable]="true" [baseZIndex]="10000">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
       <div class="ui-grid-row">
@@ -144,7 +144,7 @@
                    [(ngModel)]="userEditUserTags"
                    #userTags="ngModel">
             <ng-template let-item pTemplate="item">
-              #{{item}}<i style="margin-right: .2em"></i>
+              #{{item}}<i style="margin-right: 1.5em"></i>
             </ng-template>
           </p-chips>
         </div>
@@ -289,7 +289,7 @@
             <div class="ui-g-10 ui-md-7">
               <div class="ui-g">
                 <a [routerLink]="['/album', album.id]">
-                  <h1 class="first">
+                  <h1 class="first" style="margin-top: 25px">
                     {{album.title}}
                   </h1>
                 </a>
@@ -322,7 +322,7 @@
             <div class="ui-g-10 ui-md-7">
               <div class="ui-g">
                 <a [routerLink]="['/song', song.id]">
-                  <h1 class="first">
+                  <h1 class="first" style="margin-top: 25px">
                     {{song.title}}
                   </h1>
                 </a>
@@ -359,7 +359,7 @@
             <div class="ui-g-10 ui-md-7">
               <div class="ui-g">
                 <a [routerLink]="['/playlist', playlist.id]">
-                  <h1 class="first">
+                  <h1 class="first" style="margin-top: 25px">
                     {{playlist.name}}
                   </h1>
                 </a>
