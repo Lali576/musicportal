@@ -15,7 +15,7 @@ public interface SongLikeRepository extends CrudRepository<SongLike, Long> {
     @Query(value = "SELECT COUNT(ID) FROM SONG_LIKES WHERE SONG_ID = :SONG_ID AND SONG_TYPE LIKE 'LIKE'", nativeQuery = true)
     int countAllBySongAndRoleLike(@Param("SONG_ID") long songId);
 
-    @Query(value = "SELECT COUNT(ID) FROM SONG_LIKES WHERE songId = :SONG_ID AND SONG_TYPE LIKE 'DISLIKE'", nativeQuery = true)
+    @Query(value = "SELECT COUNT(ID) FROM SONG_LIKES WHERE SONG_ID = :SONG_ID AND SONG_TYPE LIKE 'DISLIKE'", nativeQuery = true)
 	int countAllBySongAndRoleDislike(@Param("SONG_ID") long songId);
 
     @Override
