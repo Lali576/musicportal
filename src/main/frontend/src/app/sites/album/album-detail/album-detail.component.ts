@@ -27,6 +27,7 @@ export class AlbumDetailComponent implements OnInit {
   albumTags: AlbumTag[] = [];
   albumSongs: Song[] = [];
 
+  albumEditTitle: string = "";
   albumCoverFile: File = null;
   albumEditGenres: Genre[] = [];
   albumEditAlbumTags: string[] = [];
@@ -68,15 +69,6 @@ export class AlbumDetailComponent implements OnInit {
       )
   }
 
-  loadAlbumTags() {
-    this.tagService.getTagsByAlbum(this.album)
-      .then(
-        (albumTags: AlbumTag[]) => {
-          this.albumTags = albumTags;
-        }
-      );
-  }
-
   loadSongs() {
     this.songService.getSongsByAlbum(this.album)
       .then(
@@ -84,6 +76,23 @@ export class AlbumDetailComponent implements OnInit {
           this.albumSongs = songs;
         }
       );
+  }
+
+  loadAlbumTags() {
+    this.tagService.getTagsByAlbum(this.album)
+      .then(
+        (albumTags: AlbumTag[]) => {
+          this.albumTags = albumTags;
+          this.loadEditAlbumTags();
+        }
+      );
+  }
+
+  loadEditAlbumTags() {
+    for(let userTag of this.albumTags) {
+      let word: string = userTag.word;
+      this.albumEditAlbumTags.push(word);
+    }
   }
 
   onFileSelected(event) {
@@ -109,10 +118,32 @@ export class AlbumDetailComponent implements OnInit {
       albumTag.word = tag;
       albumTags.push(albumTag);
     }
-    await this.albumService.updateAlbumDetails(this.album.id, this.album, null, albumTags);
+
+    console.log(this.albumEditGenres);
+
+    await this.albumService.updateAlbumDetails(this.album.id, this.album, this.albumEditGenres, albumTags);
     this.album = this.albumService.album;
     this.loadAlbumGenres();
     this.loadAlbumTags();
+  }
+
+  deleteAlbumConfirm() {
+    this.confirmationService.confirm({
+      message: "Biztos szeretné törölni az alábbi albumot: " + this.album.title + " ?",
+      header: 'Album törlés',
+      icon: 'fas fa-exclamation-triangle',
+      accept: () => {
+        this.deleteAlbum(this.album);
+      },
+      reject: () => {
+      }
+    });
+  }
+
+  async deleteAlbum(album) {
+    await this.albumService.deleteAlbum(album);
+    this.messageService.add({severity:'success', summary: album.title + ' című album sikeresen törölve', detail:''});
+    await delay(1000);
   }
 
   deleteSongConfirm(song: Song) {
@@ -140,6 +171,8 @@ export class AlbumDetailComponent implements OnInit {
 
   showDetailsDialog() {
     this.loadGenres();
+    this.albumEditTitle = this.album.title;
+    this.detailsEditDisplay = true;
   }
 
   loadGenres() {

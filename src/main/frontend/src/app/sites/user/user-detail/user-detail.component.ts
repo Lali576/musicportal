@@ -204,44 +204,6 @@ export class UserDetailComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  deleteAlbumConfirm(album: Album) {
-    this.confirmationService.confirm({
-      message: "Biztos szeretné törölni az alábbi albumot: " + album.title + " ?",
-      header: 'Album törlés',
-      icon: 'fas fa-exclamation-triangle',
-      accept: () => {
-        this.deleteAlbum(album);
-      },
-      reject: () => {
-      }
-    });
-  }
-
-  async deleteAlbum(album) {
-    await this.albumService.deleteAlbum(album);
-    this.messageService.add({severity:'success', summary: album.title + ' című album sikeresen törölve', detail:''});
-    this.loadAlbums();
-  }
-
-  deleteSongConfirm(song: Song) {
-    this.confirmationService.confirm({
-      message: "Biztos szeretné törölni az alábbi dalt: " + song.title + " ?",
-      header: 'Dal törlés',
-      icon: 'fas fa-exclamation-triangle',
-      accept: () => {
-        this.deleteSong(song);
-      },
-      reject: () => {
-      }
-    });
-  }
-
-  async deleteSong(song) {
-    await this.songService.deleteSong(song);
-    this.messageService.add({severity:'success', summary: song.title + ' című album sikeresen törölve', detail:''});
-    this.loadSongs();
-  }
-
   deletePlaylistConfirm(playlist) {
     this.confirmationService.confirm({
       message: "Biztos szeretné törölni az alábbi lejátszási listát: " + playlist.title + " ?",

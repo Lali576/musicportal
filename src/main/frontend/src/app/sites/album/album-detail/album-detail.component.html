@@ -1,7 +1,7 @@
-<p-toast [style]="{marginTop: '80px'}"></p-toast>
-<p-confirmDialog></p-confirmDialog>
 <button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog acceptLabel="Igen" rejectLabel="Nem"></p-confirmDialog>
 <h1 class="first">
   Album
 </h1>
@@ -103,6 +103,74 @@
     </tr>
   </tbody>
 </table>
+<div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === album.user.id)" class="edit_buttons">
+  <button pButton type="button" label="Adatok szerk." (click)="showDetailsDialog()">
+  </button>
+  <p-dialog header="Adatok szerkesztése" [(visible)]="detailsEditDisplay" [modal]="true" [responsive]="true"
+            [width]="800" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Cím:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="albumTitleText"
+                 pInputText type="text"
+                 [(ngModel)]="albumEditTitle"
+                 #albumTitleText="ngModel"
+                 required />
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Műfajok :
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <p-listbox name="genresListbox"
+                     [options]="genres"
+                     [(ngModel)]="albumEditGenres"
+                     #genresListbox = "ngModel"
+                     multiple="multiple"
+                     checkbox="checkbox"
+                     filter="filter"
+                     optionLabel="name"
+                     [listStyle]="{'max-height':'150px'}">
+          ></p-listbox>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Címkék :
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <p-chips name="albumTagsChips"
+                   [(ngModel)]="albumEditAlbumTags"
+                   #userTags="ngModel">
+            <ng-template let-item pTemplate="item">
+              #{{item}}<i style="margin-right: 1.5em"></i>
+            </ng-template>
+          </p-chips>
+        </div>
+        <div class="ui-grid-col-4">
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button type="button" pButton icon="fas fa-check" (click)="changeDetails(); detailsEditDisplay = false;"
+              label="Mentés"></button>
+      <button type="button" pButton icon="fas fa-times" (click)="detailsEditDisplay=false" label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
+  <button pButton type="button" (click)="deleteAlbumConfirm()" label="Album törlése">
+  </button>
+</div>
 <p-dataView *ngIf="albumSongs.length >= 1" #dv [value]="albumSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
   <ng-template let-song pTemplate="listItem">
     <div class="ui-g-12" style="padding: 1em;border-bottom: 1px solid #d9d9d9">

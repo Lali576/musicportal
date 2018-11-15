@@ -19,11 +19,10 @@ export class AlbumFormComponent implements OnInit {
   msgs: Message[] = [];
   album: Album = new Album();
   albumCoverFile: File = null;
-  albumGenre: Genre[] = [];
+  albumGenres: Genre[] = [];
   Tags: string[] = [];
   albumTags: AlbumTag[] = [];
   genres: Genre[] = [];
-  selectedGenres: Genre[] = [];
   displayDialog: boolean;
   song: Song = new Song();
   songFile: File = null;
@@ -141,13 +140,13 @@ export class AlbumFormComponent implements OnInit {
       }
       this.showMsgInfo();
       this.messageService.add({key: 'toast', severity:'info', summary: this.album.title + ' című album feltöltés alatt', detail:''});
-      this.album = await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenre, this.albumTags);
+      this.album = await this.albumService.addAlbum(this.album, this.albumCoverFile, this.albumGenres, this.albumTags);
       this.messageService.add({key: 'toast', severity:'success', summary: this.album.title + ' című album sikeresen feltöltve', detail:''});
       for(let i = 0; i < this.albumSongs.length; i++) {
         try {
           this.messageService.add({key: 'toast', severity:'info', summary: this.albumSongs[i].title + ' című dal feltöltés alatt', detail:''});
           console.log("Try to upload song titled " + this.albumSongs[i].title);
-          await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenre);
+          await this.songService.addSong(this.albumSongs[i], this.albumSongsFiles[i], this.album, this.albumGenres);
           this.messageService.add({key: 'toast', severity:'success', summary: this.albumSongs[i].title + ' című dal sikeresen feltöltve', detail:''});
           console.log("Uploading song titled " + this.albumSongs[i].title + " was successful");
         } catch (e) {
