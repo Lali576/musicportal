@@ -39,12 +39,11 @@ public class SongService {
 
     private Logger logger = Logger.getLogger(SongService.class.getName());
 
-    public Song create(Song song, User user, Album album, File audioFile, List<Genre> genres) {
+    public Song create(Song song, User user, Album album, File audioFile) {
         logger.info("Song service: new song is going to be saved in database MusicPortal");
 
         song.setUser(user);
         song.setAlbum(album);
-        song.setGenres(genres);
 
         try {
             AudioFile f = AudioFileIO.read(audioFile);

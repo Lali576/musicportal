@@ -57,7 +57,4 @@ public class Song {
 
     @ManyToMany(targetEntity = Playlist.class, mappedBy = "songs")
     private List<Playlist> playlist;
-
-    @ManyToMany(targetEntity = Genre.class, mappedBy = "songs")
-    private List<Genre> genres;
 }

@@ -71,14 +71,9 @@ public class SongController {
 
         Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
-        logger.info("Song controller: get parameter  'genres'");
-
-        Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
-        List<Genre> genresList = Arrays.asList(genresArray);
-
         logger.info("Song controller: get parameter  'songTags'");
 
-        Song savedSong = songService.create(song, user, album, file, genresList);
+        Song savedSong = songService.create(song, user, album, file);
 
         if(file != null) {
             file.delete();
