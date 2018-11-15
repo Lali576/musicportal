@@ -50,12 +50,6 @@ public class SearchService {
         return songRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Song> findSongsByGenre(Genre genre) {
-        logger.info("Search service: songs with current genres are going to be searched");
-
-        return songRepository.findAllByGenres(genre);
-    }
-
     public Iterable<Playlist> findPlaylistByName(String name) {
         logger.info(String.format("Search service: playlists with name %s are going to be searched", name));
 

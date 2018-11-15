@@ -21,8 +21,6 @@ public interface SongRepository extends CrudRepository<Song, Long>{
 
     List<Song> findAllByPlaylist(Playlist playlist);
 
-    List<Song> findAllByGenres(Genre genre);
-
     Song findSongById(long id);
 
     @Override

@@ -14,6 +14,4 @@ public interface GenreRepository extends CrudRepository<Genre, Long> {
     List<Genre> findAll();
 
     List<Genre> findAllByAlbums(Album album);
-
-    List<Genre> findAllBySongs(Song song);
 }

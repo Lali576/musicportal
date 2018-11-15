@@ -72,18 +72,6 @@ public class SearchController {
         return ResponseEntity.ok(foundSongs);
     }
 
-    @PostMapping("/songs/genre")
-    public ResponseEntity<Iterable<Song>> findSongsByGenre(MultipartHttpServletRequest request) throws IOException {
-        logger.info("Search controller: enter endpoint '/songs/genre'");
-
-        Genre genre = mapper.readValue(request.getParameter("genre"), Genre.class);
-        Iterable<Song> foundSongs = searchService.findSongsByGenre(genre);
-
-        logger.info("Search controller: exit endpoint '/songs/genre'");
-
-        return ResponseEntity.ok(foundSongs);
-    }
-
     @GetMapping("/playlists/{name}")
     public ResponseEntity<Iterable<Playlist>> findPlaylistByName(@PathVariable String name) {
         logger.info(String.format("Search controller: enter endpoint '/playlists/%s'", name));

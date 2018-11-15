@@ -13,8 +13,7 @@ import java.util.List;
 @Table(name = "SONGS")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"genres",
-                        "songTags",
+@JsonIgnoreProperties({"songTags",
                         "songComments",
                         "songCounters",
                         "songLikes",
