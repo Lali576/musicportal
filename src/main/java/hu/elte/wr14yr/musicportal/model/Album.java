@@ -47,6 +47,10 @@ public class Album {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
+    @Column(name = "TYPE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
     @OneToMany(targetEntity = Song.class, mappedBy = "album")
     private List<Song> songs;
 
@@ -55,10 +59,6 @@ public class Album {
 
     @OneToMany(targetEntity = AlbumTag.class, mappedBy = "album")
     private List<AlbumTag> albumTags;
-
-    @Column(name = "TYPE", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Type type;
 
     public enum Type {
         SINGLE, EP, LP

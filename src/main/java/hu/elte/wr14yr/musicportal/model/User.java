@@ -66,6 +66,10 @@ public class User {
     @Column(name = "ICON_FILE_GDA_ID")
     private String iconFileGdaId;
 
+    @Column(name = "ROLE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(targetEntity = Album.class, mappedBy = "user")
     private List<Album> albums;
 
@@ -92,10 +96,6 @@ public class User {
 
     @OneToMany(targetEntity = UserTag.class, mappedBy = "user")
     private List<UserTag> userTags;
-
-    @Column(name = "ROLE", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
     public enum Role {
         GUEST, USER, ARTIST

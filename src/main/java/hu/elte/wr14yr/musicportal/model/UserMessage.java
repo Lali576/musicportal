@@ -30,7 +30,7 @@ public class UserMessage {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User userFrom;
 
-    @Column(name = "TEXT_MESSAGE", nullable = false)
+    @Column(name = "TEXT_MESSAGE", nullable = false, columnDefinition = "LONGTEXT")
     private String textMessage;
 
     @Column(name = "DATE", nullable = false)
