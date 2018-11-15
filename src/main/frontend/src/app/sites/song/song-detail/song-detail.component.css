@@ -157,12 +157,13 @@
   margin-right: .5em;
 }
 
-.counter_container {
+.counter_like_container {
   text-align: center;
   margin: 10px 0;
 }
 
-.counter_container i {
+.counter_like_container i {
+  color: rgb(24, 107, 160);
   margin-right: 1em;
 }
 

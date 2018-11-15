@@ -30,7 +30,7 @@ public class SongLike {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @Column(name = "TYPE")
+    @Column(name = "SONG_TYPE")
     @Enumerated(value = EnumType.STRING)
     private Type type;
 

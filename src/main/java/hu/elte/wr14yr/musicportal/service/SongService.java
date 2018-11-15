@@ -134,9 +134,10 @@ public class SongService {
         logger.info(String.format("Song service: album titled %s's songs are going to be deleted", album.getTitle()));
 
         Iterable<Song> albumSongs = listByAlbum(album);
-        StreamSupport.stream(albumSongs.spliterator(), false).forEach(
-                s -> delete(s)
-            );
+
+        for(Song song : albumSongs) {
+            delete(song);
+        }
 
         logger.info(String.format("Song service: album titled %s's songs have been deleted successfully", album.getTitle()));
     }

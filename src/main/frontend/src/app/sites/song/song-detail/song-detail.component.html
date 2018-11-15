@@ -98,8 +98,16 @@
             label="#{{albumTag.word}}"></button>
   </ng-template>
 </div>
-<div class="counter_container">
+<div class="counter_like_container">
   <i class="fas fa-headphones fa-2x"></i>{{songCounterNumber}}
+  <a (click)="addSongLike('like')">
+    <i class="fas fa-thumbs-up fa-2x"></i>
+  </a>
+  {{songLikeNumber}}
+  <a (click)="addSongLike('dislike')">
+    <i class="fas fa-thumbs-down fa-2x"></i>
+  </a>
+  {{songDislikeNumber}}
 </div>
 <h3 style="text-align: center">
   Dalszöveg

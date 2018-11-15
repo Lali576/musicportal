@@ -95,9 +95,10 @@ public class PlaylistService {
         logger.info(String.format("Playlist service: user named %s's playlist are going to be deleted", user.getUsername()));
 
         Iterable<Playlist> userPlaylist = listByUser(user.getId());
-        StreamSupport.stream(userPlaylist.spliterator(), false).forEach(
-                    p -> delete(p)
-                );
+
+        for(Playlist playlist : userPlaylist) {
+            delete(playlist);
+        }
 
         logger.info(String.format("Playlist service: user named %s's playlist have been deleted successfully", user.getUsername()));
     }

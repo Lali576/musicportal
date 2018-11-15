@@ -54,7 +54,6 @@ import { AlbumDetailComponent } from './sites/album/album-detail/album-detail.co
 import { SongListComponent } from './sites/song/song-list/song-list.component';
 import { SongDetailComponent } from './sites/song/song-detail/song-detail.component';
 import { SongEditComponent } from './sites/song/song-edit/song-edit.component';
-import { SongCommentComponent } from './sites/song/song-comment/song-comment.component';
 import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
 import { PlaylistListComponent } from './sites/playlist/playlist-list/playlist-list.component';
 import { PlaylistDetailComponent } from './sites/playlist/playlist-detail/playlist-detail.component';
@@ -89,7 +88,6 @@ registerLocaleData(localeHu);
     SongDetailComponent,
     SongListComponent,
     RegisterComponent,
-    SongCommentComponent,
     SearchComponent,
     SearchAlbumComponent,
     SearchSongComponent,

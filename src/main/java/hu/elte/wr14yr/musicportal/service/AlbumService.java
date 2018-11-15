@@ -144,7 +144,9 @@ public class AlbumService {
 
         Iterable<Album> userAlbums = listByUser(user.getId());
 
-        StreamSupport.stream(userAlbums.spliterator(), false).forEach(album -> delete(album));
+        for(Album album : userAlbums) {
+            delete(album);
+        }
 
         logger.info(String.format("Album service: user named %s's albums has been deleted successfully", user.getUsername()));
     }

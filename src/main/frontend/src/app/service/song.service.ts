@@ -120,39 +120,27 @@ export class SongService {
       formData
     ).pipe(
       tap((songComments: SongComment[]) => {
-        this.songComments = songComments;
+        //this.songComments = songComments;
       })
     ).toPromise();
   }
 
-  getSongComments(id: number, song: Song) {
+  getSongComments(id: number, song: Song): Promise<SongComment[]> {
     const formData = new FormData();
     formData.append("song", JSON.stringify(song));
     return this.http.post<SongComment[]>(
       `api/song/comments/${id}`,
       formData
-    ).pipe(
-      tap((songComments: SongComment[]) => {
-        this.songComments = songComments;
-      })
     ).toPromise();
   }
 
-  addSongLike(songLike: SongLike, song: Song) {
+  addSongLike(songLike: SongLike, song: Song): Promise<number> {
     const formData = new FormData();
     formData.append("songLike", JSON.stringify(songLike));
     formData.append("song", JSON.stringify(song));
     return this.http.post<number>(
       'api/song/like/new',
       formData
-    ).pipe(
-      tap((likeTypeNumber: number) => {
-        if(songLike.type == 'LIKE') {
-          this.likeNumber = likeTypeNumber;
-        } else {
-          this.dislikeNumber = likeTypeNumber;
-        }
-      })
     ).toPromise();
   }
 

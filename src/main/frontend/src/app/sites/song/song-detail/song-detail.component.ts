@@ -9,6 +9,7 @@ import {AlbumTag} from "../../../model/tags/albumtag";
 import {TagService} from "../../../service/tag.service";
 import {SongComment} from "../../../model/songcomment";
 import {AuthService} from "../../../service/auth.service";
+import {SongLike} from "../../../model/songlike";
 
 @Component({
   selector: 'app-song-detail',
@@ -23,6 +24,8 @@ export class SongDetailComponent implements OnInit {
   albumTags: AlbumTag[] = [];
   songComments: SongComment[] = [];
   songCounterNumber: number = 0;
+  songLikeNumber: number = 0;
+  songDislikeNumber: number = 0;
   songEditLyrics: string = "";
   tempCommentText: string = "";
   commentDisplay: boolean = false;
@@ -55,6 +58,7 @@ export class SongDetailComponent implements OnInit {
       this.audio.volume = this.volumeNumber/100;
       this.loadAlbumTags();
       this.loadSongCounterNumber();
+      this.loadLikeAndDislikeNumbers();
       this.loadSongComments();
     })).subscribe();
   }
@@ -73,6 +77,16 @@ export class SongDetailComponent implements OnInit {
       .then(
         (songCounterNumber: number) => {
           this.songCounterNumber = songCounterNumber;
+        }
+      )
+  }
+
+  loadLikeAndDislikeNumbers() {
+    this.songService.countSongLikes(this.song.id, this.song)
+      .then(
+        (likeTypeNumbers: number[]) => {
+          this.songLikeNumber = likeTypeNumbers[0];
+          this.songDislikeNumber = likeTypeNumbers[1];
         }
       )
   }
@@ -181,6 +195,22 @@ export class SongDetailComponent implements OnInit {
         this.songCounterNumber = songCounterNumber;
       }
     )
+  }
+
+  async addSongLike(songLikeType: string) {
+    let songLike = new SongLike();
+    songLike.type = (songLikeType === 'like') ? 'LIKE' : 'DISLIKE';
+
+    await this.songService.addSongLike(songLike, this.song)
+      .then(
+        (songLikeNumber: number) => {
+          if(songLikeType === 'like') {
+            this.songLikeNumber = songLikeNumber;
+          } else if (songLikeType === 'dislike') {
+            this.songDislikeNumber = songLikeNumber;
+          }
+        }
+      )
   }
 
   async sendComment() {
