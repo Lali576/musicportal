@@ -21,7 +21,7 @@ import java.util.List;
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false)
     private long id;
 
@@ -35,11 +35,6 @@ public class Genre {
                              inverseJoinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"))
     @ManyToMany(targetEntity = Album.class)
     private List<Album> albums;
-
-    @JoinTable(name = "SONG_GENRE", joinColumns = @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID"),
-                             inverseJoinColumns = @JoinColumn(name = "SONG_ID", referencedColumnName = "ID"))
-    @ManyToMany(targetEntity = Song.class)
-    private List<Song> songs;
 
     public static List<String> genres = new ArrayList<String>(){{
         add("Alternative Rock");

@@ -22,7 +22,7 @@ import java.util.List;
 public class Song {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false)
     private long id;
 

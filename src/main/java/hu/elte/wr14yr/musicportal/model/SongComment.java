@@ -17,7 +17,7 @@ import java.util.Date;
 public class SongComment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false)
     private long id;
 

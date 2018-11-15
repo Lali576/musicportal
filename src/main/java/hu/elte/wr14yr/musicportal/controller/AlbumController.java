@@ -63,7 +63,7 @@ public class AlbumController {
 
         logger.info("Album controller: get parameter 'genres'");
 
-        Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
+        Genre[] genresArray = mapper.readValue(request.getParameter("albumGenres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
         logger.info("Album controller get parameter 'albumTags");
@@ -145,7 +145,7 @@ public class AlbumController {
 
         logger.info("Album controller: get parameter 'genres'");
 
-        Genre[] genresArray = mapper.readValue(request.getParameter("genres"), Genre[].class);
+        Genre[] genresArray = mapper.readValue(request.getParameter("albumGenres"), Genre[].class);
         List<Genre> genresList = Arrays.asList(genresArray);
 
         logger.info("Album controller: get parameter 'albumTags'");

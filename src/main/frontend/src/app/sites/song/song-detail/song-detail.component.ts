@@ -50,7 +50,6 @@ export class SongDetailComponent implements OnInit {
       const id = +params.get('id');
       await this.songService.getSong(id);
       this.song = this.songService.song;
-      this.songEditLyrics = this.song.lyrics;
       this.audio.src = "https://docs.google.com/uc?export=download&id=" + this.song.audioFileGdaId;
       this.audio.load();
       this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
@@ -59,7 +58,10 @@ export class SongDetailComponent implements OnInit {
       this.loadAlbumTags();
       this.loadSongCounterNumber();
       this.loadLikeAndDislikeNumbers();
-      this.loadSongComments();
+      if(this.authService.isLoggedIn) {
+        this.songEditLyrics = this.song.lyrics;
+        this.loadSongComments();
+      }
     })).subscribe();
   }
 

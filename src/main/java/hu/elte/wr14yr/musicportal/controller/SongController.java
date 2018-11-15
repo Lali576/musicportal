@@ -252,6 +252,7 @@ public class SongController {
         return ResponseEntity.ok(songComments);
     }
 
+    @Role({ARTIST, USER})
     @PostMapping("/comments/{id}")
     public ResponseEntity<Iterable<SongComment>> listSongComments(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.info(String.format("Song controller: enter endpoint '/comments/%s'", id));
@@ -293,7 +294,6 @@ public class SongController {
         return  ResponseEntity.ok(likeNumber);
     }
 
-    @Role({ARTIST, USER})
     @PostMapping("/like/{id}")
     public ResponseEntity<int[]> countSongLikes(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.info(String.format("Song controller: enter endpoint '/like/%s'", id));
@@ -329,7 +329,6 @@ public class SongController {
         return  ResponseEntity.ok(counterNumber);
     }
 
-    @Role({ARTIST, USER})
     @PostMapping("/counter/{id}")
     public ResponseEntity<Integer> countSongCounter(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.info(String.format("Song controller: enter endpoint '/counter/%s'", id));

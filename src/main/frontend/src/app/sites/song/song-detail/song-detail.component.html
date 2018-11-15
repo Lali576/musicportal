@@ -1,7 +1,9 @@
 <button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
 <h1 class="first" style="text-align: center">
-  {{song.album.title}}
+  <a [routerLink]="['/album', song.album.id]">
+    {{song.album.title}}
+  </a>
 </h1>
 <div class="cover">
   <div>
@@ -99,14 +101,21 @@
   </ng-template>
 </div>
 <div class="counter_like_container">
-  <i class="fas fa-headphones fa-2x"></i>{{songCounterNumber}}
-  <a (click)="addSongLike('like')">
-    <i class="fas fa-thumbs-up fa-2x"></i>
-  </a>
+  <button>
+    <i class="fas fa-headphones fa-2x"></i>
+  </button>
+  {{songCounterNumber}}
+  <button>
+    <a (click)="addSongLike('like')">
+      <i class="fas fa-thumbs-up fa-2x"></i>
+    </a>
+  </button>
   {{songLikeNumber}}
-  <a (click)="addSongLike('dislike')">
-    <i class="fas fa-thumbs-down fa-2x"></i>
-  </a>
+  <button>
+    <a (click)="addSongLike('dislike')">
+      <i class="fas fa-thumbs-down fa-2x"></i>
+    </a>
+  </button>
   {{songDislikeNumber}}
 </div>
 <h3 style="text-align: center">
@@ -128,12 +137,17 @@
       <button type="button" pButton icon="fas fa-times" (click)="lyricsEditDisplay=false" label="Kilép"></button>
     </p-footer>
   </p-dialog>
-  <div class="lyrics">
-    <div *ngIf="song.lyrics === ''; else showSongLyrics">
-      <i>Ennek a dalnak még nincs megadva dalszöveg!</i>
+  <div>
+    <div *ngIf="authService.isLoggedIn; else showLyricsNotification">
+      <div *ngIf="song.lyrics === ''; else showSongLyrics">
+        <i>Ennek a dalnak még nincs megadva dalszöveg!</i>
+      </div>
+      <ng-template #showSongLyrics>
+        <div class="lyrics" [innerHtml]="song.lyrics"></div>
+      </ng-template>
     </div>
-    <ng-template #showSongLyrics>
-      <div [innerHtml]="song.lyrics"></div>
+    <ng-template #showLyricsNotification>
+      <i>A dalszöveg megtekintéséhez jelentkezzen be!</i>
     </ng-template>
   </div>
 </div>
@@ -156,48 +170,53 @@
       <button type="button" pButton icon="fas fa-times" (click)="tempCommentText='';commentDisplay=false" label="Kilép"></button>
     </p-footer>
   </p-dialog>
-  <div *ngIf="songComments.length === 0; else showSongComments">
-    <i>
-      Ehhez a dalhoz még nem írtak kommentet!
-    </i>
-  </div>
-  <ng-template #showSongComments>
-    <p-dataView #dv [value]="songComments" [paginator]="true" [rows]="10" paginatorPosition="both">
-      <ng-template let-comment pTemplate="listItem">
-        <div class="ui-g list_element">
-          <div class="ui-g-12 ui-md-3">
-            <div *ngIf="comment.user.iconFileGdaId === ''; else showUserIcon">
-              <img src="" class="fas fa-user fa-4x icon_img">
+  <div *ngIf="authService.isLoggedIn; else showSongCommentNotification">
+    <div *ngIf="songComments.length === 0; else showSongComments">
+      <i>
+        Ehhez a dalhoz még nem írtak kommentet!
+      </i>
+    </div>
+    <ng-template #showSongComments>
+      <p-dataView #dv [value]="songComments" [paginator]="true" [rows]="10" paginatorPosition="both">
+        <ng-template let-comment pTemplate="listItem">
+          <div class="ui-g list_element">
+            <div class="ui-g-12 ui-md-3">
+              <div *ngIf="comment.user.iconFileGdaId === ''; else showUserIcon">
+                <img src="" class="fas fa-user fa-4x icon_img">
+              </div>
+              <ng-template #showUserIcon>
+                <img src="{{'https://docs.google.com/uc?export=download&id=' + comment.user.iconFileGdaId}}" class="list_element_img">
+              </ng-template>
             </div>
-            <ng-template #showUserIcon>
-              <img src="{{'https://docs.google.com/uc?export=download&id=' + comment.user.iconFileGdaId}}" class="list_element_img">
-            </ng-template>
-          </div>
-          <div class="ui-g-10 ui-md-7">
-            <div class="ui-g">
-              <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
-                <div class="ui-grid-row">
-                  <div>
-                    <h6 class="first">
-                      <a [routerLink]="['/user', comment.user.id]">
-                        {{comment.user.username}}
-                      </a>
-                      <i>
-                        {{" - " + (comment.date | date:'medium')}}
-                      </i>
-                    </h6>
+            <div class="ui-g-10 ui-md-7">
+              <div class="ui-g">
+                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
+                  <div class="ui-grid-row">
+                    <div>
+                      <h6 class="first">
+                        <a [routerLink]="['/user', comment.user.id]">
+                          {{comment.user.username}}
+                        </a>
+                        <i>
+                          {{" - " + (comment.date | date:'medium')}}
+                        </i>
+                      </h6>
+                    </div>
                   </div>
-                </div>
-                <div class="ui-grid-row">
-                  <div class="song_comment">
-                    <p [innerHtml]=comment.textMessage></p>
+                  <div class="ui-grid-row">
+                    <div class="song_comment">
+                      <p [innerHtml]=comment.textMessage></p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </ng-template>
-    </p-dataView>
+        </ng-template>
+      </p-dataView>
+    </ng-template>
+  </div>
+  <ng-template #showSongCommentNotification>
+    <i>A kommentek olvasásához és írásához jelent!</i>
   </ng-template>
 </div>

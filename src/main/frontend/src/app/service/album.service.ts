@@ -14,14 +14,15 @@ export class AlbumService {
     private http: HttpClient
   ) { }
 
-  addAlbum(album: Album, coverFile: File, genres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
+  addAlbum(album: Album, coverFile: File, albumGenres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
     if(coverFile !== null) {
       formData.append(coverFile.name, coverFile, coverFile.name);
     }
-    formData.append("genres", JSON.stringify(genres));
+    formData.append("albumGenres", JSON.stringify(albumGenres));
     formData.append("albumTags", JSON.stringify(albumTags));
+    console.log(albumGenres);
     return this.http.post<Album>(
       `api/album/new`,
       formData
@@ -48,10 +49,10 @@ export class AlbumService {
     return this.http.get<Album[]>('api/album/list-first-five').toPromise();
   }
 
-  updateAlbumDetails(id: number, album: Album, genres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
+  updateAlbumDetails(id: number, album: Album, albumGenres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
-    formData.append("genres", JSON.stringify(genres));
+    formData.append("albumGenres", JSON.stringify(albumGenres));
     formData.append("albumTags", JSON.stringify(albumTags));
     return this.http.post<Album>(
       `api/album/update/${id}/details`,

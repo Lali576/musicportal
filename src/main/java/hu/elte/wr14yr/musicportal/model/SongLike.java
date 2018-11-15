@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class SongLike {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false)
     private long id;
 

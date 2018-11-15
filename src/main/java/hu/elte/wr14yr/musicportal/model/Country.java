@@ -18,7 +18,7 @@ import java.util.Map;
 @JsonIgnoreProperties({"users"})
 public class Country {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false)
     private long id;
 

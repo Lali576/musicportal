@@ -1,10 +1,18 @@
+a {
+  color: #000;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
 .cover {
   text-align: center;
-  padding: 10px;
+  padding: 0px;
   margin: 0px;
 }
 
-.cover img {
+.cover img{
   display: inline-block;
   border: 5px solid rgb(24,107, 160);
   border-radius: 20px;
@@ -162,7 +170,9 @@
   margin: 10px 0;
 }
 
-.counter_like_container i {
+.counter_like_container button {
+  background: transparent;
+  border: none;
   color: rgb(24, 107, 160);
   margin-right: 1em;
 }

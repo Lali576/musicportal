@@ -126,6 +126,7 @@ export class AlbumFormComponent implements OnInit {
       return;
     }
     try {
+      console.log(this.albumGenres);
       if(this.albumSongs.length <= 3) {
         this.album.type = "SINGLE";
       } else if (this.albumSongs.length >= 4 && this.albumSongs.length <= 6) {
