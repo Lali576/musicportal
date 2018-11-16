@@ -36,6 +36,7 @@ export class AlbumDetailComponent implements OnInit {
   songAudioFile: File = null;
 
   coverEditDisplay: boolean = false;
+  songCreateDisplay: boolean = false;
   songEditDisplay: boolean = false;
   detailsEditDisplay: boolean = false;
 
@@ -161,11 +162,15 @@ export class AlbumDetailComponent implements OnInit {
     this.router.navigate(['/user', album.user.id]);
   }
 
+  async addSongDetails() {
+    let song: Song = new Song();
+    song.title = this.songEditTitle;
+
+    await this.songService.addSong(song, this.songAudioFile, this.album);
+  }
+
   async changeSongDetails(song: Song) {
     await this.songService.updateSong(song.id, song, this.songEditTitle, this.songAudioFile, this.album);
-    this.album = this.albumService.album;
-    this.loadAlbumGenres();
-    this.loadAlbumTags();
   }
 
   deleteSongConfirm(song: Song) {
@@ -195,6 +200,12 @@ export class AlbumDetailComponent implements OnInit {
     this.loadGenres();
     this.albumEditTitle = this.album.title;
     this.detailsEditDisplay = true;
+  }
+
+  showSongCreateDialog() {
+    this.songEditTitle = "";
+    this.songAudioFile = null;
+    this.songCreateDisplay = true;
   }
 
   showSongDetailDialog(song: Song) {

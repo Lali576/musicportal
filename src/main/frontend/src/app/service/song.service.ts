@@ -25,12 +25,11 @@ export class SongService {
     this.audio = new Audio();
   }
 
-  addSong(song: Song, audioFile: File, album: Album, genres: Genre[]): Promise<Song> {
+  addSong(song: Song, audioFile: File, album: Album): Promise<Song> {
     const formData = new FormData();
     formData.append("song", JSON.stringify(song));
     formData.append(audioFile.name, audioFile, audioFile.name);
     formData.append("album", JSON.stringify(album));
-    formData.append("genres", JSON.stringify(genres));
     return this.http.post<Song>(
       'api/song/new',
       formData

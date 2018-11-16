@@ -171,6 +171,60 @@
   <button pButton type="button" (click)="deleteAlbumConfirm()" label="Album törlése">
   </button>
 </div>
+<div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === album.user.id)">
+  <button pButton type="button" label="Új dal" (click)="showSongCreateDialog()">
+  </button>
+  <p-dialog header="Új dal" [(visible)]="songCreateDisplay" [modal]="true" [responsive]="true"
+            [width]="800" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <b>
+            Cím :
+          </b>
+        </div>
+        <div class="ui-grid-col-4">
+          <input
+            name="songNewTitleText"
+            pInputText
+            [(ngModel)]="songEditTitle"
+            #songNewTitleText>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <b>
+            Fájl :
+          </b>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-fileUpload (onSelect)="onSongAudioFileSelected($event)"
+                        (onClear)="onSongAudioFileRemove()"
+                        (onRemove)="onSongAudioFileRemove()"
+                        accept="audio/*"
+                        chooseLabel="Kiválasztás"
+                        [showUploadButton]="false"
+                        [showCancelButton]="false">
+          </p-fileUpload>
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button
+        type="button" pButton
+        icon="fas fa-check"
+        (click)="addSongDetails(); songCreateDisplay = false;"
+        label="Mentés"
+        [disabled]="(songEditTitle === '' || songAudioFile === null)"></button>
+      <button
+        type="button" pButton
+        icon="fas fa-times"
+        (click)="songEditDisplay = false"
+        label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
+</div>
 <p-dataView *ngIf="albumSongs.length >= 1" #dv [value]="albumSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
   <ng-template let-song pTemplate="listItem">
     <div class="ui-g-12" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
