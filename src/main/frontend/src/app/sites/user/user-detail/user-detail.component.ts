@@ -151,7 +151,6 @@ export class UserDetailComponent implements OnInit {
 
   onFileRemove() {
     this.userIconFile = null;
-    console.log("You're know you right...");
   }
 
   async changeIconFile() {

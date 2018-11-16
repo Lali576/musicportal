@@ -32,7 +32,11 @@ export class AlbumDetailComponent implements OnInit {
   albumEditGenres: Genre[] = [];
   albumEditAlbumTags: string[] = [];
 
+  songEditTitle: string = "";
+  songAudioFile: File = null;
+
   coverEditDisplay: boolean = false;
+  songEditDisplay: boolean = false;
   detailsEditDisplay: boolean = false;
 
   genres: Genre[] = [];
@@ -98,13 +102,22 @@ export class AlbumDetailComponent implements OnInit {
     }
   }
 
-  onFileSelected(event) {
+  onAlbumCoverFileSelected(event) {
     this.albumCoverFile = <File>event.files[0];
     console.log(this.albumCoverFile);
   }
 
-  onFileRemove() {
+  onAlbumCoverFileRemove() {
     this.albumCoverFile = null;
+  }
+
+  onSongAudioFileSelected(event) {
+    this.songAudioFile = <File>event.files[0];
+    console.log(this.songAudioFile);
+  }
+
+  onSongAudioFileRemove() {
+    this.songAudioFile = null;
     console.log("You're know you right...");
   }
 
@@ -148,6 +161,13 @@ export class AlbumDetailComponent implements OnInit {
     this.router.navigate(['/user', album.user.id]);
   }
 
+  async changeSongDetails(song: Song) {
+    await this.songService.updateSong(song.id, song, this.songEditTitle, this.songAudioFile, this.album);
+    this.album = this.albumService.album;
+    this.loadAlbumGenres();
+    this.loadAlbumTags();
+  }
+
   deleteSongConfirm(song: Song) {
     this.confirmationService.confirm({
       message: "Biztos szeretné törölni az alábbi dalt: " + song.title + " ?",
@@ -175,6 +195,11 @@ export class AlbumDetailComponent implements OnInit {
     this.loadGenres();
     this.albumEditTitle = this.album.title;
     this.detailsEditDisplay = true;
+  }
+
+  showSongDetailDialog(song: Song) {
+    this.songEditTitle = song.title;
+    this.songEditDisplay = true;
   }
 
   loadGenres() {

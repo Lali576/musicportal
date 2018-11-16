@@ -16,9 +16,9 @@
   <p-dialog header="Borító kép szerkesztés" [(visible)]="coverEditDisplay" [modal]="true" [responsive]="true" [width]="350"
             [minWidth]="200" [minY]="70"
             [maximizable]="true" [baseZIndex]="10000">
-    <p-fileUpload (onSelect)="onFileSelected($event)"
-                  (onClear)="onFileRemove()"
-                  (onRemove)="onFileRemove()"
+    <p-fileUpload (onSelect)="onAlbumCoverFileSelected($event)"
+                  (onClear)="onAlbumCoverFileRemove()"
+                  (onRemove)="onAlbumCoverFileRemove()"
                   accept="image/*"
                   chooseLabel="Kiválasztás"
                   [showUploadButton]="false"
@@ -186,9 +186,59 @@
       <div class="ui-g-6 ui-md-1" *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === album.user.id)">
         <button
           pButton type="button"
-          [routerLink]="['/song', song.id, 'update/details']"
+          (click)="showSongDetailDialog(song)"
           style="width: 30px; height: 30px; margin-top: 10px;"
           icon="fas fa-edit"></button>
+        <p-dialog header="Dal szerkesztés" [(visible)]="songEditDisplay" [modal]="true" [responsive]="true"
+                  [width]="800" [minWidth]="400" [minY]="70"
+                  [maximizable]="true" [baseZIndex]="10000">
+          <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-4">
+                <b>
+                  Cím :
+                </b>
+              </div>
+              <div class="ui-grid-col-4">
+                <input
+                  name="songNewTitleText"
+                  pInputText
+                  [(ngModel)]="songEditTitle"
+                  #songNewTitleText>
+              </div>
+            </div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-4">
+                <b>
+                  Fájl :
+                </b>
+              </div>
+              <div class="ui-grid-col-4">
+                <p-fileUpload (onSelect)="onSongAudioFileSelected($event)"
+                              (onClear)="onSongAudioFileRemove()"
+                              (onRemove)="onSongAudioFileRemove()"
+                              accept="audio/*"
+                              chooseLabel="Kiválasztás"
+                              [showUploadButton]="false"
+                              [showCancelButton]="false">
+                </p-fileUpload>
+              </div>
+            </div>
+          </div>
+          <p-footer>
+            <button
+              type="button" pButton
+              icon="fas fa-check"
+              (click)="changeSongDetails(song); songEditDisplay = false;"
+              label="Mentés"
+              [disabled]="(songEditTitle === '' || songAudioFile === null)"></button>
+            <button
+              type="button" pButton
+              icon="fas fa-times"
+              (click)="songEditDisplay = false"
+              label="Kilép"></button>
+          </p-footer>
+        </p-dialog>
       </div>
       <div class="ui-g-6 ui-md-1" *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === album.user.id)">
         <button

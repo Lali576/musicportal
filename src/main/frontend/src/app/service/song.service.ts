@@ -74,7 +74,8 @@ export class SongService {
     return this.http.get<Song[]>('api/song/list-first-five').toPromise();
   }
 
-  updateSong(id: number, song: Song, audioFile: File, album:Album): Promise<Song> {
+  updateSong(id: number, song: Song, songTitle: string, audioFile: File, album:Album): Promise<Song> {
+    song.title = songTitle;
     const formData = new FormData();
     formData.append("song", JSON.stringify(song));
     formData.append(audioFile.name, audioFile, audioFile.name);
