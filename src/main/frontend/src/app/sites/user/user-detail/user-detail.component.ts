@@ -100,6 +100,8 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadEditUserTags() {
+    this.userEditUserTags = [];
+
     for(let userTag of this.userTags) {
       let word: string = userTag.word;
       this.userEditUserTags.push(word);

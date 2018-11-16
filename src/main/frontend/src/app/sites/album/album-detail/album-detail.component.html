@@ -81,10 +81,10 @@
         <div *ngIf="albumGenres.length === 0; else showAlbumGenres">
           <i>Nincsenek megadva műfajok</i>
         </div>
-        <ng-template>
+        <ng-template #showAlbumGenres>
           <button *ngFor="let albumGenre of albumGenres"
                   pButton type="button"
-                  label="{{albumGenre.word}}"></button>
+                  label="{{albumGenre.name}}"></button>
         </ng-template>
       </td>
     </tr>

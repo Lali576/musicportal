@@ -139,6 +139,7 @@
               (onRemove)="onFileRemove()"
               accept="audio/*"
               chooseLabel="Kiválasztás"
+              [files]=""
               [showUploadButton]="false"
               [showCancelButton]="false">
               <ng-template pTemplate="content">
@@ -159,8 +160,7 @@
             type="button" pButton
             icon="fas fa-trash"
             (click)="deleteSong()"
-            label="Törlés"
-            [disabled]="song.title === '' || songFile === null"></button>
+            label="Törlés"></button>
         </div>
       </p-footer>
     </p-dialog>

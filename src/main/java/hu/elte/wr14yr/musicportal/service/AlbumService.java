@@ -99,7 +99,7 @@ public class AlbumService {
     public Album updateDetails(Album album, List<Genre> genres, List<AlbumTag> albumTags) throws DataAccessException, ConstraintViolationException, DataException {
         logger.info(String.format("Album service: album titled %s is going to be updated", album.getTitle()));
 
-        //album.setGenres(genres);
+        album.setGenres(genres);
 
         album = albumRepository.save(album);
 

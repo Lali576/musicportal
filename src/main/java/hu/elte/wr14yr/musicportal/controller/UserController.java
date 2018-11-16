@@ -169,20 +169,6 @@ public class UserController {
     }
 
     @Role({ARTIST, USER})
-    @PostMapping("/update/{id}/password")
-    public ResponseEntity<User> updatePassword(@PathVariable("id") long id, MultipartHttpServletRequest request) {
-        logger.info(String.format("User controller: enter endpoint '/update/%s/password'", id));
-
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
-        User updatedUser = userService.updatePassword(oldPassword, newPassword);
-
-        logger.info(String.format("User controller: exit endpoint '/update/%s/password'", id));
-
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @Role({ARTIST, USER})
     @PostMapping("/update/{id}/icon")
     public ResponseEntity<User> updateIconFile(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
         logger.info(String.format("User controller: enter endpoint '/update/%s/icon'", id));

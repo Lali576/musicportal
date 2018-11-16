@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Album} from "../../../model/album";
 import {Song} from "../../../model/song";
-import {ActivatedRoute, ParamMap} from "@angular/router";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {AlbumService} from "../../../service/album.service";
 import {switchMap} from "rxjs/internal/operators";
 import {SongService} from "../../../service/song.service";
@@ -38,14 +38,15 @@ export class AlbumDetailComponent implements OnInit {
   genres: Genre[] = [];
 
   constructor(
-    private route: ActivatedRoute,
+    public authService: AuthService,
     private albumService: AlbumService,
     private songService: SongService,
     private genreService: GenreService,
     private tagService: TagService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    public authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
     private location: Location
   ) { }
 
@@ -89,8 +90,10 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   loadEditAlbumTags() {
-    for(let userTag of this.albumTags) {
-      let word: string = userTag.word;
+    this.albumEditAlbumTags = [];
+
+    for(let albumTag of this.albumTags) {
+      let word: string = albumTag.word;
       this.albumEditAlbumTags.push(word);
     }
   }
@@ -144,6 +147,7 @@ export class AlbumDetailComponent implements OnInit {
     await this.albumService.deleteAlbum(album);
     this.messageService.add({severity:'success', summary: album.title + ' című album sikeresen törölve', detail:''});
     await delay(1000);
+    this.router.navigate(['/user', album.user.id]);
   }
 
   deleteSongConfirm(song: Song) {

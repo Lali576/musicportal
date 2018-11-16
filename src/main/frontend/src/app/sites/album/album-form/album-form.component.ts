@@ -84,8 +84,9 @@ export class AlbumFormComponent implements OnInit {
     let index = this.albumSongs.indexOf(this.selectedSong);
     this.albumSongs = this.albumSongs.filter((val, i) => i != index);
     this.albumSongsFiles = this.albumSongsFiles.filter((val, i) => i != index);
-    this.song = null;
+    this.song = new Song();
     this.songFile = null;
+    this.files = [];
     this.displayDialog = false;
   }
 
@@ -115,6 +116,7 @@ export class AlbumFormComponent implements OnInit {
 
   onSongAudioFileSelected(event) {
     this.songFile = <File>event.files[0];
+    event.files[0] = null;
     console.log(this.songFile);
   }
 
