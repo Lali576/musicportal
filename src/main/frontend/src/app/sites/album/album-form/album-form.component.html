@@ -112,7 +112,6 @@
         </div>
       </ng-template>
     </p-table>
-
     <p-dialog header="Dal adatai" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="350">
       <div class="ui-g ui-fluid" *ngIf="song">
         <div class="ui-g-12">
@@ -125,7 +124,7 @@
               pInputText
               id="title"
               [(ngModel)]="song.title"
-              #songTitleText="ngModel"s/>
+              #songTitleText="ngModel"/>
           </div>
         </div>
         <div class="ui-g-12">
@@ -141,8 +140,7 @@
               accept="audio/*"
               chooseLabel="Kiválasztás"
               [showUploadButton]="false"
-              [showCancelButton]="false"
-              [files]="files">
+              [showCancelButton]="false">
               <ng-template pTemplate="content">
               </ng-template>
             </p-fileUpload>

@@ -148,8 +148,6 @@
             </ng-template>
           </p-chips>
         </div>
-        <div class="ui-grid-col-4">
-        </div>
       </div>
     </div>
     <p-footer>
@@ -158,8 +156,55 @@
       <button type="button" pButton icon="fas fa-times" (click)="detailsEditDisplay=false" label="Kilép"></button>
     </p-footer>
   </p-dialog>
-  <button pButton type="button" label="E-mail cím szerk.">
+  <button pButton type="button" label="E-mail cím szerk." (click)="showEmailDialog()">
   </button>
+  <p-dialog header="E-mail cím csere" [(visible)]="emailEditDisplay" [modal]="true" [responsive]="true"
+            [width]="800" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <b>
+            Új e-mail cím :
+          </b>
+        </div>
+        <div class="ui-grid-col-4">
+          <input
+            name="userNewEmailText"
+            pInputText
+            [(ngModel)]="userNewEmail"
+            #userNewEmailText>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <b>
+            Új e-mail cím megerősítés :
+          </b>
+        </div>
+        <div class="ui-grid-col-4">
+          <input
+            name="userNewEmailConfirmText"
+            pInputText
+            [(ngModel)]="userNewEmailConfirm"
+            #userNewEmailConfirmText>
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button
+        type="button" pButton
+        icon="fas fa-check"
+        (click)="changeEmail(); emailEditDisplay = false;"
+        label="Mentés"
+        [disabled]="(userNewEmail === '' || userNewEmailConfirm === '') || (userNewEmail !== userNewEmailConfirm)"></button>
+      <button
+        type="button" pButton
+        icon="fas fa-times"
+        (click)="emailEditDisplay = false"
+        label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
   <button pButton type="button" (click)="deleteUserConfirm()" label="Regisztráció törlése">
   </button>
 </div>

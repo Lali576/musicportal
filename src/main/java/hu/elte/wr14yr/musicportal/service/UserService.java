@@ -177,34 +177,6 @@ public class UserService {
         return loggedInUser;
     }
 
-    public User updatePassword(String oldPassword, String newPassword) {
-        logger.info(String.format("User service: user named %s" +
-                "'s password is going to be changed", loggedInUser.getUsername()));
-
-        logger.info("User service: checking old password validation");
-
-        if(isValid(loggedInUser, oldPassword)) {
-            String newPassSalt = newPassword + loggedInUser.getSaltCode();
-            try {
-                MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                byte[] hash = digest.digest(newPassSalt.getBytes(StandardCharsets.UTF_8));
-                String hashPassword = Base64.getEncoder().encodeToString(hash);
-                loggedInUser.setHashPassword(hashPassword);
-                loggedInUser = userRepository.save(loggedInUser);
-
-                logger.info(String.format("User service: user named %s" +
-                        "'s password has been changed successfully", loggedInUser.getUsername()));
-            } catch(NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-        } else {
-            logger.severe(String.format("User service: user named %s" +
-                    "'s old password is invalid!", loggedInUser.getUsername()));
-        }
-
-        return loggedInUser;
-    }
-
     public User changeEmailAddress(String newEmailAddress) {
         logger.info(String.format("User service: user named %s" +
                 "'s email address is going to be changed", loggedInUser.getUsername()));

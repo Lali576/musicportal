@@ -55,21 +55,6 @@ export class UserService {
     ).toPromise();
   }
 
-  updatePassword(id: number, oldPassword: string, newPassword: string): Promise<User> {
-    const formData = new FormData();
-    formData.append("oldPassword", oldPassword);
-    formData.append("newPassword", newPassword);
-    return this.http.post<User>(
-      `api/user/update/${id}/password`,
-      formData
-    ).pipe(
-      tap((user: User) => {
-        this.authService.isLoggedIn = true;
-        this.authService.loggedInUser = user;
-      })
-    ).toPromise();
-  }
-
   updateIconFile(id: number, iconFile: File): Promise<User> {
     const formData = new FormData();
     if(iconFile !==  null) {

@@ -44,10 +44,12 @@ export class UserDetailComponent implements OnInit {
 
   detailsEditDisplay: boolean = false;
   emailEditDisplay: boolean = false;
-  passwordEditDisplay: boolean = false;
   iconEditDisplay: boolean = false;
   bioEditDisplay: boolean = false;
   messageDisplay: boolean = false;
+
+  userNewEmail: string = "";
+  userNewEmailConfirm: string = "";
 
   countries: Country[] = [];
   genres: Genre[] = [];
@@ -166,6 +168,11 @@ export class UserDetailComponent implements OnInit {
     await this.userService.updateUser(this.user.id, this.userEditCountryId, this.userEditGenreId, userTags);
     this.user = this.authService.loggedInUser;
     this.loadUserTags();
+  }
+
+  async changeEmail() {
+    await this.userService.updateEmail(this.user.id, this.userNewEmail);
+    this.user.emailAddress = this.authService.loggedInUser.emailAddress;
   }
 
   async changeBiography() {

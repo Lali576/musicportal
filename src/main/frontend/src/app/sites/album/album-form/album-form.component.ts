@@ -92,9 +92,6 @@ export class AlbumFormComponent implements OnInit {
   onRowSelect(event) {
     this.newSong = false;
     this.song = this.cloneSong(event.data);
-    let index = this.albumSongs.indexOf(this.song);
-    this.songFile = this.albumSongsFiles[index];
-    this.files.push(this.songFile);
     this.displayDialog = true;
   }
 
