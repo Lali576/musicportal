@@ -15,8 +15,6 @@ import { RegisterComponent } from "../sites/user/register/register.component";
 import { LoginComponent } from "../sites/user/login/login.component";
 import { UserDetailComponent } from "../sites/user/user-detail/user-detail.component";
 import { SearchComponent } from "../sites/search/search.component";
-import {UserPasswordComponent} from "../sites/user/user-password/user-password.component";
-import {UserEmailComponent} from "../sites/user/user-email/user-email.component";
 import {AlbumFormComponent} from "../sites/album/album-form/album-form.component";
 import {PlaylistFormComponent} from "../sites/playlist/playlist-form/playlist-form.component";
 import {AlbumSongsComponent} from "../sites/album/album-songs/album-songs.component";
@@ -38,18 +36,6 @@ const routes: Routes = [
   {
     path: 'user/:id',
     component: UserDetailComponent
-  },
-  {
-    path: 'user/:id/update/password',
-    component: UserPasswordComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
-  },
-  {
-    path: 'user/:id/update/email',
-    component: UserEmailComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['USER', 'ARTIST']}
   },
   {
     path: 'album/list',
