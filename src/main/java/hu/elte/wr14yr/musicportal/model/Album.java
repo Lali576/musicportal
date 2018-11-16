@@ -54,7 +54,9 @@ public class Album {
     @OneToMany(targetEntity = Song.class, mappedBy = "album")
     private List<Song> songs;
 
-    @ManyToMany(targetEntity = Genre.class, mappedBy = "albums")
+    @JoinTable(name = "ALBUM_GENRE", joinColumns = @JoinColumn(name = "ALBUM_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "GENRE_ID", referencedColumnName = "ID"))
+    @ManyToMany(targetEntity = Genre.class)
     private List<Genre> genres;
 
     @OneToMany(targetEntity = AlbumTag.class, mappedBy = "album")

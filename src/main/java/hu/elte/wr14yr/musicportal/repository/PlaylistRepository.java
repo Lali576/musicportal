@@ -21,7 +21,6 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     Playlist findPlaylistById(Long id);
 
-
     @Override
     void deleteById(Long id);
 }

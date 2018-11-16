@@ -230,8 +230,8 @@ public class UserService {
 
         if(loggedInUser.getIconFileGdaId().equals("")) {
             if(iconFile != null) {
-                fileService.delete(loggedInUser.getIconFileGdaId());
-                fileService.uploadFile(iconFile, loggedInUser.getUserIconFolderGdaId());
+                String iconFileGdaId = fileService.uploadFile(iconFile, loggedInUser.getUserIconFolderGdaId());
+                loggedInUser.setIconFileGdaId(iconFileGdaId);
             }
         } else {
             if(iconFile != null) {

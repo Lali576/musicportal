@@ -37,7 +37,7 @@ public class AlbumService {
 
         album.setUser(user);
         album.setDate(new Date());
-        album.setGenres(genres);
+        //album.setGenres(genres);
 
         Album savedAlbum = albumRepository.save(album);
 
@@ -99,7 +99,7 @@ public class AlbumService {
     public Album updateDetails(Album album, List<Genre> genres, List<AlbumTag> albumTags) throws DataAccessException, ConstraintViolationException, DataException {
         logger.info(String.format("Album service: album titled %s is going to be updated", album.getTitle()));
 
-        album.setGenres(genres);
+        //album.setGenres(genres);
 
         album = albumRepository.save(album);
 
@@ -119,13 +119,13 @@ public class AlbumService {
 
         if(album.getCoverFileGdaId().equals("")) {
             if(coverFile != null) {
-                fileService.delete(album.getCoverFileGdaId());
                 String coverFileGdaId = fileService.uploadFile(coverFile, album.getAlbumCoverFolderGdaId());
                 album.setCoverFileGdaId(coverFileGdaId);
             }
         } else {
             if(coverFile != null) {
-                fileService.updateFile(album.getCoverFileGdaId(), coverFile);
+                String coverFileGdaId =fileService.updateFile(album.getCoverFileGdaId(), coverFile);
+                album.setCoverFileGdaId(coverFileGdaId);
             } else {
                 fileService.delete(album.getCoverFileGdaId());
                 album.setCoverFileGdaId("");

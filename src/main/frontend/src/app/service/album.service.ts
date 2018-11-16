@@ -49,7 +49,8 @@ export class AlbumService {
     return this.http.get<Album[]>('api/album/list-first-five').toPromise();
   }
 
-  updateAlbumDetails(id: number, album: Album, albumGenres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
+  updateAlbumDetails(id: number, album: Album, albumTitle: string, albumGenres: Genre[], albumTags: AlbumTag[]): Promise<Album> {
+    album.title = albumTitle;
     const formData = new FormData();
     formData.append("album", JSON.stringify(album));
     formData.append("albumGenres", JSON.stringify(albumGenres));
