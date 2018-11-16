@@ -123,8 +123,14 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   async changeCoverFile() {
-    await this.albumService.updateAlbumCover(this.album.id, this.album, this.albumCoverFile);
-    this.album.coverFileGdaId = this.albumService.album.coverFileGdaId;
+    try {
+      this.messageService.add({severity: 'info', summary: 'Borító kép feltöltés alatt', detail: ''});
+      await this.albumService.updateAlbumCover(this.album.id, this.album, this.albumCoverFile);
+      this.album.coverFileGdaId = this.albumService.album.coverFileGdaId;
+      this.messageService.add({severity: 'success', summary: 'Borító kép feltöltése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: 'Borító kép feltöltése sikertelen', detail: ''});
+    }
   }
 
   async changeDetails() {
@@ -173,10 +179,15 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   async deleteAlbum(album) {
-    await this.albumService.deleteAlbum(album);
-    this.messageService.add({severity:'success', summary: album.title + ' című album sikeresen törölve', detail:''});
-    await delay(1000);
-    this.router.navigate(['/user', album.user.id]);
+    try {
+      this.messageService.add({severity: 'info', summary: album.title + ' című album törlés alatt', detail: ''});
+      await this.albumService.deleteAlbum(album);
+      await delay(1000);
+      this.router.navigate(['/user', album.user.id]);
+      this.messageService.add({severity: 'success', summary: album.title + ' című album törlése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: album.title + ' című album törlése sikertelen', detail: ''});
+    }
   }
 
   async addSongDetails() {

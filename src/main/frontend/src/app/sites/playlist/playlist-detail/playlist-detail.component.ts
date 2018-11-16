@@ -91,10 +91,16 @@ export class PlaylistDetailComponent implements OnInit {
       playlistTags.push(playlistTag);
     }
 
-    await this.playlistService.updatePlaylist(this.playlist.id, this.playlist, this.playlistEditName, this.selectedSongs, playlistTags);
-    this.playlist = this.playlistService.playlist;
-    this.loadPlaylistSongs();
-    this.loadPlaylistTags();
+    try {
+      this.messageService.add({severity: 'info', summary: 'Adatok feltöltés alatt', detail: ''});
+      await this.playlistService.updatePlaylist(this.playlist.id, this.playlist, this.playlistEditName, this.selectedSongs, playlistTags);
+      this.playlist = this.playlistService.playlist;
+      this.loadPlaylistSongs();
+      this.loadPlaylistTags();
+      this.messageService.add({severity: 'success', summary: 'Adatok feltöltése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: 'Adatok feltöltése sikertelen', detail: ''});
+    }
   }
 
   deletePlaylistConfirm() {
@@ -111,10 +117,15 @@ export class PlaylistDetailComponent implements OnInit {
   }
 
   async deletePlaylist(playlist) {
-    await this.playlistService.deletePlaylist(playlist);
-    this.messageService.add({severity:'success', summary: playlist.name + ' nevű lej. lista sikeresen törölve', detail:''});
-    await delay(1000);
-    this.router.navigate(['/user', playlist.user.id]);
+    try {
+      this.messageService.add({severity: 'info', summary: playlist.name + ' nevű lej. lista törlés alatt', detail: ''});
+      await this.playlistService.deletePlaylist(playlist);
+      this.messageService.add({severity: 'success', summary: playlist.name + ' nevű lej. lista törlése sikeres', detail: ''});
+      await delay(1000);
+      this.router.navigate(['/user', playlist.user.id]);
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: playlist.name + ' nevű lej. lista törlése sikertelen', detail: ''});
+    }
   }
 
   showDetailsDialog() {
