@@ -9,12 +9,14 @@ import {AlbumTag} from "../../../model/tags/albumtag";
 import {TagService} from "../../../service/tag.service";
 import {SongComment} from "../../../model/songcomment";
 import {AuthService} from "../../../service/auth.service";
+import {MessageService} from "primeng/api";
 import {SongLike} from "../../../model/songlike";
 
 @Component({
   selector: 'app-song-detail',
   templateUrl: './song-detail.component.html',
-  styleUrls: ['./song-detail.component.css']
+  styleUrls: ['./song-detail.component.css'],
+  providers: [MessageService]
 })
 export class SongDetailComponent implements OnInit {
 
@@ -41,6 +43,7 @@ export class SongDetailComponent implements OnInit {
     private songService: SongService,
     private tagService: TagService,
     private authService: AuthService,
+    private messageService: MessageService,
     private location: Location
   ) {
   }
@@ -183,12 +186,18 @@ export class SongDetailComponent implements OnInit {
   }
 
   async changeLyrics() {
-    this.songService.updateLyrics(this.song.id, this.song, this.songEditLyrics).then(
-      (song: Song) => {
-        this.song = song;
-        this.songEditLyrics = this.song.lyrics;
-      }
-    );
+    try {
+      this.messageService.add({severity: 'info', summary: 'Dal szöveg feltöltés alatt', detail: ''});
+      this.songService.updateLyrics(this.song.id, this.song, this.songEditLyrics).then(
+        (song: Song) => {
+          this.song = song;
+          this.songEditLyrics = this.song.lyrics;
+        }
+      );
+      this.messageService.add({severity: 'success', summary: 'Dal szöveg feltöltés alatt', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: 'Dal szöveg feltöltés alatt', detail: ''});
+    }
   }
 
   async addSongCounter() {
@@ -203,27 +212,40 @@ export class SongDetailComponent implements OnInit {
     let songLike = new SongLike();
     songLike.type = (songLikeType === 'like') ? 'LIKE' : 'DISLIKE';
 
-    await this.songService.addSongLike(songLike, this.song)
-      .then(
-        (songLikeNumber: number) => {
-          if(songLikeType === 'like') {
-            this.songLikeNumber = songLikeNumber;
-          } else if (songLikeType === 'dislike') {
-            this.songDislikeNumber = songLikeNumber;
+    try {
+      this.messageService.add({severity: 'info', summary: songLike.type + ' feltöltés alatt', detail: ''});
+
+      await this.songService.addSongLike(songLike, this.song)
+        .then(
+          (songLikeNumber: number) => {
+            if (songLikeType === 'like') {
+              this.songLikeNumber = songLikeNumber;
+            } else if (songLikeType === 'dislike') {
+              this.songDislikeNumber = songLikeNumber;
+            }
           }
-        }
-      )
+        )
+      this.messageService.add({severity: 'success', summary: songLike.type + ' feltöltése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: songLike.type + ' feltöltése sikertelen', detail: ''});
+    }
   }
 
   async sendComment() {
-    let songComment: SongComment = new SongComment();
-    songComment.textMessage = this.tempCommentText;
-    this.tempCommentText = "";
-    await this.songService.addSongComment(songComment, this.song).then(
-      (songComments: SongComment[]) => {
-        this.songComments = songComments;
-      }
-    );
+    try {
+      this.messageService.add({severity: 'info', summary: 'Komment feltöltés alatt', detail: ''});
+      let songComment: SongComment = new SongComment();
+      songComment.textMessage = this.tempCommentText;
+      this.tempCommentText = "";
+      await this.songService.addSongComment(songComment, this.song).then(
+        (songComments: SongComment[]) => {
+          this.songComments = songComments;
+        }
+      );
+      this.messageService.add({severity: 'success', summary: 'Komment feltöltése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: 'Komment feltöltése sikertelen', detail: ''});
+    }
   }
 
   goBack() {

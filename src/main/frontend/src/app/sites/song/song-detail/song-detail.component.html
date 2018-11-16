@@ -1,5 +1,6 @@
 <button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
 <h1 class="first" style="text-align: center">
   <a [routerLink]="['/album', song.album.id]">
     {{song.album.title}}
