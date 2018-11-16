@@ -19,6 +19,7 @@ import {Country} from "../../../model/country";
 import {Genre} from "../../../model/genre";
 import {CountryService} from "../../../service/country.service";
 import {GenreService} from "../../../service/genre.service";
+import {delay} from "q";
 
 @Component({
   selector: 'app-user-detail',
@@ -154,8 +155,14 @@ export class UserDetailComponent implements OnInit {
   }
 
   async changeIconFile() {
-    await this.userService.updateIconFile(this.user.id, this.userIconFile);
-    this.user.iconFileGdaId = this.authService.loggedInUser.iconFileGdaId;
+    try {
+      this.messageService.add({key: 'toast', severity:'info', summary: 'Ikon kép feltöltés alatt', detail:''});
+      await this.userService.updateIconFile(this.user.id, this.userIconFile);
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Ikon kép feltöltés sikeres', detail:''});
+      this.user.iconFileGdaId = this.authService.loggedInUser.iconFileGdaId;
+    } catch (e) {
+      this.messageService.add({key: 'toast', severity:'error', summary: 'Ikon kép feltöltés sikertelen', detail:''});
+    }
   }
 
   async changeDetails() {
@@ -166,32 +173,57 @@ export class UserDetailComponent implements OnInit {
       userTag.word = tag;
       userTags.push(userTag);
     }
-    await this.userService.updateUser(this.user.id, this.userEditCountryId, this.userEditGenreId, userTags);
-    this.user = this.authService.loggedInUser;
-    this.loadUserTags();
+
+    try {
+      this.messageService.add({key: 'toast', severity:'info', summary: 'Adatok feltöltés alatt', detail:''});
+      await this.userService.updateUser(this.user.id, this.userEditCountryId, this.userEditGenreId, userTags);
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Adatok feltöltése sikeres', detail:''});
+      this.user = this.authService.loggedInUser;
+      this.loadUserTags();
+    } catch (e) {
+      this.messageService.add({key: 'toast', severity:'error', summary: 'Adatok feltöltése sikertelen', detail:''});
+    }
   }
 
   async changeEmail() {
-    await this.userService.updateEmail(this.user.id, this.userNewEmail);
-    this.user.emailAddress = this.authService.loggedInUser.emailAddress;
+    try {
+      this.messageService.add({key: 'toast', severity:'info', summary: 'E-mail cím feltöltés alatt', detail:''});
+      await this.userService.updateEmail(this.user.id, this.userNewEmail);
+      this.messageService.add({key: 'toast', severity:'success', summary: 'E-mail cím feltöltése sikeres', detail:''});
+      this.user.emailAddress = this.authService.loggedInUser.emailAddress;
+    } catch (e) {
+      this.messageService.add({key: 'toast', severity:'error', summary: 'E-mail cím feltöltése sikertelen', detail:''});
+    }
   }
 
   async changeBiography() {
-    await this.userService.updateBiography(this.user.id, this.userEditBiography);
-    this.user.biography = this.authService.loggedInUser.biography;
-    this.userEditBiography = this.user.biography;
+    try {
+      this.messageService.add({key: 'toast', severity:'info', summary: 'Biógráfia feltöltés alatt', detail:''});
+      await this.userService.updateBiography(this.user.id, this.userEditBiography);
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Biógráfia feltöltése sikeres', detail:''});
+      this.user.biography = this.authService.loggedInUser.biography;
+      this.userEditBiography = this.user.biography;
+    } catch (e) {
+      this.messageService.add({key: 'toast', severity:'error', summary: 'Biógráfia feltöltése sikertelen', detail:''});
+    }
   }
 
   async sendMessage() {
-    let userMessage: UserMessage = new UserMessage();
-    userMessage.textMessage = this.tempMessageText;
-    this.tempMessageText = "";
-    let userToId = this.user.id;
-    await this.userService.addUserMessages(userToId, userMessage).then(
-      (userMessages: UserMessage[]) => {
-        this.userMessages = userMessages;
-      }
-    );
+    try {
+      let userMessage: UserMessage = new UserMessage();
+      userMessage.textMessage = this.tempMessageText;
+      this.tempMessageText = "";
+      let userToId = this.user.id;
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Üzenet feltöltés alatt', detail:''});
+      await this.userService.addUserMessages(userToId, userMessage).then(
+        (userMessages: UserMessage[]) => {
+          this.userMessages = userMessages;
+        }
+      );
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Üzenet feltöltése sikeres', detail:''});
+    } catch (e) {
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Üzenet feltöltése sikertelen', detail:''});
+    }
   }
 
   async deleteUserConfirm() {
@@ -208,8 +240,16 @@ export class UserDetailComponent implements OnInit {
   }
 
   async deleteUser() {
-    await this.userService.deleteUser(this.user.id);
-    this.router.navigate(['/login']);
+    try {
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Felhasználó törlés alatt', detail:''});
+      await this.userService.deleteUser(this.user.id);
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Felhasználó törlése sikeres', detail:''});
+      await delay(1000);
+      this.router.navigate(['/login']);
+    } catch (e) {
+      this.messageService.add({key: 'toast', severity:'success', summary: 'Felhasználó törlése' +
+          ' sikertelen', detail:''});
+    }
   }
 
   showIconDialog() {

@@ -12,7 +12,6 @@ import {TagService} from "../../../service/tag.service";
 import {Location} from "@angular/common";
 import {Genre} from "../../../model/genre";
 import {GenreService} from "../../../service/genre.service";
-import {UserTag} from "../../../model/tags/usertag";
 import {delay} from "q";
 
 @Component({
@@ -33,6 +32,7 @@ export class AlbumDetailComponent implements OnInit {
   albumEditAlbumTags: string[] = [];
 
   songEditTitle: string = "";
+  currentEditSong : Song = null;
   songAudioFile: File = null;
 
   coverEditDisplay: boolean = false;
@@ -135,11 +135,16 @@ export class AlbumDetailComponent implements OnInit {
       albumTag.word = tag;
       albumTags.push(albumTag);
     }
-
-    await this.albumService.updateAlbumDetails(this.album.id, this.album, this.albumEditTitle, this.albumEditGenres, albumTags);
-    this.album = this.albumService.album;
-    this.loadAlbumGenres();
-    this.loadAlbumTags();
+    try {
+      this.messageService.add({severity: 'info', summary: 'Adatok feltöltés alatt', detail: ''});
+      await this.albumService.updateAlbumDetails(this.album.id, this.album, this.albumEditTitle, this.albumEditGenres, albumTags);
+      this.album = this.albumService.album;
+      this.loadAlbumGenres();
+      this.loadAlbumTags();
+      this.messageService.add({severity: 'success', summary: 'Adatok feltöltése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: 'Adatok feltöltése sikertelen', detail: ''});
+    }
   }
 
   changeAlbumType() {
@@ -175,16 +180,32 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   async addSongDetails() {
-    let song: Song = new Song();
-    song.title = this.songEditTitle;
+    try {
+      this.messageService.add({severity: 'info', summary: 'Új dal feltöltés alatt', detail: ''});
+      let song: Song = new Song();
+      song.title = this.songEditTitle;
 
-    await this.songService.addSong(song, this.songAudioFile, this.album);
-    this.loadSongs();
-    this.changeAlbumType();
+      await this.songService.addSong(song, this.songAudioFile, this.album);
+      this.loadSongs();
+      this.changeAlbumType();
+      this.messageService.add({severity: 'success', summary: 'Új dal feltöltése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: 'Új dal feltöltése sikertelen', detail: ''});
+    }
   }
 
-  async changeSongDetails(song: Song) {
-    await this.songService.updateSong(song.id, song, this.songEditTitle, this.songAudioFile, this.album);
+  async changeSongDetails() {
+    console.log(this.currentEditSong);
+    try {
+      this.messageService.add({severity: 'info', summary: this.currentEditSong.title + ' dal adatai feltöltés alatt', detail: ''});
+      await this.songService.updateSong(this.currentEditSong.id, this.currentEditSong, this.songEditTitle, this.songAudioFile, this.album);
+      this.messageService.add({severity: 'success', summary: this.currentEditSong.title + ' dal adatai feltöltés alatt', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: this.currentEditSong.title + ' dal datai feltöltés alatt', detail: ''});
+    }
+    this.currentEditSong = null;
+    this.songAudioFile = null;
+    this.songEditTitle = "";
   }
 
   deleteSongConfirm(song: Song) {
@@ -201,10 +222,15 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   async deleteSong(song) {
-    await this.songService.deleteSong(song);
-    this.messageService.add({severity:'success', summary: song.title + ' című dal sikeresen törölve', detail:''});
-    this.loadSongs();
-    this.changeAlbumType();
+    try {
+      this.messageService.add({severity: 'info', summary: song.title + ' című dal törlés alatt', detail: ''});
+      await this.songService.deleteSong(song);
+      this.loadSongs();
+      this.changeAlbumType();
+      this.messageService.add({severity: 'success', summary: song.title + ' című dal törlése sikeres', detail: ''});
+    } catch (e) {
+      this.messageService.add({severity: 'error', summary: song.title + ' című dal törlése sikertelen', detail: ''});
+    }
   }
 
   showCoverDialog() {
@@ -224,7 +250,9 @@ export class AlbumDetailComponent implements OnInit {
   }
 
   showSongDetailDialog(song: Song) {
+    console.log(song);
     this.songEditTitle = song.title;
+    this.currentEditSong = song;
     this.songEditDisplay = true;
   }
 
