@@ -37,7 +37,7 @@ public class AlbumService {
 
         album.setUser(user);
         album.setDate(new Date());
-        //album.setGenres(genres);
+        album.setGenres(genres);
 
         Album savedAlbum = albumRepository.save(album);
 

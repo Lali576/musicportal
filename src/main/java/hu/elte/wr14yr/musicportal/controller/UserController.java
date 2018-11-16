@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -82,7 +83,7 @@ public class UserController {
         logger.info("User controller: get parameter 'userTags'");
 
         UserTag[] userTagsArray = mapper.readValue(request.getParameter("userTags"), UserTag[].class);
-        List<UserTag> userTagsList = Arrays.asList(userTagsArray);
+        List<UserTag> userTagsList = new LinkedList<>(Arrays.asList(userTagsArray));
 
         User savedUser = userService.register(user, password, file, userTagsList);
 
@@ -146,7 +147,7 @@ public class UserController {
         logger.info("User controller: get parameter 'userTags'");
 
         UserTag[] userTagsArray = mapper.readValue(request.getParameter("userTags"), UserTag[].class);
-        List<UserTag> userTagsList = Arrays.asList(userTagsArray);
+        List<UserTag> userTagsList = new LinkedList<>(Arrays.asList(userTagsArray));
 
         User updatedUser = userService.updateDetails(country, favGenre, userTagsList);
 

@@ -62,14 +62,14 @@
       </div>
       <div class="ui-grid-row">
         <div class="ui-grid-col-2">
-          Kulcsszavak :
+          Címkék :
         </div>
         <div class="ui-grid-col-6">
           <p-chips name="albumTagsChips"
-                   [(ngModel)]="Tags"
+                   [(ngModel)]="tags"
                    #albumTagsChips="ngModel">
             <ng-template let-item pTemplate="item">
-              #{{item}}<i style="matgin-right:2em"></i>
+              #{{item}}<i style="margin-right: 2em"></i>
             </ng-template>
           </p-chips>
         </div>

@@ -38,15 +38,17 @@ export class PlaylistDetailComponent implements OnInit {
       await this.playlistService.getPlaylist(id);
       this.playlist = this.playlistService.playlist;
       this.loadSongs();
-      this.loadPlaylistTags;
+      this.loadPlaylistTags();
     })).subscribe();
   }
 
   loadPlaylistTags() {
+    console.log("list tags");
     this.tagService.getTagsByPlaylist(this.playlist)
       .then(
         (playlistTags: PlaylistTag[]) => {
           this.playlistTags = playlistTags;
+          console.log(this.playlistTags);
         }
       )
   }

@@ -6,6 +6,10 @@
   border-radius: 10px;
 }
 
+button {
+  margin-right: 0.5em;
+}
+
 a {
   color: #000;
 }

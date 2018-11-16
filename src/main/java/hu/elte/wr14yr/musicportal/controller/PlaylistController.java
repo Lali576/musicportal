@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -52,12 +53,12 @@ public class PlaylistController {
         logger.info("Playlist controller: get parameter 'songs'");
 
         Song[] songsArray = mapper.readValue(request.getParameter("songs"), Song[].class);
-        List<Song> songsList = Arrays.asList(songsArray);
+        List<Song> songsList = new LinkedList<>(Arrays.asList(songsArray));
 
         logger.info("Playlist controller: get parameter 'playlistTags'");
 
         PlaylistTag[] playlistTagsArray = mapper.readValue(request.getParameter("playlistTags"), PlaylistTag[].class);
-        List<PlaylistTag> playlistTagsList = Arrays.asList(playlistTagsArray);
+        List<PlaylistTag> playlistTagsList = new LinkedList<>(Arrays.asList(playlistTagsArray));
 
         Playlist savedPlaylist = playlistService.create(playlist, user, songsList, playlistTagsList);
 
@@ -126,12 +127,12 @@ public class PlaylistController {
         logger.info("Playlist controller: get parameter 'songs'");
 
         Song[] songsArray = mapper.readValue(request.getParameter("songs"), Song[].class);
-        List<Song> songsList = Arrays.asList(songsArray);
+        List<Song> songsList = new LinkedList<>(Arrays.asList(songsArray));
 
         logger.info("Playlist controller: get parameter 'playlistTags'");
 
         PlaylistTag[] playlistTagsArray = mapper.readValue(request.getParameter("playlistTags"), PlaylistTag[].class);
-        List<PlaylistTag> playlistTagsList = Arrays.asList(playlistTagsArray);
+        List<PlaylistTag> playlistTagsList = new LinkedList<>(Arrays.asList(playlistTagsArray));
 
         Playlist updatedPlaylist = playlistService.update(playlist, songsList, user, playlistTagsList);
 

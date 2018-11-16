@@ -25,6 +25,20 @@
         </div>
       </div>
       <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          Címkék :
+        </div>
+        <div class="ui-grid-col-6">
+          <p-chips name="playlistTagsChips"
+                   [(ngModel)]="tags"
+                   #playlistTagsChips="ngModel">
+            <ng-template let-item pTemplate="item">
+              #{{item}}<i style="margin-right: 2em"></i>
+            </ng-template>
+          </p-chips>
+        </div>
+      </div>
+      <div class="ui-grid-row">
         <div class="ui-grid-col-2"></div>
         <div class="ui-grid-col-4">
           <button

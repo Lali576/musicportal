@@ -71,8 +71,6 @@ public class SongController {
 
         Album album = mapper.readValue(request.getParameter("album"), Album.class);
 
-        logger.info("Song controller: get parameter  'songTags'");
-
         Song savedSong = songService.create(song, user, album, file);
 
         if(file != null) {

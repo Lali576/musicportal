@@ -20,7 +20,7 @@ export class AlbumFormComponent implements OnInit {
   album: Album = new Album();
   albumCoverFile: File = null;
   albumGenres: Genre[] = [];
-  Tags: string[] = [];
+  tags: string[] = [];
   albumTags: AlbumTag[] = [];
   genres: Genre[] = [];
   displayDialog: boolean;
@@ -133,7 +133,7 @@ export class AlbumFormComponent implements OnInit {
       } else if (this.albumSongs.length >= 7) {
         this.album.type = "LP";
       }
-      for(let tag of this.Tags) {
+      for(let tag of this.tags) {
         let albumTag: AlbumTag = new AlbumTag();
         albumTag.word = tag;
         this.albumTags.push(albumTag);

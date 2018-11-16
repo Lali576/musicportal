@@ -1,5 +1,5 @@
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
-<p-confirmDialog></p-confirmDialog>
+<p-confirmDialog acceptLabel="Igen" rejectLabel="Nem"></p-confirmDialog>
 <button pButton routerLink="/playlist/list" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
 <h1 class="first">
@@ -42,7 +42,7 @@
         <ng-template #showPlaylistTags>
           <button *ngFor="let playlistTag of playlistTags"
                   pButton type="button"
-                  label="#{{playlistTags.word}}"></button>
+                  label="#{{playlistTag.word}}"></button>
         </ng-template>
       </td>
     </tr>

@@ -17,7 +17,7 @@ export class PlaylistFormComponent implements OnInit {
   playlist: Playlist = new Playlist();
   songs: Song[] = [];
   selectedSongs: Song[] = [];
-  Tags: string[] = [];
+  tags: string[] = [];
   playlistTags: PlaylistTag[] = [];
   msgs: Message[] = [];
 
@@ -39,7 +39,12 @@ export class PlaylistFormComponent implements OnInit {
       return;
     }
     try {
-      console.log(this.playlist);
+      for(let tag of this.tags) {
+        let playlistTag: PlaylistTag = new PlaylistTag();
+        playlistTag.word = tag;
+        this.playlistTags.push(playlistTag);
+      }
+
       this.showMsgInfo();
       this.playlist = await this.playlistServive.addPlaylist(this.playlist, this.selectedSongs, this.playlistTags);
       this.showMsgSuccess();

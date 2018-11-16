@@ -64,12 +64,12 @@ public class AlbumController {
         logger.info("Album controller: get parameter 'genres'");
 
         Genre[] genresArray = mapper.readValue(request.getParameter("albumGenres"), Genre[].class);
-        List<Genre> genresList = Arrays.asList(genresArray);
+        List<Genre> genresList = new LinkedList<>(Arrays.asList(genresArray));
 
         logger.info("Album controller get parameter 'albumTags");
 
         AlbumTag[] albumTagsArray = mapper.readValue(request.getParameter("albumTags"), AlbumTag[].class);
-        List<AlbumTag> albumTagsList = Arrays.asList(albumTagsArray);
+        List<AlbumTag> albumTagsList = new LinkedList<>(Arrays.asList(albumTagsArray));
 
         logger.info("Album controller: ger current logged in user");
 
@@ -146,12 +146,12 @@ public class AlbumController {
         logger.info("Album controller: get parameter 'genres'");
 
         Genre[] genresArray = mapper.readValue(request.getParameter("albumGenres"), Genre[].class);
-        List<Genre> genresList = Arrays.asList(genresArray);
+        List<Genre> genresList = new LinkedList<>(Arrays.asList(genresArray));
 
         logger.info("Album controller: get parameter 'albumTags'");
 
         AlbumTag[] albumTagsArray = mapper.readValue(request.getParameter("albumTags"), AlbumTag[].class);
-        List<AlbumTag> albumTagsList = Arrays.asList(albumTagsArray);
+        List<AlbumTag> albumTagsList = new LinkedList<>(Arrays.asList(albumTagsArray));
 
         Album updatedAlbum = albumService.updateDetails(album, genresList, albumTagsList);
 
