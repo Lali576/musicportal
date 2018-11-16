@@ -88,6 +88,14 @@
         </div>
       </div>
     </div>
+    <p-pickList [source]="songs" [target]="selectedSongs" sourceHeader="Össz. dal" targetHeader="Kiv. dal" [responsive]="true" filterBy="title"
+                dragdrop="true" dragdropScope="songs" sourceFilterPlaceholder="Search by brand" targetFilterPlaceholder="Search by brand" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+      <ng-template let-song pTemplate="item">
+        <div class="ui-helper-clearfix">
+          <div style="font-size:14px;font-weight: bold;text-align: center;margin:15px 5px;">{{song.title}}</div>
+        </div>
+      </ng-template>
+    </p-pickList>
     <p-footer>
       <button type="button" pButton icon="fas fa-check" (click)="changeDetails(); detailsEditDisplay = false;"
               label="Mentés"></button>
@@ -97,7 +105,7 @@
   <button pButton type="button" (click)="deletePlaylistConfirm()" label="Lej. lista törlése">
   </button>
 </div>
-<p-dataView *ngIf="songs.length >= 1" #dv [value]="songs" [paginator]="true" [rows]="10" paginatorPosition="both">
+<p-dataView *ngIf="playlistSongs.length >= 1" #dv [value]="playlistSongs" [paginator]="true" [rows]="10" paginatorPosition="both">
   <ng-template let-song pTemplate="listItem">
     <div class="ui-g" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
       <div class="ui-g-12 ui-md-3" style="text-align:center">
@@ -134,13 +142,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="ui-g-6 ui-md-1" *ngIf="authService.isLoggedIn && (authService.loggedInUser.id === playlist.user.id)">
-        <button
-          pButton type="button"
-          (click)="deleteSongConfirm(song)"
-          style="width: 30px; height: 30px; margin-top: 10px;"
-          icon="fas fa-trash"></button>
       </div>
     </div>
   </ng-template>

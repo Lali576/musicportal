@@ -11,6 +11,7 @@ import {PlaylistTag} from "../../../model/tags/playlisttag";
 import {TagService} from "../../../service/tag.service";
 import {Location} from "@angular/common";
 import {delay} from "q";
+import {Genre} from "../../../model/genre";
 
 @Component({
   selector: 'app-playlist-detail',
@@ -22,7 +23,10 @@ export class PlaylistDetailComponent implements OnInit {
 
   playlist: Playlist = new Playlist();
   playlistTags: PlaylistTag[] = [];
+  playlistSongs: Song[] = [];
+
   songs: Song[] = [];
+  selectedSongs: Song[] = [];
 
   detailsEditDisplay: boolean = false;
   playlistEditName: string = "";
@@ -45,7 +49,7 @@ export class PlaylistDetailComponent implements OnInit {
       const id = +params.get('id');
       await this.playlistService.getPlaylist(id);
       this.playlist = this.playlistService.playlist;
-      this.loadSongs();
+      this.loadPlaylistSongs();
       this.loadPlaylistTags();
     })).subscribe();
   }
@@ -59,11 +63,11 @@ export class PlaylistDetailComponent implements OnInit {
       )
   }
 
-  loadSongs() {
+  loadPlaylistSongs() {
     this.songService.getSongsByPlaylist(this.playlist)
       .then(
-        (songs: Song[]) => {
-          this.songs = songs;
+        (playlistSongs: Song[]) => {
+          this.playlistSongs = playlistSongs;
         }
       );
   }
@@ -77,8 +81,9 @@ export class PlaylistDetailComponent implements OnInit {
       playlistTags.push(playlistTag);
     }
 
-    await this.playlistService.updatePlaylist(this.playlist.id, this.playlist, this.playlistEditName, this.songs, playlistTags);
+    await this.playlistService.updatePlaylist(this.playlist.id, this.playlist, this.playlistEditName, this.selectedSongs, playlistTags);
     this.playlist = this.playlistService.playlist;
+    this.loadPlaylistSongs();
     this.loadPlaylistTags();
   }
 
@@ -102,28 +107,19 @@ export class PlaylistDetailComponent implements OnInit {
     this.router.navigate(['/user', playlist.user.id]);
   }
 
-  deleteSongConfirm(song: Song) {
-    this.confirmationService.confirm({
-      message: "Biztos szeretné törölni az alábbi dalt: " + song.title + " ?",
-      header: 'Dal törlés',
-      icon: 'fas fa-exclamation-triangle',
-      accept: () => {
-        this.deleteSong(song);
-      },
-      reject: () => {
-      }
-    });
-  }
-
-  async deleteSong(song) {
-    await this.songService.deleteSong(song);
-    this.messageService.add({severity:'success', summary: song.title + ' című dal sikeresen törölve', detail:''});
-    this.loadSongs();
-  }
-
   showDetailsDialog() {
     this.playlistEditName = this.playlist.name;
+    this.loadSongs();
     this.detailsEditDisplay = true;
+  }
+
+  loadSongs() {
+    this.songService.getAllSongs()
+      .then(
+        (songs: Song[]) => {
+          this.songs = songs;
+        }
+      )
   }
 
   goBack() {
