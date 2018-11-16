@@ -46,7 +46,7 @@ export class PlaylistEditComponent implements OnInit {
     var Tags: Tag[] = params["Tags"];
 
     if(playlist.id > 0) {
-      await this.playlistService.updatePlaylist(playlist.id, playlist, songs, Tags);
+      await this.playlistService.updatePlaylist(playlist.id, playlist, "", songs, Tags);
     } else {
       await this.playlistService.addPlaylist(playlist, songs, Tags);
     }

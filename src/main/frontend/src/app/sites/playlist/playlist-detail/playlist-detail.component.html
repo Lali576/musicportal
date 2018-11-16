@@ -1,7 +1,7 @@
+<button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
+</button>
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
 <p-confirmDialog acceptLabel="Igen" rejectLabel="Nem"></p-confirmDialog>
-<button pButton routerLink="/playlist/list" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
-</button>
 <h1 class="first">
   Lejátszási lista
 </h1>
@@ -48,6 +48,55 @@
     </tr>
   </tbody>
 </table>
+<div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === playlist.user.id)" class="edit_buttons">
+  <button pButton type="button" label="Adatok szerk." (click)="showDetailsDialog()">
+  </button>
+  <p-dialog header="Adatok szerkesztése" [(visible)]="detailsEditDisplay" [modal]="true" [responsive]="true"
+            [width]="800" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Név:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="playlistNameText"
+                 pInputText type="text"
+                 [(ngModel)]="playlistEditName"
+                 #playlistNameText="ngModel"
+                 required />
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Címkék :
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <p-chips name="playlistTagsChips"
+                   [(ngModel)]="playlistEditPlaylistTags"
+                   #playlistTags="ngModel">
+            <ng-template let-item pTemplate="item">
+              #{{item}}<i style="margin-right: 1.5em"></i>
+            </ng-template>
+          </p-chips>
+        </div>
+        <div class="ui-grid-col-4">
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button type="button" pButton icon="fas fa-check" (click)="changeDetails(); detailsEditDisplay = false;"
+              label="Mentés"></button>
+      <button type="button" pButton icon="fas fa-times" (click)="detailsEditDisplay=false" label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
+  <button pButton type="button" (click)="deletePlaylistConfirm()" label="Lej. lista törlése">
+  </button>
+</div>
 <p-dataView *ngIf="songs.length >= 1" #dv [value]="songs" [paginator]="true" [rows]="10" paginatorPosition="both">
   <ng-template let-song pTemplate="listItem">
     <div class="ui-g" style="padding: 1em;border-bottom: 1px solid #d9d9d9">

@@ -143,13 +143,10 @@ public class PlaylistController {
 
     @Role({USER, ARTIST})
     @DeleteMapping("/delete/{id}")
-    public @ResponseBody void delete(@PathVariable long id, MultipartHttpServletRequest request) throws IOException {
+    public @ResponseBody void delete(@PathVariable long id) throws IOException {
         logger.info(String.format("Playlist controller: enter endpoint '/delete/%s'", id));
 
-        logger.info("Playlist controller: get parameter 'playlist'");
-
-        Playlist playlist = mapper.readValue(request.getParameter("playlist"), Playlist.class);
-
+        Playlist playlist = playlistService.find(id);
         playlistService.delete(playlist);
 
         logger.info(String.format("Playlist controller: exit endpoint '/delete/%s'", id));

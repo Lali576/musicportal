@@ -213,25 +213,6 @@ export class UserDetailComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  deletePlaylistConfirm(playlist) {
-    this.confirmationService.confirm({
-      message: "Biztos szeretné törölni az alábbi lejátszási listát: " + playlist.title + " ?",
-      header: 'Lej. lista törlés',
-      icon: 'fas fa-exclamation-triangle',
-      accept: () => {
-        this.deletePlaylist(playlist);
-      },
-      reject: () => {
-      }
-    });
-  }
-
-  async deletePlaylist(playlist) {
-    await this.playlistService.deletePlaylist(playlist);
-    this.messageService.add({severity:'success', summary: playlist.title + ' nevű lej. lista sikeresen törölve', detail:''});
-    this.loadPlaylists();
-  }
-
   showIconDialog() {
     this.iconEditDisplay = true;
   }

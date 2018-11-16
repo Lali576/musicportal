@@ -122,8 +122,6 @@ export class AlbumDetailComponent implements OnInit {
       albumTags.push(albumTag);
     }
 
-    console.log(this.albumEditGenres);
-
     await this.albumService.updateAlbumDetails(this.album.id, this.album, this.albumEditTitle, this.albumEditGenres, albumTags);
     this.album = this.albumService.album;
     this.loadAlbumGenres();

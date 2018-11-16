@@ -47,7 +47,8 @@ export class PlaylistService {
     return this.http.get<Playlist[]>('api/playlist/list-first-five').toPromise();
   }
 
-  updatePlaylist(id: number, playlist: Playlist, songs: Song[], playlistTags: PlaylistTag[]): Promise<Playlist> {
+  updatePlaylist(id: number, playlist: Playlist, playlistName: string, songs: Song[], playlistTags: PlaylistTag[]): Promise<Playlist> {
+    playlist.name = playlistName;
     const formData = new FormData();
     formData.append("playlist", JSON.stringify(playlist));
     formData.append("songs", JSON.stringify(songs));
@@ -62,9 +63,12 @@ export class PlaylistService {
     ).toPromise();
   }
 
-  deletePlaylist(id: number) {
+  deletePlaylist(playlist: Playlist) {
+    console.log("Try to delete playlist named " + playlist.name);
+    let id: number = playlist.id;
     return this.http.delete(`api/playlist/delete/${id}`).pipe(
       tap(() => {
+        console.log("Deleting playlist named " + playlist.name + " was successful");
         this.playlist = null;
       })
     ).toPromise();
