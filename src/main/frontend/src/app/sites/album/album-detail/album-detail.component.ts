@@ -142,6 +142,18 @@ export class AlbumDetailComponent implements OnInit {
     this.loadAlbumTags();
   }
 
+  changeAlbumType() {
+    if(this.albumSongs.length <= 3) {
+      this.album.type = "SINGLE";
+    } else if (this.albumSongs.length >= 4 && this.albumSongs.length <= 6) {
+      this.album.type = "EP";
+    } else if (this.albumSongs.length >= 7) {
+      this.album.type = "LP";
+    }
+
+    this.albumService.updateAlbumType(this.album.id, this.album);
+  }
+
   deleteAlbumConfirm() {
     this.confirmationService.confirm({
       message: "Biztos szeretné törölni az alábbi albumot: " + this.album.title + " ?",
@@ -167,6 +179,8 @@ export class AlbumDetailComponent implements OnInit {
     song.title = this.songEditTitle;
 
     await this.songService.addSong(song, this.songAudioFile, this.album);
+    this.loadSongs();
+    this.changeAlbumType();
   }
 
   async changeSongDetails(song: Song) {
@@ -190,6 +204,7 @@ export class AlbumDetailComponent implements OnInit {
     await this.songService.deleteSong(song);
     this.messageService.add({severity:'success', summary: song.title + ' című dal sikeresen törölve', detail:''});
     this.loadSongs();
+    this.changeAlbumType();
   }
 
   showCoverDialog() {

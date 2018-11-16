@@ -196,6 +196,22 @@ public class AlbumController {
     }
 
     @Role({ARTIST})
+    @PostMapping("/update/{id}/type")
+    public ResponseEntity<Album> updateType(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
+        logger.info(String.format("Album controller: enter endpoint '/update/%s/type'", id));
+
+        logger.info("Album controller: get parameter 'album'");
+
+        Album album = mapper.readValue(request.getParameter("album"), Album.class);
+
+        Album updatedAlbum = albumService.updateType(album);
+
+        logger.info(String.format("Album controller: exit endpoint '/update/%s/type'", id));
+
+        return ResponseEntity.ok(updatedAlbum);
+    }
+
+    @Role({ARTIST})
     @DeleteMapping("/delete/{id}")
     public @ResponseBody void delete(@PathVariable long id) {
         logger.info(String.format("Album controller: enter endpoint '/delete/%s'", id));

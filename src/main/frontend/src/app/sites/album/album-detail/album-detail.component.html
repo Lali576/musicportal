@@ -172,7 +172,12 @@
   </button>
 </div>
 <div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === album.user.id)">
-  <button pButton type="button" label="Új dal" (click)="showSongCreateDialog()">
+  <button
+    pButton type="button"
+    label="Új dal"
+    icon="fas fa-plus"
+    class="ui-button-success"
+    (click)="showSongCreateDialog()">
   </button>
   <p-dialog header="Új dal" [(visible)]="songCreateDisplay" [modal]="true" [responsive]="true"
             [width]="800" [minWidth]="400" [minY]="70"

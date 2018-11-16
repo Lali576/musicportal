@@ -81,6 +81,20 @@ export class AlbumService {
     ).toPromise();
   }
 
+  updateAlbumType(id: number, album: Album) {
+    const  formData = new FormData();
+    formData.append("album", JSON.stringify(album));
+
+    return this.http.post<Album>(
+      `api/album/update/${id}/type`,
+      formData
+    ).pipe(
+      tap((album: Album) => {
+        this.album = album;
+      })
+    ).toPromise();
+  }
+
   deleteAlbum(album: Album) {
     console.log("Try to delete album titled " + album.title);
     let id: number = album.id;

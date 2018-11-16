@@ -139,6 +139,16 @@ public class AlbumService {
         return album;
     }
 
+    public Album updateType(Album album) {
+        logger.info(String.format("Album service: album titled %s' type is going to be updated", album.getTitle()));
+
+        Album savedAlbum = albumRepository.save(album);
+
+        logger.info(String.format("Album service: album titled %s's type is going to be updated", album.getTitle()));
+
+        return savedAlbum;
+    }
+
     void deleteAllByUser(User user) throws DataAccessException, ConstraintViolationException, DataException {
         logger.info(String.format("Album service: user named %s's albums are going to be deleted", user.getUsername()));
 

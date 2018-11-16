@@ -32,17 +32,6 @@ public class FileService {
         return null;
     }
 
-    public OutputStream downloadFile(String fileGdaId) {
-        logger.info(String.format("File service: downloading file with gda id %s", fileGdaId));
-        try {
-            return GoogleDriveApi.downloadFile(fileGdaId);
-        } catch (GeneralSecurityException | IOException e) {
-            logger.severe(String.format("File service: downloading file with gda id %s was unsuccessful", fileGdaId));
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public String uploadFolder(String username, String folderGdaId) {
         logger.info(String.format("File service: trying to create folder within folder with id %s", folderGdaId));
         try {
