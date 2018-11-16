@@ -59,8 +59,18 @@ export class PlaylistDetailComponent implements OnInit {
       .then(
         (playlistTags: PlaylistTag[]) => {
           this.playlistTags = playlistTags;
+          this.loadEditPlaylistTags();
         }
       )
+  }
+
+  loadEditPlaylistTags() {
+    this.playlistEditPlaylistTags = [];
+
+    for(let playlisTag of this.playlistTags) {
+      let word: string = playlisTag.word;
+      this.playlistEditPlaylistTags.push(word);
+    }
   }
 
   loadPlaylistSongs() {

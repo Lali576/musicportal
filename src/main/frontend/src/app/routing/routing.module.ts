@@ -6,10 +6,8 @@ import { AlbumListComponent } from "../sites/album/album-list/album-list.compone
 import { AuthGuard } from "../auth.guard";
 import { AlbumDetailComponent } from "../sites/album/album-detail/album-detail.component";
 import { SongListComponent } from "../sites/song/song-list/song-list.component";
-import { SongEditComponent } from "../sites/song/song-edit/song-edit.component";
 import { SongDetailComponent } from "../sites/song/song-detail/song-detail.component";
 import { PlaylistListComponent } from "../sites/playlist/playlist-list/playlist-list.component";
-import { PlaylistEditComponent } from "../sites/playlist/playlist-edit/playlist-edit.component";
 import { PlaylistDetailComponent } from "../sites/playlist/playlist-detail/playlist-detail.component";
 import { RegisterComponent } from "../sites/user/register/register.component";
 import { LoginComponent } from "../sites/user/login/login.component";
@@ -64,12 +62,6 @@ const routes: Routes = [
     component: SongDetailComponent
   },
   {
-    path: 'song/:id/edit',
-    component: SongEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST']}
-  },
-  {
     path: 'playlist/list',
     component: PlaylistListComponent
   },
@@ -86,12 +78,6 @@ const routes: Routes = [
   {
     path: 'playlist/:id/songs',
     component: PlaylistSongsComponent
-  },
-  {
-    path: 'playlist/:id/edit',
-    component: PlaylistEditComponent,
-    canActivate: [AuthGuard],
-    data: {roles: ['ARTIST', 'USER']}
   },
   {
     path: 'search/:word',
