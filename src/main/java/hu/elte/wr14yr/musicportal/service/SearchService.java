@@ -35,7 +35,7 @@ public class SearchService {
     public Iterable<Album> findAlbumByAlbumTag(AlbumTag albumTag) {
         logger.info("Search service: albums with current album tag are going to be searched");
 
-        return albumRepository.findAllByAlbumTags(albumTag);
+        return albumRepository.findAllByAlbumTagsWordContainsAllIgnoreCase(albumTag.getWord());
     }
 
     public Iterable<Album> findAlbumsByGenre(Genre genre) {
@@ -58,7 +58,7 @@ public class SearchService {
     public Iterable<Playlist> findPlaylistByPlaylistTag(PlaylistTag playlistTag) {
         logger.info("Search service: playlists with current playlist tag are going to be searched");
 
-        return playlistRepository.findAllByPlaylistTags(playlistTag);
+        return playlistRepository.findAllByPlaylistTagsWordContainsAllIgnoreCase(playlistTag.getWord());
     }
 
     public Iterable<User> findUsersByUsername(String username) {
@@ -70,6 +70,6 @@ public class SearchService {
     public Iterable<User> findUsersByUserTag(UserTag userTag) {
         logger.info("Search service: users with current user tag are going to be searched");
 
-        return userRepository.findAllByUserTags(userTag);
+        return userRepository.findAllByUserTagsWordContainsAllIgnoreCase(userTag.getWord());
     }
 }

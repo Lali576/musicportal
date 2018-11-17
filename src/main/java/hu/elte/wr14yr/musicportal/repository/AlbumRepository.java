@@ -21,7 +21,7 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     List<Album> findAllByGenres(Genre genre);
 
-    List<Album> findAllByAlbumTags(AlbumTag albumTag);
+    List<Album> findAllByAlbumTagsWordContainsAllIgnoreCase(String albumTagWord);
 
     Album findAlbumById(Long id);
 
