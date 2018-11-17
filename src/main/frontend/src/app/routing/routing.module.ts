@@ -16,6 +16,9 @@ import {AlbumFormComponent} from "../sites/album/album-form/album-form.component
 import {PlaylistFormComponent} from "../sites/playlist/playlist-form/playlist-form.component";
 import {AlbumSongsComponent} from "../sites/album/album-songs/album-songs.component";
 import {PlaylistSongsComponent} from "../sites/playlist/playlist-song/playlist-song.component";
+import {SearchTagComponent} from "../sites/search/search-tag/search-tag.component";
+import {SearchWordComponent} from "../sites/search/search-word/search-word.component";
+import {SearchGenreComponent} from "../sites/search/search-genre/search-genre.component";
 
 const routes: Routes = [
   {
@@ -77,6 +80,18 @@ const routes: Routes = [
   {
     path: 'playlist/:idp/songs/:ids',
     component: PlaylistSongsComponent
+  },
+  {
+    path: 'search/tag/:word',
+    component: SearchTagComponent
+  },
+  {
+    path: 'search/genre/:word',
+    component: SearchGenreComponent
+  },
+  {
+    path: 'search/word/:word',
+    component: SearchWordComponent
   }
 ];
 
