@@ -1,3 +1,223 @@
-<p>
-  playlist-song works!
-</p>
+<button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
+</button>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<h1 class="first" style="text-align: center">
+  <a [routerLink]="['/album', song.album.id]">
+    {{song.album.title}}
+  </a>
+</h1>
+<div class="cover">
+  <div>
+    <img *ngIf="song.album.coverFileGdaId === ''; else showAlbumCover" class="fas fa-compact-disc fa-8x">
+    <ng-template #showAlbumCover>
+      <img src="{{'https://docs.google.com/uc?export=download&id=' + song.album.coverFileGdaId}}">
+    </ng-template>
+  </div>
+</div>
+<div class="details">
+  <div class="details__left">
+    <button>
+      <i class="fas fa-angle-double-left"></i>
+    </button>
+  </div>
+  <div>
+    <h3>
+      {{song.title}}
+    </h3>
+  </div>
+  <div class="details__right">
+    <button>
+      <i class="fas fa-angle-double-right"></i>
+    </button>
+  </div>
+</div>
+<div class="player">
+  <div class="player__fast__backward">
+    <button (click)="handleFastBackward()">
+      <i class="fas fa-fast-backward"></i>
+    </button>
+  </div>
+  <div class="player__backward">
+    <button (click)="handleBackward()">
+      <i class="fas fa-backward"></i>
+    </button>
+  </div>
+  <div class="player__main">
+    <button *ngIf="!paused" (click)="handlePause()">
+      <i class="fas fa-pause"></i>
+    </button>
+    <button *ngIf="paused" (click)="handlePlay()">
+      <i class="fas fa-play"></i>
+    </button>
+  </div>
+  <div class="player__forward">
+    <button (click)="handleForward()">
+      <i class="fas fa-forward"></i>
+    </button>
+  </div>
+  <div class="player__fast__forward">
+    <button (click)="handleFastForward()">
+      <i class="fas fa-fast-forward"></i>
+    </button>
+  </div>
+</div>
+<div class="volume__bar">
+  <div class="volume__down">
+    <button (click)="handleVolumeDown()">
+      <i class="fas fa-volume-off"></i>
+    </button>
+  </div>
+  <div>
+    <p-slider name="volumeNumberBar"
+              [(ngModel)]="volumeNumber"
+              #volumeNumberBar = "ngModel"
+              class="ui-slider-handle"
+              (onChange)="handleVolumeChange($event)"
+              [min]="0"
+              [max]="100"
+              [step]="1"
+              [style]="{'width':'14em'}"></p-slider>
+  </div>
+  <div class="volume__up">
+    <button (click)="handleVolumeUp()">
+      <i class="fas fa-volume-up"></i>
+    </button>
+  </div>
+</div>
+<div class="progress_box">
+  <span class="player__time-elapsed">{{elapsed}}</span>
+  <progress
+    value="{{current}}"
+    max="1"></progress>
+  <span class="player__time-total">{{total}}</span>
+</div>
+<div class="tag_button_div">
+  <div *ngIf="albumTags.length === 0; else showAlbumTags">
+    <i>Nincsenek megadva címkék</i>
+  </div>
+  <ng-template #showAlbumTags>
+    <button class="tag_button" *ngFor="let albumTag of albumTags"
+            pButton type="button"
+            label="#{{albumTag.word}}"></button>
+  </ng-template>
+</div>
+<div class="counter_like_container">
+  <button>
+    <i class="fas fa-headphones fa-2x"></i>
+  </button>
+  {{songCounterNumber}}
+  <button>
+    <a (click)="addSongLike('like')">
+      <i class="fas fa-thumbs-up fa-2x"></i>
+    </a>
+  </button>
+  {{songLikeNumber}}
+  <button>
+    <a (click)="addSongLike('dislike')">
+      <i class="fas fa-thumbs-down fa-2x"></i>
+    </a>
+  </button>
+  {{songDislikeNumber}}
+</div>
+<h3 style="text-align: center">
+  Dalszöveg
+</h3>
+<div style="text-align: center">
+  <button
+    *ngIf="(authService.isLoggedIn)"
+    type="button" pButton
+    (click)="showLyricsDialog()"
+    label="Szerkeszt"
+    class="make_button">
+  </button>
+  <p-dialog header="Dalszöveg szerkesztés" [(visible)]="lyricsEditDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <p-editor [(ngModel)]="songEditLyrics" [style]="{'height':'320px'}"></p-editor>
+    <p-footer>
+      <button type="button" pButton icon="fas fa-check" (click)="changeLyrics(); lyricsEditDisplay = false;" label="Mentés"></button>
+      <button type="button" pButton icon="fas fa-times" (click)="lyricsEditDisplay=false" label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
+  <div>
+    <div *ngIf="authService.isLoggedIn; else showLyricsNotification">
+      <div *ngIf="song.lyrics === ''; else showSongLyrics">
+        <i>Ennek a dalnak még nincs megadva dalszöveg!</i>
+      </div>
+      <ng-template #showSongLyrics>
+        <div class="lyrics" [innerHtml]="song.lyrics"></div>
+      </ng-template>
+    </div>
+    <ng-template #showLyricsNotification>
+      <i>A dalszöveg megtekintéséhez jelentkezzen be!</i>
+    </ng-template>
+  </div>
+</div>
+<h3 style="text-align: center">
+  Kommentek
+</h3>
+<div style="text-align: center">
+  <button
+    *ngIf="(authService.isLoggedIn)"
+    type="button" pButton
+    (click)="showCommentDialog()"
+    label="Új komment"
+    class="make_button">
+  </button>
+  <p-dialog header="Komment írás" [(visible)]="commentDisplay" [modal]="true" [responsive]="true" [width]="600" [minWidth]="400" [minY]="70"
+            [maximizable]="true" [baseZIndex]="10000">
+    <p-editor [(ngModel)]="tempCommentText" [style]="{'height':'320px'}"></p-editor>
+    <p-footer>
+      <button type="button" pButton icon="fas fa-check" (click)="sendComment(); commentDisplay = false;" label="Mentés"></button>
+      <button type="button" pButton icon="fas fa-times" (click)="tempCommentText='';commentDisplay=false" label="Kilép"></button>
+    </p-footer>
+  </p-dialog>
+  <div *ngIf="authService.isLoggedIn; else showSongCommentNotification">
+    <div *ngIf="songComments.length === 0; else showSongComments">
+      <i>
+        Ehhez a dalhoz még nem írtak kommentet!
+      </i>
+    </div>
+    <ng-template #showSongComments>
+      <p-dataView #dv [value]="songComments" [paginator]="true" [rows]="10" paginatorPosition="both">
+        <ng-template let-comment pTemplate="listItem">
+          <div class="ui-g list_element">
+            <div class="ui-g-12 ui-md-3">
+              <div *ngIf="comment.user.iconFileGdaId === ''; else showUserIcon">
+                <img src="" class="fas fa-user fa-4x icon_img">
+              </div>
+              <ng-template #showUserIcon>
+                <img src="{{'https://docs.google.com/uc?export=download&id=' + comment.user.iconFileGdaId}}" class="list_element_img">
+              </ng-template>
+            </div>
+            <div class="ui-g-10 ui-md-7">
+              <div class="ui-g">
+                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
+                  <div class="ui-grid-row">
+                    <div>
+                      <h6 class="first">
+                        <a [routerLink]="['/user', comment.user.id]">
+                          {{comment.user.username}}
+                        </a>
+                        <i>
+                          {{" - " + (comment.date | date:'medium')}}
+                        </i>
+                      </h6>
+                    </div>
+                  </div>
+                  <div class="ui-grid-row">
+                    <div class="song_comment">
+                      <p [innerHtml]=comment.textMessage></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </ng-template>
+  </div>
+  <ng-template #showSongCommentNotification>
+    <i>A kommentek olvasásához és írásához jelent!</i>
+  </ng-template>
+</div>
