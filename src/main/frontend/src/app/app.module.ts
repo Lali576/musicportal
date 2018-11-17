@@ -54,10 +54,6 @@ import { SongDetailComponent } from './sites/song/song-detail/song-detail.compon
 import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
 import { PlaylistListComponent } from './sites/playlist/playlist-list/playlist-list.component';
 import { PlaylistDetailComponent } from './sites/playlist/playlist-detail/playlist-detail.component';
-import { SearchComponent } from './sites/search/search.component';
-import { SearchAlbumComponent } from './sites/search/search-album/search-album.component';
-import { SearchSongComponent } from './sites/search/search-song/search-song.component';
-import { SearchPlaylistComponent } from './sites/search/search-playlist/search-playlist.component';
 import {CountryService} from "./service/country.service";
 
 import { LOCALE_ID } from "@angular/core";
@@ -65,6 +61,9 @@ import { registerLocaleData } from "@angular/common";
 import localeHu from '@angular/common/locales/hu';
 import { AlbumSongsComponent } from './sites/album/album-songs/album-songs.component';
 import { PlaylistSongsComponent } from './sites/playlist/playlist-song/playlist-song.component';
+import { SearchTagComponent } from "./sites/search/search-tag/search-tag.component";
+import { SearchGenreComponent } from './sites/search/search-genre/search-genre.component';
+import { SearchWordComponent } from './sites/search/search-word/search-word.component';
 
 registerLocaleData(localeHu);
 
@@ -82,14 +81,13 @@ registerLocaleData(localeHu);
     SongDetailComponent,
     SongListComponent,
     RegisterComponent,
-    SearchComponent,
-    SearchAlbumComponent,
-    SearchSongComponent,
-    SearchPlaylistComponent,
     AlbumFormComponent,
     PlaylistFormComponent,
     AlbumSongsComponent,
-    PlaylistSongsComponent
+    PlaylistSongsComponent,
+    SearchTagComponent,
+    SearchGenreComponent,
+    SearchWordComponent
   ],
   imports: [
     BrowserModule,

@@ -12,7 +12,6 @@ import { PlaylistDetailComponent } from "../sites/playlist/playlist-detail/playl
 import { RegisterComponent } from "../sites/user/register/register.component";
 import { LoginComponent } from "../sites/user/login/login.component";
 import { UserDetailComponent } from "../sites/user/user-detail/user-detail.component";
-import { SearchComponent } from "../sites/search/search.component";
 import {AlbumFormComponent} from "../sites/album/album-form/album-form.component";
 import {PlaylistFormComponent} from "../sites/playlist/playlist-form/playlist-form.component";
 import {AlbumSongsComponent} from "../sites/album/album-songs/album-songs.component";
@@ -78,12 +77,8 @@ const routes: Routes = [
   {
     path: 'playlist/:idp/songs/:ids',
     component: PlaylistSongsComponent
-  },
-  {
-    path: 'search/:word',
-    component: SearchComponent,
   }
-]
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
