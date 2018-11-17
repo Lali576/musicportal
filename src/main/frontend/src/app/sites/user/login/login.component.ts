@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
 import {Message} from "primeng/api";
+import {delay} from "q";
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
       await this.authService.login(this.username, this.password);
       this.showMsgSuccess();
       console.log("Successful logging");
+      await delay(1000);
       this.router.navigate(['/user', this.authService.loggedInUser.id]);
     } catch (e) {
       this.showMsgError();

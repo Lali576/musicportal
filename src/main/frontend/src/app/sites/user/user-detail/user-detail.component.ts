@@ -4,7 +4,6 @@ import { User } from "../../../model/user";
 import { AuthService } from "../../../service/auth.service";
 import { UserService } from "../../../service/user.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {ConfirmationService, MessageService} from "primeng/api";
 import {Album} from "../../../model/album";
 import {Song} from "../../../model/song";
 import {Playlist} from "../../../model/playlist";
@@ -20,6 +19,7 @@ import {Genre} from "../../../model/genre";
 import {CountryService} from "../../../service/country.service";
 import {GenreService} from "../../../service/genre.service";
 import {delay} from "q";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-user-detail',
@@ -156,12 +156,12 @@ export class UserDetailComponent implements OnInit {
 
   async changeIconFile() {
     try {
-      this.messageService.add({key: 'toast', severity:'info', summary: 'Ikon kép feltöltés alatt', detail:''});
+      this.messageService.add({severity:'info', summary: 'Ikon kép feltöltés alatt', detail:''});
       await this.userService.updateIconFile(this.user.id, this.userIconFile);
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Ikon kép feltöltés sikeres', detail:''});
       this.user.iconFileGdaId = this.authService.loggedInUser.iconFileGdaId;
+      this.messageService.add({severity:'success', summary: 'Ikon kép feltöltése sikeres', detail:''});
     } catch (e) {
-      this.messageService.add({key: 'toast', severity:'error', summary: 'Ikon kép feltöltés sikertelen', detail:''});
+      this.messageService.add({severity:'error', summary: 'Ikon kép feltöltése sikertelen', detail:''});
     }
   }
 
@@ -175,36 +175,36 @@ export class UserDetailComponent implements OnInit {
     }
 
     try {
-      this.messageService.add({key: 'toast', severity:'info', summary: 'Adatok feltöltés alatt', detail:''});
+      this.messageService.add({severity:'info', summary: 'Adatok feltöltés alatt', detail:''});
       await this.userService.updateUser(this.user.id, this.userEditCountryId, this.userEditGenreId, userTags);
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Adatok feltöltése sikeres', detail:''});
       this.user = this.authService.loggedInUser;
+      this.messageService.add({severity:'success', summary: 'Adatok feltöltése sikeres', detail:''});
       this.loadUserTags();
     } catch (e) {
-      this.messageService.add({key: 'toast', severity:'error', summary: 'Adatok feltöltése sikertelen', detail:''});
+      this.messageService.add({severity:'error', summary: 'Adatok feltöltése sikertelen', detail:''});
     }
   }
 
   async changeEmail() {
     try {
-      this.messageService.add({key: 'toast', severity:'info', summary: 'E-mail cím feltöltés alatt', detail:''});
+      this.messageService.add({severity:'info', summary: 'E-mail cím feltöltés alatt', detail:''});
       await this.userService.updateEmail(this.user.id, this.userNewEmail);
-      this.messageService.add({key: 'toast', severity:'success', summary: 'E-mail cím feltöltése sikeres', detail:''});
       this.user.emailAddress = this.authService.loggedInUser.emailAddress;
+      this.messageService.add({severity:'success', summary: 'E-mail cím feltöltése sikeres', detail:''});
     } catch (e) {
-      this.messageService.add({key: 'toast', severity:'error', summary: 'E-mail cím feltöltése sikertelen', detail:''});
+      this.messageService.add({severity:'error', summary: 'E-mail cím feltöltése sikertelen', detail:''});
     }
   }
 
   async changeBiography() {
     try {
-      this.messageService.add({key: 'toast', severity:'info', summary: 'Biógráfia feltöltés alatt', detail:''});
+      this.messageService.add({severity:'info', summary: 'Biógráfia feltöltés alatt', detail:''});
       await this.userService.updateBiography(this.user.id, this.userEditBiography);
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Biógráfia feltöltése sikeres', detail:''});
       this.user.biography = this.authService.loggedInUser.biography;
       this.userEditBiography = this.user.biography;
+      this.messageService.add({severity:'success', summary: 'Biógráfia feltöltése sikeres', detail:''});
     } catch (e) {
-      this.messageService.add({key: 'toast', severity:'error', summary: 'Biógráfia feltöltése sikertelen', detail:''});
+      this.messageService.add({severity:'error', summary: 'Biógráfia feltöltése sikertelen', detail:''});
     }
   }
 
@@ -214,15 +214,15 @@ export class UserDetailComponent implements OnInit {
       userMessage.textMessage = this.tempMessageText;
       this.tempMessageText = "";
       let userToId = this.user.id;
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Üzenet feltöltés alatt', detail:''});
+      this.messageService.add({severity:'info', summary: 'Üzenet feltöltés alatt', detail:''});
       await this.userService.addUserMessages(userToId, userMessage).then(
         (userMessages: UserMessage[]) => {
           this.userMessages = userMessages;
         }
       );
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Üzenet feltöltése sikeres', detail:''});
+      this.messageService.add({severity:'success', summary: 'Üzenet feltöltése sikeres', detail:''});
     } catch (e) {
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Üzenet feltöltése sikertelen', detail:''});
+      this.messageService.add({severity:'error', summary: 'Üzenet feltöltése sikertelen', detail:''});
     }
   }
 
@@ -241,14 +241,13 @@ export class UserDetailComponent implements OnInit {
 
   async deleteUser() {
     try {
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Felhasználó törlés alatt', detail:''});
+      this.messageService.add({severity:'info', summary: 'Felhasználó törlés alatt', detail:''});
       await this.userService.deleteUser(this.user.id);
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Felhasználó törlése sikeres', detail:''});
+      this.messageService.add({severity:'success', summary: 'Felhasználó törlése sikeres', detail:''});
       await delay(1000);
       this.router.navigate(['/login']);
     } catch (e) {
-      this.messageService.add({key: 'toast', severity:'success', summary: 'Felhasználó törlése' +
-          ' sikertelen', detail:''});
+      this.messageService.add({severity:'error', summary: 'Felhasználó törlése sikertelen', detail:''});
     }
   }
 
