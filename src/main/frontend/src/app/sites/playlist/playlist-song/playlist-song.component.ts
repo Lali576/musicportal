@@ -69,12 +69,12 @@ export class PlaylistSongsComponent implements OnInit {
         (songs: Song[]) => {
           this.playlistSongs = songs;
           console.log(this.playlistSongs);
-          this.loadCurrentAlbumSong(songIndex);
+          this.loadCurrentPlaylistSong(songIndex);
         }
       );
   }
 
-  loadCurrentAlbumSong(songIndex: number) {
+  loadCurrentPlaylistSong(songIndex: number) {
     this.currentPlaylistSong = this.getCurrentSong(songIndex);
     this.currentAudio.src = "https://docs.google.com/uc?export=download&id=" + this.currentPlaylistSong.audioFileGdaId;
     this.currentAudio.load();
@@ -96,20 +96,24 @@ export class PlaylistSongsComponent implements OnInit {
   }
 
   getPreviousSong() {
-    this.songIndex--;
+    if(this.songIndex > 0) {
+      this.songIndex--;
 
-    if(this.songIndex >= 0) {
-      this.handlePause();
-      this.loadCurrentAlbumSong(this.songIndex);
+      if(this.songIndex >= 0) {
+        this.handlePause();
+        this.loadCurrentPlaylistSong(this.songIndex);
+      }
     }
   }
 
   getNextSong() {
-    this.songIndex++;
+    if(this.songIndex < (this.playlistSongs.length-1)) {
+      this.songIndex++;
 
-    if(this.songIndex <= (this.playlistSongs.length-1)) {
-      this.handlePause();
-      this.loadCurrentAlbumSong(this.songIndex);
+      if(this.songIndex <= (this.playlistSongs.length-1)) {
+        this.handlePause();
+        this.loadCurrentPlaylistSong(this.songIndex);
+      }
     }
   }
 

@@ -76,6 +76,7 @@ export class AlbumSongsComponent implements OnInit {
     this.currentAlbumSong = this.getCurrentSong(songIndex);
     this.currentAudio.src = "https://docs.google.com/uc?export=download&id=" + this.currentAlbumSong.audioFileGdaId;
     this.currentAudio.load();
+    this.current = 0;
     this.currentAudio.ontimeupdate = this.handleTimeUpdate.bind(this);
     this.total = this.formatTime(this.currentAlbumSong.duration);
     this.currentAudio.volume = this.volumeNumber/100;
@@ -93,20 +94,24 @@ export class AlbumSongsComponent implements OnInit {
   }
 
   getPreviousSong() {
-    this.handlePause();
-    this.songIndex--;
+    if(this.songIndex > 0) {
+      this.songIndex--;
 
-    if(this.songIndex >= 0) {
-      this.loadCurrentAlbumSong(this.songIndex);
+      if(this.songIndex >= 0) {
+        this.handlePause();
+        this.loadCurrentAlbumSong(this.songIndex);
+      }
     }
   }
 
   getNextSong() {
-    this.handlePause();
-    this.songIndex++;
+    if(this.songIndex < (this.albumSongs.length-1)) {
+      this.songIndex++;
 
-    if(this.songIndex <= (this.albumSongs.length-1)) {
-      this.loadCurrentAlbumSong(this.songIndex);
+      if(this.songIndex <= (this.albumSongs.length-1)) {
+        this.handlePause();
+        this.loadCurrentAlbumSong(this.songIndex);
+      }
     }
   }
 

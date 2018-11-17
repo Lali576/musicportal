@@ -36,20 +36,6 @@ a:hover {
   margin: 0;
 }
 
-.details .details__left button,
-.details .details__right button {
-  background: transparent;
-  color: rgb(24,107,160);
-  border: none;
-  font-size: 35px;
-  outline: none;
-}
-
-.details .details__left button:hover,
-.details .details__right button:hover {
-  color: rgba(24, 107, 160, 0.7);
-}
-
 .player {
   text-align: center;
   margin-top: 60px;
