@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {Song} from "../../../model/song";
-import {Album} from "../../../model/album";
-import {AlbumTag} from "../../../model/tags/albumtag";
 import {SongComment} from "../../../model/songcomment";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {SongService} from "../../../service/song.service";
@@ -11,22 +9,29 @@ import {MessageService} from "primeng/api";
 import {Location} from "@angular/common";
 import {switchMap} from "rxjs/operators";
 import {SongLike} from "../../../model/songlike";
+import {Playlist} from "../../../model/playlist";
+import {PlaylistTag} from "../../../model/tags/playlisttag";
+import {PlaylistService} from "../../../service/playlist.service";
+import {AlbumTag} from "../../../model/tags/albumtag";
 
 @Component({
   selector: 'app-playlist-songs',
   templateUrl: './playlist-song.component.html',
-  styleUrls: ['./playlist-song.component.css']
+  styleUrls: ['./playlist-song.component.css'],
+  providers: [MessageService]
 })
 export class PlaylistSongsComponent implements OnInit {
-
-  song: Song = new Song();
-  audio = new Audio();
-  album: Album = new Album();
-  albumTags: AlbumTag[] = [];
-  songComments: SongComment[] = [];
-  songCounterNumber: number = 0;
-  songLikeNumber: number = 0;
-  songDislikeNumber: number = 0;
+  playlist: Playlist = new Playlist();
+  playlistTags: PlaylistTag[] = [];
+  playlistSongs: Song[] = [];
+  songIndex: number = 0;
+  currentPlaylistSong: Song = new Song();
+  currentAudio = new Audio();
+  currentSongComments: SongComment[] = [];
+  currentSongCounterNumber: number = 0;
+  currentSongLikeNumber: number = 0;
+  currentSongDislikeNumber: number = 0;
+  currentSongAlbumTags: AlbumTag[] = [];
   songEditLyrics: string = "";
   tempCommentText: string = "";
   commentDisplay: boolean = false;
@@ -39,6 +44,7 @@ export class PlaylistSongsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private playlistService: PlaylistService,
     private songService: SongService,
     private tagService: TagService,
     private authService: AuthService,
@@ -49,57 +55,97 @@ export class PlaylistSongsComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
-      const id = +params.get('id');
-      await this.songService.getSong(id);
-      this.song = this.songService.song;
-      this.audio.src = "https://docs.google.com/uc?export=download&id=" + this.song.audioFileGdaId;
-      this.audio.load();
-      this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
-      this.total = this.formatTime(this.song.duration);
-      this.audio.volume = this.volumeNumber/100;
-      this.loadAlbumTags();
-      this.loadSongCounterNumber();
-      this.loadLikeAndDislikeNumbers();
-      if(this.authService.isLoggedIn) {
-        this.songEditLyrics = this.song.lyrics;
-        this.loadSongComments();
-      }
+      const playlistId = +params.get('idp');
+      this.songIndex = +params.get('ids');
+      await this.playlistService.getPlaylist(playlistId);
+      this.playlist = this.playlistService.playlist;
+      this.loadPlaylistSongs(this.songIndex);
     })).subscribe();
   }
 
+  loadPlaylistSongs(songIndex: number) {
+    this.songService.getSongsByPlaylist(this.playlist)
+      .then(
+        (songs: Song[]) => {
+          this.playlistSongs = songs;
+          console.log(this.playlistSongs);
+          this.loadCurrentAlbumSong(songIndex);
+        }
+      );
+  }
+
+  loadCurrentAlbumSong(songIndex: number) {
+    this.currentPlaylistSong = this.getCurrentSong(songIndex);
+    this.currentAudio.src = "https://docs.google.com/uc?export=download&id=" + this.currentPlaylistSong.audioFileGdaId;
+    this.currentAudio.load();
+    this.current = 0;
+    this.currentAudio.ontimeupdate = this.handleTimeUpdate.bind(this);
+    this.total = this.formatTime(this.currentPlaylistSong.duration);
+    this.currentAudio.volume = this.volumeNumber/100;
+    this.loadAlbumTags();
+    this.loadSongCounterNumber();
+    this.loadLikeAndDislikeNumbers();
+    if(this.authService.isLoggedIn) {
+      this.songEditLyrics = this.currentPlaylistSong.lyrics;
+      this.loadSongComments();
+    }
+  }
+
+  getCurrentSong(songIndex: number) {
+    return this.playlistSongs[songIndex];
+  }
+
+  getPreviousSong() {
+    this.songIndex--;
+
+    if(this.songIndex >= 0) {
+      this.handlePause();
+      this.loadCurrentAlbumSong(this.songIndex);
+    }
+  }
+
+  getNextSong() {
+    this.songIndex++;
+
+    if(this.songIndex <= (this.playlistSongs.length-1)) {
+      this.handlePause();
+      this.loadCurrentAlbumSong(this.songIndex);
+    }
+  }
+
   loadAlbumTags() {
-    this.tagService.getTagsByAlbum(this.song.album)
+    this.tagService.getTagsByAlbum(this.currentPlaylistSong.album)
       .then(
         (albumTags: AlbumTag[]) => {
-          this.albumTags = albumTags;
+          this.currentSongAlbumTags = albumTags;
         }
       );
   }
 
   loadSongCounterNumber() {
-    this.songService.countSongCounters(this.song.id, this.song)
+    this.songService.countSongCounters(this.currentPlaylistSong.id, this.currentPlaylistSong)
       .then(
         (songCounterNumber: number) => {
-          this.songCounterNumber = songCounterNumber;
+          this.currentSongCounterNumber = songCounterNumber;
         }
       )
   }
 
   loadLikeAndDislikeNumbers() {
-    this.songService.countSongLikes(this.song.id, this.song)
+    this.songService.countSongLikes(this.currentPlaylistSong.id, this.currentPlaylistSong)
       .then(
         (likeTypeNumbers: number[]) => {
-          this.songLikeNumber = likeTypeNumbers[0];
-          this.songDislikeNumber = likeTypeNumbers[1];
+          this.currentSongLikeNumber = likeTypeNumbers[0];
+          this.currentSongDislikeNumber = likeTypeNumbers[1];
         }
       )
   }
 
   loadSongComments() {
-    this.songService.getSongComments(this.song.id, this.song)
+    this.songService.getSongComments(this.currentPlaylistSong.id, this.currentPlaylistSong)
       .then(
         (songComments: SongComment[]) => {
-          this.songComments = songComments;
+          this.currentSongComments = songComments;
         }
       );
   }
@@ -113,22 +159,22 @@ export class PlaylistSongsComponent implements OnInit {
   }
 
   handleVolumeChange(e) {
-    this.audio.volume = this.volumeNumber/100;
+    this.currentAudio.volume = this.volumeNumber/100;
   }
 
   handleVolumeDown() {
-    this.audio.volume = 0.0;
+    this.currentAudio.volume = 0.0;
     this.volumeNumber = 0;
   }
 
   handleVolumeUp() {
-    this.audio.volume = 1.0;
+    this.currentAudio.volume = 1.0;
     this.volumeNumber = 100;
   }
 
   handlePlay() {
     if(this.paused) {
-      this.audio.play();
+      this.currentAudio.play();
       this.paused = false;
 
       this.addSongCounter();
@@ -137,41 +183,41 @@ export class PlaylistSongsComponent implements OnInit {
 
   handlePause() {
     if(!this.paused) {
-      this.audio.pause();
+      this.currentAudio.pause();
       this.paused = true;
     }
   }
 
   handleBackward() {
-    let elapsed = this.audio.currentTime;
+    let elapsed = this.currentAudio.currentTime;
     if(elapsed >= 5) {
-      this.audio.currentTime = elapsed - 5;
+      this.currentAudio.currentTime = elapsed - 5;
     }
   }
 
   handleFastBackward() {
-    this.audio.currentTime = 0;
+    this.currentAudio.currentTime = 0;
   }
 
   handleForward() {
-    let elapsed = this.audio.currentTime;
-    let duration = this.audio.duration;
+    let elapsed = this.currentAudio.currentTime;
+    let duration = this.currentAudio.duration;
     if(duration - elapsed >= 5) {
-      this.audio.currentTime = elapsed + 5;
+      this.currentAudio.currentTime = elapsed + 5;
     }
   }
 
   handleFastForward() {
-    this.audio.currentTime = this.audio.duration;
+    this.currentAudio.currentTime = this.currentAudio.duration;
   }
 
   handleTimeUpdate(e) {
-    const elapsed = this.audio.currentTime;
-    const duration = this.audio.duration;
+    const elapsed = this.currentAudio.currentTime;
+    const duration = this.currentAudio.duration;
     this.current = elapsed/duration;
     this.elapsed = this.formatTime(elapsed);
 
-    if(elapsed === this.audio.duration) {
+    if(elapsed === this.currentAudio.duration) {
       this.paused = true;
     }
   }
@@ -187,10 +233,10 @@ export class PlaylistSongsComponent implements OnInit {
   async changeLyrics() {
     try {
       this.messageService.add({severity: 'info', summary: 'Dal szöveg feltöltés alatt', detail: ''});
-      this.songService.updateLyrics(this.song.id, this.song, this.songEditLyrics).then(
+      this.songService.updateLyrics(this.currentPlaylistSong.id, this.currentPlaylistSong, this.songEditLyrics).then(
         (song: Song) => {
-          this.song = song;
-          this.songEditLyrics = this.song.lyrics;
+          this.currentPlaylistSong = song;
+          this.songEditLyrics = this.currentPlaylistSong.lyrics;
         }
       );
       this.messageService.add({severity: 'success', summary: 'Dal szöveg feltöltés alatt', detail: ''});
@@ -200,9 +246,9 @@ export class PlaylistSongsComponent implements OnInit {
   }
 
   async addSongCounter() {
-    await this.songService.addSongCounter(this.song).then(
+    await this.songService.addSongCounter(this.currentPlaylistSong).then(
       (songCounterNumber: number) => {
-        this.songCounterNumber = songCounterNumber;
+        this.currentSongCounterNumber = songCounterNumber;
       }
     )
   }
@@ -214,13 +260,13 @@ export class PlaylistSongsComponent implements OnInit {
     try {
       this.messageService.add({severity: 'info', summary: songLike.type + ' feltöltés alatt', detail: ''});
 
-      await this.songService.addSongLike(songLike, this.song)
+      await this.songService.addSongLike(songLike, this.currentPlaylistSong)
         .then(
           (songLikeNumber: number) => {
             if (songLikeType === 'like') {
-              this.songLikeNumber = songLikeNumber;
+              this.currentSongLikeNumber = songLikeNumber;
             } else if (songLikeType === 'dislike') {
-              this.songDislikeNumber = songLikeNumber;
+              this.currentSongDislikeNumber = songLikeNumber;
             }
           }
         )
@@ -236,9 +282,9 @@ export class PlaylistSongsComponent implements OnInit {
       let songComment: SongComment = new SongComment();
       songComment.textMessage = this.tempCommentText;
       this.tempCommentText = "";
-      await this.songService.addSongComment(songComment, this.song).then(
+      await this.songService.addSongComment(songComment, this.currentPlaylistSong).then(
         (songComments: SongComment[]) => {
-          this.songComments = songComments;
+          this.currentSongComments = songComments;
         }
       );
       this.messageService.add({severity: 'success', summary: 'Komment feltöltése sikeres', detail: ''});
@@ -250,4 +296,5 @@ export class PlaylistSongsComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
 }

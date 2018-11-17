@@ -27,7 +27,7 @@
       {{currentAlbumSong.title}}
     </h3>
   </div>
-  <div class="details__right">
+  <div class="details__right" *ngIf="songIndex <= (albumSongs.length-1)">
     <button (click)="getNextSong()">
       <i class="fas fa-angle-double-right"></i>
     </button>

@@ -121,7 +121,7 @@
           <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
             <div class="ui-grid-row">
               <h3>
-                <a [routerLink]="['/song', song.id]">
+                <a [routerLink]="['/playlist', playlist.id, 'songs', getSongIndex(song)]">
                   {{song.title}}
                 </a>
               </h3>

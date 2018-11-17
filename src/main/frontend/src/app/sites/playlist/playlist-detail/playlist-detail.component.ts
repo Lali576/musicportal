@@ -146,4 +146,9 @@ export class PlaylistDetailComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
+  getSongIndex(song: Song) {
+    let index = this.playlistSongs.indexOf(song);
+    return index;
+  }
 }
