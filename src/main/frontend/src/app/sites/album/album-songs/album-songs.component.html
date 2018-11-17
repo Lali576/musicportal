@@ -24,7 +24,7 @@
   </div>
   <div>
     <h3>
-      {{currentAlbumSong.title}}
+      {{printOrderNumber(currentAlbumSong) + ".) " + currentAlbumSong.title}}
     </h3>
   </div>
   <div class="details__right" *ngIf="songIndex <= (albumSongs.length-1)">
