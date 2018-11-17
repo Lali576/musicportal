@@ -1,0 +1,219 @@
+a {
+  color: #000;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.cover {
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+}
+
+.cover img{
+  display: inline-block;
+  border: 5px solid rgb(24,107, 160);
+  border-radius: 20px;
+  width: 210px;
+  height: 210px;
+}
+
+.details {
+  text-align: center;
+  margin: 30px 0px;
+}
+
+.details div {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.details h3 {
+  padding: 30px 10px;
+  margin: 0;
+}
+
+.details .details__left button,
+.details .details__right button {
+  background: transparent;
+  color: rgb(24,107,160);
+  border: none;
+  font-size: 35px;
+  outline: none;
+}
+
+.details .details__left button:hover,
+.details .details__right button:hover {
+  color: rgba(24, 107, 160, 0.7);
+}
+
+.player {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.player div {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.player .player__backward button,
+.player .player__forward button,
+.player .player__fast__backward button,
+.player .player__fast__forward button {
+  background: transparent;
+  border: 1px solid rgb(21,96,150);
+  color: rgb(24,107,160);
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+  font-size: 35px;
+  outline: none;
+}
+
+.player .player__backward button,
+.player .player__fast__backward button {
+  border-left: none;
+}
+
+.player .player__forward button,
+.player .player__fast__forward button {
+  border-right: none;
+}
+
+.player .player__main button:hover,
+.player .player__backward button:hover,
+.player .player__fast__backward button:hover,
+.player .player__forward button:hover,
+.player .player__fast__forward button:hover {
+  color: rgba(24, 107, 160, 0.7);
+  border: 1px solid rgba(21, 96, 150, 0.7);
+}
+
+.player .player__main {
+  border: 1px solid rgb(21, 96, 150);
+}
+
+.player .player__main button {
+  color: rgb(21, 96, 150);
+  background: transparent;
+  width: 75px;
+  height: 75px;
+  border: none;
+  font-size: 35px;
+  outline: none;
+}
+
+.volume__bar {
+  margin-top: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.volume__bar div {
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.volume__bar .volume__down button,
+.volume__bar .volume__up button {
+  background: transparent;
+  color: rgb(21, 96, 150);
+  border: none;
+  font-size: 20px;
+  outline: none;
+}
+
+.progress_box {
+  text-align: center;
+  margin-top: 30px;
+  color: rgb(21, 96, 150);
+}
+
+.progress_box progress[value] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 390px;
+  height: 20px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.progress_box progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25) inset;
+}
+
+.progress_box progress[value]::-webkit-progress-value {
+  background-color: rgb(24, 107, 160);
+  border-radius: 2px;
+  background-size: 35px 20px, 100% 100%, 100% 100%;
+}
+
+.tag_button_div {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.tag_button {
+  margin-right: .5em;
+}
+
+.counter_like_container {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.counter_like_container button {
+  background: transparent;
+  border: none;
+  color: rgb(24, 107, 160);
+  margin-right: 1em;
+}
+
+.list_element {
+  padding: 2em;
+  text-align: center;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.icon_img {
+  width: 100px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.list_element_img {
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  border: solid 5px dodgerblue;
+  border-radius: 10px;
+}
+
+.song_comment {
+  text-align: left;
+  width: 500px;
+  height: auto;
+  min-height: 60px;
+  border: solid 1px #000;
+}
+
+.lyrics {
+  text-align: center;
+  border: solid 1px #000;
+  min-width: 500px;
+  height: auto;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.make_button {
+  margin-bottom: 10px;
+}

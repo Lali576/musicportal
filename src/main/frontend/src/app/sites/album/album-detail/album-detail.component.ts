@@ -279,4 +279,14 @@ export class AlbumDetailComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
+  printOrderNumber(song: Song) {
+    let index = this.getSongIndex(song);
+    return (index + 1);
+  }
+
+  getSongIndex(song: Song) {
+    let index = this.albumSongs.indexOf(song);
+    return index;
+  }
 }

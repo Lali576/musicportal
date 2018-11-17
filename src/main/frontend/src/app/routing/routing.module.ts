@@ -50,7 +50,7 @@ const routes: Routes = [
     component: AlbumDetailComponent
   },
   {
-    path: 'album/:id/songs',
+    path: 'album/:ida/songs/:ids',
     component: AlbumSongsComponent
   },
   {
@@ -76,7 +76,7 @@ const routes: Routes = [
     component: PlaylistDetailComponent
   },
   {
-    path: 'playlist/:id/songs',
+    path: 'playlist/:idp/songs/:ids',
     component: PlaylistSongsComponent
   },
   {

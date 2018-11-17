@@ -235,9 +235,9 @@
     <div class="ui-g-12" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
       <div class="ui-g-10 ui-md-7">
         <div class="ui-g">
-          <a [routerLink]="['/song', song.id]">
+          <a [routerLink]="['/album', album.id, 'songs', getSongIndex(song)]">
             <h4 class="first">
-              {{song.title}}
+              {{printOrderNumber(song) + ".) " + song.title}}
             </h4>
           </a>
         </div>

@@ -2,31 +2,33 @@
 </button>
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
 <h1 class="first" style="text-align: center">
-  <a [routerLink]="['/album', song.album.id]">
-    {{song.album.title}}
+  <a [routerLink]="['/album', album.id]">
+    {{album.title}}
   </a>
 </h1>
 <div class="cover">
   <div>
-    <img *ngIf="song.album.coverFileGdaId === ''; else showAlbumCover" class="fas fa-compact-disc fa-8x">
+    <div *ngIf="album.coverFileGdaId === ''; else showAlbumCover">
+      <img class="fas fa-compact-disc fa-8x">
+    </div>
     <ng-template #showAlbumCover>
-      <img src="{{'https://docs.google.com/uc?export=download&id=' + song.album.coverFileGdaId}}">
+      <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}">
     </ng-template>
   </div>
 </div>
 <div class="details">
   <div class="details__left">
-    <button>
+    <button (click)="getPreviousSong()">
       <i class="fas fa-angle-double-left"></i>
     </button>
   </div>
   <div>
     <h3>
-      {{song.title}}
+      {{currentAlbumSong.title}}
     </h3>
   </div>
   <div class="details__right">
-    <button>
+    <button (click)="getNextSong()">
       <i class="fas fa-angle-double-right"></i>
     </button>
   </div>
@@ -105,19 +107,19 @@
   <button>
     <i class="fas fa-headphones fa-2x"></i>
   </button>
-  {{songCounterNumber}}
+  {{currentSongCounterNumber}}
   <button>
     <a (click)="addSongLike('like')">
       <i class="fas fa-thumbs-up fa-2x"></i>
     </a>
   </button>
-  {{songLikeNumber}}
+  {{currentSongLikeNumber}}
   <button>
     <a (click)="addSongLike('dislike')">
       <i class="fas fa-thumbs-down fa-2x"></i>
     </a>
   </button>
-  {{songDislikeNumber}}
+  {{currentSongDislikeNumber}}
 </div>
 <h3 style="text-align: center">
   Dalszöveg
@@ -140,11 +142,11 @@
   </p-dialog>
   <div>
     <div *ngIf="authService.isLoggedIn; else showLyricsNotification">
-      <div *ngIf="song.lyrics === ''; else showSongLyrics">
+      <div *ngIf="currentAlbumSong.lyrics === ''; else showSongLyrics">
         <i>Ennek a dalnak még nincs megadva dalszöveg!</i>
       </div>
       <ng-template #showSongLyrics>
-        <div class="lyrics" [innerHtml]="song.lyrics"></div>
+        <div class="lyrics" [innerHtml]="currentAlbumSong.lyrics"></div>
       </ng-template>
     </div>
     <ng-template #showLyricsNotification>
@@ -172,13 +174,13 @@
     </p-footer>
   </p-dialog>
   <div *ngIf="authService.isLoggedIn; else showSongCommentNotification">
-    <div *ngIf="songComments.length === 0; else showSongComments">
+    <div *ngIf="currentSongComments.length === 0; else showSongComments">
       <i>
         Ehhez a dalhoz még nem írtak kommentet!
       </i>
     </div>
     <ng-template #showSongComments>
-      <p-dataView #dv [value]="songComments" [paginator]="true" [rows]="10" paginatorPosition="both">
+      <p-dataView #dv [value]="currentSongComments" [paginator]="true" [rows]="10" paginatorPosition="both">
         <ng-template let-comment pTemplate="listItem">
           <div class="ui-g list_element">
             <div class="ui-g-12 ui-md-3">

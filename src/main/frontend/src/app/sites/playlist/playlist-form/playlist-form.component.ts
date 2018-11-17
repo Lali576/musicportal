@@ -5,7 +5,7 @@ import {SongService} from "../../../service/song.service";
 import {Message, MessageService} from "primeng/api";
 import {PlaylistService} from "../../../service/playlist.service";
 import {Router} from "@angular/router";
-import {PlaylistTag} from "../../../model/Tags/playlisttag";
+import {PlaylistTag} from "../../../model/tags/playlisttag";
 
 @Component({
   selector: 'app-playlist-form',
