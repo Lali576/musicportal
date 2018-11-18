@@ -114,7 +114,7 @@
 </h3>
 <div style="text-align: center">
   <button
-    *ngIf="(authService.isLoggedIn)"
+    *ngIf="(authService.isLoggedIn && (authService.loggedInUser === song.user))"
     type="button" pButton
     (click)="showLyricsDialog()"
     label="Szerkeszt"
