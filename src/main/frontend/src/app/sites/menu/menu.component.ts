@@ -30,12 +30,13 @@ export class MenuComponent implements OnInit {
   }
 
   keyDownFunction(event) {
-    if(event.keyCode == 13) {
+    if(event.code === "Enter") {
       this.sendSearchWord();
     }
   }
 
   sendSearchWord() {
     this.router.navigate(['/search/word', this.searchWord]);
+    this.searchWord = "";
   }
 }
