@@ -8,25 +8,34 @@
 
   <div class="ui-toolbar-group-right">
     <div *ngIf="!authService.isLoggedIn; else showLoginLogout">
-      <input name="searchWordText"
-             [(ngModel)]="searchWord"
-             #searchWordText="ngModel"
-             pInputText type="text"
-             placeholder="Keresés"
-             (keydown)="keyDownFunction($event)"/>
-      <button pButton type="button" routerLink="/login" label="Bejelentkezés" icon="fas fa-sign-in-alt"></button>
-      <button pButton type="button" routerLink="/register" label="Regisztráció" icon="fas fa-user"></button>
+      <div class="ui-g">
+          <div class="ui-inputgroup">
+            <button pButton type="button" icon="fas fa-search" (click)="sendSearchWord()"></button>
+            <input name="searchWordText"
+                   [(ngModel)]="searchWord"
+                   #searchWordText="ngModel"
+                   pInputText type="text"
+                   placeholder="Keresés"
+                   (keydown)="keyDownFunction($event)"/>
+          </div>
+          <button pButton type="button" routerLink="/login" label="Bejelentkezés" icon="fas fa-sign-in-alt"></button>
+          <button pButton type="button" routerLink="/register" label="Regisztráció" icon="fas fa-user"></button>
+      </div>
     </div>
     <ng-template #showLoginLogout>
-      <input name="searchWordText"
-             [(ngModel)]="searchWord"
-             #searchWordText="ngModel"
-             pInputText type="text"
-             placeholder="Keresés"
-             (keydown)="keyDownFunction($event)"/>
-      <button pButton type="button" [routerLink]="['/user', authService.loggedInUser.id]" label="{{authService.loggedInUser.username}}" icon="fas fa-user">
-      </button>
-      <button pButton type="button" (click)="logout()" label="Kijelentkezés" icon="fas fa-sign-out-alt"></button>
+      <div class="ui-g">
+          <div class="ui-inputgroup">
+            <button pButton type="button" icon="fas fa-search" (click)="sendSearchWord()"></button>
+            <input name="searchWordText"
+                   [(ngModel)]="searchWord"
+                   #searchWordText="ngModel"
+                   pInputText type="text"
+                   placeholder="Keresés"
+                   (keydown)="keyDownFunction($event)"/>
+          </div>
+          <button pButton type="button" [routerLink]="['/user', authService.loggedInUser.id]" label="{{authService.loggedInUser.username}}" icon="fas fa-user"></button>
+          <button pButton type="button" (click)="logout()" label="Kijelentkezés" icon="fas fa-sign-out-alt"></button>
+      </div>
     </ng-template>
   </div>
 </p-toolbar>
