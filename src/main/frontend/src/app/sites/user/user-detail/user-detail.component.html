@@ -67,7 +67,10 @@
       Kedvenc műfaj:
     </th>
     <td>
-      <button pButton type="button" label="{{user.favGenreId.name}}"></button>
+      <button
+        pButton type="button"
+        label="{{user.favGenreId.name}}"
+        [routerLink]="['/search/genre', user.favGenreId.name]"></button>
     </td>
   </tr>
   <tr>
@@ -80,7 +83,8 @@
         <button *ngFor="let userTag of userTags"
                 pButton type="button"
                 class="tag_button"
-                label="#{{userTag.word}}"></button>
+                label="#{{userTag.word}}"
+                [routerLink]="['/search/tag', userTag.word]"></button>
       </ng-template>
     </td>
   </tr>

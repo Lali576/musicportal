@@ -42,7 +42,8 @@
         <ng-template #showPlaylistTags>
           <button *ngFor="let playlistTag of playlistTags"
                   pButton type="button"
-                  label="#{{playlistTag.word}}"></button>
+                  label="#{{playlistTag.word}}"
+                  [routerLink]="['/search/tag', playlistTag.word]"></button>
         </ng-template>
       </td>
     </tr>

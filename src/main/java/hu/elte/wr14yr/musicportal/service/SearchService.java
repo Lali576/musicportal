@@ -32,16 +32,16 @@ public class SearchService {
         return albumRepository.findAllByTitleContainsAllIgnoreCase(title);
     }
 
-    public Iterable<Album> findAlbumByAlbumTag(AlbumTag albumTag) {
+    public Iterable<Album> findAlbumByAlbumTag(String tagWord) {
         logger.info("Search service: albums with current album tag are going to be searched");
 
-        return albumRepository.findAllByAlbumTagsWordContainsAllIgnoreCase(albumTag.getWord());
+        return albumRepository.findAllByAlbumTagsWordContainsAllIgnoreCase(tagWord);
     }
 
-    public Iterable<Album> findAlbumsByGenre(Genre genre) {
+    public Iterable<Album> findAlbumsByGenre(String genreWord) {
         logger.info("Search service: albums with current genres are going to be searched");
 
-        return albumRepository.findAllByGenres(genre);
+        return albumRepository.findAllByGenresNameEquals(genreWord);
     }
 
     public Iterable<Song> findSongsByTitle(String title) {
@@ -55,10 +55,10 @@ public class SearchService {
 
         return playlistRepository.findAllByNameContainsAllIgnoreCase(name);
     }
-    public Iterable<Playlist> findPlaylistByPlaylistTag(PlaylistTag playlistTag) {
+    public Iterable<Playlist> findPlaylistByPlaylistTag(String tagWord) {
         logger.info("Search service: playlists with current playlist tag are going to be searched");
 
-        return playlistRepository.findAllByPlaylistTagsWordContainsAllIgnoreCase(playlistTag.getWord());
+        return playlistRepository.findAllByPlaylistTagsWordContainsAllIgnoreCase(tagWord);
     }
 
     public Iterable<User> findUsersByUsername(String username) {
@@ -67,9 +67,15 @@ public class SearchService {
         return userRepository.findAllByUsernameContainsAllIgnoreCase(username);
     }
 
-    public Iterable<User> findUsersByUserTag(UserTag userTag) {
+    public Iterable<User> findUsersByUserTag(String tagWord) {
         logger.info("Search service: users with current user tag are going to be searched");
 
-        return userRepository.findAllByUserTagsWordContainsAllIgnoreCase(userTag.getWord());
+        return userRepository.findAllByUserTagsWordContainsAllIgnoreCase(tagWord);
+    }
+
+    public Iterable<User> findUsersByGenre(String genreWord) {
+        logger.info("Search service: users with current favourite genre are going to be searched");
+
+        return userRepository.findAllByFavGenreIdNameEquals(genreWord);
     }
 }

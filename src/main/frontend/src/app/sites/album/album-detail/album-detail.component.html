@@ -84,20 +84,22 @@
         <ng-template #showAlbumGenres>
           <button *ngFor="let albumGenre of albumGenres"
                   pButton type="button"
-                  label="{{albumGenre.name}}"></button>
+                  label="{{albumGenre.name}}"
+                  [routerLink]="['/search/genre', albumGenre.name]"></button>
         </ng-template>
       </td>
     </tr>
     <tr>
       <th>Címkék:</th>
       <td>
-        <div *ngIf="albumTags.length === 0; else showUserTags">
+        <div *ngIf="albumTags.length === 0; else showAlbumTags">
           <i>Nincsenek megadva címkék</i>
         </div>
-        <ng-template #showUserTags>
+        <ng-template #showAlbumTags>
           <button *ngFor="let albumTag of albumTags"
                   pButton type="button"
-                  label="#{{albumTag.word}}"></button>
+                  label="#{{albumTag.word}}"
+                  [routerLink]="['/search/tag', albumTag.word]"></button>
         </ng-template>
       </td>
     </tr>

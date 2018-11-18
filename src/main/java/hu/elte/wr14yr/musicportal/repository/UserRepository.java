@@ -16,7 +16,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAllByUsernameContainsAllIgnoreCase(String username);
 
-    List<User> findAllByUserTagsWordContainsAllIgnoreCase(String userTagWord);
+    List<User> findAllByFavGenreIdNameEquals(String genreWord);
+
+    List<User> findAllByUserTagsWordContainsAllIgnoreCase(String tagWord);
 
     User findUserById(Long id);
 

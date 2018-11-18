@@ -7,6 +7,7 @@ import {User} from "../model/user";
 import {Playlist} from "../model/playlist";
 import {PlaylistTag} from "../model/tags/playlisttag";
 import {UserTag} from "../model/tags/usertag";
+import {Tag} from "../model/tags/tag";
 
 @Injectable({
   providedIn: 'root'
@@ -17,24 +18,25 @@ export class SearchService {
     private http: HttpClient
   ) { }
 
-  getAlbumByTitle(title: string): Promise<Album[]> {
+  getAlbumsByTitle(title: string): Promise<Album[]> {
     return this.http.get<Album[]>(
       `api/search/albums/${title}`
     ).toPromise();
   }
 
-  getAlbumsByAlbumTag(albumTag: AlbumTag): Promise<Album[]> {
+  getAlbumsByAlbumTag(tagWord: string): Promise<Album[]> {
     const formData = new FormData();
-    formData.append("albumTag", JSON.stringify(albumTag));
+    formData.append("tag", tagWord);
     return this.http.post<Album[]>(
       "api/search/albums/tag",
       formData
     ).toPromise();
   }
 
-  getAlbumsByGenre(genre: Genre): Promise<Album[]> {
+  getAlbumsByGenre(genreWord: string): Promise<Album[]> {
     const formData = new FormData();
-    formData.append("genre", JSON.stringify(genre));
+    console.log(genreWord);
+    formData.append("genre", genreWord);
     return this.http.post<Album[]>(
       "api/search/albums/genre",
       formData
@@ -47,9 +49,9 @@ export class SearchService {
     ).toPromise();
   }
 
-  getPlaylistByPlaylistTag(playlistTag: PlaylistTag): Promise<Playlist[]> {
+  getPlaylistByPlaylistTag(tagWord: string): Promise<Playlist[]> {
     const formData = new FormData();
-    formData.append("playlistTag", JSON.stringify(playlistTag));
+    formData.append("tag", tagWord);
     return this.http.post<Playlist[]>(
       "api/search/playlists/tag",
       formData
@@ -62,11 +64,20 @@ export class SearchService {
     ).toPromise()
   }
 
-  getUsersByUserTag(userTag: UserTag): Promise<User[]> {
+  getUsersByUserTag(tagWord: string): Promise<User[]> {
     const formData = new FormData();
-    formData.append("userTag", JSON.stringify(userTag));
+    formData.append("tag", tagWord);
     return this.http.post<User[]>(
       "api/search/users/tag",
+      formData
+    ).toPromise();
+  }
+
+  getUsersByGenre(genreWord: string): Promise<User[]> {
+    const formData = new FormData();
+    formData.append("genre", genreWord);
+    return this.http.post<User[]>(
+      "api/search/users/genre",
       formData
     ).toPromise();
   }

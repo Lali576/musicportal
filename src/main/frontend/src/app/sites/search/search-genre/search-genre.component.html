@@ -1,3 +1,14 @@
-<p>
-  search-genre works!
-</p>
+<h1>Albumok</h1>
+<ul>
+  <li *ngFor="let album of albums">
+    {{album.title}}
+  </li>
+</ul>
+<h1>
+  Userek
+</h1>
+<ul>
+  <li *ngFor="let user of users">
+    {{user.username}}
+  </li>
+</ul>

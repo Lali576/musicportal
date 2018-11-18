@@ -17,7 +17,7 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     List<Playlist> findAllByUserId(long id);
 
-    List<Playlist> findAllByPlaylistTagsWordContainsAllIgnoreCase(String playlistTagWord);
+    List<Playlist> findAllByPlaylistTagsWordContainsAllIgnoreCase(String tagWord);
 
     Playlist findPlaylistById(Long id);
 
