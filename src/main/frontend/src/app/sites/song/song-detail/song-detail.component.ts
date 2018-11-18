@@ -36,6 +36,7 @@ export class SongDetailComponent implements OnInit {
   elapsed = "0:00";
   total;
   current = 0;
+  duration: number = 0;
   volumeNumber: number = 50;
 
   constructor(
@@ -57,6 +58,13 @@ export class SongDetailComponent implements OnInit {
       this.audio.load();
       this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
       this.total = this.formatTime(this.song.duration);
+      if(!(this.authService.isLoggedIn)) {
+        this.current = Math.floor(this.song.duration * 0.33);
+        this.audio.currentTime = this.current;
+        this.duration = this.current + 14;
+      } else {
+        this.duration = this.audio.duration;
+      }
       this.audio.volume = this.volumeNumber/100;
       this.loadAlbumTags();
       this.loadSongCounterNumber();
@@ -167,13 +175,28 @@ export class SongDetailComponent implements OnInit {
   }
 
   handleTimeUpdate(e) {
-    const elapsed = this.audio.currentTime;
-    const duration = this.audio.duration;
-    this.current = elapsed/duration;
-    this.elapsed = this.formatTime(elapsed);
+    if(this.authService.isLoggedIn) {
+      const elapsed = this.audio.currentTime;
+      const duration = this.audio.duration;
+      this.current = elapsed/duration;
+      this.elapsed = this.formatTime(elapsed);
 
-    if(elapsed === this.audio.duration) {
-      this.paused = true;
+      if(elapsed === this.audio.duration) {
+        this.paused = true;
+      }
+    } else {
+      const elapsed = this.audio.currentTime;
+      const duration = this.duration;
+      this.current = elapsed/duration;
+      this.elapsed = this.formatTime(elapsed);
+
+      if(Math.floor(elapsed) === this.duration + 1) {
+        this.handlePause();
+        if(!(this.authService.isLoggedIn)) {
+          this.current = Math.floor(this.song.duration * 0.33);
+          this.audio.currentTime = this.current;
+        }
+      }
     }
   }
 
@@ -224,7 +247,7 @@ export class SongDetailComponent implements OnInit {
               this.songDislikeNumber = songLikeNumber;
             }
           }
-        )
+        );
       this.messageService.add({severity: 'success', summary: songLike.type + ' feltöltése sikeres', detail: ''});
     } catch (e) {
       this.messageService.add({severity: 'error', summary: songLike.type + ' feltöltése sikertelen', detail: ''});

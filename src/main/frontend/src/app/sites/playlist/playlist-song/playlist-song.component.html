@@ -34,12 +34,12 @@
   </div>
 </div>
 <div class="player">
-  <div class="player__fast__backward">
+  <div class="player__fast__backward" *ngIf="authService.isLoggedIn">
     <button (click)="handleFastBackward()">
       <i class="fas fa-fast-backward"></i>
     </button>
   </div>
-  <div class="player__backward">
+  <div class="player__backward" *ngIf="authService.isLoggedIn">
     <button (click)="handleBackward()">
       <i class="fas fa-backward"></i>
     </button>
@@ -52,16 +52,19 @@
       <i class="fas fa-play"></i>
     </button>
   </div>
-  <div class="player__forward">
+  <div class="player__forward" *ngIf="authService.isLoggedIn">
     <button (click)="handleForward()">
       <i class="fas fa-forward"></i>
     </button>
   </div>
-  <div class="player__fast__forward">
+  <div class="player__fast__forward" *ngIf="authService.isLoggedIn">
     <button (click)="handleFastForward()">
       <i class="fas fa-fast-forward"></i>
     </button>
   </div>
+</div>
+<div *ngIf="!(authService.isLoggedIn)" style="text-align: center;">
+  <i>A dal teljes meghallgazásához jelentkezzen be!</i>
 </div>
 <div class="volume__bar">
   <div class="volume__down">
@@ -86,7 +89,7 @@
     </button>
   </div>
 </div>
-<div class="progress_box">
+<div class="progress_box" *ngIf="authService.isLoggedIn">
   <span class="player__time-elapsed">{{elapsed}}</span>
   <progress
     value="{{current}}"
@@ -100,7 +103,8 @@
   <ng-template #showAlbumTags>
     <button class="tag_button" *ngFor="let albumTag of currentSongAlbumTags"
             pButton type="button"
-            label="#{{albumTag.word}}"></button>
+            label="#{{albumTag.word}}"
+            [routerLink]="['/search/tag', albumTag.word]"></button>
   </ng-template>
 </div>
 <div class="counter_like_container">

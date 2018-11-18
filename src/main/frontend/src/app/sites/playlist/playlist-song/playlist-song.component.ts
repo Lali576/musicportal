@@ -40,6 +40,7 @@ export class PlaylistSongsComponent implements OnInit {
   elapsed = "0:00";
   total;
   current = 0;
+  duration: number = 0;
   volumeNumber: number = 50;
 
   constructor(
@@ -78,9 +79,16 @@ export class PlaylistSongsComponent implements OnInit {
     this.currentPlaylistSong = this.getCurrentSong(songIndex);
     this.currentAudio.src = "https://docs.google.com/uc?export=download&id=" + this.currentPlaylistSong.audioFileGdaId;
     this.currentAudio.load();
-    this.current = 0;
     this.currentAudio.ontimeupdate = this.handleTimeUpdate.bind(this);
     this.total = this.formatTime(this.currentPlaylistSong.duration);
+    if(!(this.authService.isLoggedIn)) {
+      this.current = Math.floor(this.currentPlaylistSong.duration * 0.33);
+      this.currentAudio.currentTime = this.current;
+      this.duration = this.current + 14;
+    } else {
+      this.current = 0;
+      this.duration = this.currentAudio.duration;
+    }
     this.currentAudio.volume = this.volumeNumber/100;
     this.loadAlbumTags();
     this.loadSongCounterNumber();
@@ -216,13 +224,28 @@ export class PlaylistSongsComponent implements OnInit {
   }
 
   handleTimeUpdate(e) {
-    const elapsed = this.currentAudio.currentTime;
-    const duration = this.currentAudio.duration;
-    this.current = elapsed/duration;
-    this.elapsed = this.formatTime(elapsed);
+    if(this.authService.isLoggedIn) {
+      const elapsed = this.currentAudio.currentTime;
+      const duration = this.currentAudio.duration;
+      this.current = elapsed/duration;
+      this.elapsed = this.formatTime(elapsed);
 
-    if(elapsed === this.currentAudio.duration) {
-      this.paused = true;
+      if(elapsed === this.currentAudio.duration) {
+        this.paused = true;
+      }
+    } else {
+      const elapsed = this.currentAudio.currentTime;
+      const duration = this.duration;
+      this.current = elapsed/duration;
+      this.elapsed = this.formatTime(elapsed);
+
+      if(Math.floor(elapsed) === this.duration + 1) {
+        this.handlePause();
+        if(!(this.authService.isLoggedIn)) {
+          this.current = Math.floor(this.currentPlaylistSong.duration * 0.33);
+          this.currentAudio.currentTime = this.current;
+        }
+      }
     }
   }
 

@@ -182,9 +182,9 @@ export class AlbumDetailComponent implements OnInit {
     try {
       this.messageService.add({severity: 'info', summary: album.title + ' című album törlés alatt', detail: ''});
       await this.albumService.deleteAlbum(album);
+      this.messageService.add({severity: 'success', summary: album.title + ' című album törlése sikeres', detail: ''});
       await delay(1000);
       this.router.navigate(['/user', album.user.id]);
-      this.messageService.add({severity: 'success', summary: album.title + ' című album törlése sikeres', detail: ''});
     } catch (e) {
       this.messageService.add({severity: 'error', summary: album.title + ' című album törlése sikertelen', detail: ''});
     }
