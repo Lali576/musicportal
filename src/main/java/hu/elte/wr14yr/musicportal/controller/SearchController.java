@@ -17,13 +17,13 @@ public class SearchController {
 
     private Logger logger = Logger.getLogger(SearchController.class.getName());
 
-    @GetMapping("/albums/{title}")
-    public ResponseEntity<Iterable<Album>> findAlbumByTitle(@PathVariable String title) {
-        logger.info(String.format("Search controller: enter endpoint '/albums/%s", title));
+    @GetMapping("/albums/{searchWord}")
+    public ResponseEntity<Iterable<Album>> findAlbumByTitle(@PathVariable("searchWord") String searchWord) {
+        logger.info(String.format("Search controller: enter endpoint '/albums/%s", searchWord));
 
-        Iterable<Album> foundAlbums = searchService.findAlbumsByTitle(title);
+        Iterable<Album> foundAlbums = searchService.findAlbumsByTitle(searchWord);
 
-        logger.info(String.format("Search controller: exit endpoint '/albums/%s", title));
+        logger.info(String.format("Search controller: exit endpoint '/albums/%s", searchWord));
 
         return ResponseEntity.ok(foundAlbums);
     }
@@ -52,24 +52,24 @@ public class SearchController {
         return ResponseEntity.ok(foundAlbums);
     }
 
-    @GetMapping("/songs/{title}")
-    public ResponseEntity<Iterable<Song>> findSongByTitle(@PathVariable String title) {
-        logger.info(String.format("Search controller: enter endpoint '/songs/%s'", title));
+    @GetMapping("/songs/{searchWord}")
+    public ResponseEntity<Iterable<Song>> findSongByTitle(@PathVariable("searchWord") String searchWord) {
+        logger.info(String.format("Search controller: enter endpoint '/songs/%s'", searchWord));
 
-        Iterable<Song> foundSongs = searchService.findSongsByTitle(title);
+        Iterable<Song> foundSongs = searchService.findSongsByTitle(searchWord);
 
-        logger.info(String.format("Search controller: exit endpoint '/songs/%s'", title));
+        logger.info(String.format("Search controller: exit endpoint '/songs/%s'", searchWord));
 
         return ResponseEntity.ok(foundSongs);
     }
 
-    @GetMapping("/playlists/{name}")
-    public ResponseEntity<Iterable<Playlist>> findPlaylistByName(@PathVariable String name) {
-        logger.info(String.format("Search controller: enter endpoint '/playlists/%s'", name));
+    @GetMapping("/playlists/{searchWord}")
+    public ResponseEntity<Iterable<Playlist>> findPlaylistByName(@PathVariable("searchWord") String searchWord) {
+        logger.info(String.format("Search controller: enter endpoint '/playlists/%s'", searchWord));
 
-        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByName(name);
+        Iterable<Playlist> foundPlaylists = searchService.findPlaylistByName(searchWord);
 
-        logger.info(String.format("Search controller: exit endpoint '/playlists/%s'", name));
+        logger.info(String.format("Search controller: exit endpoint '/playlists/%s'", searchWord));
 
         return ResponseEntity.ok(foundPlaylists);
     }
@@ -85,18 +85,6 @@ public class SearchController {
 
         return ResponseEntity.ok(foundPlaylists);
     }
-
-    @GetMapping("/users/{username}")
-    public ResponseEntity<Iterable<User>> findUserByUsername(@PathVariable String username) {
-        logger.info(String.format("Search controller: enter endpoint '/users/%s'", username));
-
-        Iterable<User> foundUsers = searchService.findUsersByUsername(username);
-
-        logger.info(String.format("Search controller: exit endpoint '/users/%s'", username));
-
-        return ResponseEntity.ok(foundUsers);
-    }
-
 
     @PostMapping("/users/tag")
     public ResponseEntity<Iterable<User>> findUserByTag(MultipartHttpServletRequest request) {

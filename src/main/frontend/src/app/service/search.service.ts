@@ -8,6 +8,7 @@ import {Playlist} from "../model/playlist";
 import {PlaylistTag} from "../model/tags/playlisttag";
 import {UserTag} from "../model/tags/usertag";
 import {Tag} from "../model/tags/tag";
+import {Song} from "../model/song";
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,9 @@ export class SearchService {
     private http: HttpClient
   ) { }
 
-  getAlbumsByTitle(title: string): Promise<Album[]> {
+  getAlbumsByTitle(searchWord: string): Promise<Album[]> {
     return this.http.get<Album[]>(
-      `api/search/albums/${title}`
+      `api/search/albums/${searchWord}`
     ).toPromise();
   }
 
@@ -35,7 +36,6 @@ export class SearchService {
 
   getAlbumsByGenre(genreWord: string): Promise<Album[]> {
     const formData = new FormData();
-    console.log(genreWord);
     formData.append("genre", genreWord);
     return this.http.post<Album[]>(
       "api/search/albums/genre",
@@ -43,9 +43,15 @@ export class SearchService {
     ).toPromise();
   }
 
-  getPlaylistByName(name: string): Promise<Playlist[]> {
+  getSongsByTitle(searchWord: string): Promise<Song[]> {
+    return this.http.get<Song[]>(
+      `api/search/songs/${searchWord}`
+    ).toPromise();
+  }
+
+  getPlaylistByName(searchWord: string): Promise<Playlist[]> {
     return this.http.get<Playlist[]>(
-      `api/search/playlists/${name}`
+      `api/search/playlists/${searchWord}`
     ).toPromise();
   }
 
@@ -56,12 +62,6 @@ export class SearchService {
       "api/search/playlists/tag",
       formData
     ).toPromise();
-  }
-
-  getUsersByUsername(username: string): Promise<User[]> {
-    return this.http.get<User[]>(
-      `api/search/users/${username}`
-    ).toPromise()
   }
 
   getUsersByUserTag(tagWord: string): Promise<User[]> {

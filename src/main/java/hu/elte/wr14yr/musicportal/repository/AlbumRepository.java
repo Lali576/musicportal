@@ -13,7 +13,7 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     List<Album> findAll();
 
-    List<Album> findAllByTitleContainsAllIgnoreCase(String name);
+    List<Album> findAllByTitleContainsAllIgnoreCase(String searchWord);
 
     List<Album> findFirst5ByOrderByDateAsc();
 

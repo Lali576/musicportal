@@ -25,11 +25,11 @@ public class SearchService {
 
     private Logger logger = Logger.getLogger(SearchService.class.getName());
 
-    public Iterable<Album> findAlbumsByTitle(String title) {
+    public Iterable<Album> findAlbumsByTitle(String searchWord) {
         logger.info(String.format("Search service: albums with title %s" +
-                " are going to be searched", title));
+                " are going to be searched", searchWord));
 
-        return albumRepository.findAllByTitleContainsAllIgnoreCase(title);
+        return albumRepository.findAllByTitleContainsAllIgnoreCase(searchWord);
     }
 
     public Iterable<Album> findAlbumByAlbumTag(String tagWord) {
@@ -44,27 +44,21 @@ public class SearchService {
         return albumRepository.findAllByGenresNameEquals(genreWord);
     }
 
-    public Iterable<Song> findSongsByTitle(String title) {
-        logger.info(String.format("Search service: songs with title %s are going to be searched", title));
+    public Iterable<Song> findSongsByTitle(String searchWord) {
+        logger.info(String.format("Search service: songs with title %s are going to be searched", searchWord));
 
-        return songRepository.findAllByTitleContainsAllIgnoreCase(title);
+        return songRepository.findAllByTitleContainsAllIgnoreCase(searchWord);
     }
 
-    public Iterable<Playlist> findPlaylistByName(String name) {
-        logger.info(String.format("Search service: playlists with name %s are going to be searched", name));
+    public Iterable<Playlist> findPlaylistByName(String searchWord) {
+        logger.info(String.format("Search service: playlists with name %s are going to be searched", searchWord));
 
-        return playlistRepository.findAllByNameContainsAllIgnoreCase(name);
+        return playlistRepository.findAllByNameContainsAllIgnoreCase(searchWord);
     }
     public Iterable<Playlist> findPlaylistByPlaylistTag(String tagWord) {
         logger.info("Search service: playlists with current playlist tag are going to be searched");
 
         return playlistRepository.findAllByPlaylistTagsWordContainsAllIgnoreCase(tagWord);
-    }
-
-    public Iterable<User> findUsersByUsername(String username) {
-        logger.info(String.format("Search service: users with username %s are going to be searched", username));
-
-        return userRepository.findAllByUsernameContainsAllIgnoreCase(username);
     }
 
     public Iterable<User> findUsersByUserTag(String tagWord) {

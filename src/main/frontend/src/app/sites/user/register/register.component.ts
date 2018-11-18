@@ -8,6 +8,7 @@ import {GenreService} from "../../../service/genre.service";
 import {Message} from 'primeng/components/common/api';
 import {Country} from "../../../model/country";
 import {CountryService} from "../../../service/country.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-register',
@@ -32,7 +33,8 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private genreService: GenreService,
     private countryService: CountryService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
     this.genreService.getGenres().subscribe(
       (genres: Genre[]) => {
@@ -103,5 +105,9 @@ export class RegisterComponent implements OnInit {
   showMsgError() {
     this.msgs = [];
     this.msgs.push({severity:'error', summary:'Regisztráció sikertelen', detail:''});
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

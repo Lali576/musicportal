@@ -1,4 +1,8 @@
-<h1 class="first">Regisztráció</h1>
+<button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
+</button>
+<h1 class="first">
+  Regisztráció
+</h1>
 <p-messages [(value)]="msgs"></p-messages>
   <form (submit)="submit(f)" #f="ngForm">
     <p-panel [showHeader]="false">

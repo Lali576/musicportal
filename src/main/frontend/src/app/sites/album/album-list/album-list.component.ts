@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Album} from "../../../model/album";
 import {AlbumService} from "../../../service/album.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-album-list',
@@ -13,6 +14,7 @@ export class AlbumListComponent implements OnInit {
 
   constructor(
     private albumService: AlbumService,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -26,5 +28,9 @@ export class AlbumListComponent implements OnInit {
           this.albums = albums;
         }
       );
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

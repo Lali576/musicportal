@@ -5,6 +5,7 @@ import {Playlist} from "../../../model/playlist";
 import {User} from "../../../model/user";
 import {switchMap} from "rxjs/operators";
 import {ActivatedRoute, ParamMap, Route} from "@angular/router";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-search-tag',
@@ -13,26 +14,28 @@ import {ActivatedRoute, ParamMap, Route} from "@angular/router";
 })
 export class SearchTagComponent implements OnInit {
 
+  tagWord: string = "";
   albums: Album[] = [];
-  playlist: Playlist[] = [];
+  playlists: Playlist[] = [];
   users: User[] = [];
 
   constructor(
     private searchService: SearchService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
-      const tagWord: string = params.get('word');
-      this.loadAlbums(tagWord);
-      this.loadPlaylist(tagWord);
-      this.loadUsers(tagWord);
+      this.tagWord = params.get('word');
+      this.loadAlbums();
+      this.loadPlaylist();
+      this.loadUsers();
     })).subscribe();
   }
 
-  loadAlbums(tagWord: string) {
-    this.searchService.getAlbumsByAlbumTag(tagWord)
+  loadAlbums() {
+    this.searchService.getAlbumsByAlbumTag(this.tagWord)
       .then(
       (albums: Album[]) => {
         this.albums = albums;
@@ -40,21 +43,25 @@ export class SearchTagComponent implements OnInit {
     );
   }
 
-  loadPlaylist(tagWord: string) {
-    this.searchService.getPlaylistByPlaylistTag(tagWord)
+  loadPlaylist() {
+    this.searchService.getPlaylistByPlaylistTag(this.tagWord)
       .then(
-        (playlist: Playlist[]) => {
-          this.playlist = playlist;
+        (playlists: Playlist[]) => {
+          this.playlists = playlists;
         }
       );
   }
 
-  loadUsers(tagWord : string) {
-    this.searchService.getUsersByUserTag(tagWord)
+  loadUsers() {
+    this.searchService.getUsersByUserTag(this.tagWord)
       .then(
         (users: User[]) => {
           this.users = users;
         }
       )
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

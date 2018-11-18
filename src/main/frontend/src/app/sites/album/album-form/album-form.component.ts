@@ -6,8 +6,9 @@ import {GenreService} from "../../../service/genre.service";
 import {AlbumService} from "../../../service/album.service";
 import {SongService} from "../../../service/song.service";
 import {Genre} from "../../../model/genre";
-import {Router} from "@angular/router";
+import {Route, Router} from "@angular/router";
 import {Message, MessageService} from "primeng/api";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-album-form',
@@ -38,7 +39,8 @@ export class AlbumFormComponent implements OnInit {
     private songService: SongService,
     private genreService: GenreService,
     private messageService: MessageService,
-    private route: Router
+    private route: Router,
+    private location: Location
   ) {
     this.genreService.getGenres().subscribe(
       (genres: Genre[]) => {
@@ -176,5 +178,9 @@ export class AlbumFormComponent implements OnInit {
   showMsgError() {
     this.msgs = [];
     this.msgs.push({severity:'error', summary:'Album és dalok feltöltése sikertelen', detail:''});
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

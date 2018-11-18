@@ -9,6 +9,8 @@ import {Router} from "@angular/router";
 })
 export class MenuComponent implements OnInit {
 
+  searchWord: string = "";
+
   constructor(
     public authService: AuthService,
     private router: Router
@@ -25,5 +27,15 @@ export class MenuComponent implements OnInit {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  keyDownFunction(event) {
+    if(event.keyCode == 13) {
+      this.sendSearchWord();
+    }
+  }
+
+  sendSearchWord() {
+    this.router.navigate(['/search/word', this.searchWord]);
   }
 }

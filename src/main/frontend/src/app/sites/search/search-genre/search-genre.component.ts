@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {switchMap} from "rxjs/operators";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {Album} from "../../../model/album";
-import {Playlist} from "../../../model/playlist";
 import {User} from "../../../model/user";
 import {SearchService} from "../../../service/search.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-search-genre',
@@ -13,24 +13,26 @@ import {SearchService} from "../../../service/search.service";
 })
 export class SearchGenreComponent implements OnInit {
 
+  genreWord: string = "";
   albums: Album[] = [];
   users: User[] = [];
 
   constructor(
     private searchService: SearchService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit() {
     this.route.paramMap.pipe(switchMap(async (params: ParamMap) => {
-      const genreWord: string = params.get('word');
-      this.loadAlbums(genreWord);
-      this.loadUsers(genreWord);
+      this.genreWord = params.get('word');
+      this.loadAlbums();
+      this.loadUsers();
     })).subscribe();
   }
 
-  loadAlbums(genreWord: string) {
-    this.searchService.getAlbumsByGenre(genreWord)
+  loadAlbums() {
+    this.searchService.getAlbumsByGenre(this.genreWord)
       .then(
         (albums: Album[]) => {
           this.albums = albums;
@@ -38,8 +40,8 @@ export class SearchGenreComponent implements OnInit {
       );
   }
 
-  loadUsers(genreWord : string) {
-    this.searchService.getUsersByGenre(genreWord)
+  loadUsers() {
+    this.searchService.getUsersByGenre(this.genreWord)
       .then(
         (users: User[]) => {
           this.users = users;
@@ -47,4 +49,7 @@ export class SearchGenreComponent implements OnInit {
       )
   }
 
+  goBack() {
+    this.location.back();
+  }
 }

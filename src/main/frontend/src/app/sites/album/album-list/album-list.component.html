@@ -1,3 +1,5 @@
+<button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
+</button>
 <h1 class="first">
   Albumok
 </h1>
@@ -12,7 +14,7 @@
       <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
         <div class="ui-g-12 ui-md-3" style="text-align:center">
           <div *ngIf="album.coverFileGdaId === ''; else showAlbumCover">
-            <img src="" class="fas fa-compact-disc fa-4x album_cover list_element_img">
+            <img src="" class="fas fa-compact-disc fa-4x list_element_img">
           </div>
           <ng-template #showAlbumCover>
             <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}" class="list_element_img">

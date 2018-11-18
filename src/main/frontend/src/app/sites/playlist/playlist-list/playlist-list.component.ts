@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Playlist} from "../../../model/playlist";
 import {PlaylistService} from "../../../service/playlist.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-playlist-list',
@@ -12,7 +13,8 @@ export class PlaylistListComponent implements OnInit {
   playlists: Playlist[] = [];
 
   constructor(
-    private playlistService: PlaylistService
+    private playlistService: PlaylistService,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -26,5 +28,9 @@ export class PlaylistListComponent implements OnInit {
           this.playlists = playlists;
         }
       );
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

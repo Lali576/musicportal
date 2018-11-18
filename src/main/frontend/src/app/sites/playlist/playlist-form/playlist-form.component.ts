@@ -6,6 +6,7 @@ import {Message, MessageService} from "primeng/api";
 import {PlaylistService} from "../../../service/playlist.service";
 import {Router} from "@angular/router";
 import {PlaylistTag} from "../../../model/tags/playlisttag";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-playlist-form',
@@ -24,7 +25,8 @@ export class PlaylistFormComponent implements OnInit {
   constructor(
     private playlistServive: PlaylistService,
     private songService: SongService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -69,5 +71,9 @@ export class PlaylistFormComponent implements OnInit {
   showMsgError() {
     this.msgs = [];
     this.msgs.push({severity:'error', summary:'Lejátszási lista feltöltése sikertelen', detail:''});
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
