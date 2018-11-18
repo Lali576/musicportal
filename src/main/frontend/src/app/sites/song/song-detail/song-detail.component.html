@@ -88,7 +88,8 @@
   <ng-template #showAlbumTags>
     <button class="tag_button" *ngFor="let albumTag of albumTags"
             pButton type="button"
-            label="#{{albumTag.word}}"></button>
+            label="#{{albumTag.word}}"
+            [routerLink]="['/search/tag', albumTag.word]"></button>
   </ng-template>
 </div>
 <div class="counter_like_container">

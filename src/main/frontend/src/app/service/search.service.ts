@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Album} from "../model/album";
-import {AlbumTag} from "../model/tags/albumtag";
-import {Genre} from "../model/genre";
 import {User} from "../model/user";
 import {Playlist} from "../model/playlist";
-import {PlaylistTag} from "../model/tags/playlisttag";
-import {UserTag} from "../model/tags/usertag";
-import {Tag} from "../model/tags/tag";
 import {Song} from "../model/song";
 
 @Injectable({
@@ -26,20 +21,14 @@ export class SearchService {
   }
 
   getAlbumsByAlbumTag(tagWord: string): Promise<Album[]> {
-    const formData = new FormData();
-    formData.append("tag", tagWord);
-    return this.http.post<Album[]>(
-      "api/search/albums/tag",
-      formData
+    return this.http.get<Album[]>(
+      `api/search/albums/tag/${tagWord}`
     ).toPromise();
   }
 
   getAlbumsByGenre(genreWord: string): Promise<Album[]> {
-    const formData = new FormData();
-    formData.append("genre", genreWord);
-    return this.http.post<Album[]>(
-      "api/search/albums/genre",
-      formData
+    return this.http.get<Album[]>(
+      `api/search/albums/genre/${genreWord}`
     ).toPromise();
   }
 
@@ -56,29 +45,20 @@ export class SearchService {
   }
 
   getPlaylistByPlaylistTag(tagWord: string): Promise<Playlist[]> {
-    const formData = new FormData();
-    formData.append("tag", tagWord);
-    return this.http.post<Playlist[]>(
-      "api/search/playlists/tag",
-      formData
+    return this.http.get<Playlist[]>(
+      `api/search/playlists/tag/${tagWord}`
     ).toPromise();
   }
 
   getUsersByUserTag(tagWord: string): Promise<User[]> {
-    const formData = new FormData();
-    formData.append("tag", tagWord);
-    return this.http.post<User[]>(
-      "api/search/users/tag",
-      formData
+    return this.http.get<User[]>(
+      `api/search/users/tag/${tagWord}`
     ).toPromise();
   }
 
   getUsersByGenre(genreWord: string): Promise<User[]> {
-    const formData = new FormData();
-    formData.append("genre", genreWord);
-    return this.http.post<User[]>(
-      "api/search/users/genre",
-      formData
+    return this.http.get<User[]>(
+      `api/search/users/genre/${genreWord}`
     ).toPromise();
   }
 }
