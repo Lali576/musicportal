@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Song} from "../../../model/song";
 import {SongComment} from "../../../model/songcomment";
 import {ActivatedRoute, ParamMap} from "@angular/router";
@@ -20,7 +20,7 @@ import {AlbumTag} from "../../../model/tags/albumtag";
   styleUrls: ['./playlist-song.component.css'],
   providers: [MessageService]
 })
-export class PlaylistSongsComponent implements OnInit {
+export class PlaylistSongsComponent implements OnInit, OnDestroy {
   playlist: Playlist = new Playlist();
   playlistTags: PlaylistTag[] = [];
   playlistSongs: Song[] = [];
@@ -324,4 +324,8 @@ export class PlaylistSongsComponent implements OnInit {
     this.location.back();
   }
 
+  ngOnDestroy() {
+    this.currentAudio.pause();
+    this.currentAudio.src = '';
+  }
 }

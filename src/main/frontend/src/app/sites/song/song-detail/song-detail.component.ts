@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Song} from "../../../model/song";
 import {ActivatedRoute, ParamMap} from "@angular/router";
@@ -18,7 +18,7 @@ import {SongLike} from "../../../model/songlike";
   styleUrls: ['./song-detail.component.css'],
   providers: [MessageService]
 })
-export class SongDetailComponent implements OnInit {
+export class SongDetailComponent implements OnInit, OnDestroy {
 
   song: Song = new Song();
   audio = new Audio();
@@ -273,5 +273,10 @@ export class SongDetailComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  ngOnDestroy() {
+    this.audio.pause();
+    this.audio.src = '';
   }
 }

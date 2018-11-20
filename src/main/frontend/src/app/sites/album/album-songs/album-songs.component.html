@@ -9,7 +9,7 @@
 <div class="cover">
   <div>
     <div *ngIf="album.coverFileGdaId === ''; else showAlbumCover">
-      <img class="fas fa-compact-disc fa-8x">
+      <img src="" class="fas fa-compact-disc fa-8x">
     </div>
     <ng-template #showAlbumCover>
       <img src="{{'https://docs.google.com/uc?export=download&id=' + album.coverFileGdaId}}">

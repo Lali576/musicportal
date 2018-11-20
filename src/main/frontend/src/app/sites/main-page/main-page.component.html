@@ -111,11 +111,11 @@
       </ng-template>
     </p-carousel>
   </ng-template>
-  <h2 class="first">Leghallgatottabb dalok</h2>
-  <div *ngIf="firstFiveSongs.length === 0; else showFirstFiveSongs">
+  <h2 class="first">Legfrissebb dalok</h2>
+  <div *ngIf="firstFiveSongs.length === 0; else showLastFiveSongs">
     <i>Jelenleg nincs feltöltve dal!</i>
   </div>
-  <ng-template #showFirstFiveSongs>
+  <ng-template #showLastFiveSongs>
     <p-carousel headerText="" [value]="firstFiveSongs">
       <ng-template let-song pTemplate="item">
         <div class="ui-grid ui-grid-responsive list-element">

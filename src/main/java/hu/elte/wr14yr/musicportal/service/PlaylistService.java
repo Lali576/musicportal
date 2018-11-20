@@ -54,7 +54,7 @@ public class PlaylistService {
         logger.info("Playlist service: first five playlists ordered " +
                 "by their dates are going to be listed");
 
-        return playlistRepository.findFirst5ByOrderByDateAsc();
+        return playlistRepository.findFirst5ByOrderByDateDesc();
     }
 
     public Iterable<Playlist> listByUser(long id) {

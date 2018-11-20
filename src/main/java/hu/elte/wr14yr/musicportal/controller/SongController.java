@@ -110,7 +110,7 @@ public class SongController {
 
         Iterable<Song> songs = songService.listFirstFive();
 
-        logger.info("Song controller: enter endpoint '/list-first-five'");
+        logger.info("Song controller: exit endpoint '/list-first-five'");
 
         return ResponseEntity.ok(songs);
     }
@@ -130,7 +130,7 @@ public class SongController {
     public ResponseEntity<Iterable<Song>> listByAlbum(MultipartHttpServletRequest request) throws IOException {
         logger.info("Song controller: enter endpoint '/by-album'");
 
-        logger.info("Song controller: ger parameter 'album'");
+        logger.info("Song controller: get parameter 'album'");
 
         Album album = mapper.readValue(request.getParameter("album"), Album.class);
         Iterable<Song> songs = songService.listByAlbum(album);
@@ -150,7 +150,7 @@ public class SongController {
 
         Iterable<Song> songs = songService.listByPlaylist(playlist);
 
-        logger.info("Song controller: enter endpoint '/by-playlist'");
+        logger.info("Song controller: exit endpoint '/by-playlist'");
 
         return ResponseEntity.ok(songs);
     }
@@ -201,12 +201,15 @@ public class SongController {
     @Role({ARTIST})
     @PostMapping("/update/{id}/lyrics")
     public ResponseEntity<Song> updateLyrics(@PathVariable("id") long id, MultipartHttpServletRequest request) throws IOException {
+        logger.info(String.format("Song controller: enter endpoint '/update/%s/lyrics'", id));
 
         Song song = mapper.readValue(request.getParameter("song"), Song.class);
 
         String lyrics = request.getParameter("lyrics");
 
         Song updatedSong = songService.updateLyrics(song, lyrics);
+
+        logger.info(String.format("Song controller: exit endpoint '/update/%s/lyrics'", id));
 
         return ResponseEntity.ok(updatedSong);
 

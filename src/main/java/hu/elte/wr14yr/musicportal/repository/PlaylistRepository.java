@@ -13,7 +13,7 @@ public interface PlaylistRepository extends CrudRepository<Playlist, Long> {
 
     List<Playlist> findAllByNameContainsAllIgnoreCase(String searchWord);
 
-    List<Playlist> findFirst5ByOrderByDateAsc();
+    List<Playlist> findFirst5ByOrderByDateDesc();
 
     List<Playlist> findAllByUserId(long id);
 

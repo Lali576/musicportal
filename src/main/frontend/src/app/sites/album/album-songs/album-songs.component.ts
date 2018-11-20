@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import {Song} from "../../../model/song";
 import {Album} from "../../../model/album";
 import {AlbumTag} from "../../../model/tags/albumtag";
@@ -19,7 +19,7 @@ import {AlbumService} from "../../../service/album.service";
   styleUrls: ['./album-songs.component.css'],
   providers: [MessageService]
 })
-export class AlbumSongsComponent implements OnInit {
+export class AlbumSongsComponent implements OnInit, OnDestroy {
 
   album: Album = new Album();
   albumTags: AlbumTag[] = [];
@@ -332,4 +332,8 @@ export class AlbumSongsComponent implements OnInit {
     return index;
   }
 
+  ngOnDestroy() {
+    this.currentAudio.pause();
+    this.currentAudio.src = '';
+  }
 }

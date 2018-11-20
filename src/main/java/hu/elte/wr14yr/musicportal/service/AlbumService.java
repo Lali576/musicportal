@@ -77,7 +77,7 @@ public class AlbumService {
     public Iterable<Album> listFirstFive() {
         logger.info("Album service: first five albums ordered by their dates are going to be listed");
 
-        return albumRepository.findFirst5ByOrderByDateAsc();
+        return albumRepository.findFirst5ByOrderByDateDesc();
     }
 
     public Iterable<Album> listByUser(long id) throws DataAccessException, ConstraintViolationException, DataException {

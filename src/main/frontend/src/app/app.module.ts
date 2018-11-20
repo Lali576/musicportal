@@ -54,7 +54,7 @@ import { SongDetailComponent } from './sites/song/song-detail/song-detail.compon
 import { PlaylistFormComponent } from './sites/playlist/playlist-form/playlist-form.component';
 import { PlaylistListComponent } from './sites/playlist/playlist-list/playlist-list.component';
 import { PlaylistDetailComponent } from './sites/playlist/playlist-detail/playlist-detail.component';
-import {CountryService} from "./service/country.service";
+import { CountryService } from "./service/country.service";
 
 import { LOCALE_ID } from "@angular/core";
 import { registerLocaleData } from "@angular/common";

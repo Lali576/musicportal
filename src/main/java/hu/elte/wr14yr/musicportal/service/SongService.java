@@ -77,7 +77,7 @@ public class SongService {
         logger.info("Song service: first five songs ordered " +
                 "by their counted song counters are going to be listed");
 
-        return songRepository.findFirst5ByOrderBySongCounters();
+        return songRepository.findFirst5ByOrderByIdDesc();
     }
 
     public Iterable<Song> listByUser(long id) {
