@@ -382,7 +382,7 @@
       </p-dataView>
     </ng-template>
   </p-tabPanel>
-  <p-tabPanel header="Lej. listák">
+  <p-tabPanel header="Lejátszási listák">
     <button
       ngClass="new_make_button"
       *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)"
@@ -390,12 +390,12 @@
       pButton type="button"
       icon="fas fa-plus"
       class="ui-button-success"
-      label="Új lej. lista"
+      label="Új lejátszási lista"
       style="margin-top: 10px;">
     </button>
     <div *ngIf="userPlaylist.length === 0; else showUserPlaylist">
       <strong>
-        A felhasználónak még nincsenek lej. listái!
+        A felhasználónak még nincsenek lejátszási listái!
       </strong>
     </div>
     <ng-template #showUserPlaylist>

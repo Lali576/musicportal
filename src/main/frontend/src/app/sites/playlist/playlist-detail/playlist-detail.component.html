@@ -89,8 +89,8 @@
         </div>
       </div>
     </div>
-    <p-pickList [source]="songs" [target]="selectedSongs" sourceHeader="Össz. dal" targetHeader="Kiv. dal" [responsive]="true" filterBy="title"
-                dragdrop="true" dragdropScope="songs" sourceFilterPlaceholder="Search by brand" targetFilterPlaceholder="Search by brand" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+    <p-pickList [source]="songs" [target]="selectedSongs" sourceHeader="Összes dalok" targetHeader="Kiválasztott dalok" [responsive]="true" filterBy="title"
+                dragdrop="true" dragdropScope="songs" sourceFilterPlaceholder="Cím" targetFilterPlaceholder="Cím" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
       <ng-template let-song pTemplate="item">
         <div class="ui-helper-clearfix">
           <div style="font-size:14px;font-weight: bold;text-align: center;margin:15px 5px;">{{song.title}}</div>
@@ -103,7 +103,7 @@
       <button type="button" pButton icon="fas fa-times" (click)="detailsEditDisplay=false" label="Kilép"></button>
     </p-footer>
   </p-dialog>
-  <button pButton type="button" (click)="deletePlaylistConfirm()" label="Lej. lista törlése">
+  <button pButton type="button" (click)="deletePlaylistConfirm()" label="Lejátszási lista törlése">
   </button>
 </div>
 <p-dataView *ngIf="playlistSongs.length >= 1" #dv [value]="playlistSongs" [paginator]="true" [rows]="10" paginatorPosition="both">

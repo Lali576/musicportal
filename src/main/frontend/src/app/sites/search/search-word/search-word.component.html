@@ -98,9 +98,9 @@
       </p-dataView>
     </ng-template>
   </p-tabPanel>
-  <p-tabPanel header="Lej. listák">
+  <p-tabPanel header="Lejátszási listák">
     <div *ngIf="playlists.length === 0; else showPlaylists">
-      <i>Nincs ilyen címkével rendelkező lej. lista</i>
+      <i>Nincs ilyen címkével rendelkező lejátszási lista</i>
     </div>
     <ng-template #showPlaylists>
       <p-dataView #dv [value]="playlists" [paginator]="true" [rows]="10" paginatorPosition="both">

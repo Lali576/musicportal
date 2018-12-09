@@ -1,7 +1,7 @@
 <button pButton (click)="goBack()" icon="fas fa-chevron-left" label="Vissza" style="margin: 10px 0px">
 </button>
 <h1 class="first">
-  Új lej. lista
+  Új lejátszási lista
 </h1>
 <p-messages [(value)]="msgs"></p-messages>
 <form (submit)="submitPlaylist(f)" #f="ngForm">
@@ -9,21 +9,21 @@
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
       <div class="ui-grid-row">
         <div class="ui-grid-col-2">
-          Lej. lista neve *:
+          Lejátszsási lista neve *:
         </div>
         <div class="ui-grid-col-4">
           <input name="playlistNameText"
                  pInputText type="text"
-                 pTooltip="Adja meg a feltölteni kívánt lej. lista nevét!"
+                 pTooltip="Adja meg a feltölteni kívánt lejátszási lista nevét!"
                  [(ngModel)]="playlist.name"
                  #playlistNameText="ngModel"
-                 placeholder="Lej. lista neve"
+                 placeholder="Lejátszási lista neve"
                  required />
         </div>
         <div class="ui-grid-col-4">
           <p-message
             severity="error"
-            text="Adja meg a lej. lista!"
+            text="Adja meg a lejátszási lista nevét!"
             *ngIf="playlistNameText.invalid&&playlistNameText.dirty">
           </p-message>
         </div>
@@ -54,8 +54,8 @@
         </div>
       </div>
     </div>
-    <p-pickList [source]="songs" [target]="selectedSongs" sourceHeader="Össz. dal" targetHeader="Kiv. dal" [responsive]="true" filterBy="title"
-                dragdrop="true" dragdropScope="songs" sourceFilterPlaceholder="Search by brand" targetFilterPlaceholder="Search by brand" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+    <p-pickList [source]="songs" [target]="selectedSongs" sourceHeader="Összes dalok" targetHeader="Kiválasztott dalok" [responsive]="true" filterBy="title"
+                dragdrop="true" dragdropScope="songs" sourceFilterPlaceholder="Cím" targetFilterPlaceholder="Cím" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
       <ng-template let-song pTemplate="item">
         <div class="ui-helper-clearfix">
           <div style="font-size:14px;font-weight: bold;text-align: center;margin:15px 5px;">{{song.title}}</div>
