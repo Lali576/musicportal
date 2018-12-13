@@ -273,33 +273,37 @@ export class PlaylistSongsComponent implements OnInit, OnDestroy {
   }
 
   async addSongCounter() {
-    await this.songService.addSongCounter(this.currentPlaylistSong).then(
-      (songCounterNumber: number) => {
-        this.currentSongCounterNumber = songCounterNumber;
-      }
-    )
+    if(this.authService.isLoggedIn) {
+      await this.songService.addSongCounter(this.currentPlaylistSong).then(
+        (songCounterNumber: number) => {
+          this.currentSongCounterNumber = songCounterNumber;
+        }
+      )
+    }
   }
 
   async addSongLike(songLikeType: string) {
-    let songLike = new SongLike();
-    songLike.type = (songLikeType === 'like') ? 'LIKE' : 'DISLIKE';
+    if(this.authService.isLoggedIn) {
+      let songLike = new SongLike();
+      songLike.type = (songLikeType === 'like') ? 'LIKE' : 'DISLIKE';
 
-    try {
-      this.messageService.add({severity: 'info', summary: songLike.type + ' feltöltés alatt', detail: ''});
+      try {
+        this.messageService.add({severity: 'info', summary: songLike.type + ' feltöltés alatt', detail: ''});
 
-      await this.songService.addSongLike(songLike, this.currentPlaylistSong)
-        .then(
-          (songLikeNumber: number) => {
-            if (songLikeType === 'like') {
-              this.currentSongLikeNumber = songLikeNumber;
-            } else if (songLikeType === 'dislike') {
-              this.currentSongDislikeNumber = songLikeNumber;
+        await this.songService.addSongLike(songLike, this.currentPlaylistSong)
+          .then(
+            (songLikeNumber: number) => {
+              if (songLikeType === 'like') {
+                this.currentSongLikeNumber = songLikeNumber;
+              } else if (songLikeType === 'dislike') {
+                this.currentSongDislikeNumber = songLikeNumber;
+              }
             }
-          }
-        )
-      this.messageService.add({severity: 'success', summary: songLike.type + ' feltöltése sikeres', detail: ''});
-    } catch (e) {
-      this.messageService.add({severity: 'error', summary: songLike.type + ' feltöltése sikertelen', detail: ''});
+          );
+        this.messageService.add({severity: 'success', summary: songLike.type + ' feltöltése sikeres', detail: ''});
+      } catch (e) {
+        this.messageService.add({severity: 'error', summary: songLike.type + ' feltöltése sikertelen', detail: ''});
+      }
     }
   }
 
