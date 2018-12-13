@@ -175,9 +175,13 @@
         <div class="ui-grid-col-4">
           <input
             name="userNewEmailText"
-            pInputText
+            pInputText type="email"
             [(ngModel)]="userNewEmail"
-            #userNewEmailText>
+            #userNewEmailText
+            placeholder="E-mail cím"
+            required
+            pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+            minlength="5" />
         </div>
       </div>
       <div class="ui-grid-row">
@@ -189,9 +193,13 @@
         <div class="ui-grid-col-4">
           <input
             name="userNewEmailConfirmText"
-            pInputText
+            pInputText type="email"
             [(ngModel)]="userNewEmailConfirm"
-            #userNewEmailConfirmText>
+            #userNewEmailConfirmText
+            placeholder="E-mail cím megerősítés"
+            required
+            pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+            minlength="5" />
         </div>
       </div>
     </div>

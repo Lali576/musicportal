@@ -79,7 +79,7 @@
                    required
                    pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
                    minlength="5"
-                   (invalid)="user.emailAddress !== emailAddressConfirm"/>
+                   (invalid)="emailAddressConfirm !== user.emailAddress"/>
           </div>
           <div class="ui-grid-col-4">
             <p-message
@@ -102,20 +102,20 @@
                    weakLabel="Gyenge"
                    mediumLabel="Közepes"
                    strongLabel="Erős"
-                   pTooltip="Adjon megy egy min. 6 és max. 15 karakteres jelszót!"
+                   pTooltip="Adjon megy egy min. 8 és max. 15 karakteres jelszót!"
                    [(ngModel)]="password"
                    #passwordText="ngModel"
                    placeholder="Jelszó"
                    required
                    pattern="[0-9A-Za-z@$_!.]*"
-                   minlength="6"
+                   minlength="8"
                    maxlength="15"/>
           </div>
           <div class="ui-grid-col-4">
             <p-message
               severity="error"
               [text]="passwordText.errors['required'] ? 'Adja meg a jelszót!' :
-              passwordText.errors['minlength'] ? 'A megadott jelszó kevesebb, mint 6 karakter!' :
+              passwordText.errors['minlength'] ? 'A megadott jelszó kevesebb, mint 8 karakter!' :
               passwordText.errors['maxlenght'] ? 'A megadott jelszó több, mint 15 karakter!' : ''"
               *ngIf="passwordText.invalid&&passwordText.dirty">
             </p-message>
@@ -140,9 +140,9 @@
                    placeholder="Jelszó megerősítés"
                    required
                    pattern="[0-9A-Za-z@$_!.]*"
-                   minlength="6"
+                   minlength="8"
                    maxlength="15"
-                   (invalid)="passwordText.value !== passwordConfirmText.value"/>
+                   (invalid)="password !== passwordConfirm"/>
           </div>
           <div class="ui-grid-col-4">
             <p-message
